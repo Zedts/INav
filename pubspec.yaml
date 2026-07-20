@@ -40,9 +40,6 @@ dependencies:
   
   # Theme Persistence
   shared_preferences: ^2.2.2
-  
-  # Icons matching HTML reference
-  phosphor_flutter: ^2.1.0
 
 dev_dependencies:
   flutter_test:

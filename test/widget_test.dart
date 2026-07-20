@@ -1,30 +1,24 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
-import 'package:flutter/material.dart';
+// Basic widget test for INav app
 import 'package:flutter_test/flutter_test.dart';
-
+import 'package:inav/core/theme/theme_provider.dart';
 import 'package:inav/main.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+  testWidgets('App launches and shows header', (WidgetTester tester) async {
+    // Create theme provider
+    final themeProvider = ThemeProvider();
+    await themeProvider.loadThemePreference();
+
     // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+    await tester.pumpWidget(MyApp(themeProvider: themeProvider));
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    // Wait for all animations and async operations
+    await tester.pumpAndSettle();
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+    // Verify that the app title 'INav' is displayed
+    expect(find.text('INav'), findsOneWidget);
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    // Verify that bottom navigation has Home tab
+    expect(find.text('Home'), findsOneWidget);
   });
 }
