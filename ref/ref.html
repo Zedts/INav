@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>INav Reference - Mobile Reference</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            DEFAULT: '#0D47A1',
+                            dark: '#3B82F6',
+                        },
+                        accent: '#1976D2', 
+                        surface: {
+                            light: '#F8FAFC',
+                            dark: '#0F172A',
+                        },
+                        card: {
+                            light: '#FFFFFF',
+                            dark: '#1E293B',
+                        },
+                        textMain: {
+                            light: '#1E293B',
+                            dark: '#F8FAFC',
+                        },
+                        textMuted: {
+                            light: '#64748B',
+                            dark: '#94A3B8',
+                        },
+                        border: {
+                            light: '#E2E8F0',
+                            dark: '#334155',
+                        },
+                        success: '#10B981', 
+                        teal: '#0D9488', 
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            -webkit-font-smoothing: antialiased;
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+        }
+        ::-webkit-scrollbar {
+            display: none;
+        }
+        /* Smooth Page Transitions */
+        .tab-page {
+            transition: opacity 0.25s ease-in-out;
+        }
+        /* Safe area padding for iPhones */
+        @supports (padding-bottom: env(safe-area-inset-bottom)) {
+            .safe-area-pb {
+                padding-bottom: calc(0.5rem + env(safe-area-inset-bottom));
+            }
+        }
+        /* Custom animation values */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .animate-spin-slow {
+            animation: spin 8s linear infinite;
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-surface-light dark:bg-surface-dark transition-colors duration-300">
+
+    <!-- Removed physical phone frame borders and background overlays. Content now fits viewport. -->
+    <div class="w-full max-w-md mx-auto min-h-screen bg-surface-light dark:bg-surface-dark flex flex-col transition-colors duration-300 relative">
+        
+        <!-- Mobile Header Bar -->
+        <header class="flex justify-between items-center px-6 pt-6 pb-5 bg-surface-light dark:bg-surface-dark border-b border-slate-300 dark:border-border-dark sticky top-0 z-30 transition-colors duration-300">
+            <div>
+                <h1 class="text-2xl font-bold tracking-tight text-primary dark:text-primary-dark transition-colors">INav</h1>
+            </div>
+            <button id="themeToggleBtn" aria-label="Toggle Dark Mode" class="p-2.5 rounded-xl hover:bg-slate-200/60 dark:hover:bg-slate-800 active:scale-95 transition-all text-textMain-light dark:text-textMain-dark">
+                <i id="themeIcon" class="ph ph-moon text-2xl"></i>
+            </button>
+        </header>
+
+        <main class="flex-1 px-6 pb-24 space-y-7">
+            
+            <!-- ============================================== -->
+            <!-- 1. HOME TAB                                    -->
+            <!-- ============================================== -->
+            <div id="page-home" class="tab-page space-y-7 pt-10">
+                
+                <!-- Next Prayer Card with high visual fidelity & generous margins -->
+                <section class="bg-white dark:bg-card-dark rounded-2xl p-6 border border-border-light dark:border-border-dark shadow-sm relative overflow-hidden transition-all duration-300 hover:shadow-md">
+                    <div class="absolute -right-12 -top-12 w-32 h-32 bg-primary/5 dark:bg-primary-dark/10 rounded-full blur-2xl"></div>
+                    
+                    <div class="flex justify-between items-start mb-3 relative z-10">
+                        <div>
+                            <span class="text-xs font-semibold uppercase tracking-wider text-textMuted-light dark:text-textMuted-dark">Next prayer</span>
+                            <h2 class="text-3xl font-extrabold text-primary dark:text-primary-dark mt-1 tracking-tight">Maghrib</h2>
+                        </div>
+                        <span class="text-4xl font-black text-textMain-light dark:text-textMain-dark tracking-tight">18:04</span>
+                    </div>
+                    
+                    <!-- Progress Bar Component -->
+                    <div class="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-2 mt-6 mb-4 relative overflow-hidden">
+                        <div class="bg-primary dark:bg-primary-dark h-full rounded-full w-2/3 transition-all duration-1000"></div>
+                    </div>
+                    
+                    <!-- Time Remaining Badge -->
+                    <div class="flex justify-between items-center relative z-10">
+                        <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-teal/10 dark:bg-teal/20 border border-teal text-teal dark:text-teal-400 text-xs font-bold rounded-full">
+                            <span class="w-1.5 h-1.5 rounded-full bg-teal animate-pulse"></span>
+                            In 23 minutes
+                        </span>
+                        <span class="text-[11px] text-textMuted-light dark:text-textMuted-dark italic">Cairo, EG</span>
+                    </div>
+                </section>
+
+                <!-- Quick Actions Grid -->
+                <section class="grid grid-cols-4 gap-3.5">
+                    <!-- Quran Action -->
+                    <button onclick="switchTab('quran')" class="group flex flex-col items-center justify-center bg-white dark:bg-card-dark border border-border-light dark:border-border-dark rounded-2xl py-4 shadow-sm active:scale-95 transition-all duration-200">
+                        <div class="w-11 h-11 rounded-xl bg-teal/10 dark:bg-teal/20 flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
+                            <i class="ph-bold ph-book-open text-teal text-xl"></i>
+                        </div>
+                        <span class="text-[11px] font-semibold text-textMuted-light dark:text-textMuted-dark">Quran</span>
+                    </button>
+                    
+                    <!-- Qibla Action -->
+                    <button onclick="switchTab('qibla')" class="group flex flex-col items-center justify-center bg-white dark:bg-card-dark border border-border-light dark:border-border-dark rounded-2xl py-4 shadow-sm active:scale-95 transition-all duration-200">
+                        <div class="w-11 h-11 rounded-xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
+                            <i class="ph-bold ph-compass text-accent text-xl"></i>
+                        </div>
+                        <span class="text-[11px] font-semibold text-textMuted-light dark:text-textMuted-dark">Qibla</span>
+                    </button>
+                    
+                    <!-- Mosque Action -->
+                    <button onclick="switchTab('mosque')" class="group flex flex-col items-center justify-center bg-white dark:bg-card-dark border border-border-light dark:border-border-dark rounded-2xl py-4 shadow-sm active:scale-95 transition-all duration-200">
+                        <div class="w-11 h-11 rounded-xl bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
+                            <i class="ph-bold ph-map-pin text-emerald-600 text-xl"></i>
+                        </div>
+                        <span class="text-[11px] font-semibold text-textMuted-light dark:text-textMuted-dark">Mosque</span>
+                    </button>
+                    
+                    <!-- Settings Action -->
+                    <button onclick="switchTab('settings')" class="group flex flex-col items-center justify-center bg-white dark:bg-card-dark border border-border-light dark:border-border-dark rounded-2xl py-4 shadow-sm active:scale-95 transition-all duration-200">
+                        <div class="w-11 h-11 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
+                            <i class="ph-bold ph-gear text-textMuted-light dark:text-textMuted-dark text-xl"></i>
+                        </div>
+                        <span class="text-[11px] font-semibold text-textMuted-light dark:text-textMuted-dark">Settings</span>
+                    </button>
+                </section>
+
+                <!-- Prayer Times List -->
+                <section class="bg-white dark:bg-card-dark rounded-2xl border border-border-light dark:border-border-dark shadow-sm overflow-hidden mb-4">
+                    <!-- Table Header -->
+                    <div class="flex justify-between items-center px-5 py-4 border-b border-border-light dark:border-border-dark bg-slate-50/50 dark:bg-slate-800/30">
+                        <h3 class="text-sm font-bold text-textMain-light dark:text-textMain-dark">Today's Prayers</h3>
+                        <span class="text-[11px] font-bold text-teal dark:text-teal-400 bg-teal/10 dark:bg-teal/20 px-2.5 py-0.5 rounded-full">12 Rajab 1445 AH</span>
+                    </div>
+                    
+                    <!-- Timings List -->
+                    <ul class="divide-y divide-border-light dark:divide-border-dark">
+                        <!-- Fajr -->
+                        <li class="flex justify-between items-center px-5 py-4 hover:bg-slate-50/50 dark:hover:bg-slate-800/20 transition-colors">
+                            <span class="text-textMuted-light dark:text-textMuted-dark text-sm font-semibold">Fajr</span>
+                            <div class="flex items-center gap-3">
+                                <span class="text-textMuted-light dark:text-textMuted-dark text-sm font-bold">05:42</span>
+                                <i class="ph-fill ph-check-circle text-success text-xl"></i>
+                            </div>
+                        </li>
+                        
+                        <!-- Dhuhr -->
+                        <li class="flex justify-between items-center px-5 py-4 hover:bg-slate-50/50 dark:hover:bg-slate-800/20 transition-colors">
+                            <span class="text-textMuted-light dark:text-textMuted-dark text-sm font-semibold">Dhuhr</span>
+                            <div class="flex items-center gap-3">
+                                <span class="text-textMuted-light dark:text-textMuted-dark text-sm font-bold">12:30</span>
+                                <i class="ph-fill ph-check-circle text-success text-xl"></i>
+                            </div>
+                        </li>
+                        
+                        <!-- Asr -->
+                        <li class="flex justify-between items-center px-5 py-4 hover:bg-slate-50/50 dark:hover:bg-slate-800/20 transition-colors">
+                            <span class="text-textMuted-light dark:text-textMuted-dark text-sm font-semibold">Asr</span>
+                            <div class="flex items-center gap-3">
+                                <span class="text-textMuted-light dark:text-textMuted-dark text-sm font-bold">15:15</span>
+                                <i class="ph ph-circle text-slate-300 dark:text-slate-700 text-xl"></i>
+                            </div>
+                        </li>
+                        
+                        <!-- Maghrib (Active) -->
+                        <li class="flex justify-between items-center px-5 py-4 relative bg-blue-50/50 dark:bg-blue-950/20">
+                            <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-primary rounded-r"></div>
+                            <span class="text-primary dark:text-primary-dark text-sm font-bold pl-2">Maghrib</span>
+                            <div class="flex items-center gap-3">
+                                <span class="text-primary dark:text-primary-dark text-sm font-extrabold">18:04</span>
+                                <i class="ph-fill ph-clock text-primary dark:text-primary-dark text-xl animate-pulse"></i>
+                            </div>
+                        </li>
+                        
+                        <!-- Isha -->
+                        <li class="flex justify-between items-center px-5 py-4 hover:bg-slate-50/50 dark:hover:bg-slate-800/20 transition-colors">
+                            <span class="text-textMuted-light dark:text-textMuted-dark text-sm font-semibold">Isha</span>
+                            <div class="flex items-center gap-3">
+                                <span class="text-textMuted-light dark:text-textMuted-dark text-sm font-bold">19:30</span>
+                                <i class="ph ph-circle text-slate-300 dark:text-slate-700 text-xl"></i>
+                            </div>
+                        </li>
+                    </ul>
+                </section>
+            </div>
+
+            <!-- ============================================== -->
+            <!-- 2. QURAN TAB                                   -->
+            <!-- ============================================== -->
+            <div id="page-quran" class="tab-page hidden space-y-6">
+                <div class="pb-1 mt-2">
+                    <h2 class="text-3xl font-extrabold text-textMain-light dark:text-textMain-dark">Quran</h2>
+                    <p class="text-sm text-textMuted-light dark:text-textMuted-dark mt-0.5">Browse and study Surahs</p>
+                </div>
+
+                <div class="relative">
+                    <i class="ph ph-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-textMuted-light dark:text-textMuted-dark text-lg"></i>
+                    <input type="text" id="surahSearchInput" placeholder="Search Surahs..." class="w-full pl-11 pr-4 py-3 bg-white dark:bg-card-dark border border-border-light dark:border-border-dark rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-teal/30 dark:text-textMain-dark placeholder-textMuted-light">
+                </div>
+
+                <!-- Surahs list, matching "Quran Page.png" guidelines -->
+                <div class="space-y-3" id="surahContainer">
+                    <div class="surah-item bg-white dark:bg-card-dark rounded-xl p-4 border border-border-light dark:border-border-dark flex justify-between items-center hover:border-teal/30 dark:hover:border-teal/50 transition-colors cursor-pointer" data-name="Al-Fatihah">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 rounded-full border-2 border-teal/40 flex items-center justify-center text-sm font-bold text-teal dark:text-teal-400">1</div>
+                            <div>
+                                <h4 class="font-bold text-textMain-light dark:text-textMain-dark text-sm">Al-Fatihah</h4>
+                                <p class="text-xs text-textMuted-light dark:text-textMuted-dark">The Opener</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-base font-bold text-textMain-light dark:text-textMain-dark block">الفاتحة</span>
+                            <span class="text-[10px] text-textMuted-light dark:text-textMuted-dark font-medium">7 Ayahs</span>
+                        </div>
+                    </div>
+
+                    <div class="surah-item bg-white dark:bg-card-dark rounded-xl p-4 border border-border-light dark:border-border-dark flex justify-between items-center hover:border-teal/30 dark:hover:border-teal/50 transition-colors cursor-pointer" data-name="Al-Baqarah">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 rounded-full border-2 border-teal/40 flex items-center justify-center text-sm font-bold text-teal dark:text-teal-400">2</div>
+                            <div>
+                                <h4 class="font-bold text-textMain-light dark:text-textMain-dark text-sm">Al-Baqarah</h4>
+                                <p class="text-xs text-textMuted-light dark:text-textMuted-dark">The Cow</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-base font-bold text-textMain-light dark:text-textMain-dark block">البقرة</span>
+                            <span class="text-[10px] text-textMuted-light dark:text-textMuted-dark font-medium">286 Ayahs</span>
+                        </div>
+                    </div>
+
+                    <div class="surah-item bg-white dark:bg-card-dark rounded-xl p-4 border border-border-light dark:border-border-dark flex justify-between items-center hover:border-teal/30 dark:hover:border-teal/50 transition-colors cursor-pointer" data-name="Ali 'Imran">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 rounded-full border-2 border-teal/40 flex items-center justify-center text-sm font-bold text-teal dark:text-teal-400">3</div>
+                            <div>
+                                <h4 class="font-bold text-textMain-light dark:text-textMain-dark text-sm">Ali 'Imran</h4>
+                                <p class="text-xs text-textMuted-light dark:text-textMuted-dark">Family of Imran</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-base font-bold text-textMain-light dark:text-textMain-dark block">آل عمران</span>
+                            <span class="text-[10px] text-textMuted-light dark:text-textMuted-dark font-medium">200 Ayahs</span>
+                        </div>
+                    </div>
+
+                    <div class="surah-item bg-white dark:bg-card-dark rounded-xl p-4 border border-border-light dark:border-border-dark flex justify-between items-center hover:border-teal/30 dark:hover:border-teal/50 transition-colors cursor-pointer" data-name="An-Nisa">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 rounded-full border-2 border-teal/40 flex items-center justify-center text-sm font-bold text-teal dark:text-teal-400">4</div>
+                            <div>
+                                <h4 class="font-bold text-textMain-light dark:text-textMain-dark text-sm">An-Nisa</h4>
+                                <p class="text-xs text-textMuted-light dark:text-textMuted-dark">The Women</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-base font-bold text-textMain-light dark:text-textMain-dark block">النساء</span>
+                            <span class="text-[10px] text-textMuted-light dark:text-textMuted-dark font-medium">176 Ayahs</span>
+                        </div>
+                    </div>
+
+                    <div class="surah-item bg-white dark:bg-card-dark rounded-xl p-4 border border-border-light dark:border-border-dark flex justify-between items-center hover:border-teal/30 dark:hover:border-teal/50 transition-colors cursor-pointer" data-name="Al-Ma'idah">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 rounded-full border-2 border-teal/40 flex items-center justify-center text-sm font-bold text-teal dark:text-teal-400">5</div>
+                            <div>
+                                <h4 class="font-bold text-textMain-light dark:text-textMain-dark text-sm">Al-Ma'idah</h4>
+                                <p class="text-xs text-textMuted-light dark:text-textMuted-dark">The Table Spread</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-base font-bold text-textMain-light dark:text-textMain-dark block">المائدة</span>
+                            <span class="text-[10px] text-textMuted-light dark:text-textMuted-dark font-medium">120 Ayahs</span>
+                        </div>
+                    </div>
+
+                    <div class="surah-item bg-white dark:bg-card-dark rounded-xl p-4 border border-border-light dark:border-border-dark flex justify-between items-center hover:border-teal/30 dark:hover:border-teal/50 transition-colors cursor-pointer" data-name="Al-An'am">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 rounded-full border-2 border-teal/40 flex items-center justify-center text-sm font-bold text-teal dark:text-teal-400">6</div>
+                            <div>
+                                <h4 class="font-bold text-textMain-light dark:text-textMain-dark text-sm">Al-An'am</h4>
+                                <p class="text-xs text-textMuted-light dark:text-textMuted-dark">The Cattle</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-base font-bold text-textMain-light dark:text-textMain-dark block">الأنعام</span>
+                            <span class="text-[10px] text-textMuted-light dark:text-textMuted-dark font-medium">165 Ayahs</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============================================== -->
+            <!-- 3. MOSQUE TAB                                  -->
+            <!-- ============================================== -->
+            <div id="page-mosque" class="tab-page hidden space-y-6">
+                <!-- Interactive Map Canvas simulation block -->
+                <div class="relative bg-slate-200 dark:bg-slate-800 rounded-3xl h-64 overflow-hidden shadow-inner border border-border-light dark:border-border-dark mt-2">
+                    
+                    <!-- Stylized Map SVG Backdrop referencing Mosque Page.png -->
+                    <svg class="absolute inset-0 w-full h-full text-slate-300 dark:text-slate-700 opacity-60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="100%" height="100%" fill="#E2E8F0" class="dark:fill-slate-800" />
+                        <path d="M-50,80 L500,120" stroke="#FFFFFF" stroke-width="24" class="dark:stroke-slate-700" />
+                        <path d="M120,-50 L150,400" stroke="#FFFFFF" stroke-width="18" class="dark:stroke-slate-700" />
+                        <path d="M280,-50 L260,400" stroke="#FFFFFF" stroke-width="16" class="dark:stroke-slate-700" />
+                        <path d="M-50,220 L500,190" stroke="#FFFFFF" stroke-width="20" class="dark:stroke-slate-700" />
+                        
+                        <circle cx="140" cy="115" r="12" fill="#3B82F6" fill-opacity="0.2" class="animate-ping" />
+                        <circle cx="140" cy="115" r="6" fill="#1D4ED8" />
+                    </svg>
+
+                    <!-- Pins mapping to locations -->
+                    <button onclick="highlightMosque('falah')" class="absolute top-[80px] left-[70px] flex flex-col items-center group active:scale-95 transition-transform">
+                        <div class="bg-primary hover:bg-accent text-white p-2 rounded-full shadow-lg transform -translate-y-1 hover:scale-115 transition-transform duration-200">
+                            <i class="ph-bold ph-mosque text-base"></i>
+                        </div>
+                        <span class="text-[9px] font-bold bg-white/90 text-slate-800 px-1.5 py-0.5 rounded shadow mt-1">Al-Falah</span>
+                    </button>
+
+                    <button onclick="highlightMosque('rahman')" class="absolute top-[140px] left-[270px] flex flex-col items-center group active:scale-95 transition-transform">
+                        <div class="bg-slate-700 hover:bg-slate-800 text-white p-2 rounded-full shadow-lg transform -translate-y-1 hover:scale-115 transition-transform duration-200">
+                            <i class="ph-bold ph-mosque text-base"></i>
+                        </div>
+                        <span class="text-[9px] font-bold bg-white/90 text-slate-800 px-1.5 py-0.5 rounded shadow mt-1">Ar-Rahman</span>
+                    </button>
+
+                    <button onclick="highlightMosque('center')" class="absolute top-[40px] left-[220px] flex flex-col items-center group active:scale-95 transition-transform">
+                        <div class="bg-primary hover:bg-accent text-white p-2 rounded-full shadow-lg transform -translate-y-1 hover:scale-115 transition-transform duration-200">
+                            <i class="ph-bold ph-mosque text-base"></i>
+                        </div>
+                        <span class="text-[9px] font-bold bg-white/90 text-slate-800 px-1.5 py-0.5 rounded shadow mt-1">Islamic Center</span>
+                    </button>
+
+                    <!-- Floating Search Pill -->
+                    <div class="absolute top-4 left-4 right-4 bg-white dark:bg-card-dark shadow-md rounded-2xl flex items-center px-4 py-3 border border-border-light dark:border-border-dark">
+                        <i class="ph ph-compass text-primary text-xl mr-2 animate-spin-slow"></i>
+                        <input type="text" placeholder="Searching nearby..." readonly class="w-full text-xs font-semibold bg-transparent border-none text-textMain-light dark:text-textMain-dark focus:outline-none select-none">
+                    </div>
+                </div>
+
+                <!-- Nearby Mosques -->
+                <div>
+                    <h3 class="text-lg font-bold text-textMain-light dark:text-textMain-dark mb-4">Nearby Mosques</h3>
+                    
+                    <div class="space-y-4">
+                        <!-- Mosque Card 1 -->
+                        <div id="mosque-falah" class="mosque-card bg-white dark:bg-card-dark rounded-2xl p-4 border-2 border-border-light dark:border-border-dark flex items-center gap-4 transition-all duration-300">
+                            <div class="w-12 h-12 rounded-xl bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center text-primary dark:text-primary-dark">
+                                <i class="ph-bold ph-mosque text-2xl"></i>
+                            </div>
+                            <div class="flex-1">
+                                <div class="flex justify-between items-start">
+                                    <h4 class="font-bold text-textMain-light dark:text-textMain-dark text-sm">Al-Falah Mosque</h4>
+                                    <span class="px-2.5 py-0.5 bg-emerald-100 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 font-bold text-[10px] rounded-full">Open</span>
+                                </div>
+                                <p class="text-xs text-textMuted-light dark:text-textMuted-dark flex items-center gap-1 mt-1">
+                                    <i class="ph ph-map-pin"></i> 0.8 km away
+                                </p>
+                                <p class="text-[11px] text-textMuted-light dark:text-textMuted-dark mt-2 font-medium">Dhuhr congregation: 12:45</p>
+                            </div>
+                        </div>
+
+                        <!-- Mosque Card 2 -->
+                        <div id="mosque-rahman" class="mosque-card bg-white dark:bg-card-dark rounded-2xl p-4 border-2 border-border-light dark:border-border-dark flex items-center gap-4 transition-all duration-300">
+                            <div class="w-12 h-12 rounded-xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-textMuted-light">
+                                <i class="ph-bold ph-mosque text-2xl"></i>
+                            </div>
+                            <div class="flex-1">
+                                <div class="flex justify-between items-start">
+                                    <h4 class="font-bold text-textMain-light dark:text-textMain-dark text-sm">Masjid Ar-Rahman</h4>
+                                    <span class="px-2.5 py-0.5 bg-amber-100 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 font-bold text-[10px] rounded-full">Closing Soon</span>
+                                </div>
+                                <p class="text-xs text-textMuted-light dark:text-textMuted-dark flex items-center gap-1 mt-1">
+                                    <i class="ph ph-map-pin"></i> 1.5 km away
+                                </p>
+                                <p class="text-[11px] text-textMuted-light dark:text-textMuted-dark mt-2 font-medium">Dhuhr congregation: 12:50</p>
+                            </div>
+                        </div>
+
+                        <!-- Mosque Card 3 -->
+                        <div id="mosque-center" class="mosque-card bg-white dark:bg-card-dark rounded-2xl p-4 border-2 border-border-light dark:border-border-dark flex items-center gap-4 transition-all duration-300">
+                            <div class="w-12 h-12 rounded-xl bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center text-primary dark:text-primary-dark">
+                                <i class="ph-bold ph-mosque text-2xl"></i>
+                            </div>
+                            <div class="flex-1">
+                                <div class="flex justify-between items-start">
+                                    <h4 class="font-bold text-textMain-light dark:text-textMain-dark text-sm">Islamic Center Mosque</h4>
+                                    <span class="px-2.5 py-0.5 bg-emerald-100 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 font-bold text-[10px] rounded-full">Open</span>
+                                </div>
+                                <p class="text-xs text-textMuted-light dark:text-textMuted-dark flex items-center gap-1 mt-1">
+                                    <i class="ph ph-map-pin"></i> 2.1 km away
+                                </p>
+                                <p class="text-[11px] text-textMuted-light dark:text-textMuted-dark mt-2 font-medium">Dhuhr congregation: 12:40</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============================================== -->
+            <!-- 4. QIBLA TAB                                   -->
+            <!-- ============================================== -->
+            <div id="page-qibla" class="tab-page hidden space-y-6">
+                <div class="text-center pb-1 mt-2">
+                    <h2 class="text-3xl font-extrabold text-textMain-light dark:text-textMain-dark">Qibla</h2>
+                    <p class="text-sm text-textMuted-light dark:text-textMuted-dark mt-0.5">Based on your current location</p>
+                </div>
+
+                <div class="flex flex-col items-center justify-center py-4 relative">
+                    <!-- Instruction Tip overlay -->
+                    <span class="absolute top-2 bg-slate-100 dark:bg-slate-800 text-textMuted-light dark:text-textMuted-dark text-[10px] px-3 py-1 rounded-full border border-border-light dark:border-border-dark z-20 select-none cursor-pointer" onclick="resetCompass()">
+                        💡 Click & drag compass to align!
+                    </span>
+
+                    <!-- Interactive Compass Circle -->
+                    <div id="compassContainer" class="w-60 h-60 rounded-full border-4 border-slate-200 dark:border-slate-800 bg-white dark:bg-card-dark relative flex items-center justify-center shadow-lg cursor-grab active:cursor-grabbing select-none transition-shadow duration-300" style="transform: rotate(0deg);">
+                        <div class="w-[90%] h-[90%] rounded-full border-2 border-slate-100 dark:border-slate-800 flex items-center justify-center relative">
+                            
+                            <!-- North Indicator -->
+                            <span class="absolute top-3 text-red-600 font-black text-sm select-none">N</span>
+                            
+                            <!-- Cardinal Indicators -->
+                            <span class="absolute bottom-3 text-slate-400 font-bold text-[10px]">S</span>
+                            <span class="absolute right-3 text-slate-400 font-bold text-[10px]">E</span>
+                            <span class="absolute left-3 text-slate-400 font-bold text-[10px]">W</span>
+
+                            <!-- Qibla Target Marker (Green Mosque Badge) at 45deg -->
+                            <div class="absolute w-6 h-6 rounded-full bg-teal/10 border border-teal flex items-center justify-center" style="transform: rotate(45deg) translate(0, -90px);">
+                                <i class="ph-fill ph-mosque text-teal text-[11px]"></i>
+                            </div>
+
+                            <!-- Central axis pin -->
+                            <div class="w-4 h-4 rounded-full border-2 border-primary bg-white dark:bg-card-dark z-20"></div>
+
+                            <!-- Interactive Rotating Needle Indicator -->
+                            <div class="absolute w-[2px] h-[85px] bg-primary/40 origin-bottom bottom-1/2 left-[calc(50%-1px)] z-10" style="transform: rotate(45deg);"></div>
+                        </div>
+                    </div>
+
+                    <!-- Audio-haptic visual lock badge -->
+                    <div id="qiblaLockAlert" class="mt-4 px-4 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 text-xs font-bold text-slate-500 dark:text-slate-400 border border-border-light dark:border-border-dark transition-all duration-300">
+                        Align the segment to lock target
+                    </div>
+                </div>
+
+                <div class="bg-white dark:bg-card-dark rounded-2xl border border-border-light dark:border-border-dark shadow-sm divide-y divide-border-light dark:divide-border-dark">
+                    <div class="flex justify-between items-center p-4">
+                        <span class="text-xs text-textMuted-light dark:text-textMuted-dark font-medium">Direction</span>
+                        <span class="text-sm font-bold text-textMain-light dark:text-textMain-dark" id="compassDirectionText">45° NE</span>
+                    </div>
+                    <div class="flex justify-between items-center p-4">
+                        <span class="text-xs text-textMuted-light dark:text-textMuted-dark font-medium">Distance from Kaaba</span>
+                        <span class="text-sm font-bold text-textMain-light dark:text-textMain-dark">4,231 km</span>
+                    </div>
+                </div>
+
+                <p class="text-center text-[11px] text-textMuted-light dark:text-textMuted-dark px-6 leading-relaxed">
+                    Rotate your phone until the arrow matches the highlighted segment.
+                </p>
+            </div>
+
+            <!-- ============================================== -->
+            <!-- 5. SETTINGS TAB                                -->
+            <!-- ============================================== -->
+            <div id="page-settings" class="tab-page hidden -mx-2 space-y-6">
+                <section class="flex items-center gap-4 pt-1">
+                    <div class="w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 to-primary flex items-center justify-center text-white shadow-sm shadow-blue-500/20">
+                        <i class="ph ph-user text-3xl"></i>
+                    </div>
+                    <div class="min-w-0">
+                        <h3 class="font-bold text-textMain-light dark:text-textMain-dark text-lg leading-tight">Guest User</h3>
+                        <p class="text-xs text-textMuted-light dark:text-textMuted-dark mt-1">Sign in to sync your progress</p>
+                    </div>
+                </section>
+
+                <label class="relative block">
+                    <i class="ph ph-magnifying-glass absolute left-5 top-1/2 -translate-y-1/2 text-slate-500 dark:text-slate-400 text-xl"></i>
+                    <input type="text" placeholder="Search settings..." class="w-full h-12 rounded-full border-0 bg-slate-100 dark:bg-slate-800 pl-14 pr-5 text-sm font-medium text-textMain-light dark:text-textMain-dark placeholder:text-slate-500 dark:placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/20">
+                </label>
+
+                <div class="space-y-6">
+                    <section>
+                        <h4 class="text-[11px] font-bold text-primary dark:text-primary-dark tracking-wider uppercase mb-3 px-4">Account</h4>
+                        <div class="bg-white dark:bg-card-dark rounded-xl border border-slate-300 dark:border-border-dark overflow-hidden divide-y divide-border-light dark:divide-border-dark">
+                            <button class="w-full flex justify-between items-center px-4 py-4 text-left hover:bg-slate-50 dark:hover:bg-slate-800/40 active:bg-slate-100 dark:active:bg-slate-800 transition-colors">
+                                <span class="flex items-center gap-3.5 min-w-0">
+                                    <i class="ph ph-user-gear text-2xl text-slate-500 dark:text-slate-400 shrink-0"></i>
+                                    <span class="text-sm font-medium text-textMain-light dark:text-textMain-dark truncate">Profile Settings</span>
+                                </span>
+                                <i class="ph ph-caret-right text-slate-300 dark:text-slate-600 text-lg shrink-0"></i>
+                            </button>
+                            <button class="w-full flex justify-between items-center px-4 py-4 text-left hover:bg-slate-50 dark:hover:bg-slate-800/40 active:bg-slate-100 dark:active:bg-slate-800 transition-colors">
+                                <span class="flex items-center gap-3.5 min-w-0">
+                                    <i class="ph ph-cloud-arrow-up text-2xl text-slate-500 dark:text-slate-400 shrink-0"></i>
+                                    <span class="text-sm font-medium text-textMain-light dark:text-textMain-dark truncate">Cloud Sync</span>
+                                </span>
+                                <i class="ph ph-caret-right text-slate-300 dark:text-slate-600 text-lg shrink-0"></i>
+                            </button>
+                            <button class="w-full flex justify-between items-center px-4 py-4 text-left hover:bg-slate-50 dark:hover:bg-slate-800/40 active:bg-slate-100 dark:active:bg-slate-800 transition-colors">
+                                <span class="flex items-center gap-3.5 min-w-0">
+                                    <i class="ph ph-sign-in text-2xl text-slate-500 dark:text-slate-400 shrink-0"></i>
+                                    <span class="text-sm font-medium text-textMain-light dark:text-textMain-dark truncate">Sign In / Register</span>
+                                </span>
+                                <i class="ph ph-caret-right text-slate-300 dark:text-slate-600 text-lg shrink-0"></i>
+                            </button>
+                        </div>
+                    </section>
+
+                    <section>
+                        <h4 class="text-[11px] font-bold text-primary dark:text-primary-dark tracking-wider uppercase mb-3 px-4">Prayer Settings</h4>
+                        <div class="bg-white dark:bg-card-dark rounded-xl border border-slate-300 dark:border-border-dark overflow-hidden divide-y divide-border-light dark:divide-border-dark">
+                            <button class="w-full flex justify-between items-center px-4 py-4 text-left hover:bg-slate-50 dark:hover:bg-slate-800/40 active:bg-slate-100 dark:active:bg-slate-800 transition-colors">
+                                <span class="flex items-center gap-3.5 min-w-0">
+                                    <i class="ph ph-map-pin text-2xl text-slate-500 dark:text-slate-400 shrink-0"></i>
+                                    <span class="text-sm font-medium text-textMain-light dark:text-textMain-dark truncate">Location</span>
+                                </span>
+                                <span class="flex items-center gap-2 text-xs font-medium text-textMuted-light dark:text-textMuted-dark shrink-0">
+                                    Auto
+                                    <i class="ph ph-caret-right text-slate-300 dark:text-slate-600 text-lg"></i>
+                                </span>
+                            </button>
+                            <button class="w-full flex justify-between items-center px-4 py-4 text-left hover:bg-slate-50 dark:hover:bg-slate-800/40 active:bg-slate-100 dark:active:bg-slate-800 transition-colors">
+                                <span class="flex items-center gap-3.5 min-w-0">
+                                    <i class="ph ph-calculator text-2xl text-slate-500 dark:text-slate-400 shrink-0"></i>
+                                    <span class="text-sm font-medium text-textMain-light dark:text-textMain-dark truncate">Calculation Method</span>
+                                </span>
+                                <span class="flex items-center gap-2 text-xs font-medium text-textMuted-light dark:text-textMuted-dark shrink-0">
+                                    MWL
+                                    <i class="ph ph-caret-right text-slate-300 dark:text-slate-600 text-lg"></i>
+                                </span>
+                            </button>
+                            <button class="w-full flex justify-between items-center px-4 py-4 text-left hover:bg-slate-50 dark:hover:bg-slate-800/40 active:bg-slate-100 dark:active:bg-slate-800 transition-colors">
+                                <span class="flex items-center gap-3.5 min-w-0">
+                                    <i class="ph ph-sliders-horizontal text-2xl text-slate-500 dark:text-slate-400 shrink-0"></i>
+                                    <span class="text-sm font-medium text-textMain-light dark:text-textMain-dark truncate">Manual Adjustments</span>
+                                </span>
+                                <i class="ph ph-caret-right text-slate-300 dark:text-slate-600 text-lg shrink-0"></i>
+                            </button>
+                        </div>
+                    </section>
+
+                    <section>
+                        <h4 class="text-[11px] font-bold text-primary dark:text-primary-dark tracking-wider uppercase mb-3 px-4">Notifications</h4>
+                        <div class="bg-white dark:bg-card-dark rounded-xl border border-slate-300 dark:border-border-dark overflow-hidden divide-y divide-border-light dark:divide-border-dark">
+                            <button class="w-full flex justify-between items-center px-4 py-4 text-left hover:bg-slate-50 dark:hover:bg-slate-800/40 active:bg-slate-100 dark:active:bg-slate-800 transition-colors">
+                                <span class="flex items-center gap-3.5 min-w-0">
+                                    <i class="ph ph-bell-ringing text-2xl text-slate-500 dark:text-slate-400 shrink-0"></i>
+                                    <span class="text-sm font-medium text-textMain-light dark:text-textMain-dark truncate">Prayer Alerts</span>
+                                </span>
+                                <i class="ph ph-caret-right text-slate-300 dark:text-slate-600 text-lg shrink-0"></i>
+                            </button>
+                            <button class="w-full flex justify-between items-center px-4 py-4 text-left hover:bg-slate-50 dark:hover:bg-slate-800/40 active:bg-slate-100 dark:active:bg-slate-800 transition-colors">
+                                <span class="flex items-center gap-3.5 min-w-0">
+                                    <i class="ph ph-speaker-high text-2xl text-slate-500 dark:text-slate-400 shrink-0"></i>
+                                    <span class="text-sm font-medium text-textMain-light dark:text-textMain-dark truncate">Adhan Sounds</span>
+                                </span>
+                                <i class="ph ph-caret-right text-slate-300 dark:text-slate-600 text-lg shrink-0"></i>
+                            </button>
+                        </div>
+                    </section>
+
+                    <section>
+                        <h4 class="text-[11px] font-bold text-primary dark:text-primary-dark tracking-wider uppercase mb-3 px-4">Appearance</h4>
+                        <div class="bg-white dark:bg-card-dark rounded-xl border border-slate-300 dark:border-border-dark overflow-hidden divide-y divide-border-light dark:divide-border-dark">
+                            <button class="w-full flex justify-between items-center px-4 py-4 text-left hover:bg-slate-50 dark:hover:bg-slate-800/40 active:bg-slate-100 dark:active:bg-slate-800 transition-colors" onclick="toggleDarkModeOverride()">
+                                <span class="flex items-center gap-3.5 min-w-0">
+                                    <i class="ph ph-palette text-2xl text-slate-500 dark:text-slate-400 shrink-0"></i>
+                                    <span class="text-sm font-medium text-textMain-light dark:text-textMain-dark truncate">Theme</span>
+                                </span>
+                                <span class="flex items-center gap-2 text-xs font-medium text-textMuted-light dark:text-textMuted-dark shrink-0">
+                                    <span id="themeOverrideText">System</span>
+                                    <i class="ph ph-caret-right text-slate-300 dark:text-slate-600 text-lg"></i>
+                                </span>
+                            </button>
+                            <button class="w-full flex justify-between items-center px-4 py-4 text-left hover:bg-slate-50 dark:hover:bg-slate-800/40 active:bg-slate-100 dark:active:bg-slate-800 transition-colors">
+                                <span class="flex items-center gap-3.5 min-w-0">
+                                    <i class="ph ph-globe-hemisphere-west text-2xl text-slate-500 dark:text-slate-400 shrink-0"></i>
+                                    <span class="text-sm font-medium text-textMain-light dark:text-textMain-dark truncate">Language</span>
+                                </span>
+                                <span class="flex items-center gap-2 text-xs font-medium text-textMuted-light dark:text-textMuted-dark shrink-0">
+                                    English
+                                    <i class="ph ph-caret-right text-slate-300 dark:text-slate-600 text-lg"></i>
+                                </span>
+                            </button>
+                        </div>
+                    </section>
+
+                    <section>
+                        <div class="bg-white dark:bg-card-dark rounded-xl border border-slate-300 dark:border-border-dark overflow-hidden divide-y divide-border-light dark:divide-border-dark">
+                            <button class="w-full flex justify-between items-center px-4 py-4 text-left hover:bg-slate-50 dark:hover:bg-slate-800/40 active:bg-slate-100 dark:active:bg-slate-800 transition-colors">
+                                <span class="flex items-center gap-3.5 min-w-0">
+                                    <i class="ph ph-info text-2xl text-slate-500 dark:text-slate-400 shrink-0"></i>
+                                    <span class="text-sm font-medium text-textMain-light dark:text-textMain-dark truncate">About Us</span>
+                                </span>
+                                <i class="ph ph-caret-right text-slate-300 dark:text-slate-600 text-lg shrink-0"></i>
+                            </button>
+                            <button class="w-full flex justify-between items-center px-4 py-4 text-left hover:bg-slate-50 dark:hover:bg-slate-800/40 active:bg-slate-100 dark:active:bg-slate-800 transition-colors">
+                                <span class="flex items-center gap-3.5 min-w-0">
+                                    <i class="ph ph-question text-2xl text-slate-500 dark:text-slate-400 shrink-0"></i>
+                                    <span class="text-sm font-medium text-textMain-light dark:text-textMain-dark truncate">Help &amp; Support</span>
+                                </span>
+                                <i class="ph ph-caret-right text-slate-300 dark:text-slate-600 text-lg shrink-0"></i>
+                            </button>
+                            <div class="py-4 text-center">
+                                <span class="text-xs font-medium text-slate-300 dark:text-slate-600">Version 2.4.1</span>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </main>
+
+        <!-- Placed matching active navigation triggers and secure safe margins as a sticky bar pinned to bottom of container -->
+        <nav class="bg-white/95 dark:bg-card-dark/95 backdrop-blur border-t border-slate-300 dark:border-border-dark sticky bottom-0 left-0 right-0 z-50 px-2 pt-2 pb-1 safe-area-pb transition-colors duration-300 mt-auto">
+            <ul class="flex justify-between items-center">
+                <!-- Home Tab -->
+                <li class="flex-1">
+                    <button onclick="switchTab('home')" id="nav-home" class="nav-item w-full flex flex-col items-center justify-center min-h-[52px] p-1.5 text-primary dark:text-primary-dark transition-all">
+                        <i class="ph-fill ph-house text-[22px] mb-1"></i>
+                        <span class="text-[11px] leading-none font-bold">Home</span>
+                    </button>
+                </li>
+                <!-- Quran Tab -->
+                <li class="flex-1">
+                    <button onclick="switchTab('quran')" id="nav-quran" class="nav-item w-full flex flex-col items-center justify-center min-h-[52px] p-1.5 text-textMuted-light dark:text-textMuted-dark active:scale-95 transition-all">
+                        <i class="ph ph-book-open text-[22px] mb-1"></i>
+                        <span class="text-[11px] leading-none font-medium">Quran</span>
+                    </button>
+                </li>
+                <!-- Mosque Tab -->
+                <li class="flex-1">
+                    <button onclick="switchTab('mosque')" id="nav-mosque" class="nav-item w-full flex flex-col items-center justify-center min-h-[52px] p-1.5 text-textMuted-light dark:text-textMuted-dark active:scale-95 transition-all">
+                        <i class="ph ph-mosque text-[22px] mb-1"></i>
+                        <span class="text-[11px] leading-none font-medium">Mosque</span>
+                    </button>
+                </li>
+                <!-- Qibla Tab -->
+                <li class="flex-1">
+                    <button onclick="switchTab('qibla')" id="nav-qibla" class="nav-item w-full flex flex-col items-center justify-center min-h-[52px] p-1.5 text-textMuted-light dark:text-textMuted-dark active:scale-95 transition-all">
+                        <i class="ph ph-compass text-[22px] mb-1"></i>
+                        <span class="text-[11px] leading-none font-medium">Qibla</span>
+                    </button>
+                </li>
+                <!-- Settings Tab -->
+                <li class="flex-1">
+                    <button onclick="switchTab('settings')" id="nav-settings" class="nav-item w-full flex flex-col items-center justify-center min-h-[52px] p-1.5 text-textMuted-light dark:text-textMuted-dark active:scale-95 transition-all">
+                        <i class="ph ph-gear text-[22px] mb-1"></i>
+                        <span class="text-[11px] leading-none font-medium">Settings</span>
+                    </button>
+                </li>
+            </ul>
+        </nav>
+
+    </div>
+
+    <script>
+        // Tab switching configuration
+        function switchTab(targetTab) {
+            // Hide all tab pages
+            document.querySelectorAll('.tab-page').forEach(page => {
+                page.classList.add('hidden');
+            });
+            // Show target page
+            const targetPage = document.getElementById(`page-${targetTab}`);
+            if (targetPage) {
+                targetPage.classList.remove('hidden');
+                targetPage.classList.add('animate-fade-in');
+            }
+
+            // Reset navigation indicators to default inactive states
+            document.querySelectorAll('.nav-item').forEach(btn => {
+                btn.className = "nav-item w-full flex flex-col items-center justify-center min-h-[52px] p-1.5 text-textMuted-light dark:text-textMuted-dark active:scale-95 transition-all";
+                const icon = btn.querySelector('i');
+                // Convert all navigation icons to outlines
+                icon.className = icon.className.replace('ph-fill', 'ph');
+            });
+
+            // Set clicked tab to Active layout
+            const activeBtn = document.getElementById(`nav-${targetTab}`);
+            if (activeBtn) {
+                activeBtn.className = "nav-item w-full flex flex-col items-center justify-center min-h-[52px] p-1.5 text-primary dark:text-primary-dark transition-all";
+                const icon = activeBtn.querySelector('i');
+                icon.className = icon.className.replace('ph ', 'ph-fill ');
+            }
+        }
+
+        // Search feature on Quran Tab
+        const surahSearch = document.getElementById('surahSearchInput');
+        if (surahSearch) {
+            surahSearch.addEventListener('input', function(e) {
+                const query = e.target.value.toLowerCase().trim();
+                document.querySelectorAll('.surah-item').forEach(item => {
+                    const name = item.getAttribute('data-name').toLowerCase();
+                    if (name.includes(query)) {
+                        item.classList.remove('hidden');
+                    } else {
+                        item.classList.add('hidden');
+                    }
+                });
+            });
+        }
+
+        // Highlight Selected Mosque Card from Map pin
+        function highlightMosque(id) {
+            document.querySelectorAll('.mosque-card').forEach(card => {
+                card.classList.remove('border-primary', 'scale-102');
+                card.classList.add('border-border-light', 'dark:border-border-dark');
+            });
+            
+            const targetCard = document.getElementById(`mosque-${id}`);
+            if (targetCard) {
+                targetCard.classList.remove('border-border-light', 'dark:border-border-dark');
+                targetCard.classList.add('border-primary', 'scale-[1.02]');
+                targetCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        }
+
+        // Interactive Compass Logic (Simulating Qibla with drag rotation)
+        const compass = document.getElementById('compassContainer');
+        const alertLock = document.getElementById('qiblaLockAlert');
+        const directionText = document.getElementById('compassDirectionText');
+        
+        let isDragging = false;
+        let startAngle = 0;
+        let currentRotation = 0;
+
+        if (compass) {
+            const getAngle = (clientX, clientY) => {
+                const rect = compass.getBoundingClientRect();
+                const x = clientX - rect.left - rect.width / 2;
+                const y = clientY - rect.top - rect.height / 2;
+                return Math.atan2(y, x) * (180 / Math.PI);
+            };
+
+            const startRotation = (e) => {
+                isDragging = true;
+                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+                startAngle = getAngle(clientX, clientY) - currentRotation;
+                document.body.style.userSelect = 'none';
+            };
+
+            const onRotate = (e) => {
+                if (!isDragging) return;
+                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+                currentRotation = getAngle(clientX, clientY) - startAngle;
+                
+                let normalizedAngle = Math.round((currentRotation % 360 + 360) % 360);
+                compass.style.transform = `rotate(${normalizedAngle}deg)`;
+
+                // Qibla Target Lock Calculation
+                const relativeMatch = Math.abs(normalizedAngle - 315) < 8 || Math.abs(normalizedAngle + 45) < 8;
+                
+                if (relativeMatch) {
+                    alertLock.innerHTML = "🎯 Locked on Qibla!";
+                    alertLock.className = "mt-4 px-4 py-1.5 rounded-full bg-emerald-100 dark:bg-emerald-950/40 text-xs font-bold text-emerald-600 dark:text-emerald-400 border border-emerald-300 animate-bounce";
+                    compass.style.boxShadow = "0 0 25px rgba(16, 185, 129, 0.4)";
+                } else {
+                    alertLock.innerHTML = "Rotate phone to match segment";
+                    alertLock.className = "mt-4 px-4 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 text-xs font-bold text-slate-500 dark:text-slate-400 border border-border-light dark:border-border-dark";
+                    compass.style.boxShadow = "0 10px 15px -3px rgba(0, 0, 0, 0.1)";
+                }
+
+                let displayDirection = Math.round((normalizedAngle + 45) % 360);
+                directionText.innerHTML = `${displayDirection}° NE`;
+            };
+
+            const stopRotation = () => {
+                isDragging = false;
+                document.body.style.userSelect = 'auto';
+            };
+
+            compass.addEventListener('mousedown', startRotation);
+            window.addEventListener('mousemove', onRotate);
+            window.addEventListener('mouseup', stopRotation);
+
+            compass.addEventListener('touchstart', startRotation);
+            window.addEventListener('touchmove', onRotate, { passive: false });
+            window.addEventListener('touchend', stopRotation);
+        }
+
+        function resetCompass() {
+            currentRotation = 0;
+            compass.style.transform = `rotate(0deg)`;
+            directionText.innerHTML = "45° NE";
+            alertLock.innerHTML = "Rotate phone to match segment";
+            alertLock.className = "mt-4 px-4 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 text-xs font-bold text-slate-500 dark:text-slate-400 border border-border-light dark:border-border-dark";
+            compass.style.boxShadow = "none";
+        }
+
+        // Dark/Light Mode Management
+        const toggleBtn = document.getElementById('themeToggleBtn');
+        const themeIcon = document.getElementById('themeIcon');
+        const themeTextOverride = document.getElementById('themeOverrideText');
+
+        function toggleDarkMode() {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                themeIcon.className = "ph ph-moon text-2xl";
+                themeTextOverride.innerText = "Light";
+            } else {
+                document.documentElement.classList.add('dark');
+                themeIcon.className = "ph-fill ph-sun text-2xl text-amber-400";
+                themeTextOverride.innerText = "Dark";
+            }
+        }
+        
+        toggleBtn.addEventListener('click', toggleDarkMode);
+        function toggleDarkModeOverride() {
+            toggleDarkMode();
+        }
+    </script>
+</body>
+</html>
