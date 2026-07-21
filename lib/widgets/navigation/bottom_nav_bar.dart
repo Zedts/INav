@@ -18,7 +18,8 @@ class BottomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeProvider = context.watch<ThemeProvider>();
-    final isDark = themeProvider.themeMode == ThemeMode.dark;
+    // Check actual brightness to handle system theme correctly
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Container(
       decoration: BoxDecoration(
