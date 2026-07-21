@@ -65,8 +65,8 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - lib/assets/Dark_Theme.png
-    - lib/assets/White_Theme.png
+    - assets/Dark_Theme.png
+    - assets/White_Theme.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

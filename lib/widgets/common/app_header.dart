@@ -34,8 +34,8 @@ class AppHeader extends StatelessWidget {
             // App Logo
             Image.asset(
               isDark
-                  ? 'lib/assets/Dark_Theme.png'
-                  : 'lib/assets/White_Theme.png',
+                  ? 'assets/Dark_Theme.png'
+                  : 'assets/White_Theme.png',
               height: 72,
               fit: BoxFit.contain,
             ),
