@@ -66,5 +66,9 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>INav needs your location to show accurate prayer times and Qibla direction for your area.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>INav needs your location to show accurate prayer times and Qibla direction for your area.</string>
 </dict>
 </plist>

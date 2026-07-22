@@ -50,6 +50,16 @@ app.*.map.json
 *.iml
 *.ipr
 *.iws
+devtools_options.yaml
 
 # Text Editors
 .atom/
+
+# =========================================================================
+# 7. Environment Variables & Sensitive Data
+# =========================================================================
+.env
+.env.local
+.env.*.local
+*.key
+*.pem

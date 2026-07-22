@@ -35,11 +35,27 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
   
+  # HTTP & Network
+  http: ^1.6.0
+  
   # State Management
   provider: ^6.1.1
   
-  # Theme Persistence
+  # Local Storage
   shared_preferences: ^2.2.2
+  
+  # Environment Configuration
+  flutter_dotenv: ^6.0.1
+  
+  # Location Services
+  geolocator: ^14.0.3
+  geocoding: ^5.0.0
+  
+  # Date & Time Utilities
+  intl: ^0.20.3
+  
+  # UI Components
+  smooth_page_indicator: ^2.0.1
 
 dev_dependencies:
   flutter_test:
@@ -67,6 +83,7 @@ flutter:
   assets:
     - assets/Dark_Theme.png
     - assets/White_Theme.png
+    - .env
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

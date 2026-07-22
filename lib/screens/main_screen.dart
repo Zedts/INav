@@ -36,22 +36,29 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
+    final safeAreaTop = mediaQuery.padding.top;
+    final headerHeight =
+        safeAreaTop + 64;
+
     return Scaffold(
-      body: Column(
+      body: Stack(
         children: [
-          // Fixed Header
-          const AppHeader(),
-          
           // Content Area with IndexedStack (preserves state)
-          Expanded(
-            child: IndexedStack(
-              index: _currentIndex,
-              children: _screens,
-            ),
+          // Add top padding to account for fixed header
+          Positioned(
+            top: headerHeight,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: IndexedStack(index: _currentIndex, children: _screens),
           ),
+
+          // Fixed Header - positioned on top as overlay
+          Positioned(top: 0, left: 0, right: 0, child: const AppHeader()),
         ],
       ),
-      
+
       // Bottom Navigation Bar
       bottomNavigationBar: BottomNavBar(
         currentIndex: _currentIndex,
