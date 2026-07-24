@@ -5,6 +5,7 @@ import 'core/theme/app_theme.dart';
 import 'core/theme/theme_provider.dart';
 import 'core/providers/prayer_provider.dart';
 import 'core/providers/verse_provider.dart';
+import 'core/providers/streak_provider.dart';
 import 'screens/main_screen.dart';
 
 void main() async {
@@ -33,6 +34,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider.value(value: themeProvider),
         ChangeNotifierProvider(create: (_) => PrayerProvider()),
         ChangeNotifierProvider(create: (_) => VerseProvider()),
+        ChangeNotifierProvider(create: (_) => StreakProvider()),
       ],
       child: Consumer<ThemeProvider>(
         builder: (context, themeProvider, child) {

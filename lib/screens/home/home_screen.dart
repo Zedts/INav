@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../core/providers/prayer_provider.dart';
 import '../../core/providers/verse_provider.dart';
+import '../../core/providers/streak_provider.dart';
 import '../../core/theme/app_colors.dart';
 import '../../widgets/home/liquid_glass_banner.dart';
 import '../../widgets/home/horizontal_prayer_stepper.dart';
 import '../../widgets/home/services_tools_grid.dart';
 import '../../widgets/home/verse_of_day_card.dart';
+import '../../widgets/home/streak_card.dart';
 
 /// Home screen - displays prayer times, countdown, and Qibla direction
 class HomeScreen extends StatefulWidget {
@@ -23,9 +25,20 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     // Initialize prayer data and verse when screen loads
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<PrayerProvider>().initialize();
-      context.read<VerseProvider>().loadDailyVerse();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final prayerProvider = context.read<PrayerProvider>();
+      final verseProvider = context.read<VerseProvider>();
+      final streakProvider = context.read<StreakProvider>();
+      await prayerProvider.initialize();
+      if (!mounted) return;
+      await verseProvider.loadDailyVerse();
+      if (!mounted) return;
+      if (prayerProvider.prayerTimes != null) {
+        await streakProvider.initialize(
+              currentDate: DateTime.now(),
+              currentPrayer: prayerProvider.currentPrayer,
+            );
+      }
     });
   }
 
@@ -33,9 +46,29 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final prayerProvider = context.watch<PrayerProvider>();
+    final verseProvider = context.watch<VerseProvider>();
+    final streakProvider = context.watch<StreakProvider>();
+
+    // Update streak provider when current prayer changes
+    if (prayerProvider.prayerTimes != null && streakProvider.isInitialized) {
+      Future.microtask(() {
+        streakProvider.updatePrayerWindow(prayerProvider.currentPrayer);
+      });
+    }
 
     return RefreshIndicator(
-      onRefresh: () => prayerProvider.refresh(),
+      onRefresh: () async {
+        await prayerProvider.refresh();
+        if (!mounted) return;
+        await verseProvider.refresh();
+        if (!mounted) return;
+        if (prayerProvider.prayerTimes != null) {
+          await streakProvider.initialize(
+                currentDate: DateTime.now(),
+                currentPrayer: prayerProvider.currentPrayer,
+              );
+        }
+      },
       color: isDark ? AppColors.primaryDark : AppColors.primaryLight,
       child: CustomScrollView(
         slivers: [
@@ -144,6 +177,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
                 // Verse of the Day Card
                 const VerseOfTheDayCard(),
+
+                const SizedBox(height: 14),
+
+                // Streak Card
+                const StreakCard(),
 
                 const SizedBox(height: 24),
               ]),

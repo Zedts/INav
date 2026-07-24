@@ -111,7 +111,7 @@ class ServicesToolsGrid extends StatelessWidget {
           ),
         ),
 
-        const SizedBox(height: 12),
+        const SizedBox(height: 1),
 
         // Grid of service buttons
         Padding(
