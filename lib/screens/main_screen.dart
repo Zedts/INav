@@ -19,13 +19,13 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
 
-  // List of all screens
-  final List<Widget> _screens = const [
-    HomeScreen(),
-    QuranScreen(),
-    MosqueScreen(),
-    QiblaScreen(),
-    SettingsScreen(),
+  // List of all screens - built dynamically to pass navigation callback
+  List<Widget> get _screens => [
+    HomeScreen(onNavigate: _onTabTapped),
+    const QuranScreen(),
+    const MosqueScreen(),
+    const QiblaScreen(),
+    const SettingsScreen(),
   ];
 
   void _onTabTapped(int index) {
@@ -38,8 +38,7 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     final safeAreaTop = mediaQuery.padding.top;
-    final headerHeight =
-        safeAreaTop + 64;
+    final headerHeight = safeAreaTop + 64;
 
     return Scaffold(
       body: Stack(

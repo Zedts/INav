@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../core/providers/prayer_provider.dart';
+import '../../core/providers/verse_provider.dart';
 import '../../core/theme/app_colors.dart';
 import '../../widgets/home/liquid_glass_banner.dart';
 import '../../widgets/home/horizontal_prayer_stepper.dart';
+import '../../widgets/home/services_tools_grid.dart';
+import '../../widgets/home/verse_of_day_card.dart';
 
 /// Home screen - displays prayer times, countdown, and Qibla direction
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  final Function(int) onNavigate;
+
+  const HomeScreen({super.key, required this.onNavigate});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -17,9 +22,10 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    // Initialize prayer data when screen loads
+    // Initialize prayer data and verse when screen loads
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<PrayerProvider>().initialize();
+      context.read<VerseProvider>().loadDailyVerse();
     });
   }
 
@@ -128,6 +134,16 @@ class _HomeScreenState extends State<HomeScreen> {
 
                 // Horizontal Prayer Stepper Timeline
                 const HorizontalPrayerStepper(),
+
+                const SizedBox(height: 24),
+
+                // Services & Tools Grid
+                ServicesToolsGrid(onNavigate: widget.onNavigate),
+
+                const SizedBox(height: 24),
+
+                // Verse of the Day Card
+                const VerseOfTheDayCard(),
 
                 const SizedBox(height: 24),
               ]),
