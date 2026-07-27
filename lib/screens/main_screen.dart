@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../widgets/common/app_header.dart';
 import '../widgets/navigation/bottom_nav_bar.dart';
+import '../widgets/quran/bookmarks_sidebar.dart';
+import '../widgets/quran/surah_detail_sheet.dart';
+import '../core/providers/quran_provider.dart';
+import '../core/models/surah_model.dart';
 import 'home/home_screen.dart';
 import 'quran/quran_screen.dart';
 import 'mosque/mosque_screen.dart';
 import 'qibla/qibla_screen.dart';
 import 'settings/settings_screen.dart';
 
-/// Main screen that combines header, content area, and bottom navigation
-/// Uses IndexedStack to preserve state across tab switches
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
 
@@ -19,14 +22,22 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
 
-  // List of all screens - built dynamically to pass navigation callback
   List<Widget> get _screens => [
-    HomeScreen(onNavigate: _onTabTapped),
-    const QuranScreen(),
-    const MosqueScreen(),
-    const QiblaScreen(),
-    const SettingsScreen(),
-  ];
+        HomeScreen(onNavigate: _onTabTapped),
+        const QuranScreen(),
+        const MosqueScreen(),
+        const QiblaScreen(),
+        const SettingsScreen(),
+      ];
+
+  HeaderMode _getHeaderMode(int index) {
+    switch (index) {
+      case 1:
+        return HeaderMode.quran;
+      default:
+        return HeaderMode.home;
+    }
+  }
 
   void _onTabTapped(int index) {
     setState(() {
@@ -34,17 +45,21 @@ class _MainScreenState extends State<MainScreen> {
     });
   }
 
+  void _openSurahDetail(SurahModel surah) {
+    SurahDetailSheet.show(context, surah);
+  }
+
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     final safeAreaTop = mediaQuery.padding.top;
     final headerHeight = safeAreaTop + 64;
+    final headerMode = _getHeaderMode(_currentIndex);
+    final quranProvider = context.watch<QuranProvider>();
 
     return Scaffold(
       body: Stack(
         children: [
-          // Content Area with IndexedStack (preserves state)
-          // Add top padding to account for fixed header
           Positioned(
             top: headerHeight,
             left: 0,
@@ -52,13 +67,24 @@ class _MainScreenState extends State<MainScreen> {
             bottom: 0,
             child: IndexedStack(index: _currentIndex, children: _screens),
           ),
-
-          // Fixed Header - positioned on top as overlay
-          Positioned(top: 0, left: 0, right: 0, child: const AppHeader()),
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: AppHeader(
+              mode: headerMode,
+              onToggleBookmarks:
+                  headerMode == HeaderMode.quran
+                      ? () => quranProvider.toggleSidebar()
+                      : null,
+            ),
+          ),
+          if (_currentIndex == 1)
+            Positioned.fill(
+              child: BookmarksSidebar(onOpenSurah: _openSurahDetail),
+            ),
         ],
       ),
-
-      // Bottom Navigation Bar
       bottomNavigationBar: BottomNavBar(
         currentIndex: _currentIndex,
         onTap: _onTabTapped,

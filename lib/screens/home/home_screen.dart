@@ -4,7 +4,7 @@ import '../../core/providers/prayer_provider.dart';
 import '../../core/providers/verse_provider.dart';
 import '../../core/providers/streak_provider.dart';
 import '../../core/theme/app_colors.dart';
-import '../../widgets/home/liquid_glass_banner.dart';
+import '../../widgets/home/glass_banner.dart';
 import '../../widgets/home/horizontal_prayer_stepper.dart';
 import '../../widgets/home/services_tools_grid.dart';
 import '../../widgets/home/verse_of_day_card.dart';
@@ -160,8 +160,8 @@ class _HomeScreenState extends State<HomeScreen> {
               delegate: SliverChildListDelegate([
                 const SizedBox(height: 8),
 
-                // Liquid Glass Banner with animated blobs and carousel
-                const LiquidGlassBanner(),
+                // Glass Banner with animated blobs and carousel
+                const GlassBanner(),
 
                 const SizedBox(height: 16),
 

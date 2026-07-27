@@ -5,14 +5,14 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../../core/providers/prayer_provider.dart';
 import '../common/glass_pill_badge.dart';
 
-class LiquidGlassBanner extends StatefulWidget {
-  const LiquidGlassBanner({super.key});
+class GlassBanner extends StatefulWidget {
+  const GlassBanner({super.key});
 
   @override
-  State<LiquidGlassBanner> createState() => _LiquidGlassBannerState();
+  State<GlassBanner> createState() => _GlassBannerState();
 }
 
-class _LiquidGlassBannerState extends State<LiquidGlassBanner> {
+class _GlassBannerState extends State<GlassBanner> {
   final PageController _pageController = PageController();
 
   @override
