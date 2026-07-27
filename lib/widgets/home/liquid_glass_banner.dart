@@ -1,11 +1,10 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:glass/glass.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../../core/providers/prayer_provider.dart';
 import '../common/glass_pill_badge.dart';
 
-/// Liquid glass prayer banner with animated blobs and carousel slides
 class LiquidGlassBanner extends StatefulWidget {
   const LiquidGlassBanner({super.key});
 
@@ -34,7 +33,6 @@ class _LiquidGlassBannerState extends State<LiquidGlassBanner> {
         child: Stack(
           clipBehavior: Clip.none,
           children: [
-            // Static neon glow shadows (replacing animated blobs)
             Positioned.fill(
               child: Container(
                 decoration: BoxDecoration(
@@ -133,120 +131,116 @@ class _LiquidGlassBannerState extends State<LiquidGlassBanner> {
     );
   }
 
-  /// Build single glass card - matching HTML .flutter-liquid-glass EXACTLY
   Widget _buildGlassCard(
     BuildContext context,
     bool isDark, {
     required Widget child,
   }) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(24),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(
-          sigmaX: isDark ? 32 : 28,
-          sigmaY: isDark ? 32 : 28,
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: isDark
+              ? [
+                  const Color(0xFF0F172A).withValues(alpha: 0.55),
+                  const Color(0xFF0F172A).withValues(alpha: 0.25),
+                ]
+              : [
+                  Colors.white.withValues(alpha: 0.35),
+                  Colors.white.withValues(alpha: 0.12),
+                ],
         ),
-        child: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: isDark
-                  ? [
-                      const Color(0xFF0F172A).withValues(alpha: 0.55),
-                      const Color(0xFF0F172A).withValues(alpha: 0.25),
-                    ]
-                  : [
-                      Colors.white.withValues(alpha: 0.35),
-                      Colors.white.withValues(alpha: 0.12),
-                    ],
-            ),
-            borderRadius: BorderRadius.circular(24),
-            boxShadow: [
-              // Main outer shadow
-              BoxShadow(
-                color: isDark
-                    ? Colors.black.withValues(alpha: 0.65)
-                    : const Color(0xFF0D47A1).withValues(alpha: 0.22),
-                blurRadius: 50,
-                offset: isDark ? const Offset(0, 25) : const Offset(0, 20),
-              ),
-              // Inset top highlight
-              BoxShadow(
-                color: isDark
-                    ? Colors.white.withValues(alpha: 0.35)
-                    : Colors.white.withValues(alpha: 0.8),
-                blurRadius: isDark ? 1 : 2,
-                offset: const Offset(0, 1),
-                spreadRadius: -1,
-              ),
-              // Inset bottom shadow (dark mode only)
-              if (isDark)
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.5),
-                  blurRadius: 2,
-                  offset: const Offset(0, -1),
-                  spreadRadius: -1,
-                ),
-            ],
+        borderRadius: BorderRadius.circular(24),
+        boxShadow: [
+          // Main outer shadow
+          BoxShadow(
+            color: isDark
+                ? Colors.black.withValues(alpha: 0.65)
+                : const Color(0xFF0D47A1).withValues(alpha: 0.22),
+            blurRadius: 50,
+            offset: isDark ? const Offset(0, 25) : const Offset(0, 20),
           ),
-          child: Container(
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: isDark
-                    ? Colors.white.withValues(alpha: 0.18)
-                    : Colors.white.withValues(alpha: 0.45),
-                width: 1,
-              ),
-              borderRadius: BorderRadius.circular(24),
-            ),
-            child: Stack(
-              children: [
-                // Diagonal specular reflection (glass sheen)
-                Positioned.fill(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: const Alignment(-1.0, -1.0),
-                        end: const Alignment(0.6, 0.6),
-                        colors: isDark
-                            ? [
-                                Colors.white.withValues(alpha: 0.04),
-                                Colors.white.withValues(alpha: 0.01),
-                                Colors.transparent,
-                              ]
-                            : [
-                                Colors.white.withValues(alpha: 0.45),
-                                Colors.white.withValues(alpha: 0.1),
-                                Colors.transparent,
-                              ],
-                        stops: const [0.0, 0.35, 0.6],
-                      ),
-                      borderRadius: BorderRadius.circular(24),
-                    ),
-                  ),
-                ),
-
-                // Mosque watermark icon
-                Positioned(
-                  right: -20,
-                  bottom: -24,
-                  child: Icon(
-                    Icons.mosque,
-                    size: 110,
-                    color: isDark
-                        ? Colors.white.withValues(alpha: 0.05)
-                        : const Color(0xFF0D47A1).withValues(alpha: 0.1),
-                  ),
-                ),
-
-                // Content with proper padding
-                Padding(padding: const EdgeInsets.all(24), child: child),
-              ],
-            ),
+          // Inset top highlight
+          BoxShadow(
+            color: isDark
+                ? Colors.white.withValues(alpha: 0.35)
+                : Colors.white.withValues(alpha: 0.8),
+            blurRadius: isDark ? 1 : 2,
+            offset: const Offset(0, 1),
+            spreadRadius: -1,
           ),
+          // Inset bottom shadow (dark mode only)
+          if (isDark)
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.5),
+              blurRadius: 2,
+              offset: const Offset(0, -1),
+              spreadRadius: -1,
+            ),
+        ],
+      ),
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: isDark
+                ? Colors.white.withValues(alpha: 0.18)
+                : Colors.white.withValues(alpha: 0.45),
+            width: 1,
+          ),
+          borderRadius: BorderRadius.circular(24),
+        ),
+        child: Stack(
+          children: [
+            // Diagonal specular reflection (glass sheen)
+            Positioned.fill(
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: const Alignment(-1.0, -1.0),
+                    end: const Alignment(0.6, 0.6),
+                    colors: isDark
+                        ? [
+                            Colors.white.withValues(alpha: 0.04),
+                            Colors.white.withValues(alpha: 0.01),
+                            Colors.transparent,
+                          ]
+                        : [
+                            Colors.white.withValues(alpha: 0.45),
+                            Colors.white.withValues(alpha: 0.1),
+                            Colors.transparent,
+                          ],
+                    stops: const [0.0, 0.35, 0.6],
+                  ),
+                  borderRadius: BorderRadius.circular(24),
+                ),
+              ),
+            ),
+
+            // Mosque watermark icon
+            Positioned(
+              right: -20,
+              bottom: -24,
+              child: Icon(
+                Icons.mosque,
+                size: 110,
+                color: isDark
+                    ? Colors.white.withValues(alpha: 0.05)
+                    : const Color(0xFF0D47A1).withValues(alpha: 0.1),
+              ),
+            ),
+
+            // Content with proper padding
+            Padding(padding: const EdgeInsets.all(24), child: child),
+          ],
         ),
       ),
+    ).asGlass(
+      blurX: isDark ? 32 : 28,
+      blurY: isDark ? 32 : 28,
+      tintColor: Colors.transparent,
+      frosted: true,
+      clipBorderRadius: BorderRadius.circular(24),
     );
   }
 
@@ -318,41 +312,41 @@ class _LiquidGlassBannerState extends State<LiquidGlassBanner> {
             ),
 
             // Right side: Prayer icon
-            ClipRRect(
-              borderRadius: BorderRadius.circular(16),
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 16, sigmaY: 16),
-                child: Container(
-                  width: 56,
-                  height: 56,
-                  decoration: BoxDecoration(
-                    color: isDark
-                        ? Colors.white.withValues(alpha: 0.08)
-                        : Colors.white.withValues(alpha: 0.3),
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(
-                      color: isDark
-                          ? Colors.white.withValues(alpha: 0.15)
-                          : Colors.white.withValues(alpha: 0.5),
-                      width: 1,
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.1),
-                        blurRadius: 8,
-                        offset: const Offset(0, 4),
-                      ),
-                    ],
-                  ),
-                  child: Icon(
-                    provider.getPrayerIcon(provider.currentPrayer),
-                    size: 32,
-                    color: isDark
-                        ? const Color(0xFF60A5FA)
-                        : const Color(0xFF0D47A1),
-                  ),
+            Container(
+              width: 56,
+              height: 56,
+              decoration: BoxDecoration(
+                color: isDark
+                    ? Colors.white.withValues(alpha: 0.08)
+                    : Colors.white.withValues(alpha: 0.3),
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(
+                  color: isDark
+                      ? Colors.white.withValues(alpha: 0.15)
+                      : Colors.white.withValues(alpha: 0.5),
+                  width: 1,
                 ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.1),
+                    blurRadius: 8,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
               ),
+              child: Icon(
+                provider.getPrayerIcon(provider.currentPrayer),
+                size: 32,
+                color: isDark
+                    ? const Color(0xFF60A5FA)
+                    : const Color(0xFF0D47A1),
+              ),
+            ).asGlass(
+              blurX: 16,
+              blurY: 16,
+              tintColor: Colors.transparent,
+              frosted: true,
+              clipBorderRadius: BorderRadius.circular(16),
             ),
           ],
         ),
