@@ -57,14 +57,14 @@ class _QuranBannerState extends State<QuranBanner> {
     }
   }
 
-  Future<void> _exitContinuousMode() async {
+  Future<void> _exitActivePlayback() async {
     final quranProvider = context.read<QuranProvider>();
     try {
-      await quranProvider.exitContinuousPlayback();
+      await quranProvider.stopAndClearAudio();
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Stopped continuous playback'),
+          content: Text('Stopped playback'),
           duration: Duration(seconds: 1),
         ),
       );
@@ -101,7 +101,7 @@ class _QuranBannerState extends State<QuranBanner> {
     final speakerIcon =
         isLoading
             ? Icons.hourglass_empty
-            : (isPlaying ? Icons.pause : Icons.play_arrow);
+            : (isPlaying ? Icons.volume_up : Icons.volume_down);
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -262,7 +262,7 @@ class _QuranBannerState extends State<QuranBanner> {
                               : const Color(0xFF0D47A1).withValues(alpha: 0.1),
                         ),
                       ),
-                      if (isContinuous)
+                      if (hasActiveSurah)
                         Positioned(
                           top: 12,
                           right: 12,
@@ -272,7 +272,7 @@ class _QuranBannerState extends State<QuranBanner> {
                         padding: EdgeInsets.fromLTRB(
                           20,
                           20,
-                          isContinuous ? 60 : 20,
+                          hasActiveSurah ? 60 : 20,
                           20,
                         ),
                         child: Column(
@@ -335,7 +335,7 @@ class _QuranBannerState extends State<QuranBanner> {
 
   Widget _buildExitButton(bool isDark) {
     return GestureDetector(
-      onTap: _exitContinuousMode,
+      onTap: _exitActivePlayback,
       behavior: HitTestBehavior.opaque,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 150),

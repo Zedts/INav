@@ -173,6 +173,19 @@ class QuranProvider with ChangeNotifier {
     _stopContinuousPlayback();
   }
 
+  Future<void> stopAndClearAudio() async {
+    try {
+      await _audioPlayer.stop();
+    } catch (_) {}
+    _continuousPlaybackMode = false;
+    _currentAudioUrl = null;
+    _currentAudioSource = null;
+    _currentAudioSourceKey = null;
+    _audioLoading = false;
+    _audioPlaying = false;
+    notifyListeners();
+  }
+
   bool isPlayingAudioFrom(AudioSourceId source, String sourceKey) {
     return _audioPlaying &&
         _currentAudioSource == source &&

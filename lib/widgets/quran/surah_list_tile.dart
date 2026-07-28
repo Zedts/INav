@@ -54,7 +54,7 @@ class SurahListTile extends StatelessWidget {
     final audioIcon =
         isLoading
             ? Icons.hourglass_empty
-            : (isPlaying ? Icons.pause : Icons.play_arrow);
+            : (isPlaying ? Icons.volume_up : Icons.volume_down);
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),

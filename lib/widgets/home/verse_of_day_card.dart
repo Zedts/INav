@@ -16,67 +16,83 @@ class VerseOfTheDayCard extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(24),
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-          child: Container(
-            decoration: BoxDecoration(
-              color: isDark
-                  ? AppColors.cardDark.withValues(alpha: 0.7)
-                  : AppColors.cardLight.withValues(alpha: 0.7),
+      child: Consumer<VerseProvider>(
+        builder: (context, verseProvider, child) {
+          final canShare =
+              !verseProvider.isLoading &&
+              verseProvider.errorMessage == null &&
+              verseProvider.verse != null;
+
+          return Material(
+            color: Colors.transparent,
+            borderRadius: BorderRadius.circular(24),
+            child: InkWell(
               borderRadius: BorderRadius.circular(24),
-              border: Border.all(
-                color: isDark
-                    ? AppColors.borderDark.withValues(alpha: 0.8)
-                    : AppColors.borderLight.withValues(alpha: 0.8),
-                width: 1,
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: (isDark ? Colors.black : Colors.grey).withValues(
-                    alpha: 0.1,
+              onTap:
+                  canShare
+                      ? () => _showShareOptions(context, verseProvider.verse!)
+                      : null,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(24),
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: isDark
+                          ? AppColors.cardDark.withValues(alpha: 0.7)
+                          : AppColors.cardLight.withValues(alpha: 0.7),
+                      borderRadius: BorderRadius.circular(24),
+                      border: Border.all(
+                        color: isDark
+                            ? AppColors.borderDark.withValues(alpha: 0.8)
+                            : AppColors.borderLight.withValues(alpha: 0.8),
+                        width: 1,
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: (isDark ? Colors.black : Colors.grey).withValues(
+                            alpha: 0.1,
+                          ),
+                          blurRadius: 10,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: Builder(
+                        builder: (context) {
+                          if (verseProvider.isLoading) {
+                            return _buildLoadingState(isDark);
+                          }
+
+                          if (verseProvider.errorMessage != null) {
+                            return _buildErrorState(
+                              context,
+                              verseProvider.errorMessage!,
+                              verseProvider,
+                              isDark,
+                            );
+                          }
+
+                          if (verseProvider.verse != null) {
+                            return _buildVerseContent(
+                              context,
+                              verseProvider.verse!,
+                              isDark,
+                            );
+                          }
+
+                          return _buildEmptyState(isDark);
+                        },
+                      ),
+                    ),
                   ),
-                  blurRadius: 10,
-                  offset: const Offset(0, 4),
                 ),
-              ],
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(20),
-              child: Consumer<VerseProvider>(
-                builder: (context, verseProvider, child) {
-                  // Loading state
-                  if (verseProvider.isLoading) {
-                    return _buildLoadingState(isDark);
-                  }
-
-                  // Error state
-                  if (verseProvider.errorMessage != null) {
-                    return _buildErrorState(
-                      context,
-                      verseProvider.errorMessage!,
-                      verseProvider,
-                      isDark,
-                    );
-                  }
-
-                  // Success state with verse data
-                  if (verseProvider.verse != null) {
-                    return _buildVerseContent(
-                      context,
-                      verseProvider.verse!,
-                      isDark,
-                    );
-                  }
-
-                  // Empty state (should not happen normally)
-                  return _buildEmptyState(isDark);
-                },
               ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }
@@ -185,74 +201,71 @@ class VerseOfTheDayCard extends StatelessWidget {
 
   /// Build verse content
   Widget _buildVerseContent(BuildContext context, dynamic verse, bool isDark) {
-    return GestureDetector(
-      onTap: () => _showShareOptions(context, verse),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(child: _buildHeader(isDark)),
-              Icon(
-                Icons.share_outlined,
-                size: 18,
-                color: isDark
-                    ? AppColors.textMutedDark
-                    : AppColors.textMutedLight,
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-
-          // Arabic text (RTL)
-          Directionality(
-            textDirection: TextDirection.rtl,
-            child: Text(
-              verse.arabic,
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w700,
-                color: isDark
-                    ? AppColors.textMainDark
-                    : AppColors.textMainLight,
-                height: 1.8,
-                fontFamily: 'serif',
-              ),
-            ),
-          ),
-
-          const SizedBox(height: 12),
-
-          // English translation
-          Text(
-            '"${verse.translation}"',
-            style: TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w600,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(child: _buildHeader(isDark)),
+            Icon(
+              Icons.share_outlined,
+              size: 18,
               color: isDark
                   ? AppColors.textMutedDark
                   : AppColors.textMutedLight,
-              fontStyle: FontStyle.italic,
-              height: 1.5,
             ),
-          ),
+          ],
+        ),
+        const SizedBox(height: 16),
 
-          const SizedBox(height: 12),
-
-          // Surah reference
-          Text(
-            verse.formattedReference,
+        // Arabic text (RTL)
+        Directionality(
+          textDirection: TextDirection.rtl,
+          child: Text(
+            verse.arabic,
             style: TextStyle(
-              fontSize: 10,
+              fontSize: 18,
               fontWeight: FontWeight.w700,
               color: isDark
-                  ? const Color(0xFF64748B) // slate-500
-                  : const Color(0xFF94A3B8), // slate-400
+                  ? AppColors.textMainDark
+                  : AppColors.textMainLight,
+              height: 1.8,
+              fontFamily: 'serif',
             ),
           ),
-        ],
-      ),
+        ),
+
+        const SizedBox(height: 12),
+
+        // English translation
+        Text(
+          '"${verse.translation}"',
+          style: TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.w600,
+            color: isDark
+                ? AppColors.textMutedDark
+                : AppColors.textMutedLight,
+            fontStyle: FontStyle.italic,
+            height: 1.5,
+          ),
+        ),
+
+        const SizedBox(height: 12),
+
+        // Surah reference
+        Text(
+          verse.formattedReference,
+          style: TextStyle(
+            fontSize: 10,
+            fontWeight: FontWeight.w700,
+            color: isDark
+                ? const Color(0xFF64748B) // slate-500
+                : const Color(0xFF94A3B8), // slate-400
+          ),
+        ),
+      ],
     );
   }
 
