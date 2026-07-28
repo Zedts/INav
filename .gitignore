@@ -53,7 +53,9 @@ app.*.map.json
 devtools_options.yaml
 
 # Text Editors
-.atom/
+graphify-out/*
+!graphify-out/graph.json
+!.gitattributes
 
 # =========================================================================
 # 7. Environment Variables & Sensitive Data
