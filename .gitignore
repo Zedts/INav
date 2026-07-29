@@ -55,7 +55,8 @@ devtools_options.yaml
 # Text Editors
 graphify-out/*
 !graphify-out/graph.json
-!.gitattributes
+!graphify-out/graph.html
+!graphify-out/GRAPH_REPORT.md
 
 # =========================================================================
 # 7. Environment Variables & Sensitive Data
