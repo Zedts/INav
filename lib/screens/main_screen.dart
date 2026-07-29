@@ -4,8 +4,12 @@ import '../widgets/common/app_header.dart';
 import '../widgets/navigation/bottom_nav_bar.dart';
 import '../widgets/quran/bookmarks_sidebar.dart';
 import '../widgets/quran/surah_detail_sheet.dart';
+import '../widgets/mosque/favorites_sidebar.dart';
+import '../widgets/mosque/mosque_detail_sheet.dart';
 import '../core/providers/quran_provider.dart';
+import '../core/providers/mosque_provider.dart';
 import '../core/models/surah_model.dart';
+import '../core/models/mosque_model.dart';
 import 'home/home_screen.dart';
 import 'quran/quran_screen.dart';
 import 'mosque/mosque_screen.dart';
@@ -34,6 +38,8 @@ class _MainScreenState extends State<MainScreen> {
     switch (index) {
       case 1:
         return HeaderMode.quran;
+      case 2:
+        return HeaderMode.mosque;
       default:
         return HeaderMode.home;
     }
@@ -49,6 +55,10 @@ class _MainScreenState extends State<MainScreen> {
     SurahDetailSheet.show(context, surah);
   }
 
+  void _openMosqueDetail(MosqueModel mosque) {
+    MosqueDetailSheet.show(context, mosque);
+  }
+
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
@@ -56,6 +66,7 @@ class _MainScreenState extends State<MainScreen> {
     final headerHeight = safeAreaTop + 64;
     final headerMode = _getHeaderMode(_currentIndex);
     final quranProvider = context.watch<QuranProvider>();
+    final mosqueProvider = context.watch<MosqueProvider>();
 
     return Scaffold(
       body: Stack(
@@ -77,11 +88,19 @@ class _MainScreenState extends State<MainScreen> {
                   headerMode == HeaderMode.quran
                       ? () => quranProvider.toggleSidebar()
                       : null,
+              onToggleFavorites:
+                  headerMode == HeaderMode.mosque
+                      ? () => mosqueProvider.toggleSidebar()
+                      : null,
             ),
           ),
           if (_currentIndex == 1)
             Positioned.fill(
               child: BookmarksSidebar(onOpenSurah: _openSurahDetail),
+            ),
+          if (_currentIndex == 2)
+            Positioned.fill(
+              child: FavoritesSidebar(onOpenMosque: _openMosqueDetail),
             ),
         ],
       ),

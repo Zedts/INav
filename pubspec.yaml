@@ -64,6 +64,11 @@ dependencies:
   # Audio playback
   just_audio: ^0.10.6
 
+  # Maps & Navigation
+  flutter_map: ^8.3.1
+  latlong2: ^0.10.1
+  url_launcher: ^6.3.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

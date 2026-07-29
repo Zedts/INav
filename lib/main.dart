@@ -7,6 +7,7 @@ import 'core/providers/prayer_provider.dart';
 import 'core/providers/verse_provider.dart';
 import 'core/providers/streak_provider.dart';
 import 'core/providers/quran_provider.dart';
+import 'core/providers/mosque_provider.dart';
 import 'screens/main_screen.dart';
 
 void main() async {
@@ -37,6 +38,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => VerseProvider()),
         ChangeNotifierProvider(create: (_) => StreakProvider()),
         ChangeNotifierProvider(create: (_) => QuranProvider()),
+        ChangeNotifierProvider(create: (_) => MosqueProvider()),
       ],
       child: Consumer<ThemeProvider>(
         builder: (context, themeProvider, child) {
