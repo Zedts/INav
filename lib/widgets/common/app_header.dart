@@ -246,6 +246,15 @@ class AppHeader extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
+                const Text(
+                  'Assalamualaikum',
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: -0.2,
+                  ),
+                ),
+                const SizedBox(height: 2),
                 Row(
                   children: [
                     Icon(
@@ -290,15 +299,6 @@ class AppHeader extends StatelessWidget {
                       ),
                     ),
                   ],
-                ),
-                const SizedBox(height: 2),
-                const Text(
-                  'Assalamualaikum',
-                  style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w800,
-                    letterSpacing: -0.2,
-                  ),
                 ),
               ],
             ),
@@ -587,6 +587,15 @@ class AppHeader extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
+            const Text(
+              'Find Mosque',
+              style: TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.w800,
+                letterSpacing: -0.2,
+              ),
+            ),
+            const SizedBox(height: 2),
             Row(
               children: [
                 Icon(
@@ -631,15 +640,6 @@ class AppHeader extends StatelessWidget {
                   ),
                 ),
               ],
-            ),
-            const SizedBox(height: 2),
-            const Text(
-              'Find Mosque',
-              style: TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.w800,
-                letterSpacing: -0.2,
-              ),
             ),
           ],
         ),
@@ -724,6 +724,15 @@ class AppHeader extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
+            const Text(
+              'Qibla Compass',
+              style: TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.w800,
+                letterSpacing: -0.2,
+              ),
+            ),
+            const SizedBox(height: 2),
             Row(
               children: [
                 Icon(
@@ -768,15 +777,6 @@ class AppHeader extends StatelessWidget {
                   ),
                 ),
               ],
-            ),
-            const SizedBox(height: 2),
-            const Text(
-              'Qibla Compass',
-              style: TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.w800,
-                letterSpacing: -0.2,
-              ),
             ),
           ],
         ),
