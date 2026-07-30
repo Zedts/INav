@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:glass/glass.dart';
 import '../../core/models/qibla_model.dart';
 
 /// Hero banner for the Qibla screen: bearing badge + headline + distance.
@@ -69,56 +68,19 @@ class QiblaHeroBanner extends StatelessWidget {
         child: Container(
           constraints: const BoxConstraints(minHeight: 110),
           decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: isDark
-                  ? [
-                      const Color(0xFF0F172A).withValues(alpha: 0.55),
-                      const Color(0xFF0F172A).withValues(alpha: 0.25),
-                    ]
-                  : [
-                      Colors.white.withValues(alpha: 0.35),
-                      Colors.white.withValues(alpha: 0.12),
-                    ],
-            ),
+            color: isDark ? const Color(0xFF0F172A) : Colors.white,
             borderRadius: BorderRadius.circular(24),
             border: Border.all(
               color: isAligned
                   ? const Color(0xFF10B981).withValues(alpha: 0.8)
                   : isDark
-                      ? Colors.white.withValues(alpha: 0.18)
-                      : Colors.white.withValues(alpha: 0.45),
+                      ? const Color(0xFF1E293B)
+                      : const Color(0xFFE2E8F0),
               width: 1,
             ),
           ),
           child: Stack(
             children: [
-              // Diagonal specular reflection (glass sheen)
-              Positioned.fill(
-                child: Container(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: const Alignment(-1.0, -1.0),
-                      end: const Alignment(0.6, 0.6),
-                      colors: isDark
-                          ? [
-                              Colors.white.withValues(alpha: 0.04),
-                              Colors.white.withValues(alpha: 0.01),
-                              Colors.transparent,
-                            ]
-                          : [
-                              Colors.white.withValues(alpha: 0.45),
-                              Colors.white.withValues(alpha: 0.1),
-                              Colors.transparent,
-                            ],
-                      stops: const [0.0, 0.35, 0.6],
-                    ),
-                    borderRadius: BorderRadius.circular(24),
-                  ),
-                ),
-              ),
-
               Padding(
                 padding: const EdgeInsets.all(20),
                 child: Row(
@@ -192,12 +154,6 @@ class QiblaHeroBanner extends StatelessWidget {
               ),
             ],
           ),
-        ).asGlass(
-          blurX: isDark ? 32 : 28,
-          blurY: isDark ? 32 : 28,
-          tintColor: Colors.transparent,
-          frosted: true,
-          clipBorderRadius: BorderRadius.circular(24),
         ),
       ),
     );

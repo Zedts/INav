@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import '../../core/theme/app_colors.dart';
 
@@ -189,9 +188,7 @@ class _ServiceButton extends StatelessWidget {
       onTap: onTap,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(16),
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-          child: Container(
+        child: Container(
             decoration: BoxDecoration(
               color: isDark ? AppColors.cardDark : AppColors.cardLight,
               borderRadius: BorderRadius.circular(16),
@@ -250,7 +247,6 @@ class _ServiceButton extends StatelessWidget {
               ),
             ),
           ),
-        ),
       ),
     );
   }

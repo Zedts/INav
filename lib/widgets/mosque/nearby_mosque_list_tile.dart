@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:glass/glass.dart';
 import '../../core/models/mosque_model.dart';
 
 class NearbyMosqueListTile extends StatelessWidget {
@@ -31,8 +30,8 @@ class NearbyMosqueListTile extends StatelessWidget {
           decoration: BoxDecoration(
             color:
                 isDark
-                    ? Colors.black.withValues(alpha: 0.25)
-                    : Colors.white.withValues(alpha: 0.55),
+                    ? const Color(0xFF1E293B)
+                    : Colors.white,
             borderRadius: BorderRadius.circular(24),
             border: Border.all(
               color:
@@ -106,12 +105,6 @@ class NearbyMosqueListTile extends StatelessWidget {
                 _buildTrailing(isDark, accent),
               ],
             ),
-          ).asGlass(
-            blurX: 22,
-            blurY: 22,
-            tintColor: Colors.transparent,
-            clipBorderRadius: BorderRadius.circular(24),
-            frosted: true,
           ),
         ),
       ),

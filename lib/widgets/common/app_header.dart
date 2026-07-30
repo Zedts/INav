@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:glass/glass.dart';
 import '../../core/theme/theme_provider.dart';
 import '../../core/providers/prayer_provider.dart';
 import '../../core/providers/mosque_provider.dart';
@@ -27,6 +26,7 @@ class AppHeader extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
+        color: isDark ? const Color(0xFF070B14) : const Color(0xFFF1F5F9),
         border: Border(
           bottom: BorderSide(
             color: isDark
@@ -49,14 +49,6 @@ class AppHeader extends StatelessWidget {
           ),
         ),
       ),
-    ).asGlass(
-      blurX: 10,
-      blurY: 10,
-      tintColor: isDark
-          ? const Color(0xFF070B14).withValues(alpha: 0.95)
-          : const Color(0xFFF1F5F9).withValues(alpha: 0.95),
-      frosted: true,
-      clipBorderRadius: BorderRadius.zero,
     );
   }
 

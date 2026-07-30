@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:glass/glass.dart';
 import '../../core/providers/mosque_provider.dart';
 import '../../core/models/mosque_model.dart';
 import '../common/glass_pill_badge.dart';
@@ -88,19 +87,7 @@ class NearestMosqueBanner extends StatelessWidget {
             ),
             Container(
               decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: isDark
-                      ? [
-                          const Color(0xFF0F172A).withValues(alpha: 0.55),
-                          const Color(0xFF0F172A).withValues(alpha: 0.25),
-                        ]
-                      : [
-                          Colors.white.withValues(alpha: 0.35),
-                          Colors.white.withValues(alpha: 0.12),
-                        ],
-                ),
+                color: isDark ? const Color(0xFF0F172A) : Colors.white,
                 borderRadius: BorderRadius.circular(24),
                 boxShadow: [
                   BoxShadow(
@@ -128,11 +115,12 @@ class NearestMosqueBanner extends StatelessWidget {
                 ],
               ),
               child: Container(
+                clipBehavior: Clip.antiAlias,
                 decoration: BoxDecoration(
                   border: Border.all(
                     color: isDark
-                        ? Colors.white.withValues(alpha: 0.18)
-                        : Colors.white.withValues(alpha: 0.45),
+                        ? const Color(0xFF1E293B)
+                        : const Color(0xFFE2E8F0),
                     width: 1,
                   ),
                   borderRadius: BorderRadius.circular(24),
@@ -242,12 +230,6 @@ class NearestMosqueBanner extends StatelessWidget {
                   ],
                 ),
               ),
-            ).asGlass(
-              blurX: isDark ? 32 : 28,
-              blurY: isDark ? 32 : 28,
-              tintColor: Colors.transparent,
-              frosted: true,
-              clipBorderRadius: BorderRadius.circular(24),
             ),
           ],
         ),

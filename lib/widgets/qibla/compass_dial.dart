@@ -1,7 +1,6 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:glass/glass.dart';
 
 import '../../core/providers/qibla_provider.dart';
 
@@ -72,25 +71,13 @@ class CompassDial extends StatelessWidget {
                         child: Container(
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            gradient: LinearGradient(
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                              colors: isDark
-                                  ? [
-                                      const Color(0xFF0F172A)
-                                          .withValues(alpha: 0.55),
-                                      const Color(0xFF0F172A)
-                                          .withValues(alpha: 0.25),
-                                    ]
-                                  : [
-                                      Colors.white.withValues(alpha: 0.35),
-                                      Colors.white.withValues(alpha: 0.12),
-                                    ],
-                            ),
+                            color: isDark
+                                ? const Color(0xFF0F172A)
+                                : Colors.white,
                             border: Border.all(
                               color: isDark
-                                  ? Colors.white.withValues(alpha: 0.18)
-                                  : Colors.white.withValues(alpha: 0.45),
+                                  ? const Color(0xFF1E293B)
+                                  : const Color(0xFFE2E8F0),
                               width: 1,
                             ),
                             boxShadow: [
@@ -104,35 +91,6 @@ class CompassDial extends StatelessWidget {
                               ),
                             ],
                           ),
-                          child: DecoratedBox(
-                            // Diagonal specular reflection
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              gradient: LinearGradient(
-                                begin: const Alignment(-1.0, -1.0),
-                                end: const Alignment(0.6, 0.6),
-                                colors: isDark
-                                    ? [
-                                        Colors.white.withValues(alpha: 0.04),
-                                        Colors.white.withValues(alpha: 0.01),
-                                        Colors.transparent,
-                                      ]
-                                    : [
-                                        Colors.white.withValues(alpha: 0.45),
-                                        Colors.white.withValues(alpha: 0.1),
-                                        Colors.transparent,
-                                      ],
-                                stops: const [0.0, 0.35, 0.6],
-                              ),
-                            ),
-                          ),
-                        ).asGlass(
-                          blurX: isDark ? 32 : 28,
-                          blurY: isDark ? 32 : 28,
-                          tintColor: Colors.transparent,
-                          frosted: true,
-                          clipBorderRadius:
-                              BorderRadius.circular(_dialSize / 2),
                         ),
                       ),
 
@@ -343,8 +301,8 @@ class CompassDial extends StatelessWidget {
       height: 112,
       decoration: BoxDecoration(
         color: isDark
-            ? Colors.white.withValues(alpha: 0.08)
-            : Colors.white.withValues(alpha: 0.3),
+            ? const Color(0xFF1E293B)
+            : const Color(0xFFF1F5F9),
         shape: BoxShape.circle,
         border: Border.all(
           color: isAligned
@@ -406,12 +364,6 @@ class CompassDial extends StatelessWidget {
           ),
         ],
       ),
-    ).asGlass(
-      blurX: 16,
-      blurY: 16,
-      tintColor: Colors.transparent,
-      frosted: true,
-      clipBorderRadius: BorderRadius.circular(56),
     );
   }
 

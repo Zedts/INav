@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../core/providers/prayer_provider.dart';
@@ -49,9 +48,7 @@ class HorizontalPrayerStepper extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
-        color: isDark
-            ? AppColors.cardDark.withValues(alpha: 0.7)
-            : AppColors.cardLight.withValues(alpha: 0.7),
+        color: isDark ? AppColors.cardDark : AppColors.cardLight,
         borderRadius: BorderRadius.circular(24),
         border: Border.all(
           color: isDark
@@ -69,9 +66,7 @@ class HorizontalPrayerStepper extends StatelessWidget {
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(24),
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-          child: Padding(
+        child: Padding(
             padding: const EdgeInsets.all(16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -153,8 +148,8 @@ class HorizontalPrayerStepper extends StatelessWidget {
                             height: 4,
                             decoration: BoxDecoration(
                               color: isDark
-                                  ? const Color(0xFF1E293B) // slate-800
-                                  : const Color(0xFFF1F5F9), // slate-100
+                                  ? const Color(0xFF334155) // slate-700
+                                  : const Color(0xFFE2E8F0), // slate-200
                               borderRadius: BorderRadius.circular(2),
                             ),
                             child: FractionallySizedBox(
@@ -229,7 +224,6 @@ class HorizontalPrayerStepper extends StatelessWidget {
               ],
             ),
           ),
-        ),
       ),
     );
   }

@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../core/providers/streak_provider.dart';
@@ -72,13 +71,9 @@ class _StreakCardState extends State<StreakCard>
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(24),
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-          child: Container(
+        child: Container(
             decoration: BoxDecoration(
-              color: isDark
-                  ? AppColors.cardDark.withValues(alpha: 0.7)
-                  : AppColors.cardLight.withValues(alpha: 0.7),
+              color: isDark ? AppColors.cardDark : AppColors.cardLight,
               borderRadius: BorderRadius.circular(24),
               border: Border.all(
                 color: isDark
@@ -215,7 +210,6 @@ class _StreakCardState extends State<StreakCard>
               ),
             ),
           ),
-        ),
       ),
     );
   }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:glass/glass.dart';
 import '../../core/providers/quran_provider.dart';
 import '../../core/models/surah_model.dart';
 import '../common/glass_pill_badge.dart';
@@ -172,19 +171,7 @@ class _QuranBannerState extends State<QuranBanner> {
               ),
               Container(
                 decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: isDark
-                        ? [
-                            const Color(0xFF0F172A).withValues(alpha: 0.55),
-                            const Color(0xFF0F172A).withValues(alpha: 0.25),
-                          ]
-                        : [
-                            Colors.white.withValues(alpha: 0.35),
-                            Colors.white.withValues(alpha: 0.12),
-                          ],
-                  ),
+                  color: isDark ? const Color(0xFF0F172A) : Colors.white,
                   borderRadius: BorderRadius.circular(24),
                   boxShadow: [
                     BoxShadow(
@@ -213,11 +200,12 @@ class _QuranBannerState extends State<QuranBanner> {
                   ],
                 ),
                 child: Container(
+                  clipBehavior: Clip.antiAlias,
                   decoration: BoxDecoration(
                     border: Border.all(
                       color: isDark
-                          ? Colors.white.withValues(alpha: 0.18)
-                          : Colors.white.withValues(alpha: 0.45),
+                          ? const Color(0xFF1E293B)
+                          : const Color(0xFFE2E8F0),
                       width: 1,
                     ),
                     borderRadius: BorderRadius.circular(24),
@@ -319,12 +307,6 @@ class _QuranBannerState extends State<QuranBanner> {
                     ],
                   ),
                 ),
-              ).asGlass(
-                blurX: isDark ? 32 : 28,
-                blurY: isDark ? 32 : 28,
-                tintColor: Colors.transparent,
-                frosted: true,
-                clipBorderRadius: BorderRadius.circular(24),
               ),
             ],
           ),

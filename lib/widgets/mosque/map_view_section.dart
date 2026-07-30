@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart' hide Path;
-import 'package:glass/glass.dart';
 import '../../core/models/mosque_model.dart';
 
 class MapViewSection extends StatefulWidget {
@@ -272,8 +271,8 @@ class _MapViewSectionState extends State<MapViewSection>
           decoration: BoxDecoration(
             color:
                 isDark
-                    ? Colors.black.withValues(alpha: 0.55)
-                    : Colors.white.withValues(alpha: 0.7),
+                    ? const Color(0xFF1E293B)
+                    : Colors.white,
             borderRadius: BorderRadius.circular(999),
             border: Border.all(
               color:
@@ -298,12 +297,6 @@ class _MapViewSectionState extends State<MapViewSection>
               color: isDark ? const Color(0xFFE2E8F0) : const Color(0xFF0F172A),
             ),
           ),
-        ).asGlass(
-          blurX: 18,
-          blurY: 18,
-          tintColor: Colors.transparent,
-          clipBorderRadius: BorderRadius.circular(999),
-          frosted: true,
         ),
       ),
     );
@@ -318,8 +311,8 @@ class _MapViewSectionState extends State<MapViewSection>
           decoration: BoxDecoration(
             color:
                 isDark
-                    ? Colors.black.withValues(alpha: 0.55)
-                    : Colors.white.withValues(alpha: 0.75),
+                    ? const Color(0xFF1E293B)
+                    : Colors.white,
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
               color:
@@ -413,12 +406,6 @@ class _MapViewSectionState extends State<MapViewSection>
                 ),
               ],
             ),
-          ).asGlass(
-            blurX: 18,
-            blurY: 18,
-            tintColor: Colors.transparent,
-            clipBorderRadius: BorderRadius.circular(16),
-            frosted: true,
           ),
         ),
         if (widget.isOverridden && widget.onResetToNearest != null)

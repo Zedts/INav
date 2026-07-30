@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -34,13 +33,9 @@ class VerseOfTheDayCard extends StatelessWidget {
                       : null,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(24),
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                  child: Container(
+                child: Container(
                     decoration: BoxDecoration(
-                      color: isDark
-                          ? AppColors.cardDark.withValues(alpha: 0.7)
-                          : AppColors.cardLight.withValues(alpha: 0.7),
+                      color: isDark ? AppColors.cardDark : AppColors.cardLight,
                       borderRadius: BorderRadius.circular(24),
                       border: Border.all(
                         color: isDark
@@ -88,7 +83,6 @@ class VerseOfTheDayCard extends StatelessWidget {
                       ),
                     ),
                   ),
-                ),
               ),
             ),
           );

@@ -1,8 +1,6 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 
-/// Glass pill badge with frosted glass effect
-/// Matches the reference design's glass-pill styling
+/// Pill badge used as a section label on cards and banners
 class GlassPillBadge extends StatelessWidget {
   final String label;
   final IconData? icon;
@@ -27,60 +25,54 @@ class GlassPillBadge extends StatelessWidget {
             ? const Color(0xFF93C5FD) // blue-300
             : const Color(0xFF1E3A8A)); // blue-900
 
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(20),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 16, sigmaY: 16),
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-          decoration: BoxDecoration(
-            color: isDark
-                ? Colors.white.withValues(alpha: 0.08)
-                : Colors.white.withValues(alpha: 0.3),
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(
-              color: isDark
-                  ? Colors.white.withValues(alpha: 0.15)
-                  : Colors.white.withValues(alpha: 0.4),
-              width: 1,
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.05),
-                blurRadius: 4,
-                offset: const Offset(0, 2),
-              ),
-            ],
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              if (showPulsingDot) ...[
-                _PulsingDot(
-                  color: pulsingDotColor ?? const Color(0xFF10B981), // emerald-500
-                ),
-                const SizedBox(width: 6),
-              ],
-              if (icon != null) ...[
-                Icon(
-                  icon,
-                  size: 14,
-                  color: defaultTextColor,
-                ),
-                const SizedBox(width: 6),
-              ],
-              Text(
-                label,
-                style: TextStyle(
-                  fontSize: 11,
-                  fontWeight: FontWeight.w800,
-                  color: defaultTextColor,
-                  letterSpacing: 0.5,
-                ),
-              ),
-            ],
-          ),
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      decoration: BoxDecoration(
+        color: isDark
+            ? Colors.white.withValues(alpha: 0.08)
+            : const Color(0xFFF1F5F9),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: isDark
+              ? Colors.white.withValues(alpha: 0.15)
+              : const Color(0xFFE2E8F0),
+          width: 1,
         ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.05),
+            blurRadius: 4,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (showPulsingDot) ...[
+            _PulsingDot(
+              color: pulsingDotColor ?? const Color(0xFF10B981), // emerald-500
+            ),
+            const SizedBox(width: 6),
+          ],
+          if (icon != null) ...[
+            Icon(
+              icon,
+              size: 14,
+              color: defaultTextColor,
+            ),
+            const SizedBox(width: 6),
+          ],
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 11,
+              fontWeight: FontWeight.w800,
+              color: defaultTextColor,
+              letterSpacing: 0.5,
+            ),
+          ),
+        ],
       ),
     );
   }
