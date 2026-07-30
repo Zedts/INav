@@ -94,8 +94,24 @@ class _QiblaScreenState extends State<QiblaScreen> {
   }
 
   Widget _buildErrorView(bool isDark, QiblaProvider qp, String err) {
-    final isPermissionOrGps = err.toLowerCase().contains('permission') ||
-        err.toLowerCase().contains('disabled');
+    final lower = err.toLowerCase();
+    final isPermissionOrGps =
+        lower.contains('permission') || lower.contains('disabled');
+    final isOffline = lower.contains('internet') || lower.contains('network');
+
+    final IconData icon;
+    final String title;
+    if (isPermissionOrGps) {
+      icon = Icons.location_off;
+      title = 'Location needed';
+    } else if (isOffline) {
+      icon = Icons.wifi_off_rounded;
+      title = 'No Internet Connection';
+    } else {
+      icon = Icons.error_outline;
+      title = 'Something went wrong';
+    }
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Center(
@@ -112,7 +128,7 @@ class _QiblaScreenState extends State<QiblaScreen> {
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Icon(
-                isPermissionOrGps ? Icons.location_off : Icons.error_outline,
+                icon,
                 size: 32,
                 color: isPermissionOrGps
                     ? const Color(0xFF4F46E5)
@@ -121,7 +137,7 @@ class _QiblaScreenState extends State<QiblaScreen> {
             ),
             const SizedBox(height: 16),
             Text(
-              isPermissionOrGps ? 'Location needed' : 'Something went wrong',
+              title,
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w800,

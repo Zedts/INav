@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import '../models/calendar_model.dart';
 import 'api_service.dart';
 import 'package:intl/intl.dart';
@@ -25,7 +26,10 @@ class CalendarService {
       final now = DateTime.now().add(Duration(days: adjustment));
       return _convertToHijri(now);
     } catch (e) {
-      throw ApiException('Failed to fetch calendar: ${e.toString()}');
+      debugPrint('CalendarService error: $e');
+      throw ApiException(
+        'Unable to load the Islamic calendar. Please try again later.',
+      );
     }
   }
 
@@ -49,7 +53,10 @@ class CalendarService {
       final date = DateTime(year, month, day).add(Duration(days: adjustment));
       return _convertToHijri(date);
     } catch (e) {
-      throw ApiException('Failed to fetch calendar for date: ${e.toString()}');
+      debugPrint('CalendarService error (by date): $e');
+      throw ApiException(
+        'Unable to load the Islamic calendar. Please try again later.',
+      );
     }
   }
 

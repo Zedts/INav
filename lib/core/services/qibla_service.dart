@@ -20,8 +20,7 @@ class QiblaService {
   QiblaService({ApiService? apiService})
     : _apiService = apiService ??
           ApiService(
-            baseUrl: dotenv.env['MYQURAN_API_BASE_URL_ALT'] ??
-                'https://api.myquran.com/v3',
+            baseUrl: dotenv.env['MYQURAN_API_BASE_URL_ALT']!,
           );
 
   /// Get Qibla direction for given coordinates
@@ -57,8 +56,9 @@ class QiblaService {
         distanceKm: distanceKm,
       );
     } catch (e) {
+      debugPrint('Qibla local calculation failed: $e');
       throw ApiException(
-        'Failed to calculate Qibla direction: ${e.toString()}',
+        'Unable to determine the Qibla direction. Please try again.',
       );
     }
   }

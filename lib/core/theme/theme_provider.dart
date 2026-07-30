@@ -17,24 +17,30 @@ class ThemeProvider extends ChangeNotifier {
 
   /// Load saved theme preference from SharedPreferences
   Future<void> loadThemePreference() async {
-    _prefs = await SharedPreferences.getInstance();
-    final String? savedTheme = _prefs?.getString(_themeKey);
-    
-    if (savedTheme != null) {
-      switch (savedTheme) {
-        case 'light':
-          _themeMode = ThemeMode.light;
-          break;
-        case 'dark':
-          _themeMode = ThemeMode.dark;
-          break;
-        case 'system':
-          _themeMode = ThemeMode.system;
-          break;
-        default:
-          _themeMode = ThemeMode.system;
+    try {
+      _prefs = await SharedPreferences.getInstance();
+      final String? savedTheme = _prefs?.getString(_themeKey);
+
+      if (savedTheme != null) {
+        switch (savedTheme) {
+          case 'light':
+            _themeMode = ThemeMode.light;
+            break;
+          case 'dark':
+            _themeMode = ThemeMode.dark;
+            break;
+          case 'system':
+            _themeMode = ThemeMode.system;
+            break;
+          default:
+            _themeMode = ThemeMode.system;
+        }
+        notifyListeners();
       }
-      notifyListeners();
+    } catch (e) {
+      // Fall back to system theme — never block app startup on storage errors
+      debugPrint('ThemeProvider load error (non-fatal): $e');
+      _themeMode = ThemeMode.system;
     }
   }
 
@@ -65,21 +71,26 @@ class ThemeProvider extends ChangeNotifier {
 
   /// Save theme preference to SharedPreferences
   Future<void> _saveThemePreference() async {
-    _prefs ??= await SharedPreferences.getInstance();
-    
-    String themeString;
-    switch (_themeMode) {
-      case ThemeMode.light:
-        themeString = 'light';
-        break;
-      case ThemeMode.dark:
-        themeString = 'dark';
-        break;
-      case ThemeMode.system:
-        themeString = 'system';
-        break;
+    try {
+      _prefs ??= await SharedPreferences.getInstance();
+
+      String themeString;
+      switch (_themeMode) {
+        case ThemeMode.light:
+          themeString = 'light';
+          break;
+        case ThemeMode.dark:
+          themeString = 'dark';
+          break;
+        case ThemeMode.system:
+          themeString = 'system';
+          break;
+      }
+
+      await _prefs?.setString(_themeKey, themeString);
+    } catch (e) {
+      // Persisting is best-effort — the in-memory theme still applies
+      debugPrint('ThemeProvider save error (non-fatal): $e');
     }
-    
-    await _prefs?.setString(_themeKey, themeString);
   }
 }

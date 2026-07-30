@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import '../models/surah_model.dart';
 import 'api_service.dart';
 
@@ -23,8 +24,14 @@ class QuranService {
 
       _cachedSurahs = surahs;
       return surahs;
+    } on ApiException {
+      // Already carries a user-friendly message
+      rethrow;
     } catch (e) {
-      throw Exception('Failed to fetch surahs: $e');
+      debugPrint('QuranService parse error: $e');
+      throw ApiException(
+        'Unable to read the surah list. Please try again later.',
+      );
     }
   }
 

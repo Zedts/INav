@@ -159,8 +159,24 @@ class _MosqueScreenState extends State<MosqueScreen> {
   }
 
   Widget _buildErrorView(bool isDark, MosqueProvider mp, String err) {
-    final isPermissionOrGps = err.toLowerCase().contains('permission') ||
-        err.toLowerCase().contains('disabled');
+    final lower = err.toLowerCase();
+    final isPermissionOrGps =
+        lower.contains('permission') || lower.contains('disabled');
+    final isOffline = lower.contains('internet') || lower.contains('network');
+
+    final IconData icon;
+    final String title;
+    if (isPermissionOrGps) {
+      icon = Icons.location_off_outlined;
+      title = 'Location Unavailable';
+    } else if (isOffline) {
+      icon = Icons.wifi_off_rounded;
+      title = 'No Internet Connection';
+    } else {
+      icon = Icons.warning_amber_rounded;
+      title = 'Something went wrong';
+    }
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Center(
@@ -178,9 +194,7 @@ class _MosqueScreenState extends State<MosqueScreen> {
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Icon(
-                isPermissionOrGps
-                    ? Icons.location_off_outlined
-                    : Icons.warning_amber_rounded,
+                icon,
                 color:
                     isPermissionOrGps
                         ? const Color(0xFF2563EB)
@@ -190,7 +204,7 @@ class _MosqueScreenState extends State<MosqueScreen> {
             ),
             const SizedBox(height: 18),
             Text(
-              isPermissionOrGps ? 'Location Unavailable' : 'Something went wrong',
+              title,
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 18,

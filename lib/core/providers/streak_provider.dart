@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -29,46 +30,69 @@ class StreakProvider with ChangeNotifier {
     required DateTime currentDate,
     required String currentPrayer,
   }) async {
-    await _loadState();
-    await _checkAndResetDate(currentDate, currentPrayer);
-    await _checkPrayerWindow(currentPrayer);
+    try {
+      await _loadState();
+      await _checkAndResetDate(currentDate, currentPrayer);
+      await _checkPrayerWindow(currentPrayer);
+    } catch (e) {
+      // Streak tracking is non-essential — never let a storage failure
+      // bubble up and break the home screen
+      debugPrint('StreakProvider initialize error (non-fatal): $e');
+    }
     _isInitialized = true;
     notifyListeners();
   }
 
   /// Load state from shared preferences
   Future<void> _loadState() async {
-    final prefs = await SharedPreferences.getInstance();
-    final dateStr = prefs.getString(_keyDate);
-    final completedStr = prefs.getString(_keyCompletedPrayers);
-    final currentPrayerStr = prefs.getString(_keyCurrentPrayer);
-    final streakDaysStr = prefs.getInt(_keyStreakDays);
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final dateStr = prefs.getString(_keyDate);
+      final completedStr = prefs.getString(_keyCompletedPrayers);
+      final currentPrayerStr = prefs.getString(_keyCurrentPrayer);
+      final streakDaysStr = prefs.getInt(_keyStreakDays);
 
-    if (dateStr != null) {
-      _trackedDate = DateTime.parse(dateStr);
-    }
-    if (completedStr != null) {
-      _completedPrayers = List<String>.from(json.decode(completedStr));
-    }
-    if (currentPrayerStr != null) {
-      _currentPrayerWindow = currentPrayerStr;
-    }
-    if (streakDaysStr != null) {
-      _streakDays = streakDaysStr;
+      if (dateStr != null) {
+        _trackedDate = DateTime.tryParse(dateStr);
+      }
+      if (completedStr != null) {
+        _completedPrayers = List<String>.from(json.decode(completedStr));
+      }
+      if (currentPrayerStr != null) {
+        _currentPrayerWindow = currentPrayerStr;
+      }
+      if (streakDaysStr != null) {
+        _streakDays = streakDaysStr;
+      }
+    } catch (e) {
+      // Corrupted or unreadable stored data — start fresh instead of crashing
+      debugPrint('StreakProvider load error (non-fatal): $e');
+      _trackedDate = null;
+      _completedPrayers = [];
+      _currentPrayerWindow = null;
+      _streakDays = 0;
     }
   }
 
   /// Save state to shared preferences
   Future<void> _saveState() async {
-    final prefs = await SharedPreferences.getInstance();
-    if (_trackedDate != null) {
-      await prefs.setString(_keyDate, _trackedDate!.toIso8601String());
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      if (_trackedDate != null) {
+        await prefs.setString(_keyDate, _trackedDate!.toIso8601String());
+      }
+      await prefs.setString(
+        _keyCompletedPrayers,
+        json.encode(_completedPrayers),
+      );
+      if (_currentPrayerWindow != null) {
+        await prefs.setString(_keyCurrentPrayer, _currentPrayerWindow!);
+      }
+      await prefs.setInt(_keyStreakDays, _streakDays);
+    } catch (e) {
+      // Persisting is best-effort — in-memory state stays valid for this session
+      debugPrint('StreakProvider save error (non-fatal): $e');
     }
-    await prefs.setString(_keyCompletedPrayers, json.encode(_completedPrayers));
-    if (_currentPrayerWindow != null) {
-      await prefs.setString(_keyCurrentPrayer, _currentPrayerWindow!);
-    }
-    await prefs.setInt(_keyStreakDays, _streakDays);
   }
 
   /// Check if we need to reset for a new day

@@ -8,6 +8,19 @@ import 'package:latlong2/latlong.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../models/mosque_model.dart';
 
+/// Custom exception for mosque finder errors
+///
+/// [message] is always safe to show directly to the user (no URLs,
+/// stack traces, or internal details).
+class MosqueServiceException implements Exception {
+  final String message;
+
+  MosqueServiceException(this.message);
+
+  @override
+  String toString() => message;
+}
+
 class MosqueService {
   final http.Client _httpClient;
   final String _primaryBaseUrl;
@@ -22,12 +35,10 @@ class MosqueService {
   })  : _httpClient = httpClient ?? http.Client(),
         _primaryBaseUrl =
             primaryBaseUrl ??
-            dotenv.env['MOSQUE_FINDER_API_BASE_URL'] ??
-            'https://time.now/mosques/api/mosques',
+            dotenv.env['MOSQUE_FINDER_API_BASE_URL']!,
         _secondaryBaseUrl =
             secondaryBaseUrl ??
-            dotenv.env['MOSQUE_FINDER_API_ALT_BASE_URL'] ??
-            'https://api.masjidnear.me',
+            dotenv.env['MOSQUE_FINDER_API_BASE_URL_ALT']!,
         _timeout = timeout ?? const Duration(seconds: 20);
 
   Future<List<MosqueModel>> findNearby(
@@ -42,11 +53,22 @@ class MosqueService {
     ]);
 
     final combined = <MosqueModel>[
-      ...?results[0],
-      ...?results[1],
+      ...?results[0].mosques,
+      ...?results[1].mosques,
     ];
 
-    if (combined.isEmpty) return [];
+    if (combined.isEmpty) {
+      // If every source failed because of connectivity, surface a friendly
+      // network message instead of a misleading "no mosques found" state.
+      final allNetworkFailures =
+          results.every((r) => r.mosques == null && r.isNetworkError);
+      if (allNetworkFailures) {
+        throw MosqueServiceException(
+          'No internet connection. Please check your network and try again.',
+        );
+      }
+      return [];
+    }
 
     final enriched = combined
         .map(
@@ -85,7 +107,7 @@ class MosqueService {
     return meters / 1000.0;
   }
 
-  Future<List<MosqueModel>?> _queryPrimary(
+  Future<_MosqueQueryResult> _queryPrimary(
     double lat,
     double lng,
     double radiusKm,
@@ -106,23 +128,28 @@ class MosqueService {
           'Primary mosque API HTTP ${response.statusCode}: $uri',
         );
       }
-      return _parseResponse(response.body, response.statusCode, lat, lng);
+      return _MosqueQueryResult(
+        _parseResponse(response.body, response.statusCode, lat, lng),
+      );
     } on TimeoutException catch (e, st) {
       debugPrint('Primary mosque API timeout: $e $st');
-      return null;
+      return const _MosqueQueryResult(null, isNetworkError: true);
     } on SocketException catch (e, st) {
       debugPrint('Primary mosque API socket: $e $st');
-      return null;
+      return const _MosqueQueryResult(null, isNetworkError: true);
+    } on http.ClientException catch (e, st) {
+      debugPrint('Primary mosque API client: $e $st');
+      return const _MosqueQueryResult(null, isNetworkError: true);
     } on FormatException catch (e, st) {
       debugPrint('Primary mosque API parse: $e $st');
-      return null;
+      return const _MosqueQueryResult(null);
     } catch (e, st) {
       debugPrint('Primary mosque API unknown: $e $st');
-      return null;
+      return const _MosqueQueryResult(null);
     }
   }
 
-  Future<List<MosqueModel>?> _querySecondary(
+  Future<_MosqueQueryResult> _querySecondary(
     double lat,
     double lng,
     double radiusKm,
@@ -149,20 +176,23 @@ class MosqueService {
         );
       }
       final parsed = _parseResponse(response.body, response.statusCode, lat, lng);
-      if (parsed == null) return null;
-      return parsed.take(limit).toList();
+      if (parsed == null) return const _MosqueQueryResult(null);
+      return _MosqueQueryResult(parsed.take(limit).toList());
     } on TimeoutException catch (e, st) {
       debugPrint('Secondary mosque API timeout: $e $st');
-      return null;
+      return const _MosqueQueryResult(null, isNetworkError: true);
     } on SocketException catch (e, st) {
       debugPrint('Secondary mosque API socket: $e $st');
-      return null;
+      return const _MosqueQueryResult(null, isNetworkError: true);
+    } on http.ClientException catch (e, st) {
+      debugPrint('Secondary mosque API client: $e $st');
+      return const _MosqueQueryResult(null, isNetworkError: true);
     } on FormatException catch (e, st) {
       debugPrint('Secondary mosque API parse: $e $st');
-      return null;
+      return const _MosqueQueryResult(null);
     } catch (e, st) {
       debugPrint('Secondary mosque API unknown: $e $st');
-      return null;
+      return const _MosqueQueryResult(null);
     }
   }
 
@@ -227,6 +257,15 @@ class MosqueService {
     }
     return null;
   }
+}
+
+/// Internal result of a single mosque API query, letting [MosqueService]
+/// tell the difference between "no data" and a connectivity failure.
+class _MosqueQueryResult {
+  final List<MosqueModel>? mosques;
+  final bool isNetworkError;
+
+  const _MosqueQueryResult(this.mosques, {this.isNetworkError = false});
 }
 
 class MapLauncherService {

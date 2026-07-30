@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
 
@@ -58,7 +59,10 @@ class LocationService {
     } on LocationException {
       rethrow;
     } catch (e) {
-      throw LocationException('Failed to get location: ${e.toString()}');
+      debugPrint('LocationService position error: $e');
+      throw LocationException(
+        'Could not determine your location. Please try again.',
+      );
     }
   }
 
@@ -98,7 +102,10 @@ class LocationService {
         return 'Unknown Location';
       }
     } catch (e) {
-      throw LocationException('Failed to get city name: ${e.toString()}');
+      debugPrint('LocationService geocode error: $e');
+      throw LocationException(
+        'Could not look up your city name. Please try again.',
+      );
     }
   }
 
@@ -138,8 +145,9 @@ class LocationService {
         formattedAddress: _formatAddress(place),
       );
     } catch (e) {
+      debugPrint('LocationService details error: $e');
       throw LocationException(
-        'Failed to get location details: ${e.toString()}',
+        'Could not look up your location details. Please try again.',
       );
     }
   }
@@ -208,11 +216,13 @@ class LocationDetails {
 }
 
 /// Custom exception for location errors
+///
+/// [message] is always safe to show directly to the user.
 class LocationException implements Exception {
   final String message;
 
   LocationException(this.message);
 
   @override
-  String toString() => 'LocationException: $message';
+  String toString() => message;
 }

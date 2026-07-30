@@ -6,6 +6,7 @@ import 'package:flutter_rotation_sensor/flutter_rotation_sensor.dart';
 import 'package:geolocator/geolocator.dart';
 
 import '../models/qibla_model.dart';
+import '../services/api_service.dart';
 import '../services/location_service.dart';
 import '../services/qibla_service.dart';
 
@@ -113,9 +114,12 @@ class QiblaProvider extends ChangeNotifier {
     } on LocationException catch (e) {
       _errorMessage = _locationErrorMessage(e);
       debugPrint('Qibla location exception: $e');
+    } on ApiException catch (e) {
+      _errorMessage = e.message;
+      debugPrint('Qibla API exception: $e');
     } catch (e) {
       _errorMessage =
-          'Could not determine your location. Please pull down to refresh.';
+          'Something went wrong while loading the Qibla direction. Please pull down to refresh.';
       debugPrint('Qibla init error: $e');
     } finally {
       _loading = false;
@@ -154,6 +158,9 @@ class QiblaProvider extends ChangeNotifier {
     } on LocationException catch (e) {
       _errorMessage = _locationErrorMessage(e);
       debugPrint('Qibla refresh location exception: $e');
+    } on ApiException catch (e) {
+      _errorMessage = e.message;
+      debugPrint('Qibla refresh API exception: $e');
     } catch (e) {
       _errorMessage =
           'Could not refresh Qibla data. Please try again.';

@@ -94,10 +94,13 @@ class MosqueProvider extends ChangeNotifier {
     } on LocationException catch (e) {
       _errorMessage = _locationErrorMessage(e);
       debugPrint('Location exception: $e');
+    } on MosqueServiceException catch (e) {
+      _errorMessage = e.message;
+      debugPrint('Mosque service exception: $e');
     } catch (e) {
       _errorMessage =
-          'Could not determine your location. Please pull down to refresh.';
-      debugPrint('Location error: $e');
+          'Something went wrong while finding nearby mosques. Please pull down to refresh.';
+      debugPrint('Mosque init error: $e');
     } finally {
       _loading = false;
       notifyListeners();
@@ -139,6 +142,9 @@ class MosqueProvider extends ChangeNotifier {
     } on LocationException catch (e) {
       _errorMessage = _refreshLocationErrorMessage(e);
       debugPrint('Refresh location exception: $e');
+    } on MosqueServiceException catch (e) {
+      _errorMessage = e.message;
+      debugPrint('Refresh mosque service exception: $e');
     } catch (e) {
       _errorMessage =
           'Could not refresh nearby mosques. Check your connection.';
@@ -180,7 +186,7 @@ class MosqueProvider extends ChangeNotifier {
     if (results.isEmpty) {
       _nearbyMosques = [];
       _errorMessage =
-          'No mosques found nearby. Try increasing search radius later.';
+          'No mosques found nearby. Try again later or from a different area.';
     } else {
       _nearbyMosques = results;
     }

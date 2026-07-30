@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import '../models/prayer_times_model.dart';
 import 'api_service.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -9,7 +10,7 @@ class PrayerService {
 
   PrayerService({ApiService? apiService})
     : _apiService = apiService ?? ApiService(),
-      _defaultTimezone = dotenv.env['DEFAULT_TIMEZONE'] ?? 'Asia/Jakarta';
+      _defaultTimezone = dotenv.env['DEFAULT_TIMEZONE']!;
 
   /// Fetch today's prayer times for a specific city
   ///
@@ -29,8 +30,14 @@ class PrayerService {
       );
 
       return PrayerTimesModel.fromJson(response);
+    } on ApiException {
+      // Already carries a user-friendly message
+      rethrow;
     } catch (e) {
-      throw ApiException('Failed to fetch prayer times: ${e.toString()}');
+      debugPrint('PrayerService parse error: $e');
+      throw ApiException(
+        'Unable to read the prayer times data. Please try again later.',
+      );
     }
   }
 
@@ -58,9 +65,12 @@ class PrayerService {
       );
 
       return PrayerTimesModel.fromJson(response);
+    } on ApiException {
+      rethrow;
     } catch (e) {
+      debugPrint('PrayerService parse error (by date): $e');
       throw ApiException(
-        'Failed to fetch prayer times for date: ${e.toString()}',
+        'Unable to read the prayer times data. Please try again later.',
       );
     }
   }

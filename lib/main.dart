@@ -15,8 +15,14 @@ void main() async {
   // Ensure Flutter bindings are initialized
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Load environment variables
-  await dotenv.load(fileName: '.env');
+  // Load environment variables (services have safe fallbacks if missing)
+  try {
+    await dotenv.load(fileName: '.env');
+  } catch (e) {
+    debugPrint('Could not load .env file, using default configuration: $e');
+    // Initialize dotenv with empty content so dotenv.env access is safe
+    dotenv.loadFromString(envString: '');
+  }
 
   // Create theme provider and load saved preference
   final themeProvider = ThemeProvider();

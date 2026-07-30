@@ -4,6 +4,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import '../models/prayer_times_model.dart';
 import '../models/qibla_model.dart';
 import '../models/calendar_model.dart';
+import '../services/api_service.dart';
 import '../services/prayer_service.dart';
 import '../services/qibla_service.dart';
 import '../services/calendar_service.dart';
@@ -57,7 +58,8 @@ class PrayerProvider with ChangeNotifier {
       // Get current location
       await _fetchLocation();
 
-      // Fetch all data in parallel
+      // Fetch all data in parallel. Prayer times are essential; qibla and
+      // calendar failures are non-fatal (both have local fallbacks).
       await Future.wait([
         _fetchPrayerTimes(),
         _fetchQiblaDirection(),
@@ -70,10 +72,28 @@ class PrayerProvider with ChangeNotifier {
       _isLoading = false;
       notifyListeners();
     } catch (e) {
-      _errorMessage = e.toString();
+      _errorMessage = _friendlyErrorMessage(e);
       _isLoading = false;
+      debugPrint('PrayerProvider initialize error: $e');
       notifyListeners();
     }
+  }
+
+  /// Convert any error into a message safe to show to the user
+  String _friendlyErrorMessage(Object e) {
+    if (e is ApiException) return e.message;
+    if (e is LocationException) return e.message;
+    final msg = e.toString();
+    if (msg.contains('SocketException') ||
+        msg.contains('Failed host lookup') ||
+        msg.contains('Network is unreachable') ||
+        msg.contains('No internet')) {
+      return 'No internet connection. Please check your network and try again.';
+    }
+    if (msg.contains('timed out') || msg.contains('timeout')) {
+      return 'The request timed out. Please check your connection and try again.';
+    }
+    return 'Something went wrong while loading prayer data. Please try again.';
   }
 
   /// Fetch current location
@@ -89,6 +109,7 @@ class PrayerProvider with ChangeNotifier {
       }
     } catch (e) {
       _locationName = 'Location unavailable';
+      debugPrint('PrayerProvider location error: $e');
       // Use default location (Jakarta)
       _currentPosition = Position(
         latitude: -6.2088,
@@ -105,20 +126,18 @@ class PrayerProvider with ChangeNotifier {
     }
   }
 
-  /// Fetch prayer times from API
+  /// Fetch prayer times from API (essential — errors propagate to the UI)
   Future<void> _fetchPrayerTimes() async {
     if (_currentPosition == null) return;
 
-    try {
-      // Use default city ID from .env or a fallback
-      final cityId = dotenv.env['DEFAULT_CITY_ID'] ?? '1301';
-      _prayerTimes = await _prayerService.getTodayPrayerTimes(cityId);
-    } catch (e) {
-      throw Exception('Failed to load prayer times: $e');
-    }
+    // Use default city ID from .env
+    final cityId = dotenv.env['DEFAULT_CITY_ID']!;
+    // ApiException already carries a user-friendly message; let it propagate
+    _prayerTimes = await _prayerService.getTodayPrayerTimes(cityId);
   }
 
-  /// Fetch Qibla direction
+  /// Fetch Qibla direction (non-fatal — the service falls back to a local
+  /// calculation, so a failure here should not block the home screen)
   Future<void> _fetchQiblaDirection() async {
     if (_currentPosition == null) return;
 
@@ -128,16 +147,16 @@ class PrayerProvider with ChangeNotifier {
         _currentPosition!.longitude,
       );
     } catch (e) {
-      throw Exception('Failed to load Qibla direction: $e');
+      debugPrint('PrayerProvider qibla error (non-fatal): $e');
     }
   }
 
-  /// Fetch Islamic calendar
+  /// Fetch Islamic calendar (non-fatal — computed locally)
   Future<void> _fetchCalendar() async {
     try {
       _calendar = await _calendarService.getTodayCalendar();
     } catch (e) {
-      throw Exception('Failed to load calendar: $e');
+      debugPrint('PrayerProvider calendar error (non-fatal): $e');
     }
   }
 

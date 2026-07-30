@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'api_service.dart';
 import '../models/verse_model.dart';
@@ -45,8 +46,14 @@ class VerseService {
       final verse = VerseModel.fromJson(response);
       await _cacheVerse(verse);
       return verse;
+    } on ApiException {
+      // Already carries a user-friendly message
+      rethrow;
     } catch (e) {
-      throw Exception('Failed to fetch verse: $e');
+      debugPrint('VerseService parse error: $e');
+      throw ApiException(
+        'Unable to load the verse of the day. Please try again later.',
+      );
     }
   }
 
@@ -126,8 +133,13 @@ class VerseService {
       final prefs = await SharedPreferences.getInstance();
       await prefs.remove(_keyCachedDate); // Invalidate cache
       return await _fetchFromApi();
+    } on ApiException {
+      rethrow;
     } catch (e) {
-      throw Exception('Failed to refresh verse: $e');
+      debugPrint('VerseService refresh error: $e');
+      throw ApiException(
+        'Unable to refresh the verse of the day. Please try again later.',
+      );
     }
   }
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/verse_model.dart';
+import '../services/api_service.dart';
 import '../services/verse_service.dart';
 
 /// Provider for managing verse of the day data
@@ -54,16 +55,18 @@ class VerseProvider with ChangeNotifier {
 
   /// Parse error message for user-friendly display
   String _parseErrorMessage(dynamic error) {
+    // ApiException already carries a user-friendly message
+    if (error is ApiException) return error.message;
+
     final errorStr = error.toString();
-    if (errorStr.contains('Network error') ||
-        errorStr.contains('SocketException')) {
-      return 'No internet connection. Please check your network.';
-    } else if (errorStr.contains('timeout')) {
-      return 'Request timed out. Please try again.';
-    } else if (errorStr.contains('Failed to fetch')) {
-      return 'Unable to load verse. Please try again later.';
+    if (errorStr.contains('SocketException') ||
+        errorStr.contains('Failed host lookup') ||
+        errorStr.contains('Network')) {
+      return 'No internet connection. Please check your network and try again.';
+    } else if (errorStr.contains('timeout') || errorStr.contains('timed out')) {
+      return 'The request timed out. Please try again.';
     } else {
-      return 'An error occurred. Please try again.';
+      return 'Unable to load the verse of the day. Please try again later.';
     }
   }
 
