@@ -4,6 +4,7 @@ import '../../core/providers/prayer_provider.dart';
 import '../../core/providers/verse_provider.dart';
 import '../../core/providers/streak_provider.dart';
 import '../../core/theme/app_colors.dart';
+import '../../widgets/common/error_state_view.dart';
 import '../../widgets/common/section_skeleton.dart';
 import '../../widgets/home/glass_banner.dart';
 import '../../widgets/home/horizontal_prayer_stepper.dart';
@@ -100,7 +101,10 @@ class _HomeScreenState extends State<HomeScreen> {
             )
           else if (prayerProvider.errorMessage != null)
             SliverFillRemaining(
-              child: _buildErrorView(context, prayerProvider, isDark),
+              child: ErrorStateView(
+                message: prayerProvider.errorMessage!,
+                onRetry: () => prayerProvider.refresh(),
+              ),
             )
           else
             // Main Content
@@ -135,89 +139,6 @@ class _HomeScreenState extends State<HomeScreen> {
               ]),
             ),
         ],
-      ),
-    );
-  }
-
-  /// Error view with contextual icon/title (offline, timeout, or generic)
-  Widget _buildErrorView(
-    BuildContext context,
-    PrayerProvider prayerProvider,
-    bool isDark,
-  ) {
-    final message = prayerProvider.errorMessage!;
-    final lower = message.toLowerCase();
-    final isOffline =
-        lower.contains('internet') || lower.contains('network');
-    final isTimeout = lower.contains('timed out');
-
-    final IconData icon;
-    final String title;
-    if (isOffline) {
-      icon = Icons.wifi_off_rounded;
-      title = 'No Internet Connection';
-    } else if (isTimeout) {
-      icon = Icons.hourglass_empty_rounded;
-      title = 'Connection Timed Out';
-    } else {
-      icon = Icons.error_outline;
-      title = 'Unable to Load Prayer Times';
-    }
-
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              icon,
-              size: 64,
-              color: isOffline
-                  ? (isDark ? AppColors.textMutedDark : AppColors.textMutedLight)
-                  : Colors.red.withValues(alpha: 0.7),
-            ),
-            const SizedBox(height: 16),
-            Text(
-              title,
-              style: TextStyle(
-                color: isDark
-                    ? AppColors.textMainDark
-                    : AppColors.textMainLight,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              message,
-              style: TextStyle(
-                color: isDark
-                    ? AppColors.textMutedDark
-                    : AppColors.textMutedLight,
-                fontSize: 14,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 24),
-            ElevatedButton.icon(
-              onPressed: () => prayerProvider.refresh(),
-              icon: const Icon(Icons.refresh),
-              label: const Text('Retry'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: isDark
-                    ? AppColors.primaryDark
-                    : AppColors.primaryLight,
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 24,
-                  vertical: 12,
-                ),
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:geolocator/geolocator.dart';
+import '../errors/error_messages.dart';
 import '../models/qibla_model.dart';
 import 'api_service.dart';
 import 'dart:math' as math;
@@ -57,9 +58,7 @@ class QiblaService {
       );
     } catch (e) {
       debugPrint('Qibla local calculation failed: $e');
-      throw ApiException(
-        'Unable to determine the Qibla direction. Please try again.',
-      );
+      throw ApiException(ErrorMessages.qiblaUnavailable);
     }
   }
 

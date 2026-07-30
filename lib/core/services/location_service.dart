@@ -1,6 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
+import '../errors/app_exceptions.dart';
+import '../errors/error_messages.dart';
+
+// Keep existing `import 'location_service.dart'` sites working
+export '../errors/app_exceptions.dart' show LocationException;
 
 /// Service for handling device location and geocoding
 /// Follows best practices for permission handling and error management
@@ -17,9 +22,7 @@ class LocationService {
       // Check if location services are enabled
       final serviceEnabled = await Geolocator.isLocationServiceEnabled();
       if (!serviceEnabled) {
-        throw LocationException(
-          'Location services are disabled. Please enable location in settings.',
-        );
+        throw LocationException(ErrorMessages.locationServicesDisabled);
       }
 
       // Check and request permission
@@ -27,15 +30,13 @@ class LocationService {
       if (permission == LocationPermission.denied) {
         permission = await Geolocator.requestPermission();
         if (permission == LocationPermission.denied) {
-          throw LocationException(
-            'Location permission denied. Please grant location access.',
-          );
+          throw LocationException(ErrorMessages.locationPermissionDenied);
         }
       }
 
       if (permission == LocationPermission.deniedForever) {
         throw LocationException(
-          'Location permission permanently denied. Please enable it in app settings.',
+          ErrorMessages.locationPermissionPermanentlyDenied,
         );
       }
 
@@ -49,9 +50,7 @@ class LocationService {
           ).timeout(
             const Duration(seconds: 30),
             onTimeout: () {
-              throw LocationException(
-                'Location request timeout. Please try again.',
-              );
+              throw LocationException(ErrorMessages.locationTimeout);
             },
           );
 
@@ -60,9 +59,7 @@ class LocationService {
       rethrow;
     } catch (e) {
       debugPrint('LocationService position error: $e');
-      throw LocationException(
-        'Could not determine your location. Please try again.',
-      );
+      throw LocationException(ErrorMessages.locationUnavailable);
     }
   }
 
@@ -103,9 +100,7 @@ class LocationService {
       }
     } catch (e) {
       debugPrint('LocationService geocode error: $e');
-      throw LocationException(
-        'Could not look up your city name. Please try again.',
-      );
+      throw LocationException(ErrorMessages.cityLookupFailed);
     }
   }
 
@@ -146,9 +141,7 @@ class LocationService {
       );
     } catch (e) {
       debugPrint('LocationService details error: $e');
-      throw LocationException(
-        'Could not look up your location details. Please try again.',
-      );
+      throw LocationException(ErrorMessages.locationDetailsFailed);
     }
   }
 
@@ -213,16 +206,4 @@ class LocationDetails {
 
   @override
   String toString() => formattedAddress;
-}
-
-/// Custom exception for location errors
-///
-/// [message] is always safe to show directly to the user.
-class LocationException implements Exception {
-  final String message;
-
-  LocationException(this.message);
-
-  @override
-  String toString() => message;
 }

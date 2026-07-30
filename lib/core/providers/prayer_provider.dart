@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import '../errors/error_messages.dart';
 import '../models/prayer_times_model.dart';
 import '../models/qibla_model.dart';
 import '../models/calendar_model.dart';
-import '../services/api_service.dart';
 import '../services/prayer_service.dart';
 import '../services/qibla_service.dart';
 import '../services/calendar_service.dart';
@@ -72,28 +72,14 @@ class PrayerProvider with ChangeNotifier {
       _isLoading = false;
       notifyListeners();
     } catch (e) {
-      _errorMessage = _friendlyErrorMessage(e);
+      _errorMessage = friendlyErrorMessage(
+        e,
+        fallback: ErrorMessages.prayerDataFailed,
+      );
       _isLoading = false;
       debugPrint('PrayerProvider initialize error: $e');
       notifyListeners();
     }
-  }
-
-  /// Convert any error into a message safe to show to the user
-  String _friendlyErrorMessage(Object e) {
-    if (e is ApiException) return e.message;
-    if (e is LocationException) return e.message;
-    final msg = e.toString();
-    if (msg.contains('SocketException') ||
-        msg.contains('Failed host lookup') ||
-        msg.contains('Network is unreachable') ||
-        msg.contains('No internet')) {
-      return 'No internet connection. Please check your network and try again.';
-    }
-    if (msg.contains('timed out') || msg.contains('timeout')) {
-      return 'The request timed out. Please check your connection and try again.';
-    }
-    return 'Something went wrong while loading prayer data. Please try again.';
   }
 
   /// Fetch current location

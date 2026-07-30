@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import '../errors/error_messages.dart';
 import '../models/calendar_model.dart';
 import 'api_service.dart';
 import 'package:intl/intl.dart';
@@ -27,9 +28,7 @@ class CalendarService {
       return _convertToHijri(now);
     } catch (e) {
       debugPrint('CalendarService error: $e');
-      throw ApiException(
-        'Unable to load the Islamic calendar. Please try again later.',
-      );
+      throw ApiException(ErrorMessages.calendarUnavailable);
     }
   }
 
@@ -54,9 +53,7 @@ class CalendarService {
       return _convertToHijri(date);
     } catch (e) {
       debugPrint('CalendarService error (by date): $e');
-      throw ApiException(
-        'Unable to load the Islamic calendar. Please try again later.',
-      );
+      throw ApiException(ErrorMessages.calendarUnavailable);
     }
   }
 

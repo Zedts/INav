@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import '../errors/error_messages.dart';
 import '../models/prayer_times_model.dart';
 import 'api_service.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -35,9 +36,7 @@ class PrayerService {
       rethrow;
     } catch (e) {
       debugPrint('PrayerService parse error: $e');
-      throw ApiException(
-        'Unable to read the prayer times data. Please try again later.',
-      );
+      throw ApiException(ErrorMessages.prayerTimesUnreadable);
     }
   }
 
@@ -69,9 +68,7 @@ class PrayerService {
       rethrow;
     } catch (e) {
       debugPrint('PrayerService parse error (by date): $e');
-      throw ApiException(
-        'Unable to read the prayer times data. Please try again later.',
-      );
+      throw ApiException(ErrorMessages.prayerTimesUnreadable);
     }
   }
 

@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../errors/error_messages.dart';
 import 'api_service.dart';
 import '../models/verse_model.dart';
 
@@ -51,9 +52,7 @@ class VerseService {
       rethrow;
     } catch (e) {
       debugPrint('VerseService parse error: $e');
-      throw ApiException(
-        'Unable to load the verse of the day. Please try again later.',
-      );
+      throw ApiException(ErrorMessages.verseUnavailable);
     }
   }
 
@@ -137,9 +136,7 @@ class VerseService {
       rethrow;
     } catch (e) {
       debugPrint('VerseService refresh error: $e');
-      throw ApiException(
-        'Unable to refresh the verse of the day. Please try again later.',
-      );
+      throw ApiException(ErrorMessages.verseUnavailable);
     }
   }
 

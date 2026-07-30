@@ -2,6 +2,11 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import '../errors/app_exceptions.dart';
+import '../errors/error_messages.dart';
+
+// Keep existing `import 'api_service.dart'` sites working for ApiException
+export '../errors/app_exceptions.dart' show ApiException;
 
 /// Base API service for handling HTTP requests
 class ApiService {
@@ -29,7 +34,7 @@ class ApiService {
             const Duration(seconds: 30),
             onTimeout: () {
               throw ApiException(
-                'The request timed out. Please check your connection and try again.',
+                ErrorMessages.requestTimeout,
                 statusCode: 408,
                 isNetworkError: true,
               );
@@ -44,7 +49,7 @@ class ApiService {
       // DNS failure, connection refused). Log details, never expose the URL.
       debugPrint('ApiService network error on $endpoint: $e');
       throw ApiException(
-        'No internet connection. Please check your network and try again.',
+        ErrorMessages.noInternet,
         isNetworkError: true,
       );
     } catch (e) {
@@ -55,13 +60,11 @@ class ApiService {
           msg.contains('Connection refused') ||
           msg.contains('Network is unreachable')) {
         throw ApiException(
-          'No internet connection. Please check your network and try again.',
+          ErrorMessages.noInternet,
           isNetworkError: true,
         );
       }
-      throw ApiException(
-        'Something went wrong while contacting the server. Please try again.',
-      );
+      throw ApiException(ErrorMessages.serverContactFailed);
     }
   }
 
@@ -74,7 +77,7 @@ class ApiService {
         // Check if API returned status: false
         if (data['status'] == false) {
           throw ApiException(
-            'The service could not process the request. Please try again later.',
+            ErrorMessages.requestRejected,
             statusCode: response.statusCode,
           );
         }
@@ -83,9 +86,7 @@ class ApiService {
       } catch (e) {
         if (e is ApiException) rethrow;
         debugPrint('ApiService parse error: $e');
-        throw ApiException(
-          'Received an unexpected response from the server. Please try again later.',
-        );
+        throw ApiException(ErrorMessages.unexpectedResponse);
       }
     } else {
       debugPrint(
@@ -93,8 +94,8 @@ class ApiService {
       );
       throw ApiException(
         response.statusCode >= 500
-            ? 'The server is currently unavailable. Please try again later.'
-            : 'The requested data could not be loaded. Please try again later.',
+            ? ErrorMessages.serverUnavailable
+            : ErrorMessages.dataUnavailable,
         statusCode: response.statusCode,
       );
     }
@@ -104,19 +105,4 @@ class ApiService {
   void dispose() {
     _client.close();
   }
-}
-
-/// Custom exception for API errors
-///
-/// [message] is always safe to show directly to the user (no URLs,
-/// stack traces, or internal details).
-class ApiException implements Exception {
-  final String message;
-  final int? statusCode;
-  final bool isNetworkError;
-
-  ApiException(this.message, {this.statusCode, this.isNetworkError = false});
-
-  @override
-  String toString() => message;
 }

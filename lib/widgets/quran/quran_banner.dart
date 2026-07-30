@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../core/errors/error_messages.dart';
 import '../../core/providers/quran_provider.dart';
 import '../../core/models/surah_model.dart';
+import '../common/error_state_view.dart';
 import '../common/glass_pill_badge.dart';
 
 class QuranBanner extends StatefulWidget {
@@ -47,12 +49,7 @@ class _QuranBannerState extends State<QuranBanner> {
       }
     } catch (_) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Unable to play audio. Please try again.'),
-          duration: Duration(seconds: 2),
-        ),
-      );
+      showErrorSnackBar(context, ErrorMessages.audioPlaybackFailed);
     }
   }
 
@@ -69,12 +66,7 @@ class _QuranBannerState extends State<QuranBanner> {
       );
     } catch (_) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Unable to stop. Please try again.'),
-          duration: Duration(seconds: 2),
-        ),
-      );
+      showErrorSnackBar(context, ErrorMessages.audioStopFailed);
     }
   }
 

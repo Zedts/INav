@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:latlong2/latlong.dart';
+import '../errors/error_messages.dart';
 import '../models/mosque_model.dart';
 import '../services/location_service.dart';
 import '../services/mosque_service.dart';
@@ -92,14 +93,17 @@ class MosqueProvider extends ChangeNotifier {
 
       await _loadNearby(pos.latitude, pos.longitude);
     } on LocationException catch (e) {
-      _errorMessage = _locationErrorMessage(e);
+      // Service messages are already user-friendly and consistent
+      _errorMessage = e.message;
       debugPrint('Location exception: $e');
     } on MosqueServiceException catch (e) {
       _errorMessage = e.message;
       debugPrint('Mosque service exception: $e');
     } catch (e) {
-      _errorMessage =
-          'Something went wrong while finding nearby mosques. Please pull down to refresh.';
+      _errorMessage = friendlyErrorMessage(
+        e,
+        fallback: ErrorMessages.mosquesLoadFailed,
+      );
       debugPrint('Mosque init error: $e');
     } finally {
       _loading = false;
@@ -140,14 +144,17 @@ class MosqueProvider extends ChangeNotifier {
       await _loadNearby(lat, lng);
       resetFeaturedToNearest(silent: true);
     } on LocationException catch (e) {
-      _errorMessage = _refreshLocationErrorMessage(e);
+      // Service messages are already user-friendly and consistent
+      _errorMessage = e.message;
       debugPrint('Refresh location exception: $e');
     } on MosqueServiceException catch (e) {
       _errorMessage = e.message;
       debugPrint('Refresh mosque service exception: $e');
     } catch (e) {
-      _errorMessage =
-          'Could not refresh nearby mosques. Check your connection.';
+      _errorMessage = friendlyErrorMessage(
+        e,
+        fallback: ErrorMessages.mosquesLoadFailed,
+      );
       debugPrint('Refresh error: $e');
     } finally {
       _loading = false;
@@ -159,34 +166,11 @@ class MosqueProvider extends ChangeNotifier {
   Future<void> refreshNearbyMosques({bool forceRefreshLocation = true}) =>
       refresh(forceRefreshLocation: forceRefreshLocation);
 
-  String _locationErrorMessage(LocationException e) {
-    final msg = e.message.toLowerCase();
-    if (msg.contains('permission') || msg.contains('denied')) {
-      return 'Location permission denied. Please enable location access in Settings to find nearby mosques.';
-    }
-    if (msg.contains('disabled') || msg.contains('turned off')) {
-      return 'Location services are disabled. Please turn on GPS to find nearby mosques.';
-    }
-    return 'Could not determine your location. Please pull down to refresh.';
-  }
-
-  String _refreshLocationErrorMessage(LocationException e) {
-    final msg = e.message.toLowerCase();
-    if (msg.contains('permission') || msg.contains('denied')) {
-      return 'Location permission denied. Please enable it in Settings.';
-    }
-    if (msg.contains('disabled')) {
-      return 'Location services are disabled. Enable GPS and try again.';
-    }
-    return 'Could not refresh nearby mosques. Check your connection.';
-  }
-
   Future<void> _loadNearby(double lat, double lng) async {
     final results = await _mosqueService.findNearby(lat, lng);
     if (results.isEmpty) {
       _nearbyMosques = [];
-      _errorMessage =
-          'No mosques found nearby. Try again later or from a different area.';
+      _errorMessage = ErrorMessages.noMosquesFound;
     } else {
       _nearbyMosques = results;
     }
@@ -256,7 +240,7 @@ class MosqueProvider extends ChangeNotifier {
   Future<bool> navigateTo(MosqueModel mosque) async {
     final here = _userLatLng;
     if (here == null) {
-      _errorMessage = 'Your location is not available. Please refresh first.';
+      _errorMessage = ErrorMessages.locationNotReady;
       notifyListeners();
       return false;
     }
@@ -268,8 +252,7 @@ class MosqueProvider extends ChangeNotifier {
       travelMode: 'walking',
     );
     if (!ok) {
-      _errorMessage =
-          'Unable to open Maps. Google Maps app may not be installed.';
+      _errorMessage = ErrorMessages.mapsUnavailable;
       notifyListeners();
     }
     return ok;

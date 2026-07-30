@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import '../errors/error_messages.dart';
 import '../models/verse_model.dart';
-import '../services/api_service.dart';
 import '../services/verse_service.dart';
 
 /// Provider for managing verse of the day data
@@ -29,7 +29,10 @@ class VerseProvider with ChangeNotifier {
       _errorMessage = null;
       notifyListeners();
     } catch (e) {
-      _errorMessage = _parseErrorMessage(e);
+      _errorMessage = friendlyErrorMessage(
+        e,
+        fallback: ErrorMessages.verseUnavailable,
+      );
       _isLoading = false;
       notifyListeners();
     }
@@ -47,26 +50,12 @@ class VerseProvider with ChangeNotifier {
       _errorMessage = null;
       notifyListeners();
     } catch (e) {
-      _errorMessage = _parseErrorMessage(e);
+      _errorMessage = friendlyErrorMessage(
+        e,
+        fallback: ErrorMessages.verseUnavailable,
+      );
       _isLoading = false;
       notifyListeners();
-    }
-  }
-
-  /// Parse error message for user-friendly display
-  String _parseErrorMessage(dynamic error) {
-    // ApiException already carries a user-friendly message
-    if (error is ApiException) return error.message;
-
-    final errorStr = error.toString();
-    if (errorStr.contains('SocketException') ||
-        errorStr.contains('Failed host lookup') ||
-        errorStr.contains('Network')) {
-      return 'No internet connection. Please check your network and try again.';
-    } else if (errorStr.contains('timeout') || errorStr.contains('timed out')) {
-      return 'The request timed out. Please try again.';
-    } else {
-      return 'Unable to load the verse of the day. Please try again later.';
     }
   }
 

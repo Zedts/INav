@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_rotation_sensor/flutter_rotation_sensor.dart';
 import 'package:geolocator/geolocator.dart';
 
+import '../errors/error_messages.dart';
 import '../models/qibla_model.dart';
 import '../services/api_service.dart';
 import '../services/location_service.dart';
@@ -112,14 +113,17 @@ class QiblaProvider extends ChangeNotifier {
       await _resolveCityName(pos.latitude, pos.longitude);
       await _fetchQibla(pos.latitude, pos.longitude);
     } on LocationException catch (e) {
-      _errorMessage = _locationErrorMessage(e);
+      // Service messages are already user-friendly and consistent
+      _errorMessage = e.message;
       debugPrint('Qibla location exception: $e');
     } on ApiException catch (e) {
       _errorMessage = e.message;
       debugPrint('Qibla API exception: $e');
     } catch (e) {
-      _errorMessage =
-          'Something went wrong while loading the Qibla direction. Please pull down to refresh.';
+      _errorMessage = friendlyErrorMessage(
+        e,
+        fallback: ErrorMessages.qiblaLoadFailed,
+      );
       debugPrint('Qibla init error: $e');
     } finally {
       _loading = false;
@@ -156,14 +160,17 @@ class QiblaProvider extends ChangeNotifier {
 
       await _fetchQibla(lat, lng);
     } on LocationException catch (e) {
-      _errorMessage = _locationErrorMessage(e);
+      // Service messages are already user-friendly and consistent
+      _errorMessage = e.message;
       debugPrint('Qibla refresh location exception: $e');
     } on ApiException catch (e) {
       _errorMessage = e.message;
       debugPrint('Qibla refresh API exception: $e');
     } catch (e) {
-      _errorMessage =
-          'Could not refresh Qibla data. Please try again.';
+      _errorMessage = friendlyErrorMessage(
+        e,
+        fallback: ErrorMessages.qiblaLoadFailed,
+      );
       debugPrint('Qibla refresh error: $e');
     } finally {
       _loading = false;
@@ -252,23 +259,6 @@ class QiblaProvider extends ChangeNotifier {
   double _smoothAngle(double current, double target, double factor) {
     final diff = ((target - current + 540) % 360) - 180;
     return (current + diff * factor + 360) % 360;
-  }
-
-  String _locationErrorMessage(LocationException e) {
-    final msg = e.message.toLowerCase();
-    if (msg.contains('disabled')) {
-      return 'Location services are disabled. Please enable GPS to find the Qibla direction.';
-    }
-    if (msg.contains('permanently')) {
-      return 'Location permission permanently denied. Please enable it in app settings.';
-    }
-    if (msg.contains('denied')) {
-      return 'Location permission denied. Please grant location access to find the Qibla direction.';
-    }
-    if (msg.contains('timeout')) {
-      return 'Location request timed out. Please try again.';
-    }
-    return e.message;
   }
 
   @override

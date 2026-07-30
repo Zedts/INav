@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../core/errors/error_messages.dart';
 import '../../core/models/surah_model.dart';
 import '../../core/providers/quran_provider.dart';
 
@@ -20,7 +21,7 @@ class SurahListTile extends StatelessWidget {
     if (url.isEmpty) {
       messenger.showSnackBar(
         const SnackBar(
-          content: Text('Audio unavailable for this Surah'),
+          content: Text(ErrorMessages.audioUnavailableForSurah),
           duration: Duration(seconds: 2),
         ),
       );
@@ -35,7 +36,7 @@ class SurahListTile extends StatelessWidget {
     } catch (_) {
       messenger.showSnackBar(
         const SnackBar(
-          content: Text('Unable to play audio. Please try again.'),
+          content: Text(ErrorMessages.audioPlaybackFailed),
           duration: Duration(seconds: 2),
         ),
       );

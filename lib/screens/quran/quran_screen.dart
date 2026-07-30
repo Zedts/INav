@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../core/providers/quran_provider.dart';
 import '../../core/models/surah_model.dart';
+import '../../widgets/common/error_state_view.dart';
 import '../../widgets/quran/quran_banner.dart';
 import '../../widgets/quran/search_bar.dart';
 import '../../widgets/quran/surah_list_tile.dart';
@@ -69,7 +70,11 @@ class _QuranScreenState extends State<QuranScreen> {
                   )
                 else if (quranProvider.errorMessage != null)
                   SliverToBoxAdapter(
-                    child: _buildErrorState(context, quranProvider),
+                    child: ErrorStateView(
+                      message: quranProvider.errorMessage!,
+                      onRetry: () =>
+                          quranProvider.loadSurahs(forceRefresh: true),
+                    ),
                   )
                 else if (quranProvider.filteredSurahs.isEmpty)
                   SliverToBoxAdapter(
@@ -168,70 +173,6 @@ class _QuranScreenState extends State<QuranScreen> {
                 color: isDark
                     ? const Color(0xFF94A3B8)
                     : const Color(0xFF64748B),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildErrorState(
-    BuildContext context,
-    QuranProvider quranProvider,
-  ) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-
-    return Padding(
-      padding: const EdgeInsets.all(24),
-      child: Center(
-        child: Column(
-          children: [
-            Container(
-              width: 56,
-              height: 56,
-              decoration: BoxDecoration(
-                color: const Color(0xFFEF4444).withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: const Icon(
-                Icons.error_outline,
-                size: 28,
-                color: Color(0xFFEF4444),
-              ),
-            ),
-            const SizedBox(height: 16),
-            Text(
-              quranProvider.errorMessage ?? 'An error occurred',
-              style: TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.w600,
-                color: isDark
-                    ? const Color(0xFFF8FAFC)
-                    : const Color(0xFF0F172A),
-              ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 12),
-            GestureDetector(
-              onTap: () => quranProvider.loadSurahs(forceRefresh: true),
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 10,
-                ),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF0D47A1),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: const Text(
-                  'Retry',
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.white,
-                  ),
-                ),
               ),
             ),
           ],

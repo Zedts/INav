@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
+import '../errors/error_messages.dart';
 import '../models/surah_model.dart';
-import '../services/api_service.dart';
 import '../services/quran_service.dart';
 
 enum AudioSourceId { banner, tile, sheet }
@@ -291,7 +291,10 @@ class QuranProvider with ChangeNotifier {
       _errorMessage = null;
       notifyListeners();
     } catch (e) {
-      _errorMessage = _parseErrorMessage(e);
+      _errorMessage = friendlyErrorMessage(
+        e,
+        fallback: ErrorMessages.surahListFailed,
+      );
       _isLoading = false;
       notifyListeners();
     }
@@ -328,22 +331,6 @@ class QuranProvider with ChangeNotifier {
   void toggleSidebar() {
     _isSidebarOpen = !_isSidebarOpen;
     notifyListeners();
-  }
-
-  String _parseErrorMessage(dynamic error) {
-    // ApiException already carries a user-friendly message
-    if (error is ApiException) return error.message;
-
-    final errorStr = error.toString();
-    if (errorStr.contains('SocketException') ||
-        errorStr.contains('Failed host lookup') ||
-        errorStr.contains('Network')) {
-      return 'No internet connection. Please check your network and try again.';
-    } else if (errorStr.contains('timeout') || errorStr.contains('timed out')) {
-      return 'The request timed out. Please try again.';
-    } else {
-      return 'Unable to load surahs. Please try again later.';
-    }
   }
 
   @override

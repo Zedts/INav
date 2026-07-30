@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../core/errors/error_messages.dart';
 import '../../core/models/mosque_model.dart';
 import '../../core/providers/mosque_provider.dart';
+import '../common/error_state_view.dart';
 import 'mosque_quick_actions.dart';
 
 class MosqueDetailSheet extends StatelessWidget {
@@ -27,12 +29,7 @@ class MosqueDetailSheet extends StatelessWidget {
     final ok = await context.read<MosqueProvider>().navigateTo(mosque);
     if (!context.mounted) return;
     if (!ok) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Unable to open Maps. Please try again later.'),
-          duration: Duration(seconds: 2),
-        ),
-      );
+      showErrorSnackBar(context, ErrorMessages.mapsUnavailable);
     }
   }
 

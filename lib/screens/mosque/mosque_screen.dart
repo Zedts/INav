@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../core/errors/error_messages.dart';
 import '../../core/providers/mosque_provider.dart';
 import '../../core/models/mosque_model.dart';
 import '../../widgets/mosque/map_view_section.dart';
@@ -8,6 +9,7 @@ import '../../widgets/mosque/nearby_mosque_list_tile.dart';
 import '../../widgets/mosque/mosque_detail_sheet.dart';
 import '../../widgets/common/glass_pill_badge.dart';
 import '../../core/theme/app_colors.dart';
+import '../../widgets/common/error_state_view.dart';
 import '../../widgets/common/section_skeleton.dart';
 
 class MosqueScreen extends StatefulWidget {
@@ -38,12 +40,7 @@ class _MosqueScreenState extends State<MosqueScreen> {
     final ok = await context.read<MosqueProvider>().navigateTo(m);
     if (!mounted) return;
     if (!ok) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Unable to open Maps. Try again later.'),
-          duration: Duration(seconds: 2),
-        ),
-      );
+      showErrorSnackBar(context, ErrorMessages.mapsUnavailable);
     }
   }
 
@@ -88,7 +85,12 @@ class _MosqueScreenState extends State<MosqueScreen> {
                           loading
                               ? _buildLoadingView()
                               : error != null && mp.nearbyMosques.isEmpty
-                              ? _buildErrorView(isDark, mp, error)
+                              ? ErrorStateView(
+                                  message: error,
+                                  onRetry: _onRefresh,
+                                  onOpenSettings: () =>
+                                      mp.openLocationSettings(),
+                                )
                               : _buildContent(
                                   isDark,
                                   mp,
@@ -155,135 +157,6 @@ class _MosqueScreenState extends State<MosqueScreen> {
         SizedBox(height: 10),
         SectionSkeleton(height: 84, borderRadius: 20),
       ],
-    );
-  }
-
-  Widget _buildErrorView(bool isDark, MosqueProvider mp, String err) {
-    final lower = err.toLowerCase();
-    final isPermissionOrGps =
-        lower.contains('permission') || lower.contains('disabled');
-    final isOffline = lower.contains('internet') || lower.contains('network');
-
-    final IconData icon;
-    final String title;
-    if (isPermissionOrGps) {
-      icon = Icons.location_off_outlined;
-      title = 'Location Unavailable';
-    } else if (isOffline) {
-      icon = Icons.wifi_off_rounded;
-      title = 'No Internet Connection';
-    } else {
-      icon = Icons.warning_amber_rounded;
-      title = 'Something went wrong';
-    }
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              width: 64,
-              height: 64,
-              decoration: BoxDecoration(
-                color:
-                    isPermissionOrGps
-                        ? const Color(0xFF2563EB).withValues(alpha: 0.15)
-                        : const Color(0xFFEF4444).withValues(alpha: 0.12),
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Icon(
-                icon,
-                color:
-                    isPermissionOrGps
-                        ? const Color(0xFF2563EB)
-                        : const Color(0xFFEF4444),
-                size: 30,
-              ),
-            ),
-            const SizedBox(height: 18),
-            Text(
-              title,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w800,
-                color: isDark ? Colors.white : const Color(0xFF0F172A),
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              err,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w500,
-                height: 1.4,
-                color:
-                    isDark ? const Color(0xFF94A3B8) : const Color(0xFF64748B),
-              ),
-            ),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                OutlinedButton.icon(
-                  onPressed: _onRefresh,
-                  style: OutlinedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 14,
-                      vertical: 10,
-                    ),
-                    side: BorderSide(
-                      color: isDark
-                          ? const Color(0xFF1E293B)
-                          : const Color(0xFFCBD5E1),
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(14),
-                    ),
-                  ),
-                  icon: const Icon(Icons.refresh, size: 16),
-                  label: const Text(
-                    'Retry',
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                ),
-                if (isPermissionOrGps) ...[
-                  const SizedBox(width: 10),
-                  FilledButton.icon(
-                    onPressed: () async {
-                      await mp.openLocationSettings();
-                    },
-                    style: FilledButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 14,
-                        vertical: 10,
-                      ),
-                      backgroundColor: const Color(0xFF2563EB),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(14),
-                      ),
-                    ),
-                    icon: const Icon(Icons.settings, size: 16),
-                    label: const Text(
-                      'Open Settings',
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ),
-                ],
-              ],
-            ),
-          ],
-        ),
-      ),
     );
   }
 

@@ -6,20 +6,12 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../errors/app_exceptions.dart';
+import '../errors/error_messages.dart';
 import '../models/mosque_model.dart';
 
-/// Custom exception for mosque finder errors
-///
-/// [message] is always safe to show directly to the user (no URLs,
-/// stack traces, or internal details).
-class MosqueServiceException implements Exception {
-  final String message;
-
-  MosqueServiceException(this.message);
-
-  @override
-  String toString() => message;
-}
+// Keep existing `import 'mosque_service.dart'` sites working
+export '../errors/app_exceptions.dart' show MosqueServiceException;
 
 class MosqueService {
   final http.Client _httpClient;
@@ -63,9 +55,7 @@ class MosqueService {
       final allNetworkFailures =
           results.every((r) => r.mosques == null && r.isNetworkError);
       if (allNetworkFailures) {
-        throw MosqueServiceException(
-          'No internet connection. Please check your network and try again.',
-        );
+        throw MosqueServiceException(ErrorMessages.noInternet);
       }
       return [];
     }

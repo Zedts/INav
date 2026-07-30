@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import '../errors/error_messages.dart';
 import '../models/surah_model.dart';
 import 'api_service.dart';
 
@@ -29,9 +30,7 @@ class QuranService {
       rethrow;
     } catch (e) {
       debugPrint('QuranService parse error: $e');
-      throw ApiException(
-        'Unable to read the surah list. Please try again later.',
-      );
+      throw ApiException(ErrorMessages.surahListFailed);
     }
   }
 

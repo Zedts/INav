@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../core/providers/qibla_provider.dart';
 import '../../core/theme/app_colors.dart';
+import '../../widgets/common/error_state_view.dart';
 import '../../widgets/common/section_skeleton.dart';
 import '../../widgets/qibla/calibration_alert.dart';
 import '../../widgets/qibla/compass_dial.dart';
@@ -61,7 +62,17 @@ class _QiblaScreenState extends State<QiblaScreen> {
       return _buildLoadingView();
     }
     if (qp.errorMessage != null && qp.qiblaData == null) {
-      return _buildErrorView(isDark, qp, qp.errorMessage!);
+      return ErrorStateView(
+        message: qp.errorMessage!,
+        onRetry: () => qp.refresh(forceRefreshLocation: true),
+        onOpenSettings: () {
+          if (qp.errorMessage!.toLowerCase().contains('disabled')) {
+            qp.openLocationSettings();
+          } else {
+            qp.openAppSettings();
+          }
+        },
+      );
     }
     return _buildContent(isDark, qp);
   }
@@ -90,131 +101,6 @@ class _QiblaScreenState extends State<QiblaScreen> {
         // Location card
         SectionSkeleton(height: 110),
       ],
-    );
-  }
-
-  Widget _buildErrorView(bool isDark, QiblaProvider qp, String err) {
-    final lower = err.toLowerCase();
-    final isPermissionOrGps =
-        lower.contains('permission') || lower.contains('disabled');
-    final isOffline = lower.contains('internet') || lower.contains('network');
-
-    final IconData icon;
-    final String title;
-    if (isPermissionOrGps) {
-      icon = Icons.location_off;
-      title = 'Location needed';
-    } else if (isOffline) {
-      icon = Icons.wifi_off_rounded;
-      title = 'No Internet Connection';
-    } else {
-      icon = Icons.error_outline;
-      title = 'Something went wrong';
-    }
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              width: 64,
-              height: 64,
-              decoration: BoxDecoration(
-                color: isPermissionOrGps
-                    ? const Color(0xFF4F46E5).withValues(alpha: 0.15)
-                    : const Color(0xFFEF4444).withValues(alpha: 0.12),
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Icon(
-                icon,
-                size: 32,
-                color: isPermissionOrGps
-                    ? const Color(0xFF4F46E5)
-                    : const Color(0xFFEF4444),
-              ),
-            ),
-            const SizedBox(height: 16),
-            Text(
-              title,
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w800,
-                color: isDark
-                    ? const Color(0xFFF8FAFC)
-                    : const Color(0xFF0F172A),
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              err,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 13,
-                color: isDark
-                    ? const Color(0xFF94A3B8)
-                    : const Color(0xFF64748B),
-              ),
-            ),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton.icon(
-                  onPressed: () =>
-                      qp.refresh(forceRefreshLocation: true),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF4F46E5),
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 12,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                  ),
-                  icon: const Icon(Icons.refresh, size: 18),
-                  label: const Text(
-                    'Retry',
-                    style: TextStyle(fontWeight: FontWeight.w700),
-                  ),
-                ),
-                if (isPermissionOrGps) ...[
-                  const SizedBox(width: 12),
-                  OutlinedButton.icon(
-                    onPressed: () {
-                      if (err.toLowerCase().contains('disabled')) {
-                        qp.openLocationSettings();
-                      } else {
-                        qp.openAppSettings();
-                      }
-                    },
-                    style: OutlinedButton.styleFrom(
-                      foregroundColor: isDark
-                          ? const Color(0xFF818CF8)
-                          : const Color(0xFF4F46E5),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 12,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                    ),
-                    icon: const Icon(Icons.settings, size: 18),
-                    label: const Text(
-                      'Open Settings',
-                      style: TextStyle(fontWeight: FontWeight.w700),
-                    ),
-                  ),
-                ],
-              ],
-            ),
-          ],
-        ),
-      ),
     );
   }
 
