@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/providers/qibla_provider.dart';
+import '../../core/theme/app_colors.dart';
+import '../../widgets/common/section_skeleton.dart';
 import '../../widgets/qibla/calibration_alert.dart';
 import '../../widgets/qibla/compass_dial.dart';
 import '../../widgets/qibla/qibla_hero_banner.dart';
@@ -55,8 +57,8 @@ class _QiblaScreenState extends State<QiblaScreen> {
 
     _handleAlignmentFeedback(qp);
 
-    if (qp.isLoading && qp.qiblaData == null) {
-      return _buildLoadingView(isDark);
+    if (qp.isLoading) {
+      return _buildLoadingView();
     }
     if (qp.errorMessage != null && qp.qiblaData == null) {
       return _buildErrorView(isDark, qp, qp.errorMessage!);
@@ -64,26 +66,30 @@ class _QiblaScreenState extends State<QiblaScreen> {
     return _buildContent(isDark, qp);
   }
 
-  Widget _buildLoadingView(bool isDark) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          CircularProgressIndicator(
-            color: isDark ? const Color(0xFF818CF8) : const Color(0xFF4F46E5),
-          ),
-          const SizedBox(height: 16),
-          Text(
-            'Calculating direction to Makkah...',
-            style: TextStyle(
-              fontSize: 14,
-              color: isDark
-                  ? const Color(0xFF94A3B8)
-                  : const Color(0xFF64748B),
-            ),
-          ),
-        ],
-      ),
+  Widget _buildLoadingView() {
+    return const ScreenSkeleton(
+      children: [
+        // Hero banner
+        SectionSkeleton(height: 110),
+        SizedBox(height: 32),
+        // Compass dial
+        CircleSkeleton(size: 260),
+        SizedBox(height: 12),
+        // Accuracy badge
+        Center(child: SectionSkeleton(height: 28, width: 150, borderRadius: 20)),
+        SizedBox(height: 24),
+        // Info grid row
+        Row(
+          children: [
+            Expanded(child: SectionSkeleton(height: 96)),
+            SizedBox(width: 14),
+            Expanded(child: SectionSkeleton(height: 96)),
+          ],
+        ),
+        SizedBox(height: 14),
+        // Location card
+        SectionSkeleton(height: 110),
+      ],
     );
   }
 
@@ -200,8 +206,8 @@ class _QiblaScreenState extends State<QiblaScreen> {
     return RefreshIndicator.adaptive(
       onRefresh: _onRefresh,
       edgeOffset: 4,
-      color: const Color(0xFF4F46E5),
-      backgroundColor: isDark ? const Color(0xFF0F172A) : Colors.white,
+      color: isDark ? AppColors.primaryDark : AppColors.primaryLight,
+      backgroundColor: isDark ? AppColors.cardDark : Colors.white,
       child: CustomScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
         slivers: [

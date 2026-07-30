@@ -4,6 +4,7 @@ import '../../core/providers/prayer_provider.dart';
 import '../../core/providers/verse_provider.dart';
 import '../../core/providers/streak_provider.dart';
 import '../../core/theme/app_colors.dart';
+import '../../widgets/common/section_skeleton.dart';
 import '../../widgets/home/glass_banner.dart';
 import '../../widgets/home/horizontal_prayer_stepper.dart';
 import '../../widgets/home/services_tools_grid.dart';
@@ -56,7 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     }
 
-    return RefreshIndicator(
+    return RefreshIndicator.adaptive(
       onRefresh: () async {
         await prayerProvider.refresh();
         if (!mounted) return;
@@ -69,33 +70,32 @@ class _HomeScreenState extends State<HomeScreen> {
               );
         }
       },
+      edgeOffset: 4,
       color: isDark ? AppColors.primaryDark : AppColors.primaryLight,
+      backgroundColor: isDark ? AppColors.cardDark : Colors.white,
       child: CustomScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
         slivers: [
           // Loading or Error State
           if (prayerProvider.isLoading)
-            SliverFillRemaining(
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CircularProgressIndicator(
-                      color: isDark
-                          ? AppColors.primaryDark
-                          : AppColors.primaryLight,
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      'Loading prayer times...',
-                      style: TextStyle(
-                        color: isDark
-                            ? AppColors.textMutedDark
-                            : AppColors.textMutedLight,
-                        fontSize: 14,
-                      ),
-                    ),
-                  ],
-                ),
+            const SliverToBoxAdapter(
+              child: ScreenSkeleton(
+                children: [
+                  // Glass banner
+                  SectionSkeleton(height: 240),
+                  SizedBox(height: 16),
+                  // Prayer stepper
+                  SectionSkeleton(height: 100),
+                  SizedBox(height: 24),
+                  // Services & tools grid
+                  SectionSkeleton(height: 150),
+                  SizedBox(height: 24),
+                  // Verse of the day card
+                  SectionSkeleton(height: 180),
+                  SizedBox(height: 14),
+                  // Streak card
+                  SectionSkeleton(height: 120),
+                ],
               ),
             )
           else if (prayerProvider.errorMessage != null)

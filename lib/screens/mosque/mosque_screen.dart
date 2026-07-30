@@ -7,6 +7,8 @@ import '../../widgets/mosque/nearest_mosque_banner.dart';
 import '../../widgets/mosque/nearby_mosque_list_tile.dart';
 import '../../widgets/mosque/mosque_detail_sheet.dart';
 import '../../widgets/common/glass_pill_badge.dart';
+import '../../core/theme/app_colors.dart';
+import '../../widgets/common/section_skeleton.dart';
 
 class MosqueScreen extends StatefulWidget {
   const MosqueScreen({super.key});
@@ -70,7 +72,6 @@ class _MosqueScreenState extends State<MosqueScreen> {
     final error = mp.errorMessage;
     final expanded = mp.isMapExpanded;
     final selected = mp.selectedMosqueId;
-    final showRefreshOverlay = loading && mp.nearbyMosques.isNotEmpty;
 
     return SafeArea(
       top: false,
@@ -84,8 +85,8 @@ class _MosqueScreenState extends State<MosqueScreen> {
                   children: [
                     Expanded(
                       child:
-                          loading && mp.nearbyMosques.isEmpty
-                              ? _buildLoadingView(isDark, mp)
+                          loading
+                              ? _buildLoadingView()
                               : error != null && mp.nearbyMosques.isEmpty
                               ? _buildErrorView(isDark, mp, error)
                               : _buildContent(
@@ -97,19 +98,6 @@ class _MosqueScreenState extends State<MosqueScreen> {
                   ],
                 ),
               ),
-              if (showRefreshOverlay)
-                Positioned.fill(
-                  child: IgnorePointer(
-                    child: Container(
-                      color: isDark
-                          ? const Color(0xFF070B14).withValues(alpha: 0.55)
-                          : Colors.white.withValues(alpha: 0.65),
-                      child: const Center(
-                        child: CircularProgressIndicator.adaptive(strokeWidth: 3),
-                      ),
-                    ),
-                  ),
-                ),
               if (expanded)
                 Positioned.fill(
                   child: IgnorePointer(
@@ -148,34 +136,25 @@ class _MosqueScreenState extends State<MosqueScreen> {
     );
   }
 
-  Widget _buildLoadingView(bool isDark, MosqueProvider mp) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const CircularProgressIndicator.adaptive(strokeWidth: 3),
-          const SizedBox(height: 18),
-          Text(
-            'Locating nearby mosques…',
-            style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
-              color:
-                  isDark ? const Color(0xFF94A3B8) : const Color(0xFF64748B),
-            ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            mp.cityName,
-            style: TextStyle(
-              fontSize: 11,
-              fontWeight: FontWeight.w600,
-              color:
-                  isDark ? const Color(0xFF64748B) : const Color(0xFF94A3B8),
-            ),
-          ),
-        ],
-      ),
+  Widget _buildLoadingView() {
+    return const ScreenSkeleton(
+      children: [
+        // Map section
+        SectionSkeleton(height: 220),
+        SizedBox(height: 20),
+        // Nearest mosque banner
+        SectionSkeleton(height: 150),
+        SizedBox(height: 24),
+        // Nearby section header
+        SectionSkeleton(height: 28, width: 140, borderRadius: 14),
+        SizedBox(height: 12),
+        // Nearby mosque list tiles
+        SectionSkeleton(height: 84, borderRadius: 20),
+        SizedBox(height: 10),
+        SectionSkeleton(height: 84, borderRadius: 20),
+        SizedBox(height: 10),
+        SectionSkeleton(height: 84, borderRadius: 20),
+      ],
     );
   }
 
@@ -302,8 +281,8 @@ class _MosqueScreenState extends State<MosqueScreen> {
     return RefreshIndicator.adaptive(
       onRefresh: _onRefresh,
       edgeOffset: 4,
-      color: const Color(0xFF059669),
-      backgroundColor: isDark ? const Color(0xFF0F172A) : Colors.white,
+      color: isDark ? AppColors.primaryDark : AppColors.primaryLight,
+      backgroundColor: isDark ? AppColors.cardDark : Colors.white,
       child: CustomScrollView(
         slivers: [
           const SliverToBoxAdapter(child: SizedBox(height: 8)),
