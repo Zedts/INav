@@ -1,16 +1,16 @@
 # Graph Report - inav  (2026-07-30)
 
 ## Corpus Check
-- 90 files · ~47,819 words
+- 90 files · ~47,813 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1120 nodes · 1528 edges · 93 communities (61 shown, 32 thin omitted)
+- 1125 nodes · 1528 edges · 90 communities (58 shown, 32 thin omitted)
 - Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 23 edges (avg confidence: 0.82)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `f127edc9`
+- Built from commit: `d1b02aad`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -30,14 +30,14 @@
 - mosque_provider.dart
 - prayer_times_model.dart
 - verse_service.dart
-- glass_pill_badge.dart
-- State
+- ThemeProvider
+- app_header.dart
 - mosque_service.dart
 - main_screen.dart
-- MosqueProvider
+- mosque_screen.dart
 - quran_screen.dart
 - services_tools_grid.dart
-- home_screen.dart
+- main.dart
 - verse_provider.dart
 - theme_provider.dart
 - qibla_provider.dart
@@ -46,7 +46,7 @@
 - qibla_service.dart
 - search_bar.dart
 - wWinMain
-- mosque_detail_sheet.dart
+- MosqueProvider
 - verse_of_day_card.dart
 - manifest.json
 - calendar_service.dart
@@ -96,26 +96,23 @@
 - qibla_hero_banner.dart
 - surah_detail_sheet.dart
 - section_skeleton.dart
-- nearest_mosque_banner.dart
-- favorites_sidebar.dart
+- qibla_model.dart
 - refreshNearbyMosques
 - bool?
-- bookmarks_sidebar.dart
-- nearby_mosque_list_tile.dart
 - StatelessWidget
-- app_header.dart
+- qibla_screen.dart
 
 ## God Nodes (most connected - your core abstractions)
-1. `MosqueProvider` - 32 edges
-2. `QuranProvider` - 28 edges
+1. `QuranProvider` - 28 edges
+2. `MosqueProvider` - 22 edges
 3. `Win32Window` - 22 edges
-4. `PrayerProvider` - 15 edges
-5. `ThemeProvider` - 12 edges
-6. `MessageHandler` - 12 edges
-7. `QiblaProvider` - 10 edges
-8. `StreakProvider` - 10 edges
-9. `FlutterWindow` - 10 edges
-10. `Create` - 10 edges
+4. `ThemeProvider` - 12 edges
+5. `MessageHandler` - 12 edges
+6. `PrayerProvider` - 11 edges
+7. `FlutterWindow` - 10 edges
+8. `Create` - 10 edges
+9. `WndProc` - 10 edges
+10. `MessageHandler` - 9 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `Android Launcher Icon (hdpi)` --references--> `inav`  [INFERRED]
@@ -136,7 +133,7 @@
 - **Application Branding Assets** — assets_images_dark_theme, assets_images_white_theme, ios_appicon_1024 [EXTRACTED 0.90]
 - **Flutter Platform Build System** — linux_cmakelists, windows_cmakelists, linux_flutter_cmakelists, windows_flutter_cmakelists [EXTRACTED 1.00]
 
-## Communities (93 total, 32 thin omitted)
+## Communities (90 total, 32 thin omitted)
 
 ### Community 0 - "Windows Flutter Platform"
 Cohesion: 0.06
@@ -159,8 +156,8 @@ Cohesion: 0.08
 Nodes (25): Exception, Geocoding, ApiException, checkPermission, city, country, countryCode, _formatAddress (+17 more)
 
 ### Community 5 - "calendar_model.dart"
-Cohesion: 0.05
-Nodes (34): CalendarModel, date, day, dayOfMonth, formattedDate, fromJson, gregorian, GregorianDate (+26 more)
+Cohesion: 0.07
+Nodes (26): CalendarModel, date, day, dayOfMonth, formattedDate, fromJson, gregorian, GregorianDate (+18 more)
 
 ### Community 6 - "my_application.cc"
 Cohesion: 0.09
@@ -171,16 +168,16 @@ Cohesion: 0.10
 Nodes (20): DateTime?, int get, _checkAndResetDate, _checkPrayerWindow, completedCount, _completedPrayers, _currentPrayerWindow, initialize (+12 more)
 
 ### Community 8 - "streak_card.dart"
-Cohesion: 0.14
-Nodes (13): _animationController, build, createState, _currentProgress, dispose, initState, isActive, isDark (+5 more)
+Cohesion: 0.05
+Nodes (44): Animation, AnimationController, StreakProvider, _animation, build, color, _controller, createState (+36 more)
 
 ### Community 9 - "surah_model.dart"
 Cohesion: 0.11
-Nodes (17): audioUrl, fromJson, isMeccan, nameEn, nameId, nameLong, nameShort, number (+9 more)
+Nodes (18): audioUrl, fromJson, isMeccan, nameEn, nameId, nameLong, nameShort, number (+10 more)
 
 ### Community 10 - "quran_banner.dart"
-Cohesion: 0.14
-Nodes (14): _buildAudioButton, _buildContinuousBadge, _buildDefaultContent, _buildExitButton, _buildNowPlayingBadge, _buildNowPlayingContent, createState, _defaultAudioUrl (+6 more)
+Cohesion: 0.12
+Nodes (16): build, _buildAudioButton, _buildContinuousBadge, _buildDefaultContent, _buildExitButton, _buildNowPlayingBadge, _buildNowPlayingContent, createState (+8 more)
 
 ### Community 11 - "app_colors.dart"
 Cohesion: 0.11
@@ -198,13 +195,13 @@ Nodes (15): asr, cityName, date, dhuhr, fajr, fromJson, getAllPrayerTimes, getPr
 Cohesion: 0.12
 Nodes (15): _apiService, _cacheVerse, clearCache, dispose, _fetchFromApi, forceRefresh, _getCachedVerse, getDailyVerse (+7 more)
 
-### Community 15 - "glass_pill_badge.dart"
-Cohesion: 0.13
-Nodes (14): IconData, _animation, build, color, _controller, createState, dispose, GlassPillBadge (+6 more)
+### Community 15 - "ThemeProvider"
+Cohesion: 0.22
+Nodes (11): ../../core/theme/app_colors.dart, ../../core/theme/theme_provider.dart, ThemeProvider, build, build, ThemeToggleButton, BottomNavBar, build (+3 more)
 
-### Community 16 - "State"
-Cohesion: 0.14
-Nodes (19): AnimationController, QiblaScreen, _QiblaScreenState, _PulsingDot, _PulsingDotState, _PulsingRing, _PulsingRingState, StreakCard (+11 more)
+### Community 16 - "app_header.dart"
+Cohesion: 0.20
+Nodes (11): QiblaProvider, AppHeader, _buildActions, _buildNotificationButton, _buildQiblaLeading, _buildQuranBookmarkButton, _buildThemeButton, HeaderMode (+3 more)
 
 ### Community 17 - "mosque_service.dart"
 Cohesion: 0.05
@@ -212,23 +209,23 @@ Nodes (37): @visibleForTesting, Client, dart:async, dart:convert, dart:io, Durat
 
 ### Community 18 - "main_screen.dart"
 Cohesion: 0.11
-Nodes (18): home/home_screen.dart, createState, _currentIndex, _getHeaderMode, MainScreen, _MainScreenState, _onTabTapped, _openMosqueDetail (+10 more)
+Nodes (17): home/home_screen.dart, createState, _currentIndex, _getHeaderMode, _onTabTapped, _openMosqueDetail, _openSurahDetail, _screens (+9 more)
 
-### Community 19 - "MosqueProvider"
-Cohesion: 0.14
-Nodes (20): MosqueProvider, build, _buildContent, _buildErrorView, _buildLoadingView, createState, initState, MosqueScreen (+12 more)
+### Community 19 - "mosque_screen.dart"
+Cohesion: 0.15
+Nodes (19): build, _buildContent, _buildErrorView, _buildLoadingView, createState, initState, MosqueScreen, _MosqueScreenState (+11 more)
 
 ### Community 20 - "quran_screen.dart"
 Cohesion: 0.14
 Nodes (14): build, _buildAllSurahHeader, _buildErrorState, _buildLoadingState, _buildNoResultsState, createState, initState, _openSurahDetail (+6 more)
 
 ### Community 21 - "services_tools_grid.dart"
-Cohesion: 0.15
-Nodes (12): Color, build, color, icon, isActive, isDark, label, onTap (+4 more)
+Cohesion: 0.17
+Nodes (11): IconData, build, color, icon, isActive, isDark, label, onTap (+3 more)
 
-### Community 22 - "home_screen.dart"
-Cohesion: 0.14
-Nodes (21): ChangeNotifier, ../../core/providers/verse_provider.dart, PrayerProvider, StreakProvider, VerseProvider, build, createState, HomeScreen (+13 more)
+### Community 22 - "main.dart"
+Cohesion: 0.18
+Nodes (10): ../../core/providers/qibla_provider.dart, ../../core/providers/verse_provider.dart, core/theme/app_theme.dart, build, load, loadThemePreference, main, MyApp (+2 more)
 
 ### Community 23 - "verse_provider.dart"
 Cohesion: 0.14
@@ -243,40 +240,40 @@ Cohesion: 0.05
 Nodes (36): CompassStatus get, double get, _alignedThresholdDeg, _calibratedAccuracyDeg, _cityName, _currentPosition, dispose, _errorMessage (+28 more)
 
 ### Community 26 - "glass_banner.dart"
-Cohesion: 0.17
-Nodes (12): ../common/glass_pill_badge.dart, ../../core/providers/prayer_provider.dart, _buildGlassCard, _buildPrayerSlide, _buildQuranSlide, createState, dispose, GlassBanner (+4 more)
+Cohesion: 0.13
+Nodes (17): ../common/glass_pill_badge.dart, ../../core/providers/prayer_provider.dart, PrayerProvider, _buildLeading, build, _buildGlassCard, _buildPrayerSlide, _buildQuranSlide (+9 more)
 
 ### Community 27 - "QuranProvider"
 Cohesion: 0.16
-Nodes (14): ../../core/models/surah_model.dart, SurahModel, QuranProvider, build, build, _toggleAudio, _buildBottomActions, _toggleAudio (+6 more)
+Nodes (16): ../../core/models/surah_model.dart, ../../core/providers/quran_provider.dart, QuranProvider, BookmarksSidebar, build, _buildBookmarksList, _buildEmptyState, _buildFooter (+8 more)
 
 ### Community 28 - "qibla_service.dart"
 Cohesion: 0.12
 Nodes (15): dart:math, _apiService, _calculateDistanceKm, _calculateQiblaDirection, _degreesToRadians, dispose, getQiblaDirection, _kaabaLatitude (+7 more)
 
 ### Community 29 - "search_bar.dart"
-Cohesion: 0.18
-Nodes (11): FocusNode, build, _controller, createState, dispose, _focusNode, initState, _isFocused (+3 more)
+Cohesion: 0.13
+Nodes (16): FocusNode, HomeScreen, MainScreen, _MainScreenState, build, _controller, createState, dispose (+8 more)
 
 ### Community 30 - "wWinMain"
 Cohesion: 0.24
 Nodes (9): _In_, _In_opt_, vector, wWinMain(), string, wchar_t, CreateAndAttachConsole(), GetCommandLineArguments() (+1 more)
 
-### Community 31 - "mosque_detail_sheet.dart"
-Cohesion: 0.15
-Nodes (12): build, _buildBadge, _buildBadgesRow, _buildBottomActions, _buildDetailsSection, _buildDragHandle, _buildHeader, mosque (+4 more)
+### Community 31 - "MosqueProvider"
+Cohesion: 0.06
+Nodes (44): ../../core/models/mosque_model.dart, ../../core/providers/mosque_provider.dart, MosqueModel, MosqueProvider, build, _buildLikeButton, _buildMosqueLeading, build (+36 more)
 
 ### Community 32 - "verse_of_day_card.dart"
-Cohesion: 0.17
-Nodes (11): ../../core/theme/app_colors.dart, dart:ui, build, _buildEmptyState, _buildErrorState, _buildHeader, _buildLoadingState, _buildVerseContent (+3 more)
+Cohesion: 0.14
+Nodes (13): ChangeNotifier, dart:ui, VerseProvider, build, _buildEmptyState, _buildErrorState, _buildHeader, _buildLoadingState (+5 more)
 
 ### Community 33 - "manifest.json"
 Cohesion: 0.18
 Nodes (10): background_color, description, display, icons, name, orientation, prefer_related_applications, short_name (+2 more)
 
 ### Community 34 - "calendar_service.dart"
-Cohesion: 0.20
-Nodes (9): api_service.dart, _apiService, CalendarService, _convertToHijri, dispose, getCalendarByDate, getTodayCalendar, ../models/calendar_model.dart (+1 more)
+Cohesion: 0.22
+Nodes (8): ApiService, _apiService, CalendarService, _convertToHijri, dispose, getCalendarByDate, getTodayCalendar, ../models/calendar_model.dart
 
 ### Community 35 - "inav"
 Cohesion: 0.22
@@ -284,7 +281,7 @@ Nodes (6): Android Launcher Icon (hdpi), Dark Theme Logo, White Theme Logo, Flut
 
 ### Community 36 - "quran_service.dart"
 Cohesion: 0.22
-Nodes (8): ApiService, _apiService, _cachedSurahs, dispose, getAllSurahs, QuranService, List, ../models/surah_model.dart
+Nodes (8): api_service.dart, _apiService, _cachedSurahs, dispose, getAllSurahs, QuranService, List, ../models/surah_model.dart
 
 ### Community 37 - "prayer_service.dart"
 Cohesion: 0.22
@@ -296,11 +293,11 @@ Nodes (9): build, _buildCard, _buildIconTile, _cardDecoration, cityName, isRefre
 
 ### Community 39 - "compass_dial.dart"
 Cohesion: 0.08
-Nodes (24): CustomPainter, CompassStatus, _DoughnutPainter, _PinTailPainter, bearing, build, _buildAccuracyBadge, _buildCardinalLabels (+16 more)
+Nodes (25): CustomPainter, CompassStatus, _DoughnutPainter, _PinTailPainter, bearing, build, _buildAccuracyBadge, _buildCardinalLabels (+17 more)
 
 ### Community 40 - "package:flutter/material.dart"
-Cohesion: 0.25
-Nodes (6): app_colors.dart, AppTheme, darkTheme, lightTheme, build, package:flutter/material.dart
+Cohesion: 0.22
+Nodes (7): app_colors.dart, AppTheme, darkTheme, lightTheme, build, SettingsScreen, package:flutter/material.dart
 
 ### Community 41 - "widget_test.dart"
 Cohesion: 0.40
@@ -327,60 +324,48 @@ Cohesion: 0.10
 Nodes (19): LatLng? get, address, copyWith, distanceKm, fromJson, iconTag, id, latitude (+11 more)
 
 ### Community 81 - "horizontal_prayer_stepper.dart"
-Cohesion: 0.17
-Nodes (11): Animation, _buildPrayerStep, _calculateProgress, color, _controller, createState, dispose, _getCircleContent (+3 more)
+Cohesion: 0.15
+Nodes (13): Color, _buildPrayerStep, _calculateProgress, color, _controller, createState, dispose, _getCircleContent (+5 more)
 
 ### Community 82 - "qibla_hero_banner.dart"
 Cohesion: 0.20
 Nodes (9): ../../core/models/qibla_model.dart, QiblaModel, build, _buildBadge, cityName, isAligned, qiblaData, QiblaHeroBanner (+1 more)
 
 ### Community 83 - "surah_detail_sheet.dart"
-Cohesion: 0.14
-Nodes (14): build, _buildActionButton, _buildBadge, _buildBadgesRow, _buildDragHandle, _buildHeader, _buildTafsirSection, _buildTranslationRow (+6 more)
+Cohesion: 0.12
+Nodes (16): build, _buildActionButton, _buildBadge, _buildBadgesRow, _buildBottomActions, _buildDragHandle, _buildHeader, _buildTafsirSection (+8 more)
 
 ### Community 84 - "section_skeleton.dart"
 Cohesion: 0.17
 Nodes (11): double?, borderRadius, build, children, CircleSkeleton, height, ScreenSkeleton, SectionSkeleton (+3 more)
 
-### Community 85 - "nearest_mosque_banner.dart"
-Cohesion: 0.17
-Nodes (11): build, _buildContent, _buildEmptyContent, isOverridden, mosque, _navigate, NearestMosqueBanner, onResetToNearest (+3 more)
-
-### Community 86 - "favorites_sidebar.dart"
-Cohesion: 0.22
-Nodes (8): ../../core/models/mosque_model.dart, ../../core/providers/mosque_provider.dart, build, _buildEmptyState, _buildFavoritesList, _buildFooter, _buildHeader, FavoritesSidebar
-
-### Community 89 - "bookmarks_sidebar.dart"
-Cohesion: 0.25
-Nodes (7): ../../core/providers/quran_provider.dart, BookmarksSidebar, build, _buildBookmarksList, _buildEmptyState, _buildFooter, _buildHeader
-
-### Community 90 - "nearby_mosque_list_tile.dart"
-Cohesion: 0.18
-Nodes (10): MosqueModel, build, _buildIcon, _buildTrailing, isSelected, mosque, NearbyMosqueListTile, onNavigate (+2 more)
+### Community 85 - "qibla_model.dart"
+Cohesion: 0.20
+Nodes (9): direction, distanceKm, formattedDistance, fromJson, latitude, longitude, toJson, toString (+1 more)
 
 ### Community 91 - "StatelessWidget"
-Cohesion: 0.12
-Nodes (18): SettingsScreen, ServicesToolsGrid, _FireButton, _MosquePinMarker, _UserLocationMarker, build, compact, isFavorite (+10 more)
+Cohesion: 0.13
+Nodes (17): _ServiceButton, ServicesToolsGrid, _MosquePinMarker, _UserLocationMarker, build, compact, isFavorite, MosqueFavoriteButton (+9 more)
 
-### Community 93 - "app_header.dart"
-Cohesion: 0.05
-Nodes (49): ../../core/providers/qibla_provider.dart, ../../core/providers/streak_provider.dart, core/theme/app_theme.dart, ../../core/theme/theme_provider.dart, QiblaProvider, ThemeProvider, build, load (+41 more)
+### Community 93 - "qibla_screen.dart"
+Cohesion: 0.09
+Nodes (30): ../../core/providers/streak_provider.dart, build, createState, _HomeScreenState, initState, build, _buildContent, _buildErrorView (+22 more)
 
 ## Knowledge Gaps
-- **637 isolated node(s):** `GregorianDate`, `HijriDate`, `gregorian`, `hijri`, `date` (+632 more)
+- **637 isolated node(s):** `createState`, `createState`, `_buildLoadingView`, `_buildErrorView`, `_buildContent` (+632 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **32 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `MosqueProvider` connect `MosqueProvider` to `mosque_provider.dart`, `main_screen.dart`, `nearest_mosque_banner.dart`, `home_screen.dart`, `favorites_sidebar.dart`, `QuranProvider`, `app_header.dart`, `mosque_detail_sheet.dart`?**
-  _High betweenness centrality (0.036) - this node is a cross-community bridge._
-- **Why does `MosqueModel` connect `nearby_mosque_list_tile.dart` to `mosque_provider.dart`, `map_view_section.dart`, `mosque_model.dart`, `nearest_mosque_banner.dart`, `mosque_detail_sheet.dart`?**
-  _High betweenness centrality (0.030) - this node is a cross-community bridge._
-- **Why does `QiblaModel` connect `qibla_hero_banner.dart` to `qibla_provider.dart`, `prayer_provider.dart`, `calendar_model.dart`, `qibla_info_grid.dart`?**
-  _High betweenness centrality (0.014) - this node is a cross-community bridge._
-- **What connects `GregorianDate`, `HijriDate`, `gregorian` to the rest of the system?**
+- **Why does `PrayerTimesModel` connect `prayer_times_model.dart` to `prayer_provider.dart`?**
+  _High betweenness centrality (0.027) - this node is a cross-community bridge._
+- **Why does `MosqueProvider` connect `MosqueProvider` to `verse_of_day_card.dart`, `mosque_provider.dart`, `app_header.dart`, `main_screen.dart`, `search_bar.dart`?**
+  _High betweenness centrality (0.025) - this node is a cross-community bridge._
+- **Why does `MosqueModel` connect `MosqueProvider` to `mosque_model.dart`, `mosque_provider.dart`, `map_view_section.dart`?**
+  _High betweenness centrality (0.022) - this node is a cross-community bridge._
+- **What connects `createState`, `createState`, `_buildLoadingView` to the rest of the system?**
   _637 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Windows Flutter Platform` be split into smaller, more focused modules?**
   _Cohesion score 0.0597567424643046 - nodes in this community are weakly interconnected._
