@@ -40,6 +40,8 @@ class _MainScreenState extends State<MainScreen> {
         return HeaderMode.quran;
       case 2:
         return HeaderMode.mosque;
+      case 3:
+        return HeaderMode.qibla;
       default:
         return HeaderMode.home;
     }

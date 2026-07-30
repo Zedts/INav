@@ -294,7 +294,7 @@ class _GlassBannerState extends State<GlassBanner> {
                         const SizedBox(width: 4),
                         Flexible(
                           child: Text(
-                            'Qibla: ${provider.qiblaData!.direction.toStringAsFixed(0)}° ${provider.qiblaData!.cardinalDirection} (Mecca)',
+                            'Qibla: ${provider.qiblaData!.direction.toStringAsFixed(0)}° ${provider.qiblaData!.cardinalDirection} (Mecca) • ${provider.qiblaData!.formattedDistance}',
                             style: TextStyle(
                               fontSize: 10,
                               fontWeight: FontWeight.w500,

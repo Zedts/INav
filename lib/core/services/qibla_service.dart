@@ -1,9 +1,15 @@
+import 'package:flutter/foundation.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:geolocator/geolocator.dart';
 import '../models/qibla_model.dart';
 import 'api_service.dart';
 import 'dart:math' as math;
 
 /// Service for calculating Qibla direction
-/// Note: MyQuran API v2 does not have qibla endpoints, using local calculation
+///
+/// Primary source: MyQuran API v3 endpoint GET /qibla/{lat},{lng}
+/// Fallback: local great-circle bearing calculation (works offline)
+/// Distance to the Kaaba is always computed locally (the API doesn't return it)
 class QiblaService {
   final ApiService _apiService;
 
@@ -12,19 +18,35 @@ class QiblaService {
   static const double _kaabaLongitude = 39.826206;
 
   QiblaService({ApiService? apiService})
-    : _apiService = apiService ?? ApiService();
+    : _apiService = apiService ??
+          ApiService(
+            baseUrl: dotenv.env['MYQURAN_API_BASE_URL_ALT'] ??
+                'https://api.myquran.com/v3',
+          );
 
-  /// Calculate Qibla direction for given coordinates
+  /// Get Qibla direction for given coordinates
   ///
   /// [latitude] - Latitude of the location
   /// [longitude] - Longitude of the location
   ///
-  /// Returns [QiblaModel] with direction in degrees
+  /// Returns [QiblaModel] with direction in degrees and distance in km
   /// Throws [ApiException] on error
   Future<QiblaModel> getQiblaDirection(
     double latitude,
     double longitude,
   ) async {
+    final distanceKm = _calculateDistanceKm(latitude, longitude);
+
+    // Try the v3 API first, fall back to local calculation on any failure
+    try {
+      final json = await _apiService.get('/qibla/$latitude,$longitude');
+      return QiblaModel.fromJson(json, distanceKm: distanceKm);
+    } on ApiException catch (e) {
+      debugPrint('Qibla API unavailable, using local calculation: $e');
+    } catch (e) {
+      debugPrint('Qibla API error, using local calculation: $e');
+    }
+
     try {
       final direction = _calculateQiblaDirection(latitude, longitude);
 
@@ -32,12 +54,24 @@ class QiblaService {
         latitude: latitude,
         longitude: longitude,
         direction: direction,
+        distanceKm: distanceKm,
       );
     } catch (e) {
       throw ApiException(
         'Failed to calculate Qibla direction: ${e.toString()}',
       );
     }
+  }
+
+  /// Great-circle distance from the given coordinates to the Kaaba in km
+  double _calculateDistanceKm(double lat, double lng) {
+    return Geolocator.distanceBetween(
+          lat,
+          lng,
+          _kaabaLatitude,
+          _kaabaLongitude,
+        ) /
+        1000;
   }
 
   /// Calculate Qibla direction using spherical trigonometry

@@ -4,12 +4,15 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 /// Base API service for handling HTTP requests
 class ApiService {
-  static final String _baseUrl =
+  static final String _defaultBaseUrl =
       dotenv.env['MYQURAN_API_BASE_URL']!;
 
+  final String _baseUrl;
   final http.Client _client;
 
-  ApiService({http.Client? client}) : _client = client ?? http.Client();
+  ApiService({http.Client? client, String? baseUrl})
+      : _client = client ?? http.Client(),
+        _baseUrl = baseUrl ?? _defaultBaseUrl;
 
   /// GET request with error handling
   Future<Map<String, dynamic>> get(

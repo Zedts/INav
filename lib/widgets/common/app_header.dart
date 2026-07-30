@@ -4,6 +4,7 @@ import 'package:glass/glass.dart';
 import '../../core/theme/theme_provider.dart';
 import '../../core/providers/prayer_provider.dart';
 import '../../core/providers/mosque_provider.dart';
+import '../../core/providers/qibla_provider.dart';
 
 enum HeaderMode { home, quran, mosque, qibla, settings }
 
@@ -170,6 +171,9 @@ class AppHeader extends StatelessWidget {
 
       case HeaderMode.mosque:
         return _buildMosqueLeading(context, isDark);
+
+      case HeaderMode.qibla:
+        return _buildQiblaLeading(context, isDark);
 
       case HeaderMode.home:
       default:
@@ -639,6 +643,143 @@ class AppHeader extends StatelessWidget {
             const SizedBox(height: 2),
             const Text(
               'Find Mosque',
+              style: TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.w800,
+                letterSpacing: -0.2,
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildQiblaLeading(BuildContext context, bool isDark) {
+    final qiblaProvider = context.watch<QiblaProvider>();
+    final location =
+        qiblaProvider.cityName.isNotEmpty &&
+                qiblaProvider.cityName != 'Locating…'
+            ? qiblaProvider.cityName
+            : 'Jakarta, ID';
+
+    return Row(
+      children: [
+        SizedBox(
+          width: 40,
+          height: 40,
+          child: Stack(
+            children: [
+              Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  gradient: const LinearGradient(
+                    colors: [
+                      Color(0xFF0D47A1),
+                      Color(0xFF2563EB),
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xFF0D47A1).withValues(alpha: 0.2),
+                      blurRadius: 8,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: const Center(
+                  child: Icon(
+                    Icons.person,
+                    color: Colors.white,
+                    size: 20,
+                  ),
+                ),
+              ),
+              Positioned(
+                bottom: 0,
+                right: 0,
+                child: Container(
+                  width: 14,
+                  height: 14,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF10B981),
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: isDark
+                          ? const Color(0xFF070B14)
+                          : const Color(0xFFF1F5F9),
+                      width: 2,
+                    ),
+                  ),
+                  child: const Center(
+                    child: Icon(
+                      Icons.check,
+                      color: Colors.white,
+                      size: 8,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(width: 12),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              children: [
+                Icon(
+                  Icons.location_on,
+                  size: 12,
+                  color: isDark
+                      ? const Color(0xFF3B82F6)
+                      : const Color(0xFF0D47A1),
+                ),
+                const SizedBox(width: 4),
+                Text(
+                  location,
+                  style: TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w500,
+                    color: isDark
+                        ? const Color(0xFF94A3B8)
+                        : const Color(0xFF64748B),
+                  ),
+                ),
+                const SizedBox(width: 4),
+                InkWell(
+                  onTap: () async {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Refreshing location…'),
+                        duration: Duration(seconds: 1),
+                      ),
+                    );
+                    await qiblaProvider.refresh(forceRefreshLocation: true);
+                  },
+                  borderRadius: BorderRadius.circular(4),
+                  child: Padding(
+                    padding: const EdgeInsets.all(2),
+                    child: Icon(
+                      Icons.refresh,
+                      size: 12,
+                      color: isDark
+                          ? const Color(0xFF64748B)
+                          : const Color(0xFF94A3B8),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 2),
+            const Text(
+              'Qibla Compass',
               style: TextStyle(
                 fontSize: 13,
                 fontWeight: FontWeight.w800,
