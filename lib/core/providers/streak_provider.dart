@@ -26,13 +26,19 @@ class StreakProvider with ChangeNotifier {
   bool get isInitialized => _isInitialized;
 
   /// Initialize the provider
+  ///
+  /// [fajrTime] is today's Fajr time as "HH:mm". The streak "day" boundary is
+  /// Fajr, not midnight: before Fajr we still belong to the previous prayer
+  /// day, so progress is only reset once Subuh (Fajr) time hits.
   Future<void> initialize({
     required DateTime currentDate,
     required String currentPrayer,
+    String? fajrTime,
   }) async {
     try {
       await _loadState();
-      await _checkAndResetDate(currentDate, currentPrayer);
+      final effectiveDate = _effectivePrayerDate(currentDate, fajrTime);
+      await _checkAndResetDate(effectiveDate, currentPrayer);
       await _checkPrayerWindow(currentPrayer);
     } catch (e) {
       // Streak tracking is non-essential — never let a storage failure
@@ -41,6 +47,27 @@ class StreakProvider with ChangeNotifier {
     }
     _isInitialized = true;
     notifyListeners();
+  }
+
+  /// Resolve the "prayer day" a moment belongs to. If [now] is before today's
+  /// Fajr time, it still belongs to the previous calendar day; otherwise it is
+  /// the current day. Falls back to the raw date when Fajr can't be parsed.
+  DateTime _effectivePrayerDate(DateTime now, String? fajrTime) {
+    final today = DateTime(now.year, now.month, now.day);
+    if (fajrTime == null) return today;
+
+    final parts = fajrTime.split(':');
+    if (parts.length != 2) return today;
+    final hour = int.tryParse(parts[0]);
+    final minute = int.tryParse(parts[1]);
+    if (hour == null || minute == null) return today;
+
+    final fajrToday = DateTime(now.year, now.month, now.day, hour, minute);
+    if (now.isBefore(fajrToday)) {
+      // Still the previous prayer day (between midnight and Subuh)
+      return today.subtract(const Duration(days: 1));
+    }
+    return today;
   }
 
   /// Load state from shared preferences

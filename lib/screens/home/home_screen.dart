@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../core/providers/prayer_provider.dart';
 import '../../core/providers/verse_provider.dart';
+import '../../core/providers/hadith_provider.dart';
 import '../../core/providers/streak_provider.dart';
+import '../../core/providers/prayer_settings_provider.dart';
 import '../../core/theme/app_colors.dart';
 import '../../widgets/common/error_state_view.dart';
 import '../../widgets/common/section_skeleton.dart';
 import '../../widgets/home/glass_banner.dart';
 import '../../widgets/home/horizontal_prayer_stepper.dart';
 import '../../widgets/home/services_tools_grid.dart';
-import '../../widgets/home/verse_of_day_card.dart';
+import '../../widgets/home/random_content_card.dart';
 import '../../widgets/home/streak_card.dart';
 
 /// Home screen - displays prayer times, countdown, and Qibla direction
@@ -30,15 +32,22 @@ class _HomeScreenState extends State<HomeScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       final prayerProvider = context.read<PrayerProvider>();
       final verseProvider = context.read<VerseProvider>();
+      final hadithProvider = context.read<HadithProvider>();
       final streakProvider = context.read<StreakProvider>();
+      final settingsProvider = context.read<PrayerSettingsProvider>();
+      await settingsProvider.initialize();
+      if (!mounted) return;
       await prayerProvider.initialize();
       if (!mounted) return;
       await verseProvider.loadDailyVerse();
+      if (!mounted) return;
+      await hadithProvider.loadDailyHadith();
       if (!mounted) return;
       if (prayerProvider.prayerTimes != null) {
         await streakProvider.initialize(
               currentDate: DateTime.now(),
               currentPrayer: prayerProvider.currentPrayer,
+              fajrTime: prayerProvider.prayerTimes!.fajr,
             );
       }
     });
@@ -49,6 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final prayerProvider = context.watch<PrayerProvider>();
     final verseProvider = context.watch<VerseProvider>();
+    final hadithProvider = context.read<HadithProvider>();
     final streakProvider = context.watch<StreakProvider>();
 
     // Update streak provider when current prayer changes
@@ -64,10 +74,13 @@ class _HomeScreenState extends State<HomeScreen> {
         if (!mounted) return;
         await verseProvider.refresh();
         if (!mounted) return;
+        await hadithProvider.refresh();
+        if (!mounted) return;
         if (prayerProvider.prayerTimes != null) {
           await streakProvider.initialize(
                 currentDate: DateTime.now(),
                 currentPrayer: prayerProvider.currentPrayer,
+                fajrTime: prayerProvider.prayerTimes!.fajr,
               );
         }
       },
@@ -127,8 +140,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
                 const SizedBox(height: 24),
 
-                // Verse of the Day Card
-                const VerseOfTheDayCard(),
+                // Random Verse / Random Hadist swipeable card
+                const RandomContentCard(),
 
                 const SizedBox(height: 14),
 

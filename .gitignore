@@ -66,3 +66,6 @@ graphify-out/*
 .env.*.local
 *.key
 *.pem
+
+# Etc
+ref/

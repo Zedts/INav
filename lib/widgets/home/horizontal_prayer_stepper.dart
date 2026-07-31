@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../core/providers/prayer_provider.dart';
 import '../../core/theme/app_colors.dart';
+import '../../screens/settings/prayer_notification_settings_screen.dart';
 
 /// Horizontal prayer stepper timeline matching the reference design
-/// Shows 5 prayers in a row with progress line and proper states
+/// Shows 5 prayers in a row with progress line and proper states.
+/// The whole card is one tap target that pushes the prayer notification
+/// settings screen (individual prayer stops are not separately clickable).
 class HorizontalPrayerStepper extends StatelessWidget {
   const HorizontalPrayerStepper({super.key});
 
@@ -66,8 +69,20 @@ class HorizontalPrayerStepper extends StatelessWidget {
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(24),
-        child: Padding(
-            padding: const EdgeInsets.all(16),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            borderRadius: BorderRadius.circular(24),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const PrayerNotificationSettingsScreen(),
+                ),
+              );
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -101,29 +116,42 @@ class HorizontalPrayerStepper extends StatelessWidget {
                         ],
                       ),
                       if (prayerProvider.calendar != null)
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 10,
-                            vertical: 4,
-                          ),
-                          decoration: BoxDecoration(
-                            color:
-                                (isDark
-                                        ? AppColors.primaryDark
-                                        : AppColors.primaryLight)
-                                    .withValues(alpha: 0.1),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Text(
-                            '${prayerProvider.calendar!.hijri.dayOfMonth} ${prayerProvider.calendar!.hijri.monthName} ${prayerProvider.calendar!.hijri.year} AH',
-                            style: TextStyle(
-                              fontSize: 10,
-                              fontWeight: FontWeight.w700,
-                              color: isDark
-                                  ? AppColors.primaryDark
-                                  : AppColors.primaryLight,
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10,
+                                vertical: 4,
+                              ),
+                              decoration: BoxDecoration(
+                                color:
+                                    (isDark
+                                            ? AppColors.primaryDark
+                                            : AppColors.primaryLight)
+                                        .withValues(alpha: 0.1),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Text(
+                                '${prayerProvider.calendar!.hijri.dayOfMonth} ${prayerProvider.calendar!.hijri.monthName} ${prayerProvider.calendar!.hijri.year} AH',
+                                style: TextStyle(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w700,
+                                  color: isDark
+                                      ? AppColors.primaryDark
+                                      : AppColors.primaryLight,
+                                ),
+                              ),
                             ),
-                          ),
+                            const SizedBox(width: 4),
+                            Icon(
+                              Icons.chevron_right,
+                              size: 16,
+                              color: isDark
+                                  ? AppColors.textMutedDark
+                                  : AppColors.textMutedLight,
+                            ),
+                          ],
                         ),
                     ],
                   ),
@@ -223,7 +251,9 @@ class HorizontalPrayerStepper extends StatelessWidget {
                 ),
               ],
             ),
+            ),
           ),
+        ),
       ),
     );
   }

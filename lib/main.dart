@@ -5,7 +5,9 @@ import 'core/theme/app_theme.dart';
 import 'core/theme/theme_provider.dart';
 import 'core/providers/prayer_provider.dart';
 import 'core/providers/verse_provider.dart';
+import 'core/providers/hadith_provider.dart';
 import 'core/providers/streak_provider.dart';
+import 'core/providers/prayer_settings_provider.dart';
 import 'core/providers/quran_provider.dart';
 import 'core/providers/mosque_provider.dart';
 import 'core/providers/qibla_provider.dart';
@@ -43,7 +45,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider.value(value: themeProvider),
         ChangeNotifierProvider(create: (_) => PrayerProvider()),
         ChangeNotifierProvider(create: (_) => VerseProvider()),
+        ChangeNotifierProvider(create: (_) => HadithProvider()),
         ChangeNotifierProvider(create: (_) => StreakProvider()),
+        ChangeNotifierProvider(create: (_) => PrayerSettingsProvider()),
         ChangeNotifierProvider(create: (_) => QuranProvider()),
         ChangeNotifierProvider(create: (_) => MosqueProvider()),
         ChangeNotifierProvider(create: (_) => QiblaProvider()),

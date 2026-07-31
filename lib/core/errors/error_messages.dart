@@ -65,6 +65,8 @@ class ErrorMessages {
       'Unable to load the surah list. Please try again later.';
   static const String verseUnavailable =
       'Unable to load the verse of the day. Please try again later.';
+  static const String hadithUnavailable =
+      'Unable to load the hadith. Please try again later.';
   static const String mosquesLoadFailed =
       'Something went wrong while finding nearby mosques. Please try again.';
   static const String noMosquesFound =

@@ -110,40 +110,38 @@ class ServicesToolsGrid extends StatelessWidget {
           ),
         ),
 
-        const SizedBox(height: 1),
+        const SizedBox(height: 8),
 
-        // Grid of service buttons
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: GridView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 4,
-              crossAxisSpacing: 10,
-              mainAxisSpacing: 10,
-              childAspectRatio: 0.95,
-            ),
+        // Single horizontally-scrolling row of service buttons
+        SizedBox(
+          height: 96,
+          child: ListView.separated(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             itemCount: services.length,
+            separatorBuilder: (context, index) => const SizedBox(width: 10),
             itemBuilder: (context, index) {
               final service = services[index];
-              return _ServiceButton(
-                service: service,
-                isDark: isDark,
-                onTap: () {
-                  if (service.isActive && service.targetIndex != null) {
-                    // Navigate to target screen
-                    onNavigate(service.targetIndex!);
-                  } else {
-                    // Show coming soon toast
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('${service.label} feature coming soon'),
-                        duration: const Duration(seconds: 2),
-                      ),
-                    );
-                  }
-                },
+              return SizedBox(
+                width: 80,
+                child: _ServiceButton(
+                  service: service,
+                  isDark: isDark,
+                  onTap: () {
+                    if (service.isActive && service.targetIndex != null) {
+                      // Navigate to target screen
+                      onNavigate(service.targetIndex!);
+                    } else {
+                      // Show coming soon toast
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('${service.label} feature coming soon'),
+                          duration: const Duration(seconds: 2),
+                        ),
+                      );
+                    }
+                  },
+                ),
               );
             },
           ),
