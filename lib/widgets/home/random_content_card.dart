@@ -8,8 +8,6 @@ import '../../core/providers/hadith_provider.dart';
 import '../../core/theme/app_colors.dart';
 
 /// Swipeable card that shows a "Random Verse" and a "Random Hadist" page.
-/// Layout mirrors the reference verse card; the swap behavior mirrors the
-/// [GlassBanner] PageView pattern.
 class RandomContentCard extends StatefulWidget {
   const RandomContentCard({super.key});
 

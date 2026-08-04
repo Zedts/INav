@@ -8,7 +8,8 @@ import '../../core/providers/prayer_settings_provider.dart';
 import '../../core/theme/app_colors.dart';
 import '../../widgets/common/error_state_view.dart';
 import '../../widgets/common/section_skeleton.dart';
-import '../../widgets/home/glass_banner.dart';
+import '../../widgets/home/banner.dart';
+import '../../widgets/home/focus_lock_card.dart';
 import '../../widgets/home/horizontal_prayer_stepper.dart';
 import '../../widgets/home/services_tools_grid.dart';
 import '../../widgets/home/random_content_card.dart';
@@ -45,10 +46,10 @@ class _HomeScreenState extends State<HomeScreen> {
       if (!mounted) return;
       if (prayerProvider.prayerTimes != null) {
         await streakProvider.initialize(
-              currentDate: DateTime.now(),
-              currentPrayer: prayerProvider.currentPrayer,
-              fajrTime: prayerProvider.prayerTimes!.fajr,
-            );
+          currentDate: DateTime.now(),
+          currentPrayer: prayerProvider.currentPrayer,
+          fajrTime: prayerProvider.prayerTimes!.fajr,
+        );
       }
     });
   }
@@ -78,10 +79,10 @@ class _HomeScreenState extends State<HomeScreen> {
         if (!mounted) return;
         if (prayerProvider.prayerTimes != null) {
           await streakProvider.initialize(
-                currentDate: DateTime.now(),
-                currentPrayer: prayerProvider.currentPrayer,
-                fajrTime: prayerProvider.prayerTimes!.fajr,
-              );
+            currentDate: DateTime.now(),
+            currentPrayer: prayerProvider.currentPrayer,
+            fajrTime: prayerProvider.prayerTimes!.fajr,
+          );
         }
       },
       edgeOffset: 4,
@@ -137,6 +138,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
                 // Services & Tools Grid
                 ServicesToolsGrid(onNavigate: widget.onNavigate),
+
+                const SizedBox(height: 24),
+
+                // Focus Lock Card
+                const FocusLockCard(),
 
                 const SizedBox(height: 24),
 
