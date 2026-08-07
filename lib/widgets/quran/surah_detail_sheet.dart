@@ -3,14 +3,12 @@ import 'package:provider/provider.dart';
 import '../../core/errors/error_messages.dart';
 import '../../core/models/surah_model.dart';
 import '../../core/providers/quran_provider.dart';
+import '../../screens/quran/surah_reading_screen.dart';
 
 class SurahDetailSheet extends StatefulWidget {
   final SurahModel surah;
 
-  const SurahDetailSheet({
-    super.key,
-    required this.surah,
-  });
+  const SurahDetailSheet({super.key, required this.surah});
 
   static void show(BuildContext context, SurahModel surah) {
     showModalBottomSheet<void>(
@@ -157,9 +155,9 @@ class _SurahDetailSheetState extends State<SurahDetailSheet> {
                     width: 48,
                     height: 48,
                     decoration: BoxDecoration(
-                      color: const Color(0xFF0D9488).withValues(
-                        alpha: isDark ? 0.2 : 0.1,
-                      ),
+                      color: const Color(
+                        0xFF0D9488,
+                      ).withValues(alpha: isDark ? 0.2 : 0.1),
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: Center(
@@ -236,8 +234,9 @@ class _SurahDetailSheetState extends State<SurahDetailSheet> {
     final revelationBg = isMeccan
         ? const Color(0xFFD97706).withValues(alpha: 0.1)
         : const Color(0xFF2563EB).withValues(alpha: 0.1);
-    final revelationFg =
-        isMeccan ? const Color(0xFFD97706) : const Color(0xFF2563EB);
+    final revelationFg = isMeccan
+        ? const Color(0xFFD97706)
+        : const Color(0xFF2563EB);
 
     return Wrap(
       spacing: 8,
@@ -249,7 +248,8 @@ class _SurahDetailSheetState extends State<SurahDetailSheet> {
           fg: revelationFg,
           text: widget.surah.revelationEn,
           suffix: TextSpan(
-            text: '  (${widget.surah.revelationId} · ${widget.surah.revelation})',
+            text:
+                '  (${widget.surah.revelationId} · ${widget.surah.revelation})',
             style: TextStyle(
               fontSize: 11,
               fontWeight: FontWeight.w700,
@@ -320,9 +320,7 @@ class _SurahDetailSheetState extends State<SurahDetailSheet> {
           style: TextStyle(
             fontSize: 11,
             fontWeight: FontWeight.w600,
-            color: isDark
-                ? const Color(0xFF94A3B8)
-                : const Color(0xFF64748B),
+            color: isDark ? const Color(0xFF94A3B8) : const Color(0xFF64748B),
           ),
         ),
         const SizedBox(width: 8),
@@ -331,9 +329,7 @@ class _SurahDetailSheetState extends State<SurahDetailSheet> {
           style: TextStyle(
             fontSize: 12,
             fontWeight: FontWeight.w700,
-            color: isDark
-                ? const Color(0xFFF8FAFC)
-                : const Color(0xFF0F172A),
+            color: isDark ? const Color(0xFFF8FAFC) : const Color(0xFF0F172A),
           ),
         ),
         Padding(
@@ -341,9 +337,7 @@ class _SurahDetailSheetState extends State<SurahDetailSheet> {
           child: Text(
             '•',
             style: TextStyle(
-              color: isDark
-                  ? const Color(0xFF334155)
-                  : const Color(0xFFCBD5E1),
+              color: isDark ? const Color(0xFF334155) : const Color(0xFFCBD5E1),
               fontWeight: FontWeight.w600,
             ),
           ),
@@ -353,9 +347,7 @@ class _SurahDetailSheetState extends State<SurahDetailSheet> {
           style: TextStyle(
             fontSize: 12,
             fontWeight: FontWeight.w700,
-            color: isDark
-                ? const Color(0xFFF8FAFC)
-                : const Color(0xFF0F172A),
+            color: isDark ? const Color(0xFFF8FAFC) : const Color(0xFF0F172A),
           ),
         ),
       ],
@@ -368,11 +360,7 @@ class _SurahDetailSheetState extends State<SurahDetailSheet> {
       children: [
         Row(
           children: [
-            const Icon(
-              Icons.menu_book,
-              size: 13,
-              color: Color(0xFF0D9488),
-            ),
+            const Icon(Icons.menu_book, size: 13, color: Color(0xFF0D9488)),
             const SizedBox(width: 6),
             Text(
               'TAFSIR / DESCRIPTION',
@@ -393,9 +381,7 @@ class _SurahDetailSheetState extends State<SurahDetailSheet> {
           style: TextStyle(
             fontSize: 13,
             fontWeight: FontWeight.w500,
-            color: (isDark
-                    ? const Color(0xFFF8FAFC)
-                    : const Color(0xFF0F172A))
+            color: (isDark ? const Color(0xFFF8FAFC) : const Color(0xFF0F172A))
                 .withValues(alpha: 0.9),
             height: 1.65,
           ),
@@ -414,10 +400,9 @@ class _SurahDetailSheetState extends State<SurahDetailSheet> {
     final isLoading = quranProvider.isSurahLoading(surahKey);
     final isActive = quranProvider.isSurahActive(surahKey);
 
-    final audioIcon =
-        isLoading
-            ? Icons.hourglass_empty
-            : (isPlaying ? Icons.volume_up : Icons.volume_down);
+    final audioIcon = isLoading
+        ? Icons.hourglass_empty
+        : (isPlaying ? Icons.volume_up : Icons.volume_down);
 
     return Container(
       padding: EdgeInsets.fromLTRB(
@@ -442,19 +427,21 @@ class _SurahDetailSheetState extends State<SurahDetailSheet> {
           Row(
             children: [
               _buildActionButton(
-                icon: Icons.play_arrow,
+                icon: Icons.menu_book,
                 bg: const Color(0xFF0D9488),
                 fg: Colors.white,
                 hasShadow: true,
                 shadowColor: const Color(0xFF0D9488),
                 onTap: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Opening full reading view...'),
-                      duration: Duration(seconds: 1),
+                  // Navigate to reading screen
+                  Navigator.of(context).pop(); // Close detail sheet first
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) =>
+                          SurahReadingScreen(surahNumber: widget.surah.number),
                     ),
                   );
-                  Navigator.of(context).pop();
                 },
               ),
               const SizedBox(width: 12),
@@ -462,12 +449,14 @@ class _SurahDetailSheetState extends State<SurahDetailSheet> {
                 icon: isBookmarked ? Icons.bookmark : Icons.bookmark_border,
                 bg: isBookmarked
                     ? const Color(0xFF0D9488).withValues(alpha: 0.1)
-                    : (isDark ? const Color(0xFF1E293B) : const Color(0xFFF1F5F9)),
+                    : (isDark
+                          ? const Color(0xFF1E293B)
+                          : const Color(0xFFF1F5F9)),
                 fg: isBookmarked
                     ? const Color(0xFF0D9488)
                     : (isDark
-                        ? const Color(0xFFF8FAFC)
-                        : const Color(0xFF0F172A)),
+                          ? const Color(0xFFF8FAFC)
+                          : const Color(0xFF0F172A)),
                 hasShadow: false,
                 onTap: () {
                   quranProvider.toggleBookmark(surahKey);
@@ -507,10 +496,11 @@ class _SurahDetailSheetState extends State<SurahDetailSheet> {
                   fontSize: 9,
                   fontWeight: FontWeight.w700,
                   letterSpacing: 1,
-                  color: (isDark
-                          ? const Color(0xFFF8FAFC)
-                          : const Color(0xFF0F172A))
-                      .withValues(alpha: 0.6),
+                  color:
+                      (isDark
+                              ? const Color(0xFFF8FAFC)
+                              : const Color(0xFF0F172A))
+                          .withValues(alpha: 0.6),
                 ),
               ),
               const SizedBox(height: 2),
@@ -562,11 +552,7 @@ class _SurahDetailSheetState extends State<SurahDetailSheet> {
         child: Center(
           child: AnimatedSize(
             duration: const Duration(milliseconds: 200),
-            child: Icon(
-              icon,
-              size: pulsing ? 22 : 20,
-              color: fg,
-            ),
+            child: Icon(icon, size: pulsing ? 22 : 20, color: fg),
           ),
         ),
       ),

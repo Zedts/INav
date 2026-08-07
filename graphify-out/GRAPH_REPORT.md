@@ -1,8 +1,7 @@
-# Graph Report - inav  (2026-08-04)
+# Graph Report - .  (2026-08-07)
 
 ## Corpus Check
-- 102 files · ~56,035 words
-- Verdict: corpus is large enough that graph structure adds value.
+- cluster-only mode — file stats not available
 
 ## Summary
 - 1350 nodes · 1849 edges · 111 communities (79 shown, 32 thin omitted)
@@ -10,7 +9,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `84d06935`
+- Built from commit: `a00fd97d`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -112,7 +111,7 @@
 - prayer_notification_settings_model.dart
 - hadith_service.dart
 - error_state_view.dart
-- prayer_service.dart
+- package:flutter/foundation.dart
 - StatelessWidget
 - qibla_hero_banner.dart
 - hadith_model.dart
@@ -294,7 +293,7 @@ Nodes (10): background_color, description, display, icons, name, orientation, pr
 
 ### Community 34 - "../errors/error_messages.dart"
 Cohesion: 0.12
-Nodes (16): ../errors/error_messages.dart, ApiService, _apiService, CalendarService, _convertToHijri, dispose, getCalendarByDate, getTodayCalendar (+8 more)
+Nodes (16): api_service.dart, ../errors/error_messages.dart, ApiService, _apiService, CalendarService, _convertToHijri, dispose, getCalendarByDate (+8 more)
 
 ### Community 35 - "inav"
 Cohesion: 0.22
@@ -416,9 +415,9 @@ Nodes (14): _apiService, _cacheHadith, clearCache, dispose, _fetchFromApi, force
 Cohesion: 0.25
 Nodes (7): ../../core/errors/error_messages.dart, build, ErrorStateView, message, onOpenSettings, onRetry, showErrorSnackBar
 
-### Community 101 - "prayer_service.dart"
+### Community 101 - "package:flutter/foundation.dart"
 Cohesion: 0.20
-Nodes (9): api_service.dart, _apiService, _defaultTimezone, dispose, getPrayerTimesByDate, getTodayPrayerTimes, PrayerService, ../models/prayer_times_model.dart (+1 more)
+Nodes (9): _apiService, _defaultTimezone, dispose, getPrayerTimesByDate, getTodayPrayerTimes, PrayerService, ../models/prayer_times_model.dart, package:flutter_dotenv/flutter_dotenv.dart (+1 more)
 
 ### Community 102 - "StatelessWidget"
 Cohesion: 0.20

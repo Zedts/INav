@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import '../errors/error_messages.dart';
 import '../models/surah_model.dart';
+import '../models/surah_detail_model.dart';
 import '../services/quran_service.dart';
 
 enum AudioSourceId { banner, tile, sheet }
@@ -24,6 +25,12 @@ class QuranProvider with ChangeNotifier {
   bool _audioPlaying = false;
   bool _continuousPlaybackMode = false;
 
+  // v3 API state for reading screen
+  SurahDetailModel? _currentSurahDetail;
+  bool _isLoadingDetail = false;
+  String? _errorMessageDetail;
+  String? _lastReadSurahKey; // Format: "surahNumber:ayahNumber"
+
   List<SurahModel> get allSurahs => _allSurahs;
   String get searchQuery => _searchQuery;
   bool get isLoading => _isLoading;
@@ -38,6 +45,12 @@ class QuranProvider with ChangeNotifier {
   bool get audioLoading => _audioLoading;
   bool get audioPlaying => _audioPlaying;
   bool get continuousPlaybackMode => _continuousPlaybackMode;
+
+  // v3 API getters for reading screen
+  SurahDetailModel? get currentSurahDetail => _currentSurahDetail;
+  bool get isLoadingDetail => _isLoadingDetail;
+  String? get errorMessageDetail => _errorMessageDetail;
+  String? get lastReadSurahKey => _lastReadSurahKey;
 
   List<SurahModel> get filteredSurahs {
     if (_searchQuery.trim().isEmpty) return _allSurahs;
@@ -284,9 +297,7 @@ class QuranProvider with ChangeNotifier {
     notifyListeners();
 
     try {
-      _allSurahs = await _quranService.getAllSurahs(
-        forceRefresh: forceRefresh,
-      );
+      _allSurahs = await _quranService.getAllSurahs(forceRefresh: forceRefresh);
       _isLoading = false;
       _errorMessage = null;
       notifyListeners();
@@ -330,6 +341,52 @@ class QuranProvider with ChangeNotifier {
 
   void toggleSidebar() {
     _isSidebarOpen = !_isSidebarOpen;
+    notifyListeners();
+  }
+
+  /// Load surah detail from v3 API (with pagination support)
+  Future<void> loadSurahDetail(int surahNumber) async {
+    _isLoadingDetail = true;
+    _errorMessageDetail = null;
+    notifyListeners();
+
+    try {
+      _currentSurahDetail = await _quranService.loadCompleteSurah(surahNumber);
+      _isLoadingDetail = false;
+      _errorMessageDetail = null;
+      notifyListeners();
+    } catch (e) {
+      _errorMessageDetail = friendlyErrorMessage(
+        e,
+        fallback: ErrorMessages.dataUnavailable,
+      );
+      _isLoadingDetail = false;
+      notifyListeners();
+    }
+  }
+
+  /// Set last read position (memory-only, resets on app restart)
+  void setLastRead(int surahNumber, int ayahNumber) {
+    _lastReadSurahKey = '$surahNumber:$ayahNumber';
+    notifyListeners();
+  }
+
+  /// Get last read position (returns null if no history)
+  /// Returns tuple: (surahNumber, ayahNumber)
+  (int, int)? getLastRead() {
+    if (_lastReadSurahKey == null) return null;
+    final parts = _lastReadSurahKey!.split(':');
+    if (parts.length != 2) return null;
+    final surahNum = int.tryParse(parts[0]);
+    final ayahNum = int.tryParse(parts[1]);
+    if (surahNum == null || ayahNum == null) return null;
+    return (surahNum, ayahNum);
+  }
+
+  /// Clear current surah detail (useful when navigating away)
+  void clearSurahDetail() {
+    _currentSurahDetail = null;
+    _errorMessageDetail = null;
     notifyListeners();
   }
 

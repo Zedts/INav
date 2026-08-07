@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../../core/errors/error_messages.dart';
 import '../../core/providers/quran_provider.dart';
 import '../../core/models/surah_model.dart';
+import '../../screens/quran/surah_reading_screen.dart';
 import '../common/error_state_view.dart';
 import '../common/glass_pill_badge.dart';
 
@@ -77,6 +78,8 @@ class _QuranBannerState extends State<QuranBanner> {
     final playingSurah = quranProvider.currentPlayingSurah;
     final isContinuous = quranProvider.continuousPlaybackMode;
     final hasActiveSurah = playingSurah != null;
+    final lastRead = quranProvider.getLastRead();
+    final hasReadingHistory = lastRead != null;
 
     final isPlaying = hasActiveSurah
         ? quranProvider.isSurahPlaying(playingSurah.number.toString())
@@ -87,36 +90,32 @@ class _QuranBannerState extends State<QuranBanner> {
     final isActive = hasActiveSurah
         ? quranProvider.isSurahActive(playingSurah.number.toString())
         : (quranProvider.currentAudioSource == _sourceId &&
-            quranProvider.currentAudioSourceKey == _defaultSurahKey);
+              quranProvider.currentAudioSourceKey == _defaultSurahKey);
 
-    final speakerIcon =
-        isLoading
-            ? Icons.hourglass_empty
-            : (isPlaying ? Icons.volume_up : Icons.volume_down);
+    final speakerIcon = isLoading
+        ? Icons.hourglass_empty
+        : (isPlaying ? Icons.volume_up : Icons.volume_down);
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: GestureDetector(
         onTap: () {
-          if (hasActiveSurah) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
-                  isContinuous
-                      ? 'Continuous: ${playingSurah.nameEn}'
-                      : 'Now Playing: ${playingSurah.nameEn}',
-                ),
-                duration: const Duration(seconds: 1),
+          // Navigate to reading screen
+          final quranProvider = context.read<QuranProvider>();
+          final lastRead = quranProvider.getLastRead();
+          final surahNum =
+              lastRead?.$1 ?? 1; // Default to Surah 1 if no history
+          final ayahNum = lastRead?.$2;
+
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => SurahReadingScreen(
+                surahNumber: surahNum,
+                initialAyahNumber: ayahNum,
               ),
-            );
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Pick a Surah below to start reading'),
-                duration: Duration(seconds: 1),
-              ),
-            );
-          }
+            ),
+          );
         },
         child: SizedBox(
           height: 170,
@@ -132,8 +131,8 @@ class _QuranBannerState extends State<QuranBanner> {
                         color:
                             (hasActiveSurah
                                     ? (isContinuous
-                                        ? const Color(0xFF7C3AED)
-                                        : const Color(0xFF2563EB))
+                                          ? const Color(0xFF7C3AED)
+                                          : const Color(0xFF2563EB))
                                     : const Color(0xFF0D9488))
                                 .withValues(alpha: 0.35),
                         blurRadius: 60,
@@ -151,8 +150,7 @@ class _QuranBannerState extends State<QuranBanner> {
                         offset: const Offset(20, 20),
                       ),
                       BoxShadow(
-                        color:
-                            const Color(0xFFD97706).withValues(alpha: 0.2),
+                        color: const Color(0xFFD97706).withValues(alpha: 0.2),
                         blurRadius: 50,
                         spreadRadius: -15,
                         offset: const Offset(0, 10),
@@ -171,8 +169,9 @@ class _QuranBannerState extends State<QuranBanner> {
                           ? Colors.black.withValues(alpha: 0.65)
                           : const Color(0xFF0D47A1).withValues(alpha: 0.22),
                       blurRadius: 50,
-                      offset:
-                          isDark ? const Offset(0, 25) : const Offset(0, 20),
+                      offset: isDark
+                          ? const Offset(0, 25)
+                          : const Offset(0, 20),
                     ),
                     BoxShadow(
                       color: isDark
@@ -234,8 +233,8 @@ class _QuranBannerState extends State<QuranBanner> {
                           isContinuous
                               ? Icons.queue_play_next
                               : hasActiveSurah
-                                  ? Icons.queue_music
-                                  : Icons.menu_book,
+                              ? Icons.queue_music
+                              : Icons.menu_book,
                           size: 110,
                           color: isDark
                               ? Colors.white.withValues(alpha: 0.05)
@@ -261,8 +260,18 @@ class _QuranBannerState extends State<QuranBanner> {
                           children: [
                             hasActiveSurah
                                 ? isContinuous
-                                    ? _buildContinuousBadge(isDark)
-                                    : _buildNowPlayingBadge(isDark)
+                                      ? _buildContinuousBadge(isDark)
+                                      : _buildNowPlayingBadge(isDark)
+                                : hasReadingHistory
+                                ? GlassPillBadge(
+                                    label: 'CONTINUE READING',
+                                    icon: Icons.menu_book,
+                                    showPulsingDot: true,
+                                    textColor: isDark
+                                        ? const Color(0xFF5EEAD4)
+                                        : const Color(0xFF134E4A),
+                                    pulsingDotColor: const Color(0xFF0D9488),
+                                  )
                                 : GlassPillBadge(
                                     label: 'START READING',
                                     icon: Icons.menu_book,
@@ -332,11 +341,7 @@ class _QuranBannerState extends State<QuranBanner> {
             ),
           ],
         ),
-        child: Icon(
-          Icons.close,
-          size: 20,
-          color: const Color(0xFFEF4444),
-        ),
+        child: Icon(Icons.close, size: 20, color: const Color(0xFFEF4444)),
       ),
     );
   }
@@ -368,11 +373,42 @@ class _QuranBannerState extends State<QuranBanner> {
     bool isLoading,
     bool isActive,
   ) {
+    final quranProvider = context.watch<QuranProvider>();
+    final lastRead = quranProvider.getLastRead();
+    final hasLastRead = lastRead != null;
+
+    // Get surah name if reading history exists
+    String? surahName;
+    if (hasLastRead) {
+      final surah = quranProvider.allSurahs.firstWhere(
+        (s) => s.number == lastRead.$1,
+        orElse: () => SurahModel(
+          audioUrl: '',
+          nameEn: '',
+          nameId: '',
+          nameLong: '',
+          nameShort: '',
+          number: 0,
+          numberOfVerses: 0,
+          sequence: 0,
+          revelation: '',
+          revelationEn: '',
+          revelationId: '',
+          tafsir: '',
+          translationEn: '',
+          translationId: '',
+        ),
+      );
+      if (surah.number != 0) {
+        surahName = surah.nameEn;
+      }
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Start Reading',
+          surahName ?? (hasLastRead ? 'Continue Reading' : 'Start Reading'),
           style: TextStyle(
             fontSize: 26,
             fontWeight: FontWeight.w900,
@@ -390,7 +426,9 @@ class _QuranBannerState extends State<QuranBanner> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Choose a Surah below',
+                  hasLastRead
+                      ? 'Surah ${lastRead.$1}, Ayah ${lastRead.$2}'
+                      : 'Choose a Surah below',
                   style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
@@ -401,7 +439,9 @@ class _QuranBannerState extends State<QuranBanner> {
                 ),
                 const SizedBox(height: 3),
                 Text(
-                  'or tap play → all 114 Surahs',
+                  hasLastRead
+                      ? 'Tap to continue where you left off'
+                      : 'or tap play → all 114 Surahs',
                   style: TextStyle(
                     fontSize: 10,
                     fontWeight: FontWeight.w600,
@@ -432,7 +472,7 @@ class _QuranBannerState extends State<QuranBanner> {
                     borderRadius: BorderRadius.circular(999),
                   ),
                   child: const Icon(
-                    Icons.play_arrow,
+                    Icons.menu_book,
                     size: 18,
                     color: Color(0xFF0D9488),
                   ),
@@ -466,7 +506,9 @@ class _QuranBannerState extends State<QuranBanner> {
               height: 36,
               decoration: BoxDecoration(
                 color:
-                    (isContinuous ? const Color(0xFF7C3AED) : const Color(0xFF2563EB))
+                    (isContinuous
+                            ? const Color(0xFF7C3AED)
+                            : const Color(0xFF2563EB))
                         .withValues(alpha: isDark ? 0.25 : 0.15),
                 borderRadius: BorderRadius.circular(12),
               ),

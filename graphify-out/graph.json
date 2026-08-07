@@ -39,10 +39,10 @@
       "source_file": "lib/screens/home/home_screen.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_screens_home_home_screen",
       "community": 85,
       "community_name": "home_screen.dart",
-      "norm_label": "home_screen.dart"
+      "norm_label": "home_screen.dart",
+      "id": "lib_screens_home_home_screen"
     },
     {
       "label": "HomeScreen",
@@ -50,10 +50,10 @@
       "source_file": "lib/screens/home/home_screen.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_screens_home_home_screen_homescreen",
       "community": 89,
       "community_name": "State",
-      "norm_label": "homescreen"
+      "norm_label": "homescreen",
+      "id": "lib_screens_home_home_screen_homescreen"
     },
     {
       "label": "StatefulWidget",
@@ -61,10 +61,10 @@
       "source_file": null,
       "source_location": null,
       "_origin": "ast",
-      "id": "statefulwidget",
       "community": 89,
       "community_name": "State",
-      "norm_label": "statefulwidget"
+      "norm_label": "statefulwidget",
+      "id": "statefulwidget"
     },
     {
       "label": "_HomeScreenState",
@@ -72,10 +72,10 @@
       "source_file": "lib/screens/home/home_screen.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_screens_home_home_screen_homescreenstate",
       "community": 85,
       "community_name": "home_screen.dart",
-      "norm_label": "_homescreenstate"
+      "norm_label": "_homescreenstate",
+      "id": "lib_screens_home_home_screen_homescreenstate"
     },
     {
       "label": "State",
@@ -83,10 +83,10 @@
       "source_file": null,
       "source_location": null,
       "_origin": "ast",
-      "id": "state",
       "community": 89,
       "community_name": "State",
-      "norm_label": "state"
+      "norm_label": "state",
+      "id": "state"
     },
     {
       "label": "PrayerProvider",
@@ -94,10 +94,10 @@
       "source_file": null,
       "source_location": null,
       "_origin": "ast",
-      "id": "prayerprovider",
       "community": 85,
       "community_name": "home_screen.dart",
-      "norm_label": "prayerprovider"
+      "norm_label": "prayerprovider",
+      "id": "prayerprovider"
     },
     {
       "label": "VerseProvider",
@@ -105,10 +105,10 @@
       "source_file": null,
       "source_location": null,
       "_origin": "ast",
-      "id": "verseprovider",
       "community": 85,
       "community_name": "home_screen.dart",
-      "norm_label": "verseprovider"
+      "norm_label": "verseprovider",
+      "id": "verseprovider"
     },
     {
       "label": "HadithProvider",
@@ -116,10 +116,10 @@
       "source_file": null,
       "source_location": null,
       "_origin": "ast",
-      "id": "hadithprovider",
       "community": 85,
       "community_name": "home_screen.dart",
-      "norm_label": "hadithprovider"
+      "norm_label": "hadithprovider",
+      "id": "hadithprovider"
     },
     {
       "label": "StreakProvider",
@@ -127,10 +127,10 @@
       "source_file": null,
       "source_location": null,
       "_origin": "ast",
-      "id": "streakprovider",
       "community": 85,
       "community_name": "home_screen.dart",
-      "norm_label": "streakprovider"
+      "norm_label": "streakprovider",
+      "id": "streakprovider"
     },
     {
       "label": "PrayerSettingsProvider",
@@ -138,10 +138,10 @@
       "source_file": null,
       "source_location": null,
       "_origin": "ast",
-      "id": "prayersettingsprovider",
       "community": 85,
       "community_name": "home_screen.dart",
-      "norm_label": "prayersettingsprovider"
+      "norm_label": "prayersettingsprovider",
+      "id": "prayersettingsprovider"
     },
     {
       "label": "createState",
@@ -149,10 +149,10 @@
       "source_file": "lib/screens/home/home_screen.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_screens_home_home_screen_createstate",
       "community": 85,
       "community_name": "home_screen.dart",
-      "norm_label": "createstate"
+      "norm_label": "createstate",
+      "id": "lib_screens_home_home_screen_createstate"
     },
     {
       "label": "initState",
@@ -160,10 +160,10 @@
       "source_file": "lib/screens/home/home_screen.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_screens_home_home_screen_initstate",
       "community": 85,
       "community_name": "home_screen.dart",
-      "norm_label": "initstate"
+      "norm_label": "initstate",
+      "id": "lib_screens_home_home_screen_initstate"
     },
     {
       "label": "build",
@@ -171,10 +171,10 @@
       "source_file": "lib/screens/home/home_screen.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_screens_home_home_screen_build",
       "community": 85,
       "community_name": "home_screen.dart",
-      "norm_label": "build"
+      "norm_label": "build",
+      "id": "lib_screens_home_home_screen_build"
     },
     {
       "label": "package:flutter/material.dart",
@@ -182,10 +182,10 @@
       "source_file": null,
       "source_location": null,
       "_origin": "ast",
-      "id": "package_flutter_material_dart",
       "community": 40,
       "community_name": "package:flutter/material.dart",
-      "norm_label": "package:flutter/material.dart"
+      "norm_label": "package:flutter/material.dart",
+      "id": "package_flutter_material_dart"
     },
     {
       "label": "package:provider/provider.dart",
@@ -193,10 +193,10 @@
       "source_file": null,
       "source_location": null,
       "_origin": "ast",
-      "id": "package_provider_provider_dart",
       "community": 105,
       "community_name": "package:provider/provider.dart",
-      "norm_label": "package:provider/provider.dart"
+      "norm_label": "package:provider/provider.dart",
+      "id": "package_provider_provider_dart"
     },
     {
       "label": "../../core/providers/prayer_provider.dart",
@@ -204,10 +204,10 @@
       "source_file": null,
       "source_location": null,
       "_origin": "ast",
-      "id": "core_providers_prayer_provider_dart",
       "community": 109,
       "community_name": "focus_lock_card.dart",
-      "norm_label": "../../core/providers/prayer_provider.dart"
+      "norm_label": "../../core/providers/prayer_provider.dart",
+      "id": "core_providers_prayer_provider_dart"
     },
     {
       "label": "../../core/providers/verse_provider.dart",
@@ -215,10 +215,10 @@
       "source_file": null,
       "source_location": null,
       "_origin": "ast",
-      "id": "core_providers_verse_provider_dart",
       "community": 22,
       "community_name": "main.dart",
-      "norm_label": "../../core/providers/verse_provider.dart"
+      "norm_label": "../../core/providers/verse_provider.dart",
+      "id": "core_providers_verse_provider_dart"
     },
     {
       "label": "../../core/providers/hadith_provider.dart",
@@ -226,10 +226,10 @@
       "source_file": null,
       "source_location": null,
       "_origin": "ast",
-      "id": "core_providers_hadith_provider_dart",
       "community": 22,
       "community_name": "main.dart",
-      "norm_label": "../../core/providers/hadith_provider.dart"
+      "norm_label": "../../core/providers/hadith_provider.dart",
+      "id": "core_providers_hadith_provider_dart"
     },
     {
       "label": "../../core/providers/streak_provider.dart",
@@ -237,10 +237,10 @@
       "source_file": null,
       "source_location": null,
       "_origin": "ast",
-      "id": "core_providers_streak_provider_dart",
       "community": 22,
       "community_name": "main.dart",
-      "norm_label": "../../core/providers/streak_provider.dart"
+      "norm_label": "../../core/providers/streak_provider.dart",
+      "id": "core_providers_streak_provider_dart"
     },
     {
       "label": "../../core/providers/prayer_settings_provider.dart",
@@ -248,10 +248,10 @@
       "source_file": null,
       "source_location": null,
       "_origin": "ast",
-      "id": "core_providers_prayer_settings_provider_dart",
       "community": 22,
       "community_name": "main.dart",
-      "norm_label": "../../core/providers/prayer_settings_provider.dart"
+      "norm_label": "../../core/providers/prayer_settings_provider.dart",
+      "id": "core_providers_prayer_settings_provider_dart"
     },
     {
       "label": "../../core/theme/app_colors.dart",
@@ -259,10 +259,10 @@
       "source_file": null,
       "source_location": null,
       "_origin": "ast",
-      "id": "core_theme_app_colors_dart",
       "community": 105,
       "community_name": "package:provider/provider.dart",
-      "norm_label": "../../core/theme/app_colors.dart"
+      "norm_label": "../../core/theme/app_colors.dart",
+      "id": "core_theme_app_colors_dart"
     },
     {
       "label": "../../widgets/common/error_state_view.dart",
@@ -270,10 +270,10 @@
       "source_file": null,
       "source_location": null,
       "_origin": "ast",
-      "id": "widgets_common_error_state_view_dart",
       "community": 20,
       "community_name": "quran_screen.dart",
-      "norm_label": "../../widgets/common/error_state_view.dart"
+      "norm_label": "../../widgets/common/error_state_view.dart",
+      "id": "widgets_common_error_state_view_dart"
     },
     {
       "label": "../../widgets/common/section_skeleton.dart",
@@ -281,10 +281,10 @@
       "source_file": null,
       "source_location": null,
       "_origin": "ast",
-      "id": "widgets_common_section_skeleton_dart",
       "community": 93,
       "community_name": "qibla_screen.dart",
-      "norm_label": "../../widgets/common/section_skeleton.dart"
+      "norm_label": "../../widgets/common/section_skeleton.dart",
+      "id": "widgets_common_section_skeleton_dart"
     },
     {
       "label": "../../widgets/home/banner.dart",
@@ -292,10 +292,10 @@
       "source_file": null,
       "source_location": null,
       "_origin": "ast",
-      "id": "widgets_home_banner_dart",
       "community": 85,
       "community_name": "home_screen.dart",
-      "norm_label": "../../widgets/home/banner.dart"
+      "norm_label": "../../widgets/home/banner.dart",
+      "id": "widgets_home_banner_dart"
     },
     {
       "label": "../../widgets/home/focus_lock_card.dart",
@@ -303,10 +303,10 @@
       "source_file": null,
       "source_location": null,
       "_origin": "ast",
-      "id": "widgets_home_focus_lock_card_dart",
       "community": 85,
       "community_name": "home_screen.dart",
-      "norm_label": "../../widgets/home/focus_lock_card.dart"
+      "norm_label": "../../widgets/home/focus_lock_card.dart",
+      "id": "widgets_home_focus_lock_card_dart"
     },
     {
       "label": "../../widgets/home/horizontal_prayer_stepper.dart",
@@ -314,10 +314,10 @@
       "source_file": null,
       "source_location": null,
       "_origin": "ast",
-      "id": "widgets_home_horizontal_prayer_stepper_dart",
       "community": 85,
       "community_name": "home_screen.dart",
-      "norm_label": "../../widgets/home/horizontal_prayer_stepper.dart"
+      "norm_label": "../../widgets/home/horizontal_prayer_stepper.dart",
+      "id": "widgets_home_horizontal_prayer_stepper_dart"
     },
     {
       "label": "../../widgets/home/services_tools_grid.dart",
@@ -325,10 +325,10 @@
       "source_file": null,
       "source_location": null,
       "_origin": "ast",
-      "id": "widgets_home_services_tools_grid_dart",
       "community": 85,
       "community_name": "home_screen.dart",
-      "norm_label": "../../widgets/home/services_tools_grid.dart"
+      "norm_label": "../../widgets/home/services_tools_grid.dart",
+      "id": "widgets_home_services_tools_grid_dart"
     },
     {
       "label": "../../widgets/home/random_content_card.dart",
@@ -336,10 +336,10 @@
       "source_file": null,
       "source_location": null,
       "_origin": "ast",
-      "id": "widgets_home_random_content_card_dart",
       "community": 85,
       "community_name": "home_screen.dart",
-      "norm_label": "../../widgets/home/random_content_card.dart"
+      "norm_label": "../../widgets/home/random_content_card.dart",
+      "id": "widgets_home_random_content_card_dart"
     },
     {
       "label": "../../widgets/home/streak_card.dart",
@@ -347,10 +347,10 @@
       "source_file": null,
       "source_location": null,
       "_origin": "ast",
-      "id": "widgets_home_streak_card_dart",
       "community": 85,
       "community_name": "home_screen.dart",
-      "norm_label": "../../widgets/home/streak_card.dart"
+      "norm_label": "../../widgets/home/streak_card.dart",
+      "id": "widgets_home_streak_card_dart"
     },
     {
       "label": "focus_lock_config_screen.dart",
@@ -358,10 +358,10 @@
       "source_file": "lib/screens/settings/focus_lock_config_screen.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_screens_settings_focus_lock_config_screen",
       "community": 15,
       "community_name": "focus_lock_config_screen.dart",
-      "norm_label": "focus_lock_config_screen.dart"
+      "norm_label": "focus_lock_config_screen.dart",
+      "id": "lib_screens_settings_focus_lock_config_screen"
     },
     {
       "label": "FocusLockConfigScreen",
@@ -369,10 +369,10 @@
       "source_file": "lib/screens/settings/focus_lock_config_screen.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_screens_settings_focus_lock_config_screen_focuslockconfigscreen",
       "community": 15,
       "community_name": "focus_lock_config_screen.dart",
-      "norm_label": "focuslockconfigscreen"
+      "norm_label": "focuslockconfigscreen",
+      "id": "lib_screens_settings_focus_lock_config_screen_focuslockconfigscreen"
     },
     {
       "label": "_FocusLockConfigScreenState",
@@ -380,10 +380,10 @@
       "source_file": "lib/screens/settings/focus_lock_config_screen.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_screens_settings_focus_lock_config_screen_focuslockconfigscreenstate",
       "community": 15,
       "community_name": "focus_lock_config_screen.dart",
-      "norm_label": "_focuslockconfigscreenstate"
+      "norm_label": "_focuslockconfigscreenstate",
+      "id": "lib_screens_settings_focus_lock_config_screen_focuslockconfigscreenstate"
     },
     {
       "label": "_AppItem",
@@ -391,10 +391,10 @@
       "source_file": "lib/screens/settings/focus_lock_config_screen.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_screens_settings_focus_lock_config_screen_appitem",
       "community": 15,
       "community_name": "focus_lock_config_screen.dart",
-      "norm_label": "_appitem"
+      "norm_label": "_appitem",
+      "id": "lib_screens_settings_focus_lock_config_screen_appitem"
     },
     {
       "label": "_masterEnabled",
@@ -402,10 +402,10 @@
       "source_file": "lib/screens/settings/focus_lock_config_screen.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_screens_settings_focus_lock_config_screen_masterenabled",
       "community": 15,
       "community_name": "focus_lock_config_screen.dart",
-      "norm_label": "_masterenabled"
+      "norm_label": "_masterenabled",
+      "id": "lib_screens_settings_focus_lock_config_screen_masterenabled"
     },
     {
       "label": "_lockedApps",
@@ -413,10 +413,10 @@
       "source_file": "lib/screens/settings/focus_lock_config_screen.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_screens_settings_focus_lock_config_screen_lockedapps",
       "community": 15,
       "community_name": "focus_lock_config_screen.dart",
-      "norm_label": "_lockedapps"
+      "norm_label": "_lockedapps",
+      "id": "lib_screens_settings_focus_lock_config_screen_lockedapps"
     },
     {
       "label": "Map",
@@ -424,10 +424,10 @@
       "source_file": null,
       "source_location": null,
       "_origin": "ast",
-      "id": "map",
       "community": 15,
       "community_name": "focus_lock_config_screen.dart",
-      "norm_label": "map"
+      "norm_label": "map",
+      "id": "map"
     },
     {
       "label": "_lockDuringPrayer",
@@ -435,10 +435,10 @@
       "source_file": "lib/screens/settings/focus_lock_config_screen.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_screens_settings_focus_lock_config_screen_lockduringprayer",
       "community": 15,
       "community_name": "focus_lock_config_screen.dart",
-      "norm_label": "_lockduringprayer"
+      "norm_label": "_lockduringprayer",
+      "id": "lib_screens_settings_focus_lock_config_screen_lockduringprayer"
     },
     {
       "label": "_prayerTriggers",
@@ -446,10 +446,10 @@
       "source_file": "lib/screens/settings/focus_lock_config_screen.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_screens_settings_focus_lock_config_screen_prayertriggers",
       "community": 15,
       "community_name": "focus_lock_config_screen.dart",
-      "norm_label": "_prayertriggers"
+      "norm_label": "_prayertriggers",
+      "id": "lib_screens_settings_focus_lock_config_screen_prayertriggers"
     },
     {
       "label": "_startOffsetMin",
@@ -457,10 +457,10 @@
       "source_file": "lib/screens/settings/focus_lock_config_screen.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_screens_settings_focus_lock_config_screen_startoffsetmin",
       "community": 15,
       "community_name": "focus_lock_config_screen.dart",
-      "norm_label": "_startoffsetmin"
+      "norm_label": "_startoffsetmin",
+      "id": "lib_screens_settings_focus_lock_config_screen_startoffsetmin"
     },
     {
       "label": "_lockDurationMin",
@@ -468,10 +468,10 @@
       "source_file": "lib/screens/settings/focus_lock_config_screen.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_screens_settings_focus_lock_config_screen_lockdurationmin",
       "community": 15,
       "community_name": "focus_lock_config_screen.dart",
-      "norm_label": "_lockdurationmin"
+      "norm_label": "_lockdurationmin",
+      "id": "lib_screens_settings_focus_lock_config_screen_lockdurationmin"
     },
     {
       "label": "_customSchedules",
@@ -479,10 +479,10 @@
       "source_file": "lib/screens/settings/focus_lock_config_screen.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_screens_settings_focus_lock_config_screen_customschedules",
       "community": 15,
       "community_name": "focus_lock_config_screen.dart",
-      "norm_label": "_customschedules"
+      "norm_label": "_customschedules",
+      "id": "lib_screens_settings_focus_lock_config_screen_customschedules"
     },
     {
       "label": "List",
@@ -490,10 +490,10 @@
       "source_file": null,
       "source_location": null,
       "_origin": "ast",
-      "id": "list",
       "community": 84,
       "community_name": "section_skeleton.dart",
-      "norm_label": "list"
+      "norm_label": "list",
+      "id": "list"
     },
     {
       "label": "_unlockMethod",
@@ -501,10 +501,10 @@
       "source_file": "lib/screens/settings/focus_lock_config_screen.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_screens_settings_focus_lock_config_screen_unlockmethod",
       "community": 15,
       "community_name": "focus_lock_config_screen.dart",
-      "norm_label": "_unlockmethod"
+      "norm_label": "_unlockmethod",
+      "id": "lib_screens_settings_focus_lock_config_screen_unlockmethod"
     },
     {
       "label": "_mindfulPauseSeconds",
@@ -512,10 +512,10 @@
       "source_file": "lib/screens/settings/focus_lock_config_screen.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_screens_settings_focus_lock_config_screen_mindfulpauseseconds",
       "community": 15,
       "community_name": "focus_lock_config_screen.dart",
-      "norm_label": "_mindfulpauseseconds"
+      "norm_label": "_mindfulpauseseconds",
+      "id": "lib_screens_settings_focus_lock_config_screen_mindfulpauseseconds"
     },
     {
       "label": "_unlockPhrase",
@@ -523,10 +523,10 @@
       "source_file": "lib/screens/settings/focus_lock_config_screen.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_screens_settings_focus_lock_config_screen_unlockphrase",
       "community": 15,
       "community_name": "focus_lock_config_screen.dart",
-      "norm_label": "_unlockphrase"
+      "norm_label": "_unlockphrase",
+      "id": "lib_screens_settings_focus_lock_config_screen_unlockphrase"
     },
     {
       "label": "_allowEmergency",
@@ -534,10 +534,10 @@
       "source_file": "lib/screens/settings/focus_lock_config_screen.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_screens_settings_focus_lock_config_screen_allowemergency",
       "community": 15,
       "community_name": "focus_lock_config_screen.dart",
-      "norm_label": "_allowemergency"
+      "norm_label": "_allowemergency",
+      "id": "lib_screens_settings_focus_lock_config_screen_allowemergency"
     },
     {
       "label": "_dailySkipAllowance",
@@ -545,10 +545,10 @@
       "source_file": "lib/screens/settings/focus_lock_config_screen.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_screens_settings_focus_lock_config_screen_dailyskipallowance",
       "community": 15,
       "community_name": "focus_lock_config_screen.dart",
-      "norm_label": "_dailyskipallowance"
+      "norm_label": "_dailyskipallowance",
+      "id": "lib_screens_settings_focus_lock_config_screen_dailyskipallowance"
     },
     {
       "label": "_preventUninstall",
@@ -556,10 +556,10 @@
       "source_file": "lib/screens/settings/focus_lock_config_screen.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_screens_settings_focus_lock_config_screen_preventuninstall",
       "community": 15,
       "community_name": "focus_lock_config_screen.dart",
-      "norm_label": "_preventuninstall"
+      "norm_label": "_preventuninstall",
+      "id": "lib_screens_settings_focus_lock_config_screen_preventuninstall"
     },
     {
       "label": "key",
@@ -567,10 +567,10 @@
       "source_file": "lib/screens/settings/focus_lock_config_screen.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_screens_settings_focus_lock_config_screen_key",
       "community": 15,
       "community_name": "focus_lock_config_screen.dart",
-      "norm_label": "key"
+      "norm_label": "key",
+      "id": "lib_screens_settings_focus_lock_config_screen_key"
     },
     {
       "label": "name",
@@ -578,10 +578,10 @@
       "source_file": "lib/screens/settings/focus_lock_config_screen.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_screens_settings_focus_lock_config_screen_name",
       "community": 15,
       "community_name": "focus_lock_config_screen.dart",
-      "norm_label": "name"
+      "norm_label": "name",
+      "id": "lib_screens_settings_focus_lock_config_screen_name"
     },
     {
       "label": "icon",
@@ -589,10 +589,10 @@
       "source_file": "lib/screens/settings/focus_lock_config_screen.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_screens_settings_focus_lock_config_screen_icon",
       "community": 15,
       "community_name": "focus_lock_config_screen.dart",
-      "norm_label": "icon"
+      "norm_label": "icon",
+      "id": "lib_screens_settings_focus_lock_config_screen_icon"
     },
     {
       "label": "IconData",
@@ -600,10 +600,10 @@
       "source_file": null,
       "source_location": null,
       "_origin": "ast",
-      "id": "icondata",
       "community": 38,
       "community_name": "services_tools_grid.dart",
-      "norm_label": "icondata"
+      "norm_label": "icondata",
+      "id": "icondata"
     },
     {
       "label": "color",
@@ -611,10 +611,10 @@
       "source_file": "lib/screens/settings/focus_lock_config_screen.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_screens_settings_focus_lock_config_screen_color",
       "community": 15,
       "community_name": "focus_lock_config_screen.dart",
-      "norm_label": "color"
+      "norm_label": "color",
+      "id": "lib_screens_settings_focus_lock_config_screen_color"
     },
     {
       "label": "Color",
@@ -622,10 +622,10 @@
       "source_file": null,
       "source_location": null,
       "_origin": "ast",
-      "id": "color",
       "community": 81,
       "community_name": "horizontal_prayer_stepper.dart",
-      "norm_label": "color"
+      "norm_label": "color",
+      "id": "color"
     },
     {
       "label": "createState",
@@ -633,10 +633,10 @@
       "source_file": "lib/screens/settings/focus_lock_config_screen.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_screens_settings_focus_lock_config_screen_createstate",
       "community": 15,
       "community_name": "focus_lock_config_screen.dart",
-      "norm_label": "createstate"
+      "norm_label": "createstate",
+      "id": "lib_screens_settings_focus_lock_config_screen_createstate"
     },
     {
       "label": "build",
@@ -644,10 +644,10 @@
       "source_file": "lib/screens/settings/focus_lock_config_screen.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_screens_settings_focus_lock_config_screen_build",
       "community": 15,
       "community_name": "focus_lock_config_screen.dart",
-      "norm_label": "build"
+      "norm_label": "build",
+      "id": "lib_screens_settings_focus_lock_config_screen_build"
     },
     {
       "label": "_buildHeader",
@@ -655,10 +655,10 @@
       "source_file": "lib/screens/settings/focus_lock_config_screen.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_screens_settings_focus_lock_config_screen_buildheader",
       "community": 15,
       "community_name": "focus_lock_config_screen.dart",
-      "norm_label": "_buildheader"
+      "norm_label": "_buildheader",
+      "id": "lib_screens_settings_focus_lock_config_screen_buildheader"
     },
     {
       "label": "_buildMasterToggleCard",
@@ -666,10 +666,10 @@
       "source_file": "lib/screens/settings/focus_lock_config_screen.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_screens_settings_focus_lock_config_screen_buildmastertogglecard",
       "community": 15,
       "community_name": "focus_lock_config_screen.dart",
-      "norm_label": "_buildmastertogglecard"
+      "norm_label": "_buildmastertogglecard",
+      "id": "lib_screens_settings_focus_lock_config_screen_buildmastertogglecard"
     },
     {
       "label": "_buildAppsToLockSection",
@@ -677,10 +677,10 @@
       "source_file": "lib/screens/settings/focus_lock_config_screen.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_screens_settings_focus_lock_config_screen_buildappstolocksection",
       "community": 15,
       "community_name": "focus_lock_config_screen.dart",
-      "norm_label": "_buildappstolocksection"
+      "norm_label": "_buildappstolocksection",
+      "id": "lib_screens_settings_focus_lock_config_screen_buildappstolocksection"
     },
     {
       "label": "_buildLockScheduleSection",
@@ -688,10 +688,10 @@
       "source_file": "lib/screens/settings/focus_lock_config_screen.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_screens_settings_focus_lock_config_screen_buildlockschedulesection",
       "community": 15,
       "community_name": "focus_lock_config_screen.dart",
-      "norm_label": "_buildlockschedulesection"
+      "norm_label": "_buildlockschedulesection",
+      "id": "lib_screens_settings_focus_lock_config_screen_buildlockschedulesection"
     },
     {
       "label": "_buildCustomFocusTimesSection",
@@ -699,10 +699,10 @@
       "source_file": "lib/screens/settings/focus_lock_config_screen.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_screens_settings_focus_lock_config_screen_buildcustomfocustimessection",
       "community": 15,
       "community_name": "focus_lock_config_screen.dart",
-      "norm_label": "_buildcustomfocustimessection"
+      "norm_label": "_buildcustomfocustimessection",
+      "id": "lib_screens_settings_focus_lock_config_screen_buildcustomfocustimessection"
     },
     {
       "label": "_buildTimeField",
@@ -710,10 +710,10 @@
       "source_file": "lib/screens/settings/focus_lock_config_screen.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_screens_settings_focus_lock_config_screen_buildtimefield",
       "community": 15,
       "community_name": "focus_lock_config_screen.dart",
-      "norm_label": "_buildtimefield"
+      "norm_label": "_buildtimefield",
+      "id": "lib_screens_settings_focus_lock_config_screen_buildtimefield"
     },
     {
       "label": "_buildUnlockMethodSection",
@@ -721,10 +721,10 @@
       "source_file": "lib/screens/settings/focus_lock_config_screen.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_screens_settings_focus_lock_config_screen_buildunlockmethodsection",
       "community": 15,
       "community_name": "focus_lock_config_screen.dart",
-      "norm_label": "_buildunlockmethodsection"
+      "norm_label": "_buildunlockmethodsection",
+      "id": "lib_screens_settings_focus_lock_config_screen_buildunlockmethodsection"
     },
     {
       "label": "_buildUnlockMethodCard",
@@ -732,10 +732,10 @@
       "source_file": "lib/screens/settings/focus_lock_config_screen.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_screens_settings_focus_lock_config_screen_buildunlockmethodcard",
       "community": 15,
       "community_name": "focus_lock_config_screen.dart",
-      "norm_label": "_buildunlockmethodcard"
+      "norm_label": "_buildunlockmethodcard",
+      "id": "lib_screens_settings_focus_lock_config_screen_buildunlockmethodcard"
     },
     {
       "label": "_buildMindfulPauseControl",
@@ -743,10 +743,10 @@
       "source_file": "lib/screens/settings/focus_lock_config_screen.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_screens_settings_focus_lock_config_screen_buildmindfulpausecontrol",
       "community": 15,
       "community_name": "focus_lock_config_screen.dart",
-      "norm_label": "_buildmindfulpausecontrol"
+      "norm_label": "_buildmindfulpausecontrol",
+      "id": "lib_screens_settings_focus_lock_config_screen_buildmindfulpausecontrol"
     },
     {
       "label": "_buildTypePhraseControl",
@@ -754,10 +754,10 @@
       "source_file": "lib/screens/settings/focus_lock_config_screen.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_screens_settings_focus_lock_config_screen_buildtypephrasecontrol",
       "community": 15,
       "community_name": "focus_lock_config_screen.dart",
-      "norm_label": "_buildtypephrasecontrol"
+      "norm_label": "_buildtypephrasecontrol",
+      "id": "lib_screens_settings_focus_lock_config_screen_buildtypephrasecontrol"
     },
     {
       "label": "_buildSectionTitle",
@@ -765,10 +765,10 @@
       "source_file": "lib/screens/settings/focus_lock_config_screen.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_screens_settings_focus_lock_config_screen_buildsectiontitle",
       "community": 15,
       "community_name": "focus_lock_config_screen.dart",
-      "norm_label": "_buildsectiontitle"
+      "norm_label": "_buildsectiontitle",
+      "id": "lib_screens_settings_focus_lock_config_screen_buildsectiontitle"
     },
     {
       "label": "_buildExceptionsSection",
@@ -776,10 +776,10 @@
       "source_file": "lib/screens/settings/focus_lock_config_screen.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_screens_settings_focus_lock_config_screen_buildexceptionssection",
       "community": 15,
       "community_name": "focus_lock_config_screen.dart",
-      "norm_label": "_buildexceptionssection"
+      "norm_label": "_buildexceptionssection",
+      "id": "lib_screens_settings_focus_lock_config_screen_buildexceptionssection"
     },
     {
       "label": "_buildPrayerChip",
@@ -787,10 +787,10 @@
       "source_file": "lib/screens/settings/focus_lock_config_screen.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_screens_settings_focus_lock_config_screen_buildprayerchip",
       "community": 15,
       "community_name": "focus_lock_config_screen.dart",
-      "norm_label": "_buildprayerchip"
+      "norm_label": "_buildprayerchip",
+      "id": "lib_screens_settings_focus_lock_config_screen_buildprayerchip"
     },
     {
       "label": "_addCustomSchedule",
@@ -798,10 +798,10 @@
       "source_file": "lib/screens/settings/focus_lock_config_screen.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_screens_settings_focus_lock_config_screen_addcustomschedule",
       "community": 15,
       "community_name": "focus_lock_config_screen.dart",
-      "norm_label": "_addcustomschedule"
+      "norm_label": "_addcustomschedule",
+      "id": "lib_screens_settings_focus_lock_config_screen_addcustomschedule"
     },
     {
       "label": "_showAddAppsDialog",
@@ -809,10 +809,10 @@
       "source_file": "lib/screens/settings/focus_lock_config_screen.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_screens_settings_focus_lock_config_screen_showaddappsdialog",
       "community": 15,
       "community_name": "focus_lock_config_screen.dart",
-      "norm_label": "_showaddappsdialog"
+      "norm_label": "_showaddappsdialog",
+      "id": "lib_screens_settings_focus_lock_config_screen_showaddappsdialog"
     },
     {
       "label": "_resetToDefaults",
@@ -820,10 +820,10 @@
       "source_file": "lib/screens/settings/focus_lock_config_screen.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_screens_settings_focus_lock_config_screen_resettodefaults",
       "community": 15,
       "community_name": "focus_lock_config_screen.dart",
-      "norm_label": "_resettodefaults"
+      "norm_label": "_resettodefaults",
+      "id": "lib_screens_settings_focus_lock_config_screen_resettodefaults"
     },
     {
       "label": "banner.dart",
@@ -831,10 +831,10 @@
       "source_file": "lib/widgets/home/banner.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_widgets_home_banner",
       "community": 26,
       "community_name": "banner.dart",
-      "norm_label": "banner.dart"
+      "norm_label": "banner.dart",
+      "id": "lib_widgets_home_banner"
     },
     {
       "label": "GlassBanner",
@@ -842,10 +842,10 @@
       "source_file": "lib/widgets/home/banner.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_widgets_home_banner_glassbanner",
       "community": 26,
       "community_name": "banner.dart",
-      "norm_label": "glassbanner"
+      "norm_label": "glassbanner",
+      "id": "lib_widgets_home_banner_glassbanner"
     },
     {
       "label": "_GlassBannerState",
@@ -853,10 +853,10 @@
       "source_file": "lib/widgets/home/banner.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_widgets_home_banner_glassbannerstate",
       "community": 26,
       "community_name": "banner.dart",
-      "norm_label": "_glassbannerstate"
+      "norm_label": "_glassbannerstate",
+      "id": "lib_widgets_home_banner_glassbannerstate"
     },
     {
       "label": "_pageController",
@@ -864,10 +864,10 @@
       "source_file": "lib/widgets/home/banner.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_widgets_home_banner_pagecontroller",
       "community": 26,
       "community_name": "banner.dart",
-      "norm_label": "_pagecontroller"
+      "norm_label": "_pagecontroller",
+      "id": "lib_widgets_home_banner_pagecontroller"
     },
     {
       "label": "PageController",
@@ -875,10 +875,10 @@
       "source_file": null,
       "source_location": null,
       "_origin": "ast",
-      "id": "pagecontroller",
       "community": 26,
       "community_name": "banner.dart",
-      "norm_label": "pagecontroller"
+      "norm_label": "pagecontroller",
+      "id": "pagecontroller"
     },
     {
       "label": "createState",
@@ -886,10 +886,10 @@
       "source_file": "lib/widgets/home/banner.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_widgets_home_banner_createstate",
       "community": 26,
       "community_name": "banner.dart",
-      "norm_label": "createstate"
+      "norm_label": "createstate",
+      "id": "lib_widgets_home_banner_createstate"
     },
     {
       "label": "dispose",
@@ -897,10 +897,10 @@
       "source_file": "lib/widgets/home/banner.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_widgets_home_banner_dispose",
       "community": 26,
       "community_name": "banner.dart",
-      "norm_label": "dispose"
+      "norm_label": "dispose",
+      "id": "lib_widgets_home_banner_dispose"
     },
     {
       "label": "build",
@@ -908,10 +908,10 @@
       "source_file": "lib/widgets/home/banner.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_widgets_home_banner_build",
       "community": 26,
       "community_name": "banner.dart",
-      "norm_label": "build"
+      "norm_label": "build",
+      "id": "lib_widgets_home_banner_build"
     },
     {
       "label": "_buildGlassCard",
@@ -919,10 +919,10 @@
       "source_file": "lib/widgets/home/banner.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_widgets_home_banner_buildglasscard",
       "community": 26,
       "community_name": "banner.dart",
-      "norm_label": "_buildglasscard"
+      "norm_label": "_buildglasscard",
+      "id": "lib_widgets_home_banner_buildglasscard"
     },
     {
       "label": "_buildPrayerSlide",
@@ -930,10 +930,10 @@
       "source_file": "lib/widgets/home/banner.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_widgets_home_banner_buildprayerslide",
       "community": 26,
       "community_name": "banner.dart",
-      "norm_label": "_buildprayerslide"
+      "norm_label": "_buildprayerslide",
+      "id": "lib_widgets_home_banner_buildprayerslide"
     },
     {
       "label": "_buildQuranSlide",
@@ -941,10 +941,10 @@
       "source_file": "lib/widgets/home/banner.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_widgets_home_banner_buildquranslide",
       "community": 26,
       "community_name": "banner.dart",
-      "norm_label": "_buildquranslide"
+      "norm_label": "_buildquranslide",
+      "id": "lib_widgets_home_banner_buildquranslide"
     },
     {
       "label": "package:smooth_page_indicator/smooth_page_indicator.dart",
@@ -952,10 +952,10 @@
       "source_file": null,
       "source_location": null,
       "_origin": "ast",
-      "id": "package_smooth_page_indicator_smooth_page_indicator_dart",
       "community": 26,
       "community_name": "banner.dart",
-      "norm_label": "package:smooth_page_indicator/smooth_page_indicator.dart"
+      "norm_label": "package:smooth_page_indicator/smooth_page_indicator.dart",
+      "id": "package_smooth_page_indicator_smooth_page_indicator_dart"
     },
     {
       "label": "../common/glass_pill_badge.dart",
@@ -963,10 +963,10 @@
       "source_file": null,
       "source_location": null,
       "_origin": "ast",
-      "id": "common_glass_pill_badge_dart",
       "community": 26,
       "community_name": "banner.dart",
-      "norm_label": "../common/glass_pill_badge.dart"
+      "norm_label": "../common/glass_pill_badge.dart",
+      "id": "common_glass_pill_badge_dart"
     },
     {
       "label": "focus_lock_card.dart",
@@ -974,10 +974,10 @@
       "source_file": "lib/widgets/home/focus_lock_card.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_widgets_home_focus_lock_card",
       "community": 109,
       "community_name": "focus_lock_card.dart",
-      "norm_label": "focus_lock_card.dart"
+      "norm_label": "focus_lock_card.dart",
+      "id": "lib_widgets_home_focus_lock_card"
     },
     {
       "label": "FocusLockCard",
@@ -985,10 +985,10 @@
       "source_file": "lib/widgets/home/focus_lock_card.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_widgets_home_focus_lock_card_focuslockcard",
       "community": 109,
       "community_name": "focus_lock_card.dart",
-      "norm_label": "focuslockcard"
+      "norm_label": "focuslockcard",
+      "id": "lib_widgets_home_focus_lock_card_focuslockcard"
     },
     {
       "label": "StatelessWidget",
@@ -996,10 +996,10 @@
       "source_file": null,
       "source_location": null,
       "_origin": "ast",
-      "id": "statelesswidget",
       "community": 102,
       "community_name": "StatelessWidget",
-      "norm_label": "statelesswidget"
+      "norm_label": "statelesswidget",
+      "id": "statelesswidget"
     },
     {
       "label": "_formatNextLockCountdown",
@@ -1007,10 +1007,10 @@
       "source_file": "lib/widgets/home/focus_lock_card.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_widgets_home_focus_lock_card_formatnextlockcountdown",
       "community": 109,
       "community_name": "focus_lock_card.dart",
-      "norm_label": "_formatnextlockcountdown"
+      "norm_label": "_formatnextlockcountdown",
+      "id": "lib_widgets_home_focus_lock_card_formatnextlockcountdown"
     },
     {
       "label": "build",
@@ -1018,10 +1018,10 @@
       "source_file": "lib/widgets/home/focus_lock_card.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_widgets_home_focus_lock_card_build",
       "community": 109,
       "community_name": "focus_lock_card.dart",
-      "norm_label": "build"
+      "norm_label": "build",
+      "id": "lib_widgets_home_focus_lock_card_build"
     },
     {
       "label": "MaterialPageRoute",
@@ -1029,10 +1029,10 @@
       "source_file": null,
       "source_location": null,
       "_origin": "ast",
-      "id": "materialpageroute",
       "community": 109,
       "community_name": "focus_lock_card.dart",
-      "norm_label": "materialpageroute"
+      "norm_label": "materialpageroute",
+      "id": "materialpageroute"
     },
     {
       "label": "_buildAppIcon",
@@ -1040,10 +1040,10 @@
       "source_file": "lib/widgets/home/focus_lock_card.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_widgets_home_focus_lock_card_buildappicon",
       "community": 109,
       "community_name": "focus_lock_card.dart",
-      "norm_label": "_buildappicon"
+      "norm_label": "_buildappicon",
+      "id": "lib_widgets_home_focus_lock_card_buildappicon"
     },
     {
       "label": "../../screens/settings/focus_lock_config_screen.dart",
@@ -1051,10 +1051,10 @@
       "source_file": null,
       "source_location": null,
       "_origin": "ast",
-      "id": "screens_settings_focus_lock_config_screen_dart",
       "community": 109,
       "community_name": "focus_lock_card.dart",
-      "norm_label": "../../screens/settings/focus_lock_config_screen.dart"
+      "norm_label": "../../screens/settings/focus_lock_config_screen.dart",
+      "id": "screens_settings_focus_lock_config_screen_dart"
     },
     {
       "label": "random_content_card.dart",
@@ -1062,10 +1062,10 @@
       "source_file": "lib/widgets/home/random_content_card.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_widgets_home_random_content_card",
       "community": 32,
       "community_name": "random_content_card.dart",
-      "norm_label": "random_content_card.dart"
+      "norm_label": "random_content_card.dart",
+      "id": "lib_widgets_home_random_content_card"
     },
     {
       "label": "RandomContentCard",
@@ -1073,10 +1073,10 @@
       "source_file": "lib/widgets/home/random_content_card.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_widgets_home_random_content_card_randomcontentcard",
       "community": 89,
       "community_name": "State",
-      "norm_label": "randomcontentcard"
+      "norm_label": "randomcontentcard",
+      "id": "lib_widgets_home_random_content_card_randomcontentcard"
     },
     {
       "label": "_RandomContentCardState",
@@ -1084,10 +1084,10 @@
       "source_file": "lib/widgets/home/random_content_card.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_widgets_home_random_content_card_randomcontentcardstate",
       "community": 89,
       "community_name": "State",
-      "norm_label": "_randomcontentcardstate"
+      "norm_label": "_randomcontentcardstate",
+      "id": "lib_widgets_home_random_content_card_randomcontentcardstate"
     },
     {
       "label": "_RandomVersePage",
@@ -1095,10 +1095,10 @@
       "source_file": "lib/widgets/home/random_content_card.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_widgets_home_random_content_card_randomversepage",
       "community": 102,
       "community_name": "StatelessWidget",
-      "norm_label": "_randomversepage"
+      "norm_label": "_randomversepage",
+      "id": "lib_widgets_home_random_content_card_randomversepage"
     },
     {
       "label": "_RandomHadithPage",
@@ -1106,10 +1106,10 @@
       "source_file": "lib/widgets/home/random_content_card.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_widgets_home_random_content_card_randomhadithpage",
       "community": 102,
       "community_name": "StatelessWidget",
-      "norm_label": "_randomhadithpage"
+      "norm_label": "_randomhadithpage",
+      "id": "lib_widgets_home_random_content_card_randomhadithpage"
     },
     {
       "label": "_ContentPageScaffold",
@@ -1117,10 +1117,10 @@
       "source_file": "lib/widgets/home/random_content_card.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_widgets_home_random_content_card_contentpagescaffold",
       "community": 102,
       "community_name": "StatelessWidget",
-      "norm_label": "_contentpagescaffold"
+      "norm_label": "_contentpagescaffold",
+      "id": "lib_widgets_home_random_content_card_contentpagescaffold"
     },
     {
       "label": "_ContentBody",
@@ -1128,10 +1128,10 @@
       "source_file": "lib/widgets/home/random_content_card.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_widgets_home_random_content_card_contentbody",
       "community": 102,
       "community_name": "StatelessWidget",
-      "norm_label": "_contentbody"
+      "norm_label": "_contentbody",
+      "id": "lib_widgets_home_random_content_card_contentbody"
     },
     {
       "label": "_LoadingState",
@@ -1139,10 +1139,10 @@
       "source_file": "lib/widgets/home/random_content_card.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_widgets_home_random_content_card_loadingstate",
       "community": 102,
       "community_name": "StatelessWidget",
-      "norm_label": "_loadingstate"
+      "norm_label": "_loadingstate",
+      "id": "lib_widgets_home_random_content_card_loadingstate"
     },
     {
       "label": "_ErrorState",
@@ -1150,10 +1150,10 @@
       "source_file": "lib/widgets/home/random_content_card.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_widgets_home_random_content_card_errorstate",
       "community": 102,
       "community_name": "StatelessWidget",
-      "norm_label": "_errorstate"
+      "norm_label": "_errorstate",
+      "id": "lib_widgets_home_random_content_card_errorstate"
     },
     {
       "label": "_EmptyState",
@@ -1161,10 +1161,10 @@
       "source_file": "lib/widgets/home/random_content_card.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_widgets_home_random_content_card_emptystate",
       "community": 102,
       "community_name": "StatelessWidget",
-      "norm_label": "_emptystate"
+      "norm_label": "_emptystate",
+      "id": "lib_widgets_home_random_content_card_emptystate"
     },
     {
       "label": "_pageController",
@@ -1172,10 +1172,10 @@
       "source_file": "lib/widgets/home/random_content_card.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_widgets_home_random_content_card_pagecontroller",
       "community": 32,
       "community_name": "random_content_card.dart",
-      "norm_label": "_pagecontroller"
+      "norm_label": "_pagecontroller",
+      "id": "lib_widgets_home_random_content_card_pagecontroller"
     },
     {
       "label": "ShareCallback",
@@ -1183,10 +1183,10 @@
       "source_file": "lib/widgets/home/random_content_card.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_widgets_home_random_content_card_sharecallback",
       "community": 32,
       "community_name": "random_content_card.dart",
-      "norm_label": "sharecallback"
+      "norm_label": "sharecallback",
+      "id": "lib_widgets_home_random_content_card_sharecallback"
     },
     {
       "label": "typedef",
@@ -1194,10 +1194,10 @@
       "source_file": null,
       "source_location": null,
       "_origin": "ast",
-      "id": "typedef",
       "community": 32,
       "community_name": "random_content_card.dart",
-      "norm_label": "typedef"
+      "norm_label": "typedef",
+      "id": "typedef"
     },
     {
       "label": "isDark",
@@ -1205,10 +1205,10 @@
       "source_file": "lib/widgets/home/random_content_card.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_widgets_home_random_content_card_isdark",
       "community": 32,
       "community_name": "random_content_card.dart",
-      "norm_label": "isdark"
+      "norm_label": "isdark",
+      "id": "lib_widgets_home_random_content_card_isdark"
     },
     {
       "label": "onShare",
@@ -1216,10 +1216,10 @@
       "source_file": "lib/widgets/home/random_content_card.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_widgets_home_random_content_card_onshare",
       "community": 32,
       "community_name": "random_content_card.dart",
-      "norm_label": "onshare"
+      "norm_label": "onshare",
+      "id": "lib_widgets_home_random_content_card_onshare"
     },
     {
       "label": "_indigo",
@@ -1227,10 +1227,10 @@
       "source_file": "lib/widgets/home/random_content_card.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_widgets_home_random_content_card_indigo",
       "community": 32,
       "community_name": "random_content_card.dart",
-      "norm_label": "_indigo"
+      "norm_label": "_indigo",
+      "id": "lib_widgets_home_random_content_card_indigo"
     },
     {
       "label": "static const Color",
@@ -1238,10 +1238,10 @@
       "source_file": null,
       "source_location": null,
       "_origin": "ast",
-      "id": "static_const_color",
       "community": 11,
       "community_name": "app_colors.dart",
-      "norm_label": "static const color"
+      "norm_label": "static const color",
+      "id": "static_const_color"
     },
     {
       "label": "accent",
@@ -1249,10 +1249,10 @@
       "source_file": "lib/widgets/home/random_content_card.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_widgets_home_random_content_card_accent",
       "community": 32,
       "community_name": "random_content_card.dart",
-      "norm_label": "accent"
+      "norm_label": "accent",
+      "id": "lib_widgets_home_random_content_card_accent"
     },
     {
       "label": "headerIcon",
@@ -1260,10 +1260,10 @@
       "source_file": "lib/widgets/home/random_content_card.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_widgets_home_random_content_card_headericon",
       "community": 32,
       "community_name": "random_content_card.dart",
-      "norm_label": "headericon"
+      "norm_label": "headericon",
+      "id": "lib_widgets_home_random_content_card_headericon"
     },
     {
       "label": "headerLabel",
@@ -1271,10 +1271,10 @@
       "source_file": "lib/widgets/home/random_content_card.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_widgets_home_random_content_card_headerlabel",
       "community": 32,
       "community_name": "random_content_card.dart",
-      "norm_label": "headerlabel"
+      "norm_label": "headerlabel",
+      "id": "lib_widgets_home_random_content_card_headerlabel"
     },
     {
       "label": "showShareIcon",
@@ -1282,10 +1282,10 @@
       "source_file": "lib/widgets/home/random_content_card.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_widgets_home_random_content_card_showshareicon",
       "community": 32,
       "community_name": "random_content_card.dart",
-      "norm_label": "showshareicon"
+      "norm_label": "showshareicon",
+      "id": "lib_widgets_home_random_content_card_showshareicon"
     },
     {
       "label": "VoidCallback?",
@@ -1293,10 +1293,10 @@
       "source_file": null,
       "source_location": null,
       "_origin": "ast",
-      "id": "voidcallback",
       "community": 94,
       "community_name": "qibla_info_grid.dart",
-      "norm_label": "voidcallback?"
+      "norm_label": "voidcallback?",
+      "id": "voidcallback"
     },
     {
       "label": "child",
@@ -1304,10 +1304,10 @@
       "source_file": "lib/widgets/home/random_content_card.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_widgets_home_random_content_card_child",
       "community": 32,
       "community_name": "random_content_card.dart",
-      "norm_label": "child"
+      "norm_label": "child",
+      "id": "lib_widgets_home_random_content_card_child"
     },
     {
       "label": "Widget",
@@ -1315,10 +1315,10 @@
       "source_file": null,
       "source_location": null,
       "_origin": "ast",
-      "id": "widget",
       "community": 32,
       "community_name": "random_content_card.dart",
-      "norm_label": "widget"
+      "norm_label": "widget",
+      "id": "widget"
     },
     {
       "label": "arabic",
@@ -1326,10 +1326,10 @@
       "source_file": "lib/widgets/home/random_content_card.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_widgets_home_random_content_card_arabic",
       "community": 32,
       "community_name": "random_content_card.dart",
-      "norm_label": "arabic"
+      "norm_label": "arabic",
+      "id": "lib_widgets_home_random_content_card_arabic"
     },
     {
       "label": "translation",
@@ -1337,10 +1337,10 @@
       "source_file": "lib/widgets/home/random_content_card.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_widgets_home_random_content_card_translation",
       "community": 32,
       "community_name": "random_content_card.dart",
-      "norm_label": "translation"
+      "norm_label": "translation",
+      "id": "lib_widgets_home_random_content_card_translation"
     },
     {
       "label": "reference",
@@ -1348,10 +1348,10 @@
       "source_file": "lib/widgets/home/random_content_card.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_widgets_home_random_content_card_reference",
       "community": 32,
       "community_name": "random_content_card.dart",
-      "norm_label": "reference"
+      "norm_label": "reference",
+      "id": "lib_widgets_home_random_content_card_reference"
     },
     {
       "label": "message",
@@ -1359,10 +1359,10 @@
       "source_file": "lib/widgets/home/random_content_card.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_widgets_home_random_content_card_message",
       "community": 32,
       "community_name": "random_content_card.dart",
-      "norm_label": "message"
+      "norm_label": "message",
+      "id": "lib_widgets_home_random_content_card_message"
     },
     {
       "label": "onRetry",
@@ -1370,10 +1370,10 @@
       "source_file": "lib/widgets/home/random_content_card.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_widgets_home_random_content_card_onretry",
       "community": 32,
       "community_name": "random_content_card.dart",
-      "norm_label": "onretry"
+      "norm_label": "onretry",
+      "id": "lib_widgets_home_random_content_card_onretry"
     },
     {
       "label": "createState",
@@ -1381,10 +1381,10 @@
       "source_file": "lib/widgets/home/random_content_card.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_widgets_home_random_content_card_createstate",
       "community": 32,
       "community_name": "random_content_card.dart",
-      "norm_label": "createstate"
+      "norm_label": "createstate",
+      "id": "lib_widgets_home_random_content_card_createstate"
     },
     {
       "label": "dispose",
@@ -1392,10 +1392,10 @@
       "source_file": "lib/widgets/home/random_content_card.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_widgets_home_random_content_card_dispose",
       "community": 32,
       "community_name": "random_content_card.dart",
-      "norm_label": "dispose"
+      "norm_label": "dispose",
+      "id": "lib_widgets_home_random_content_card_dispose"
     },
     {
       "label": "build",
@@ -1403,10 +1403,10 @@
       "source_file": "lib/widgets/home/random_content_card.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_widgets_home_random_content_card_build",
       "community": 32,
       "community_name": "random_content_card.dart",
-      "norm_label": "build"
+      "norm_label": "build",
+      "id": "lib_widgets_home_random_content_card_build"
     },
     {
       "label": "_showShareOptions",
@@ -1414,10 +1414,10 @@
       "source_file": "lib/widgets/home/random_content_card.dart",
       "source_location": null,
       "_origin": "ast",
-      "id": "lib_widgets_home_random_content_card_showshareoptions",
       "community": 32,
       "community_name": "random_content_card.dart",
-      "norm_label": "_showshareoptions"
+      "norm_label": "_showshareoptions",
+      "id": "lib_widgets_home_random_content_card_showshareoptions"
     },
     {
       "label": "package:flutter/services.dart",
@@ -1425,10 +1425,10 @@
       "source_file": null,
       "source_location": null,
       "_origin": "ast",
-      "id": "package_flutter_services_dart",
       "community": 93,
       "community_name": "qibla_screen.dart",
-      "norm_label": "package:flutter/services.dart"
+      "norm_label": "package:flutter/services.dart",
+      "id": "package_flutter_services_dart"
     },
     {
       "label": "package:share_plus/share_plus.dart",
@@ -1436,10 +1436,10 @@
       "source_file": null,
       "source_location": null,
       "_origin": "ast",
-      "id": "package_share_plus_share_plus_dart",
       "community": 32,
       "community_name": "random_content_card.dart",
-      "norm_label": "package:share_plus/share_plus.dart"
+      "norm_label": "package:share_plus/share_plus.dart",
+      "id": "package_share_plus_share_plus_dart"
     },
     {
       "label": "app/build.gradle.kts",
@@ -4299,8 +4299,8 @@
       "source_file": null,
       "source_location": null,
       "_origin": "ast",
-      "community": 34,
-      "community_name": "../errors/error_messages.dart",
+      "community": 101,
+      "community_name": "package:flutter/foundation.dart",
       "norm_label": "package:flutter/foundation.dart",
       "id": "package_flutter_foundation_dart"
     },
@@ -4773,7 +4773,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 101,
-      "community_name": "prayer_service.dart",
+      "community_name": "package:flutter/foundation.dart",
       "norm_label": "package:flutter_dotenv/flutter_dotenv.dart",
       "id": "package_flutter_dotenv_flutter_dotenv_dart"
     },
@@ -4784,7 +4784,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 101,
-      "community_name": "prayer_service.dart",
+      "community_name": "package:flutter/foundation.dart",
       "norm_label": "../models/prayer_times_model.dart",
       "id": "models_prayer_times_model_dart"
     },
@@ -6587,8 +6587,8 @@
       "source_file": null,
       "source_location": null,
       "_origin": "ast",
-      "community": 101,
-      "community_name": "prayer_service.dart",
+      "community": 34,
+      "community_name": "../errors/error_messages.dart",
       "norm_label": "api_service.dart",
       "id": "api_service_dart"
     },
@@ -7292,7 +7292,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 101,
-      "community_name": "prayer_service.dart",
+      "community_name": "package:flutter/foundation.dart",
       "norm_label": "prayer_service.dart",
       "id": "lib_core_services_prayer_service"
     },
@@ -7303,7 +7303,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 101,
-      "community_name": "prayer_service.dart",
+      "community_name": "package:flutter/foundation.dart",
       "norm_label": "prayerservice",
       "id": "lib_core_services_prayer_service_prayerservice"
     },
@@ -7314,7 +7314,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 101,
-      "community_name": "prayer_service.dart",
+      "community_name": "package:flutter/foundation.dart",
       "norm_label": "_apiservice",
       "id": "lib_core_services_prayer_service_apiservice"
     },
@@ -7325,7 +7325,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 101,
-      "community_name": "prayer_service.dart",
+      "community_name": "package:flutter/foundation.dart",
       "norm_label": "_defaulttimezone",
       "id": "lib_core_services_prayer_service_defaulttimezone"
     },
@@ -7336,7 +7336,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 101,
-      "community_name": "prayer_service.dart",
+      "community_name": "package:flutter/foundation.dart",
       "norm_label": "gettodayprayertimes",
       "id": "lib_core_services_prayer_service_gettodayprayertimes"
     },
@@ -7347,7 +7347,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 101,
-      "community_name": "prayer_service.dart",
+      "community_name": "package:flutter/foundation.dart",
       "norm_label": "getprayertimesbydate",
       "id": "lib_core_services_prayer_service_getprayertimesbydate"
     },
@@ -7358,7 +7358,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 101,
-      "community_name": "prayer_service.dart",
+      "community_name": "package:flutter/foundation.dart",
       "norm_label": "dispose",
       "id": "lib_core_services_prayer_service_dispose"
     },
@@ -35571,5 +35571,5 @@
       "source_file": "linux/CMakeLists.txt"
     }
   ],
-  "built_at_commit": "84d06935509184579bd4964fc24c5f5b396f6d46"
+  "built_at_commit": "a00fd97d172e180dde254e1d760470a7581becf3"
 }
