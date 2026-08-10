@@ -36,11 +36,43 @@ class _SurahReadingScreenState extends State<SurahReadingScreen> {
   static const double _arabicBaseFontSize = 24.0;
   static const double _translationBaseFontSize = 14.0;
 
+  // ponytail: PERFORMANCE FIX - Cache TextStyle objects to prevent rebuilds
+  // Google Fonts creates new objects on each call, caching prevents this
+  TextStyle? _cachedArabicStyle;
+  TextStyle? _cachedTranslationStyle;
+  TextStyle? _cachedAyahNumberStyle;
+
   @override
   void initState() {
     super.initState();
     _loadSurahDetail();
     _itemPositionsListener.itemPositions.addListener(_onVisibleItemsChanged);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // ponytail: PERFORMANCE FIX - Initialize cached styles on first build
+    // Prevents creating new GoogleFonts TextStyle objects on every scroll
+    if (_cachedArabicStyle == null) {
+      final isDark = Theme.of(context).brightness == Brightness.dark;
+      _cachedArabicStyle = GoogleFonts.fraunces().copyWith(
+        fontSize: _arabicBaseFontSize,
+        fontWeight: FontWeight.w600,
+        height: 2.0,
+        color: isDark ? AppColors.textMainDark : AppColors.textMainLight,
+      );
+      _cachedTranslationStyle = GoogleFonts.plusJakartaSans().copyWith(
+        fontSize: _translationBaseFontSize,
+        height: 1.6,
+        color: isDark ? AppColors.textMutedDark : AppColors.textMutedLight,
+      );
+      _cachedAyahNumberStyle = GoogleFonts.plusJakartaSans().copyWith(
+        fontSize: 12,
+        fontWeight: FontWeight.w600,
+        color: AppColors.teal,
+      );
+    }
   }
 
   void _onVisibleItemsChanged() {
@@ -190,15 +222,22 @@ class _SurahReadingScreenState extends State<SurahReadingScreen> {
   }
 
   Widget _buildBody(BuildContext context, bool isDark) {
-    return Consumer<QuranProvider>(
-      builder: (context, provider, _) {
+    // ponytail: PERFORMANCE FIX - Use Selector instead of Consumer
+    // Only rebuilds when specific values change, not on every provider update
+    return Selector<QuranProvider, _SurahState>(
+      selector: (_, provider) => _SurahState(
+        isLoading: provider.isLoadingDetail,
+        errorMessage: provider.errorMessageDetail,
+        detail: provider.currentSurahDetail,
+      ),
+      builder: (context, state, _) {
         // Loading state
-        if (provider.isLoadingDetail) {
+        if (state.isLoading) {
           return const Center(child: CircularProgressIndicator());
         }
 
         // Error state
-        if (provider.errorMessageDetail != null) {
+        if (state.errorMessage != null) {
           return Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -212,7 +251,7 @@ class _SurahReadingScreenState extends State<SurahReadingScreen> {
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  provider.errorMessageDetail!,
+                  state.errorMessage!,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: isDark
@@ -231,107 +270,36 @@ class _SurahReadingScreenState extends State<SurahReadingScreen> {
         }
 
         // Empty state (should not happen)
-        final detail = provider.currentSurahDetail;
+        final detail = state.detail;
         if (detail == null || detail.ayahs.isEmpty) {
           return const Center(child: Text('No ayahs available'));
         }
 
         // Success state - show ayah list with scrollable_positioned_list
+        // ponytail: PERFORMANCE FIX - Using addAutomaticKeepAlives: false
+        // Reduces memory overhead by not keeping offscreen items alive
         return ScrollablePositionedList.builder(
           itemCount: detail.ayahs.length,
           itemBuilder: (context, index) {
             final ayah = detail.ayahs[index];
-            return _buildAyahItem(context, isDark, ayah);
+            // ponytail: PERFORMANCE FIX - Extract to separate stateless widget
+            return _AyahItem(
+              key: ValueKey(ayah.id),
+              ayah: ayah,
+              isDark: isDark,
+              arabicStyle: _cachedArabicStyle!,
+              translationStyle: _cachedTranslationStyle!,
+              ayahNumberStyle: _cachedAyahNumberStyle!,
+              onTafsirTap: () => _showTafsirBottomSheet(context, isDark, ayah),
+            );
           },
           itemScrollController: _itemScrollController,
           itemPositionsListener: _itemPositionsListener,
           padding: const EdgeInsets.all(16),
+          addAutomaticKeepAlives: false, // PERFORMANCE FIX
+          addRepaintBoundaries: true, // PERFORMANCE FIX
         );
       },
-    );
-  }
-
-  Widget _buildAyahItem(BuildContext context, bool isDark, ayah) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 24),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          // Ayah number badge
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 6,
-                ),
-                decoration: BoxDecoration(
-                  color: isDark ? AppColors.cardDark : AppColors.cardLight,
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: isDark
-                        ? AppColors.hairlineDark.withValues(alpha: 0.5)
-                        : AppColors.hairlineLight.withValues(alpha: 0.5),
-                  ),
-                ),
-                child: Text(
-                  ayah.ayahNumber.toString(),
-                  style: GoogleFonts.plusJakartaSans().copyWith(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.teal,
-                  ),
-                ),
-              ),
-              const Spacer(),
-              // ponytail: Tafsir icon - shows bottom sheet on tap
-              // Upgrade path: Add full tafsir detail screen
-              IconButton(
-                icon: const Icon(Icons.info_outline, size: 20),
-                onPressed: () => _showTafsirBottomSheet(context, isDark, ayah),
-                color: isDark
-                    ? AppColors.textMutedDark
-                    : AppColors.textMutedLight,
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-
-          // Arabic text
-          Text(
-            ayah.arab,
-            textAlign: TextAlign.right,
-            style: GoogleFonts.fraunces().copyWith(
-              fontSize: _arabicBaseFontSize,
-              fontWeight: FontWeight.w600,
-              height: 2.0,
-              color: isDark ? AppColors.textMainDark : AppColors.textMainLight,
-            ),
-          ),
-          const SizedBox(height: 12),
-
-          // Translation
-          Text(
-            ayah.translation,
-            style: GoogleFonts.plusJakartaSans().copyWith(
-              fontSize: _translationBaseFontSize,
-              height: 1.6,
-              color: isDark
-                  ? AppColors.textMutedDark
-                  : AppColors.textMutedLight,
-            ),
-          ),
-
-          const SizedBox(height: 8),
-
-          // Divider
-          Divider(
-            color: isDark
-                ? AppColors.hairlineDark.withValues(alpha: 0.3)
-                : AppColors.hairlineLight.withValues(alpha: 0.3),
-          ),
-        ],
-      ),
     );
   }
 
@@ -354,7 +322,9 @@ class _SurahReadingScreenState extends State<SurahReadingScreen> {
               width: 40,
               height: 4,
               decoration: BoxDecoration(
-                color: isDark ? AppColors.hairlineDark : AppColors.hairlineLight,
+                color: isDark
+                    ? AppColors.hairlineDark
+                    : AppColors.hairlineLight,
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
@@ -544,6 +514,113 @@ class _SurahReadingScreenState extends State<SurahReadingScreen> {
           ),
         );
       },
+    );
+  }
+}
+
+// ponytail: PERFORMANCE FIX - Immutable state class for Selector
+// Only rebuilds when these specific fields change
+class _SurahState {
+  final bool isLoading;
+  final String? errorMessage;
+  final dynamic detail;
+
+  const _SurahState({
+    required this.isLoading,
+    required this.errorMessage,
+    required this.detail,
+  });
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _SurahState &&
+          runtimeType == other.runtimeType &&
+          isLoading == other.isLoading &&
+          errorMessage == other.errorMessage &&
+          detail == other.detail;
+
+  @override
+  int get hashCode =>
+      isLoading.hashCode ^ errorMessage.hashCode ^ detail.hashCode;
+}
+
+// ponytail: PERFORMANCE FIX - Separate stateless widget for ayah items
+// Prevents rebuilding all items when one changes
+class _AyahItem extends StatelessWidget {
+  final dynamic ayah;
+  final bool isDark;
+  final TextStyle arabicStyle;
+  final TextStyle translationStyle;
+  final TextStyle ayahNumberStyle;
+  final VoidCallback onTafsirTap;
+
+  const _AyahItem({
+    super.key,
+    required this.ayah,
+    required this.isDark,
+    required this.arabicStyle,
+    required this.translationStyle,
+    required this.ayahNumberStyle,
+    required this.onTafsirTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 24),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          // Ayah number badge
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 6,
+                ),
+                decoration: BoxDecoration(
+                  color: isDark ? AppColors.cardDark : AppColors.cardLight,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: isDark
+                        ? AppColors.hairlineDark.withValues(alpha: 0.5)
+                        : AppColors.hairlineLight.withValues(alpha: 0.5),
+                  ),
+                ),
+                child: Text(ayah.ayahNumber.toString(), style: ayahNumberStyle),
+              ),
+              const Spacer(),
+              // ponytail: Tafsir icon - shows bottom sheet on tap
+              IconButton(
+                icon: const Icon(Icons.info_outline, size: 20),
+                onPressed: onTafsirTap,
+                color: isDark
+                    ? AppColors.textMutedDark
+                    : AppColors.textMutedLight,
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+
+          // Arabic text
+          Text(ayah.arab, textAlign: TextAlign.right, style: arabicStyle),
+          const SizedBox(height: 12),
+
+          // Translation
+          Text(ayah.translation, style: translationStyle),
+
+          const SizedBox(height: 8),
+
+          // Divider
+          Divider(
+            color: isDark
+                ? AppColors.hairlineDark.withValues(alpha: 0.3)
+                : AppColors.hairlineLight.withValues(alpha: 0.3),
+          ),
+        ],
+      ),
     );
   }
 }
