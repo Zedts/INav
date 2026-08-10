@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../core/errors/error_messages.dart';
 import '../../core/providers/mosque_provider.dart';
@@ -7,7 +8,7 @@ import '../../widgets/mosque/map_view_section.dart';
 import '../../widgets/mosque/nearest_mosque_banner.dart';
 import '../../widgets/mosque/nearby_mosque_list_tile.dart';
 import '../../widgets/mosque/mosque_detail_sheet.dart';
-import '../../widgets/common/glass_pill_badge.dart';
+import '../../widgets/common/pill_badge.dart';
 import '../../core/theme/app_colors.dart';
 import '../../widgets/common/error_state_view.dart';
 import '../../widgets/common/section_skeleton.dart';
@@ -106,8 +107,8 @@ class _MosqueScreenState extends State<MosqueScreen> {
                     ignoring: false,
                     child: Container(
                       color: isDark
-                          ? const Color(0xFF070B14).withValues(alpha: 0.8)
-                          : Colors.white.withValues(alpha: 0.95),
+                          ? AppColors.surfaceDark.withValues(alpha: 0.8)
+                          : AppColors.surfaceLight.withValues(alpha: 0.95),
                       child: SafeArea(
                         top: false,
                         child: Padding(
@@ -141,21 +142,17 @@ class _MosqueScreenState extends State<MosqueScreen> {
   Widget _buildLoadingView() {
     return const ScreenSkeleton(
       children: [
-        // Map section
         SectionSkeleton(height: 220),
         SizedBox(height: 20),
-        // Nearest mosque banner
         SectionSkeleton(height: 150),
         SizedBox(height: 24),
-        // Nearby section header
-        SectionSkeleton(height: 28, width: 140, borderRadius: 14),
+        SectionSkeleton(height: 28, width: 140, borderRadius: 12),
         SizedBox(height: 12),
-        // Nearby mosque list tiles
-        SectionSkeleton(height: 84, borderRadius: 20),
+        SectionSkeleton(height: 84, borderRadius: 16),
         SizedBox(height: 10),
-        SectionSkeleton(height: 84, borderRadius: 20),
+        SectionSkeleton(height: 84, borderRadius: 16),
         SizedBox(height: 10),
-        SectionSkeleton(height: 84, borderRadius: 20),
+        SectionSkeleton(height: 84, borderRadius: 16),
       ],
     );
   }
@@ -168,8 +165,8 @@ class _MosqueScreenState extends State<MosqueScreen> {
     return RefreshIndicator.adaptive(
       onRefresh: _onRefresh,
       edgeOffset: 4,
-      color: isDark ? AppColors.primaryDark : AppColors.primaryLight,
-      backgroundColor: isDark ? AppColors.cardDark : Colors.white,
+      color: isDark ? AppColors.primaryDark : AppColors.primary,
+      backgroundColor: isDark ? AppColors.cardDark : AppColors.cardLight,
       child: CustomScrollView(
         slivers: [
           const SliverToBoxAdapter(child: SizedBox(height: 8)),
@@ -204,24 +201,24 @@ class _MosqueScreenState extends State<MosqueScreen> {
                 children: [
                   Row(
                     children: [
-                      GlassPillBadge(
+                      PillBadge(
                         label: 'NEARBY',
                         icon: Icons.format_list_bulleted,
                         showPulsingDot: false,
                         textColor: isDark
-                            ? const Color(0xFF93C5FD)
-                            : const Color(0xFF2563EB),
+                            ? AppColors.primaryDark
+                            : AppColors.primary,
                       ),
                       const SizedBox(width: 10),
                       Text(
                         '${mp.nearbyMosques.length} locations',
-                        style: TextStyle(
+                        style: GoogleFonts.plusJakartaSans().copyWith(
                           fontSize: 11,
                           fontWeight: FontWeight.w600,
                           color:
                               isDark
-                                  ? const Color(0xFF94A3B8)
-                                  : const Color(0xFF64748B),
+                                  ? AppColors.textMutedDark
+                                  : AppColors.textMutedLight,
                         ),
                       ),
                     ],
@@ -240,22 +237,29 @@ class _MosqueScreenState extends State<MosqueScreen> {
                       height: 34,
                       decoration: BoxDecoration(
                         color: isDark
-                            ? Colors.black.withValues(alpha: 0.3)
-                            : Colors.white.withValues(alpha: 0.7),
+                            ? AppColors.cardDark.withValues(alpha: 0.2)
+                            : AppColors.cardLight.withValues(alpha: 0.7),
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(
                           color: isDark
-                              ? Colors.white.withValues(alpha: 0.1)
-                              : const Color(0xFF0F172A).withValues(alpha: 0.06),
+                              ? AppColors.hairlineDark
+                              : AppColors.hairlineLight,
                           width: 1,
                         ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: isDark ? 0.2 : 0.02),
+                            blurRadius: 3,
+                            offset: const Offset(0, 1),
+                          ),
+                        ],
                       ),
                       child: Icon(
                         Icons.tune,
                         size: 17,
                         color: isDark
-                            ? const Color(0xFFCBD5E1)
-                            : const Color(0xFF0F172A),
+                            ? AppColors.textMainDark
+                            : AppColors.textMainLight,
                       ),
                     ),
                   ),
@@ -278,32 +282,32 @@ class _MosqueScreenState extends State<MosqueScreen> {
                       size: 44,
                       color:
                           isDark
-                              ? const Color(0xFF475569)
-                              : const Color(0xFF94A3B8),
+                              ? AppColors.textMutedDark
+                              : AppColors.textMutedLight,
                     ),
                     const SizedBox(height: 12),
                     Text(
                       'No mosques found nearby',
-                      style: TextStyle(
+                      style: GoogleFonts.plusJakartaSans().copyWith(
                         fontSize: 14,
                         fontWeight: FontWeight.w700,
                         color:
                             isDark
-                                ? const Color(0xFFCBD5E1)
-                                : const Color(0xFF334155),
+                                ? AppColors.textMainDark
+                                : AppColors.textMainLight,
                       ),
                     ),
                     const SizedBox(height: 4),
                     Text(
                       'Pull down to refresh or expand search radius later.',
                       textAlign: TextAlign.center,
-                      style: TextStyle(
+                      style: GoogleFonts.plusJakartaSans().copyWith(
                         fontSize: 11,
                         fontWeight: FontWeight.w500,
                         color:
                             isDark
-                                ? const Color(0xFF64748B)
-                                : const Color(0xFF94A3B8),
+                                ? AppColors.textMutedDark
+                                : AppColors.textMutedLight,
                       ),
                     ),
                   ],

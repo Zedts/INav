@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../core/errors/error_messages.dart';
 import '../../core/models/mosque_model.dart';
 import '../../core/providers/mosque_provider.dart';
+import '../../core/theme/app_colors.dart';
 import '../common/error_state_view.dart';
 import 'mosque_quick_actions.dart';
 
@@ -68,12 +70,12 @@ class MosqueDetailSheet extends StatelessWidget {
             minHeight: minHeight,
           ),
           decoration: BoxDecoration(
-            color: isDark ? const Color(0xFF0F172A) : Colors.white,
+            color: isDark ? AppColors.cardDark : Colors.white,
             borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withValues(alpha: 0.35),
-                blurRadius: 40,
+                color: Colors.black.withValues(alpha: 0.2),
+                blurRadius: 3,
                 offset: const Offset(0, -10),
               ),
             ],
@@ -112,7 +114,7 @@ class MosqueDetailSheet extends StatelessWidget {
           width: 48,
           height: 5,
           decoration: BoxDecoration(
-            color: isDark ? const Color(0xFF475569) : const Color(0xFFCBD5E1),
+            color: isDark ? AppColors.textMutedLight : AppColors.textMutedDark,
             borderRadius: BorderRadius.circular(999),
           ),
         ),
@@ -128,8 +130,8 @@ class MosqueDetailSheet extends StatelessWidget {
           border: Border(
             bottom: BorderSide(
               color: isDark
-                  ? const Color(0xFF1E293B).withValues(alpha: 0.8)
-                  : const Color(0xFFE2E8F0).withValues(alpha: 0.8),
+                  ? AppColors.hairlineDark.withValues(alpha: 0.8)
+                  : AppColors.hairlineLight.withValues(alpha: 0.8),
               width: 1,
             ),
           ),
@@ -143,14 +145,14 @@ class MosqueDetailSheet extends StatelessWidget {
                 width: 48,
                 height: 48,
                 decoration: BoxDecoration(
-                  color: const Color(0xFF10B981).withValues(
+                  color: AppColors.success.withValues(
                     alpha: isDark ? 0.2 : 0.1,
                   ),
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: const Icon(
                   Icons.mosque,
-                  color: Color(0xFF059669),
+                  color: AppColors.success,
                   size: 24,
                 ),
               ),
@@ -161,12 +163,12 @@ class MosqueDetailSheet extends StatelessWidget {
                   children: [
                     Text(
                       mosque.name,
-                      style: TextStyle(
+                      style: GoogleFonts.fraunces().copyWith(
                         fontSize: 17,
                         fontWeight: FontWeight.w800,
                         color: isDark
-                            ? const Color(0xFFF8FAFC)
-                            : const Color(0xFF0F172A),
+                            ? AppColors.textMainDark
+                            : AppColors.textMainLight,
                         height: 1.2,
                       ),
                     ),
@@ -177,19 +179,19 @@ class MosqueDetailSheet extends StatelessWidget {
                           Icons.location_on_outlined,
                           size: 13,
                           color: isDark
-                              ? const Color(0xFF94A3B8)
-                              : const Color(0xFF64748B),
+                              ? AppColors.textMutedDark
+                              : AppColors.textMutedLight,
                         ),
                         const SizedBox(width: 4),
                         Expanded(
                           child: Text(
                             mosque.address,
-                            style: TextStyle(
+                            style: GoogleFonts.plusJakartaSans().copyWith(
                               fontSize: 11,
                               fontWeight: FontWeight.w600,
                               color: isDark
-                                  ? const Color(0xFF94A3B8)
-                                  : const Color(0xFF64748B),
+                                  ? AppColors.textMutedDark
+                                  : AppColors.textMutedLight,
                             ),
                           ),
                         ),
@@ -209,14 +211,14 @@ class MosqueDetailSheet extends StatelessWidget {
     final badges = <Widget>[
       _buildBadge(
         icon: Icons.directions_walk_rounded,
-        bg: const Color(0xFF10B981).withValues(alpha: 0.1),
-        fg: const Color(0xFF059669),
+        bg: AppColors.success.withValues(alpha: 0.1),
+        fg: AppColors.success,
         text: '${mosque.estimatedWalkingTime} walk',
       ),
       _buildBadge(
         icon: Icons.straighten,
-        bg: const Color(0xFF2563EB).withValues(alpha: 0.1),
-        fg: isDark ? const Color(0xFF60A5FA) : const Color(0xFF2563EB),
+        bg: AppColors.primary.withValues(alpha: 0.1),
+        fg: isDark ? AppColors.primaryDark : AppColors.primary,
         text: mosque.formattedDistance,
       ),
     ];
@@ -225,7 +227,7 @@ class MosqueDetailSheet extends StatelessWidget {
       badges.add(
         _buildBadge(
           icon: Icons.star_rounded,
-          bg: const Color(0xFFF59E0B).withValues(alpha: 0.1),
+          bg: AppColors.roseAccent.withValues(alpha: 0.1),
           fg: const Color(0xFFD97706),
           text: mosque.rating!.toStringAsFixed(1),
         ),
@@ -237,9 +239,9 @@ class MosqueDetailSheet extends StatelessWidget {
       badges.add(
         _buildBadge(
           icon: open ? Icons.check_circle_outline : Icons.cancel_outlined,
-          bg: (open ? const Color(0xFF10B981) : const Color(0xFFEF4444))
+          bg: (open ? AppColors.success : AppColors.roseAccent)
               .withValues(alpha: 0.1),
-          fg: open ? const Color(0xFF059669) : const Color(0xFFEF4444),
+          fg: open ? AppColors.success : AppColors.roseAccent,
           text: open ? 'Open now' : 'Closed',
         ),
       );
@@ -271,7 +273,7 @@ class MosqueDetailSheet extends StatelessWidget {
           const SizedBox(width: 6),
           Text(
             text,
-            style: TextStyle(
+            style: GoogleFonts.plusJakartaSans().copyWith(
               fontSize: 11,
               fontWeight: FontWeight.w700,
               color: fg,
@@ -291,18 +293,18 @@ class MosqueDetailSheet extends StatelessWidget {
             const Icon(
               Icons.place_outlined,
               size: 13,
-              color: Color(0xFF059669),
+              color: AppColors.success,
             ),
             const SizedBox(width: 6),
             Text(
               'LOCATION DETAILS',
-              style: TextStyle(
+              style: GoogleFonts.plusJakartaSans().copyWith(
                 fontSize: 10,
                 fontWeight: FontWeight.w700,
                 letterSpacing: 1.2,
                 color: isDark
-                    ? const Color(0xFF94A3B8)
-                    : const Color(0xFF64748B),
+                    ? AppColors.textMutedDark
+                    : AppColors.textMutedLight,
               ),
             ),
           ],
@@ -310,12 +312,12 @@ class MosqueDetailSheet extends StatelessWidget {
         const SizedBox(height: 8),
         Text(
           mosque.address,
-          style: TextStyle(
+          style: GoogleFonts.plusJakartaSans().copyWith(
             fontSize: 13,
             fontWeight: FontWeight.w500,
             color: (isDark
-                    ? const Color(0xFFF8FAFC)
-                    : const Color(0xFF0F172A))
+                    ? AppColors.textMainDark
+                    : AppColors.textMainLight)
                 .withValues(alpha: 0.9),
             height: 1.65,
           ),
@@ -323,20 +325,20 @@ class MosqueDetailSheet extends StatelessWidget {
         const SizedBox(height: 12),
         Text(
           '${mosque.latitude.toStringAsFixed(5)}, ${mosque.longitude.toStringAsFixed(5)}',
-          style: TextStyle(
+          style: GoogleFonts.plusJakartaSans().copyWith(
             fontSize: 11,
             fontWeight: FontWeight.w600,
-            color: isDark ? const Color(0xFF64748B) : const Color(0xFF94A3B8),
+            color: isDark ? AppColors.textMutedLight : AppColors.textMutedDark,
           ),
         ),
         if (mosque.iconTag != null && mosque.iconTag!.isNotEmpty) ...[
           const SizedBox(height: 12),
           Text(
             'Category: ${mosque.iconTag}',
-            style: TextStyle(
+            style: GoogleFonts.plusJakartaSans().copyWith(
               fontSize: 11,
               fontWeight: FontWeight.w600,
-              color: isDark ? const Color(0xFF94A3B8) : const Color(0xFF64748B),
+              color: isDark ? AppColors.textMutedDark : AppColors.textMutedLight,
             ),
           ),
         ],
@@ -357,12 +359,12 @@ class MosqueDetailSheet extends StatelessWidget {
         16 + MediaQuery.of(context).padding.bottom,
       ),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF0F172A) : Colors.white,
+        color: isDark ? AppColors.cardDark : Colors.white,
         border: Border(
           top: BorderSide(
             color: isDark
-                ? const Color(0xFF1E293B).withValues(alpha: 0.8)
-                : const Color(0xFFE2E8F0).withValues(alpha: 0.8),
+                ? AppColors.hairlineDark.withValues(alpha: 0.8)
+                : AppColors.hairlineLight.withValues(alpha: 0.8),
             width: 1,
           ),
         ),

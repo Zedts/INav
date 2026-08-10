@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import '../../core/theme/app_colors.dart';
 
 class MosqueNavigateButton extends StatelessWidget {
   final VoidCallback onTap;
@@ -22,14 +24,14 @@ class MosqueNavigateButton extends StatelessWidget {
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: isDark
-                ? [const Color(0xFF10B981), const Color(0xFF059669)]
-                : [const Color(0xFF10B981), const Color(0xFF059669)],
+                ? [AppColors.success, AppColors.success]
+                : [AppColors.success, AppColors.success],
           ),
           borderRadius: BorderRadius.circular(compact ? 12 : 16),
           boxShadow: [
             BoxShadow(
-              color: const Color(0xFF059669).withValues(alpha: 0.3),
-              blurRadius: 12,
+              color: AppColors.success.withValues(alpha: 0.2),
+              blurRadius: 3,
               offset: const Offset(0, 4),
             ),
           ],
@@ -42,7 +44,7 @@ class MosqueNavigateButton extends StatelessWidget {
             SizedBox(width: compact ? 6 : 8),
             Text(
               'Navigate',
-              style: TextStyle(
+              style: GoogleFonts.plusJakartaSans().copyWith(
                 fontSize: compact ? 12 : 13,
                 fontWeight: FontWeight.w800,
                 color: Colors.white,
@@ -82,14 +84,14 @@ class MosqueFavoriteButton extends StatelessWidget {
         height: size,
         decoration: BoxDecoration(
           color: isFavorite
-              ? const Color(0xFFEF4444).withValues(alpha: isDark ? 0.2 : 0.12)
+              ? AppColors.roseAccent.withValues(alpha: isDark ? 0.2 : 0.12)
               : (isDark
-                  ? const Color(0xFF1E293B).withValues(alpha: 0.5)
-                  : Colors.white.withValues(alpha: 0.5)),
+                  ? AppColors.cardDark.withValues(alpha: 0.2)
+                  : Colors.white.withValues(alpha: 0.2)),
           borderRadius: BorderRadius.circular(compact ? 12 : 16),
           border: Border.all(
             color: isFavorite
-                ? const Color(0xFFEF4444).withValues(alpha: 0.45)
+                ? AppColors.roseAccent.withValues(alpha: 0.45)
                 : (isDark
                     ? Colors.white.withValues(alpha: 0.15)
                     : Colors.white.withValues(alpha: 0.4)),
@@ -99,8 +101,8 @@ class MosqueFavoriteButton extends StatelessWidget {
           isFavorite ? Icons.favorite_rounded : Icons.favorite_border_rounded,
           size: iconSize,
           color: isFavorite
-              ? (isDark ? const Color(0xFFF87171) : const Color(0xFFEF4444))
-              : (isDark ? const Color(0xFFF87171) : const Color(0xFFEF4444)),
+              ? AppColors.roseAccent
+              : AppColors.roseAccent,
         ),
       ),
     );
@@ -129,16 +131,16 @@ class MosqueInfoButton extends StatelessWidget {
         width: size,
         height: size,
         decoration: BoxDecoration(
-          color: const Color(0xFF2563EB).withValues(alpha: isDark ? 0.15 : 0.1),
+          color: AppColors.primary.withValues(alpha: isDark ? 0.15 : 0.1),
           borderRadius: BorderRadius.circular(compact ? 12 : 16),
           border: Border.all(
-            color: const Color(0xFF2563EB).withValues(alpha: 0.25),
+            color: AppColors.primary.withValues(alpha: 0.25),
           ),
         ),
         child: Icon(
           Icons.info_outline_rounded,
           size: compact ? 20 : 22,
-          color: isDark ? const Color(0xFF60A5FA) : const Color(0xFF2563EB),
+          color: isDark ? AppColors.primaryDark : AppColors.primary,
         ),
       ),
     );

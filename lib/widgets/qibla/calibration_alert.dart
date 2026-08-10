@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import '../../core/theme/app_colors.dart';
 
-/// Amber alert shown when the compass sensor needs calibration.
-/// The rotating-arrows icon wiggles in a figure-8 motion like the reference.
 class CalibrationAlert extends StatefulWidget {
   const CalibrationAlert({super.key});
 
@@ -38,13 +38,13 @@ class _CalibrationAlertState extends State<CalibrationAlert>
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
           color: isDark
-              ? const Color(0xFFF59E0B).withValues(alpha: 0.1)
+              ? AppColors.roseAccent.withValues(alpha: 0.1)
               : const Color(0xFFFFFBEB),
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
             color: isDark
-                ? const Color(0xFFF59E0B).withValues(alpha: 0.3)
-                : const Color(0xFFFDE68A),
+                ? AppColors.roseAccent.withValues(alpha: 0.3)
+                : AppColors.roseAccent.withValues(alpha: 0.2),
             width: 1,
           ),
         ),
@@ -53,7 +53,6 @@ class _CalibrationAlertState extends State<CalibrationAlert>
             AnimatedBuilder(
               animation: _controller,
               builder: (context, child) {
-                // Figure-8 wiggle: 0% → 25% → 50% → 75% → 100%
                 final t = _controller.value;
                 final phase = (t * 4) % 4;
                 double dx = 0, dy = 0, angle = 0;
@@ -79,10 +78,10 @@ class _CalibrationAlertState extends State<CalibrationAlert>
                   child: Transform.rotate(angle: angle, child: child),
                 );
               },
-              child: const Icon(
+              child: Icon(
                 Icons.sync,
                 size: 26,
-                color: Color(0xFFF59E0B),
+                color: AppColors.roseAccent,
               ),
             ),
             const SizedBox(width: 12),
@@ -92,23 +91,23 @@ class _CalibrationAlertState extends State<CalibrationAlert>
                 children: [
                   Text(
                     'Compass needs calibration',
-                    style: TextStyle(
+                    style: GoogleFonts.plusJakartaSans(
                       fontSize: 12,
                       fontWeight: FontWeight.w700,
                       color: isDark
-                          ? const Color(0xFFFCD34D)
-                          : const Color(0xFF92400E),
+                          ? AppColors.roseAccent
+                          : AppColors.textMainLight,
                     ),
                   ),
                   const SizedBox(height: 2),
                   Text(
                     'Move your phone in a figure-8 motion a few times.',
-                    style: TextStyle(
+                    style: GoogleFonts.plusJakartaSans(
                       fontSize: 11,
                       fontWeight: FontWeight.w500,
                       color: isDark
-                          ? const Color(0xFFFBBF24).withValues(alpha: 0.7)
-                          : const Color(0xFFB45309).withValues(alpha: 0.8),
+                          ? AppColors.roseAccent.withValues(alpha: 0.7)
+                          : AppColors.roseAccent.withValues(alpha: 0.8),
                     ),
                   ),
                 ],

@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/providers/prayer_provider.dart';
 import '../../screens/settings/focus_lock_config_screen.dart';
 
-/// Focus Lock summary card - entire card is tappable to open configuration
-/// Shows lock status, number of apps locked, and next lock window
 class FocusLockCard extends StatelessWidget {
   const FocusLockCard({super.key});
 
-  /// Formats countdown to show only minutes to hours (no seconds, no days)
   String _formatNextLockCountdown(Duration duration) {
     if (duration.isNegative) return 'Now';
 
@@ -27,8 +25,8 @@ class FocusLockCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final prayerProvider = context.watch<PrayerProvider>();
+    final plusJakarta = GoogleFonts.plusJakartaSans();
 
-    // Get next prayer info for countdown
     final nextPrayer = prayerProvider.nextPrayer;
     final timeUntilNext = prayerProvider.timeRemaining;
     final formattedCountdown = _formatNextLockCountdown(timeUntilNext);
@@ -40,14 +38,14 @@ class FocusLockCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(24),
         border: Border.all(
           color: isDark
-              ? AppColors.borderDark.withValues(alpha: 0.8)
-              : AppColors.borderLight.withValues(alpha: 0.8),
+              ? AppColors.hairlineDark.withValues(alpha: 0.8)
+              : AppColors.hairlineLight.withValues(alpha: 0.8),
           width: 1,
         ),
         boxShadow: [
           BoxShadow(
             color: (isDark ? Colors.black : Colors.grey).withValues(alpha: 0.1),
-            blurRadius: 10,
+            blurRadius: 3,
             offset: const Offset(0, 4),
           ),
         ],
@@ -71,7 +69,6 @@ class FocusLockCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Header row
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -80,15 +77,15 @@ class FocusLockCard extends StatelessWidget {
                           Icon(
                             Icons.lock_rounded,
                             size: 16,
-                            color: const Color(0xFFE11D48), // rose
+                            color: AppColors.roseAccent,
                           ),
                           const SizedBox(width: 6),
                           Text(
                             'FOCUS LOCK',
-                            style: TextStyle(
+                            style: plusJakarta.copyWith(
                               fontSize: 11,
                               fontWeight: FontWeight.w700,
-                              color: const Color(0xFFE11D48),
+                              color: AppColors.roseAccent,
                               letterSpacing: 1.2,
                             ),
                           ),
@@ -106,15 +103,12 @@ class FocusLockCard extends StatelessWidget {
 
                   const SizedBox(height: 16),
 
-                  // Main content row
                   Row(
                     children: [
-                      // Left side: Status and info
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // Status indicator
                             Row(
                               children: [
                                 Container(
@@ -122,13 +116,13 @@ class FocusLockCard extends StatelessWidget {
                                   height: 8,
                                   decoration: const BoxDecoration(
                                     shape: BoxShape.circle,
-                                    color: Color(0xFF10B981), // emerald-500
+                                    color: AppColors.success,
                                   ),
                                 ),
                                 const SizedBox(width: 6),
                                 Text(
                                   'Active',
-                                  style: TextStyle(
+                                  style: plusJakarta.copyWith(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w900,
                                     color: isDark
@@ -141,10 +135,9 @@ class FocusLockCard extends StatelessWidget {
 
                             const SizedBox(height: 8),
 
-                            // Summary text
                             Text(
                               '3 apps locked during all 5 prayers',
-                              style: TextStyle(
+                              style: plusJakarta.copyWith(
                                 fontSize: 12,
                                 color: isDark
                                     ? AppColors.textMutedDark
@@ -155,15 +148,14 @@ class FocusLockCard extends StatelessWidget {
 
                             const SizedBox(height: 12),
 
-                            // Next lock window - real-time countdown
                             Text(
                               'Next lock: $nextPrayer in $formattedCountdown',
-                              style: TextStyle(
+                              style: plusJakarta.copyWith(
                                 fontSize: 10,
                                 fontWeight: FontWeight.w700,
                                 color: isDark
-                                    ? const Color(0xFF64748B) // slate-500
-                                    : const Color(0xFF94A3B8), // slate-400
+                                    ? AppColors.textMutedLight
+                                    : AppColors.textMutedDark,
                               ),
                             ),
                           ],
@@ -172,9 +164,8 @@ class FocusLockCard extends StatelessWidget {
 
                       const SizedBox(width: 12),
 
-                      // Right side: App preview stack with overlapping icons
                       SizedBox(
-                        width: 72, // 32 + 24 + 16 (3 icons with overlap)
+                        width: 72,
                         height: 32,
                         child: Stack(
                           children: [
@@ -182,7 +173,7 @@ class FocusLockCard extends StatelessWidget {
                               left: 0,
                               child: _buildAppIcon(
                                 Icons.photo_camera,
-                                const Color(0xFFD946EF), // fuchsia-500
+                                const Color(0xFFD946EF),
                                 isDark,
                               ),
                             ),
@@ -191,8 +182,8 @@ class FocusLockCard extends StatelessWidget {
                               child: _buildAppIcon(
                                 Icons.music_note,
                                 isDark
-                                    ? const Color(0xFFE2E8F0) // slate-200
-                                    : const Color(0xFF475569), // slate-600
+                                    ? const Color(0xFFE2E8F0)
+                                    : AppColors.textMutedLight,
                                 isDark,
                               ),
                             ),
@@ -200,7 +191,7 @@ class FocusLockCard extends StatelessWidget {
                               left: 48,
                               child: _buildAppIcon(
                                 Icons.play_circle_filled,
-                                const Color(0xFFEF4444), // red-500
+                                const Color(0xFFEF4444),
                                 isDark,
                               ),
                             ),

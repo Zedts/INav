@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'app_colors.dart';
 
-/// Theme configuration for the INav app
-/// Provides light and dark theme definitions matching HTML reference
 class AppTheme {
-  // Private constructor to prevent instantiation
   AppTheme._();
 
-  /// Light theme configuration
   static ThemeData lightTheme() {
+    final plusJakarta = GoogleFonts.plusJakartaSans();
+    final fraunces = GoogleFonts.fraunces();
+
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.light,
 
-      // Color Scheme
       colorScheme: const ColorScheme.light(
-        primary: AppColors.primaryLight,
-        secondary: AppColors.accent,
+        primary: AppColors.primary,
+        secondary: AppColors.primaryLight,
         surface: AppColors.surfaceLight,
         error: Colors.red,
         onPrimary: Colors.white,
@@ -24,10 +23,8 @@ class AppTheme {
         onSurface: AppColors.textMainLight,
       ),
 
-      // Scaffold
       scaffoldBackgroundColor: AppColors.surfaceLight,
 
-      // AppBar Theme
       appBarTheme: const AppBarTheme(
         backgroundColor: AppColors.surfaceLight,
         foregroundColor: AppColors.textMainLight,
@@ -36,110 +33,133 @@ class AppTheme {
         iconTheme: IconThemeData(color: AppColors.textMainLight),
       ),
 
-      // Bottom Navigation Bar Theme
-      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+      bottomNavigationBarTheme: BottomNavigationBarThemeData(
         backgroundColor: AppColors.cardLight,
-        selectedItemColor: AppColors.primaryLight,
+        selectedItemColor: AppColors.primary,
         unselectedItemColor: AppColors.textMutedLight,
-        selectedIconTheme: IconThemeData(size: 22),
-        unselectedIconTheme: IconThemeData(size: 22),
-        selectedLabelStyle: TextStyle(
+        selectedIconTheme: const IconThemeData(size: 22),
+        unselectedIconTheme: const IconThemeData(size: 22),
+        selectedLabelStyle: plusJakarta.copyWith(
           fontSize: 11,
-          fontWeight: FontWeight.bold,
-          fontFamily: 'Inter',
+          fontWeight: FontWeight.w700,
         ),
-        unselectedLabelStyle: TextStyle(
+        unselectedLabelStyle: plusJakarta.copyWith(
           fontSize: 11,
           fontWeight: FontWeight.w500,
-          fontFamily: 'Inter',
         ),
         type: BottomNavigationBarType.fixed,
         elevation: 0,
       ),
 
-      // Text Theme with Inter font
-      textTheme: const TextTheme(
-        displayLarge: TextStyle(
-          fontFamily: 'Inter',
+      textTheme: TextTheme(
+        displayLarge: fraunces.copyWith(
           color: AppColors.textMainLight,
+          fontWeight: FontWeight.w400,
+          letterSpacing: -0.02,
         ),
-        displayMedium: TextStyle(
-          fontFamily: 'Inter',
+        displayMedium: fraunces.copyWith(
           color: AppColors.textMainLight,
+          fontWeight: FontWeight.w400,
+          letterSpacing: -0.02,
         ),
-        displaySmall: TextStyle(
-          fontFamily: 'Inter',
+        displaySmall: fraunces.copyWith(
           color: AppColors.textMainLight,
+          fontWeight: FontWeight.w500,
+          letterSpacing: -0.02,
         ),
-        headlineLarge: TextStyle(
-          fontFamily: 'Inter',
+        headlineLarge: fraunces.copyWith(
           color: AppColors.textMainLight,
+          fontWeight: FontWeight.w500,
         ),
-        headlineMedium: TextStyle(
-          fontFamily: 'Inter',
+        headlineMedium: fraunces.copyWith(
           color: AppColors.textMainLight,
           fontSize: 24,
-          fontWeight: FontWeight.bold,
+          fontWeight: FontWeight.w600,
         ),
-        headlineSmall: TextStyle(
-          fontFamily: 'Inter',
+        headlineSmall: fraunces.copyWith(
           color: AppColors.textMainLight,
+          fontWeight: FontWeight.w600,
         ),
-        bodyLarge: TextStyle(
-          fontFamily: 'Inter',
+        titleLarge: fraunces.copyWith(
           color: AppColors.textMainLight,
+          fontWeight: FontWeight.w600,
         ),
-        bodyMedium: TextStyle(
-          fontFamily: 'Inter',
+        titleMedium: plusJakarta.copyWith(
           color: AppColors.textMainLight,
+          fontWeight: FontWeight.w600,
         ),
-        bodySmall: TextStyle(
-          fontFamily: 'Inter',
+        titleSmall: plusJakarta.copyWith(
+          color: AppColors.textMainLight,
+          fontWeight: FontWeight.w600,
+        ),
+        bodyLarge: plusJakarta.copyWith(
+          color: AppColors.textMainLight,
+          fontWeight: FontWeight.w400,
+        ),
+        bodyMedium: plusJakarta.copyWith(
+          color: AppColors.textMainLight,
+          fontWeight: FontWeight.w400,
+        ),
+        bodySmall: plusJakarta.copyWith(
           color: AppColors.textMutedLight,
+          fontWeight: FontWeight.w400,
+        ),
+        labelLarge: plusJakarta.copyWith(
+          color: AppColors.textMainLight,
+          fontWeight: FontWeight.w600,
+        ),
+        labelMedium: plusJakarta.copyWith(
+          color: AppColors.textMainLight,
+          fontWeight: FontWeight.w600,
+        ),
+        labelSmall: plusJakarta.copyWith(
+          color: AppColors.textMutedLight,
+          fontWeight: FontWeight.w500,
+          letterSpacing: 0.05,
         ),
       ),
 
-      // Icon Theme
       iconTheme: const IconThemeData(color: AppColors.textMainLight, size: 24),
 
-      // Card Theme
       cardTheme: CardThemeData(
         color: AppColors.cardLight,
         elevation: 0,
+        shadowColor: Colors.black.withValues(alpha: 0.02),
+        surfaceTintColor: Colors.transparent,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(16)),
+          side: BorderSide(color: AppColors.hairlineLight, width: 1),
         ),
       ),
 
-      // Divider Theme
       dividerTheme: const DividerThemeData(
-        color: AppColors.borderLight,
+        color: AppColors.hairlineLight,
         thickness: 1,
+        space: 1,
       ),
     );
   }
 
-  /// Dark theme configuration
   static ThemeData darkTheme() {
+    final plusJakarta = GoogleFonts.plusJakartaSans();
+    final fraunces = GoogleFonts.fraunces();
+
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.dark,
 
-      // Color Scheme
       colorScheme: const ColorScheme.dark(
         primary: AppColors.primaryDark,
-        secondary: AppColors.accent,
+        secondary: AppColors.primaryLight,
         surface: AppColors.surfaceDark,
         error: Colors.red,
-        onPrimary: Colors.white,
-        onSecondary: Colors.white,
+        onPrimary: Colors.black,
+        onSecondary: Colors.black,
         onSurface: AppColors.textMainDark,
       ),
 
-      // Scaffold
       scaffoldBackgroundColor: AppColors.surfaceDark,
 
-      // AppBar Theme
       appBarTheme: const AppBarTheme(
         backgroundColor: AppColors.surfaceDark,
         foregroundColor: AppColors.textMainDark,
@@ -148,85 +168,109 @@ class AppTheme {
         iconTheme: IconThemeData(color: AppColors.textMainDark),
       ),
 
-      // Bottom Navigation Bar Theme
-      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+      bottomNavigationBarTheme: BottomNavigationBarThemeData(
         backgroundColor: AppColors.cardDark,
         selectedItemColor: AppColors.primaryDark,
         unselectedItemColor: AppColors.textMutedDark,
-        selectedIconTheme: IconThemeData(size: 22),
-        unselectedIconTheme: IconThemeData(size: 22),
-        selectedLabelStyle: TextStyle(
+        selectedIconTheme: const IconThemeData(size: 22),
+        unselectedIconTheme: const IconThemeData(size: 22),
+        selectedLabelStyle: plusJakarta.copyWith(
           fontSize: 11,
-          fontWeight: FontWeight.bold,
-          fontFamily: 'Inter',
+          fontWeight: FontWeight.w700,
         ),
-        unselectedLabelStyle: TextStyle(
+        unselectedLabelStyle: plusJakarta.copyWith(
           fontSize: 11,
           fontWeight: FontWeight.w500,
-          fontFamily: 'Inter',
         ),
         type: BottomNavigationBarType.fixed,
         elevation: 0,
       ),
 
-      // Text Theme with Inter font
-      textTheme: const TextTheme(
-        displayLarge: TextStyle(
-          fontFamily: 'Inter',
+      textTheme: TextTheme(
+        displayLarge: fraunces.copyWith(
           color: AppColors.textMainDark,
+          fontWeight: FontWeight.w400,
+          letterSpacing: -0.02,
         ),
-        displayMedium: TextStyle(
-          fontFamily: 'Inter',
+        displayMedium: fraunces.copyWith(
           color: AppColors.textMainDark,
+          fontWeight: FontWeight.w400,
+          letterSpacing: -0.02,
         ),
-        displaySmall: TextStyle(
-          fontFamily: 'Inter',
+        displaySmall: fraunces.copyWith(
           color: AppColors.textMainDark,
+          fontWeight: FontWeight.w500,
+          letterSpacing: -0.02,
         ),
-        headlineLarge: TextStyle(
-          fontFamily: 'Inter',
+        headlineLarge: fraunces.copyWith(
           color: AppColors.textMainDark,
+          fontWeight: FontWeight.w500,
         ),
-        headlineMedium: TextStyle(
-          fontFamily: 'Inter',
+        headlineMedium: fraunces.copyWith(
           color: AppColors.textMainDark,
           fontSize: 24,
-          fontWeight: FontWeight.bold,
+          fontWeight: FontWeight.w600,
         ),
-        headlineSmall: TextStyle(
-          fontFamily: 'Inter',
+        headlineSmall: fraunces.copyWith(
           color: AppColors.textMainDark,
+          fontWeight: FontWeight.w600,
         ),
-        bodyLarge: TextStyle(
-          fontFamily: 'Inter',
+        titleLarge: fraunces.copyWith(
           color: AppColors.textMainDark,
+          fontWeight: FontWeight.w600,
         ),
-        bodyMedium: TextStyle(
-          fontFamily: 'Inter',
+        titleMedium: plusJakarta.copyWith(
           color: AppColors.textMainDark,
+          fontWeight: FontWeight.w600,
         ),
-        bodySmall: TextStyle(
-          fontFamily: 'Inter',
+        titleSmall: plusJakarta.copyWith(
+          color: AppColors.textMainDark,
+          fontWeight: FontWeight.w600,
+        ),
+        bodyLarge: plusJakarta.copyWith(
+          color: AppColors.textMainDark,
+          fontWeight: FontWeight.w400,
+        ),
+        bodyMedium: plusJakarta.copyWith(
+          color: AppColors.textMainDark,
+          fontWeight: FontWeight.w400,
+        ),
+        bodySmall: plusJakarta.copyWith(
           color: AppColors.textMutedDark,
+          fontWeight: FontWeight.w400,
+        ),
+        labelLarge: plusJakarta.copyWith(
+          color: AppColors.textMainDark,
+          fontWeight: FontWeight.w600,
+        ),
+        labelMedium: plusJakarta.copyWith(
+          color: AppColors.textMainDark,
+          fontWeight: FontWeight.w600,
+        ),
+        labelSmall: plusJakarta.copyWith(
+          color: AppColors.textMutedDark,
+          fontWeight: FontWeight.w500,
+          letterSpacing: 0.05,
         ),
       ),
 
-      // Icon Theme
       iconTheme: const IconThemeData(color: AppColors.textMainDark, size: 24),
 
-      // Card Theme
       cardTheme: CardThemeData(
         color: AppColors.cardDark,
         elevation: 0,
+        shadowColor: Colors.black.withValues(alpha: 0.2),
+        surfaceTintColor: Colors.transparent,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(16)),
+          side: BorderSide(color: AppColors.hairlineDark, width: 1),
         ),
       ),
 
-      // Divider Theme
       dividerTheme: const DividerThemeData(
-        color: AppColors.borderDark,
+        color: AppColors.hairlineDark,
         thickness: 1,
+        space: 1,
       ),
     );
   }

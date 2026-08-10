@@ -2,15 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../core/theme/theme_provider.dart';
 
-/// Theme toggle button that switches between light and dark mode
-/// Icon changes based on current theme
 class ThemeToggleButton extends StatelessWidget {
   const ThemeToggleButton({super.key});
 
   @override
   Widget build(BuildContext context) {
     final themeProvider = context.watch<ThemeProvider>();
-    // Check actual brightness to handle system theme correctly
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Material(

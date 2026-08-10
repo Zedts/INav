@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../core/providers/quran_provider.dart';
 import '../../core/models/surah_model.dart';
+import '../../core/theme/app_colors.dart';
 
 class BookmarksSidebar extends StatelessWidget {
   final void Function(SurahModel surah) onOpenSurah;
@@ -27,7 +29,7 @@ class BookmarksSidebar extends StatelessWidget {
               duration: const Duration(milliseconds: 300),
               curve: Curves.easeOut,
               color: isOpen
-                  ? Colors.black.withValues(alpha: 0.6)
+                  ? Colors.black.withValues(alpha: 0.2)
                   : Colors.transparent,
               child: isOpen
                   ? GestureDetector(
@@ -49,19 +51,19 @@ class BookmarksSidebar extends StatelessWidget {
             child: Container(
               width: 280,
               decoration: BoxDecoration(
-                color: isDark ? const Color(0xFF0F172A) : Colors.white,
+                color: isDark ? AppColors.cardDark : Colors.white,
                 border: Border(
                   right: BorderSide(
                     color: isDark
-                        ? const Color(0xFF1E293B).withValues(alpha: 0.5)
-                        : const Color(0xFFE2E8F0).withValues(alpha: 0.5),
+                        ? AppColors.textMainDark.withValues(alpha: 0.5)
+                        : AppColors.hairlineLight.withValues(alpha: 0.5),
                     width: 1,
                   ),
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.35),
-                    blurRadius: 40,
+                    color: Colors.black.withValues(alpha: 0.2),
+                    blurRadius: 3,
                     offset: const Offset(4, 0),
                   ),
                 ],
@@ -106,8 +108,8 @@ class BookmarksSidebar extends StatelessWidget {
         border: Border(
           bottom: BorderSide(
             color: isDark
-                ? const Color(0xFF1E293B).withValues(alpha: 0.8)
-                : const Color(0xFFE2E8F0).withValues(alpha: 0.8),
+                ? AppColors.textMainDark.withValues(alpha: 0.8)
+                : AppColors.hairlineLight.withValues(alpha: 0.8),
             width: 1,
           ),
         ),
@@ -118,20 +120,20 @@ class BookmarksSidebar extends StatelessWidget {
             width: 36,
             height: 36,
             decoration: BoxDecoration(
-              color: const Color(0xFF0D9488).withValues(alpha: 0.1),
+              color: AppColors.primary.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(12),
             ),
             child: const Icon(
               Icons.bookmarks,
               size: 20,
-              color: Color(0xFF0D9488),
+              color: AppColors.primary,
             ),
           ),
           const SizedBox(width: 12),
-          const Expanded(
+          Expanded(
             child: Text(
               'Bookmarks',
-              style: TextStyle(
+              style: GoogleFonts.plusJakartaSans().copyWith(
                 fontSize: 17,
                 fontWeight: FontWeight.w800,
                 letterSpacing: -0.2,
@@ -144,15 +146,15 @@ class BookmarksSidebar extends StatelessWidget {
               width: 32,
               height: 32,
               decoration: BoxDecoration(
-                color: isDark ? const Color(0xFF1E293B) : const Color(0xFFF1F5F9),
-                borderRadius: BorderRadius.circular(8),
+                color: isDark ? AppColors.textMainDark : AppColors.cardLight,
+                borderRadius: BorderRadius.circular(12),
               ),
               child: Icon(
                 Icons.close,
                 size: 18,
                 color: isDark
-                    ? const Color(0xFF94A3B8)
-                    : const Color(0xFF64748B),
+                    ? AppColors.textMutedDark
+                    : AppColors.textMutedLight,
               ),
             ),
           ),
@@ -170,18 +172,18 @@ class BookmarksSidebar extends StatelessWidget {
             Icons.bookmark_border,
             size: 40,
             color: isDark
-                ? const Color(0xFF64748B).withValues(alpha: 0.4)
-                : const Color(0xFF94A3B8).withValues(alpha: 0.4),
+                ? AppColors.textMutedLight.withValues(alpha: 0.4)
+                : AppColors.textMutedDark.withValues(alpha: 0.4),
           ),
           const SizedBox(height: 8),
           Text(
             'No bookmarks yet',
-            style: TextStyle(
+            style: GoogleFonts.plusJakartaSans().copyWith(
               fontSize: 11,
               fontWeight: FontWeight.w700,
               color: isDark
-                  ? const Color(0xFF64748B).withValues(alpha: 0.6)
-                  : const Color(0xFF94A3B8).withValues(alpha: 0.6),
+                  ? AppColors.textMutedLight.withValues(alpha: 0.6)
+                  : AppColors.textMutedDark.withValues(alpha: 0.6),
             ),
           ),
         ],
@@ -213,8 +215,8 @@ class BookmarksSidebar extends StatelessWidget {
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
                 color: isDark
-                    ? const Color(0xFF1E293B).withValues(alpha: 0.5)
-                    : const Color(0xFFF8FAFC),
+                    ? AppColors.textMainDark.withValues(alpha: 0.5)
+                    : AppColors.textMainDark,
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Row(
@@ -223,16 +225,16 @@ class BookmarksSidebar extends StatelessWidget {
                     width: 32,
                     height: 32,
                     decoration: BoxDecoration(
-                      color: const Color(0xFF0D9488).withValues(alpha: 0.2),
-                      borderRadius: BorderRadius.circular(8),
+                      color: AppColors.primary.withValues(alpha: 0.2),
+                      borderRadius: BorderRadius.circular(12),
                     ),
                     child: Center(
                       child: Text(
                         '${surah.number}',
-                        style: const TextStyle(
+                        style: GoogleFonts.plusJakartaSans().copyWith(
                           fontSize: 11,
                           fontWeight: FontWeight.w700,
-                          color: Color(0xFF0D9488),
+                          color: AppColors.primary,
                         ),
                       ),
                     ),
@@ -244,23 +246,23 @@ class BookmarksSidebar extends StatelessWidget {
                       children: [
                         Text(
                           surah.nameEn,
-                          style: TextStyle(
+                          style: GoogleFonts.plusJakartaSans().copyWith(
                             fontSize: 13,
                             fontWeight: FontWeight.w700,
                             color: isDark
-                                ? const Color(0xFFF8FAFC)
-                                : const Color(0xFF0F172A),
+                                ? AppColors.textMainDark
+                                : AppColors.textMainLight,
                           ),
                         ),
                         const SizedBox(height: 2),
                         Text(
                           surah.translationEn,
-                          style: TextStyle(
+                          style: GoogleFonts.plusJakartaSans().copyWith(
                             fontSize: 10,
                             fontWeight: FontWeight.w500,
                             color: isDark
-                                ? const Color(0xFF94A3B8)
-                                : const Color(0xFF64748B),
+                                ? AppColors.textMutedDark
+                                : AppColors.textMutedLight,
                           ),
                         ),
                       ],
@@ -270,8 +272,8 @@ class BookmarksSidebar extends StatelessWidget {
                     Icons.chevron_right,
                     size: 18,
                     color: isDark
-                        ? const Color(0xFF94A3B8)
-                        : const Color(0xFF64748B),
+                        ? AppColors.textMutedDark
+                        : AppColors.textMutedLight,
                   ),
                 ],
               ),
@@ -289,8 +291,8 @@ class BookmarksSidebar extends StatelessWidget {
         border: Border(
           top: BorderSide(
             color: isDark
-                ? const Color(0xFF1E293B).withValues(alpha: 0.8)
-                : const Color(0xFFE2E8F0).withValues(alpha: 0.8),
+                ? AppColors.textMainDark.withValues(alpha: 0.8)
+                : AppColors.hairlineLight.withValues(alpha: 0.8),
             width: 1,
           ),
         ),
@@ -298,13 +300,13 @@ class BookmarksSidebar extends StatelessWidget {
       child: Center(
         child: Text(
           'SAVED SURAH',
-          style: TextStyle(
+          style: GoogleFonts.plusJakartaSans().copyWith(
             fontSize: 9,
             fontWeight: FontWeight.w700,
             letterSpacing: 1.5,
             color: isDark
-                ? const Color(0xFF94A3B8).withValues(alpha: 0.6)
-                : const Color(0xFF64748B).withValues(alpha: 0.6),
+                ? AppColors.textMutedDark.withValues(alpha: 0.6)
+                : AppColors.textMutedLight.withValues(alpha: 0.6),
           ),
         ),
       ),

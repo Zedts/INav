@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../../core/providers/prayer_provider.dart';
-import '../common/glass_pill_badge.dart';
+import '../../core/theme/app_colors.dart';
+import '../common/pill_badge.dart';
 
 class GlassBanner extends StatefulWidget {
   const GlassBanner({super.key});
@@ -29,161 +31,127 @@ class _GlassBannerState extends State<GlassBanner> {
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: SizedBox(
         height: 240,
-        child: Stack(
-          clipBehavior: Clip.none,
-          children: [
-            Positioned.fill(
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(24),
-                  boxShadow: [
-                    // Blue glow (top-left)
-                    BoxShadow(
-                      color: const Color(0xFF2563EB).withValues(alpha: 0.3),
-                      blurRadius: 60,
-                      spreadRadius: -10,
-                      offset: const Offset(-20, -20),
+        child: Container(
+          decoration: BoxDecoration(
+            color: isDark ? AppColors.cardDark : AppColors.cardLight,
+            borderRadius: BorderRadius.circular(24),
+            border: Border.all(
+              color: isDark ? AppColors.hairlineDark : AppColors.hairlineLight,
+              width: 1,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: isDark ? 0.2 : 0.02),
+                blurRadius: 3,
+                offset: const Offset(0, 1),
+              ),
+            ],
+          ),
+          child: Stack(
+            clipBehavior: Clip.none,
+            children: [
+              Positioned.fill(
+                child: PageView(
+                  controller: _pageController,
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(24),
+                      child: _buildCard(
+                        context,
+                        isDark,
+                        child: _buildPrayerSlide(context, prayerProvider, isDark),
+                      ),
                     ),
-                    // Teal glow (bottom-right)
-                    BoxShadow(
-                      color: const Color(0xFF0D9488).withValues(alpha: 0.25),
-                      blurRadius: 70,
-                      spreadRadius: -10,
-                      offset: const Offset(20, 20),
-                    ),
-                    // Amber glow (center)
-                    BoxShadow(
-                      color: const Color(0xFFD97706).withValues(alpha: 0.2),
-                      blurRadius: 50,
-                      spreadRadius: -15,
-                      offset: const Offset(0, 10),
-                    ),
-                    // Ambient elevation shadow — rendered here (outside the
-                    // PageView's hard-edge clip) so the card's rounded bottom
-                    // corners stay soft instead of being sliced square.
-                    BoxShadow(
-                      color: isDark
-                          ? Colors.black.withValues(alpha: 0.45)
-                          : const Color(0xFF0D47A1).withValues(alpha: 0.12),
-                      blurRadius: 24,
-                      spreadRadius: -6,
-                      offset: const Offset(0, 12),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(24),
+                      child: _buildCard(
+                        context,
+                        isDark,
+                        child: _buildQuranSlide(context, isDark),
+                      ),
                     ),
                   ],
                 ),
               ),
-            ),
-
-            // Glass card PageView - fills entire space
-            Positioned.fill(
-              child: PageView(
-                controller: _pageController,
-                children: [
-                  _buildGlassCard(
-                    context,
-                    isDark,
-                    child: _buildPrayerSlide(context, prayerProvider, isDark),
-                  ),
-                  _buildGlassCard(
-                    context,
-                    isDark,
-                    child: _buildQuranSlide(context, isDark),
-                  ),
-                ],
-              ),
-            ),
-
-            // Dot indicators at bottom
-            Positioned(
-              left: 0,
-              right: 0,
-              bottom: 12,
-              child: Center(
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 6,
-                  ),
-                  decoration: BoxDecoration(
-                    color: isDark
-                        ? Colors.black.withValues(alpha: 0.2)
-                        : Colors.white.withValues(alpha: 0.3),
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(
-                      color: isDark
-                          ? Colors.white.withValues(alpha: 0.1)
-                          : Colors.white.withValues(alpha: 0.4),
-                      width: 1,
+              Positioned(
+                left: 0,
+                right: 0,
+                bottom: 12,
+                child: Center(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 6,
                     ),
-                  ),
-                  child: SmoothPageIndicator(
-                    controller: _pageController,
-                    count: 2,
-                    effect: ExpandingDotsEffect(
-                      activeDotColor: isDark
-                          ? const Color(0xFF60A5FA)
-                          : const Color(0xFF0D47A1),
-                      dotColor: isDark
-                          ? const Color(0xFF475569).withValues(alpha: 0.5)
-                          : const Color(0xFF94A3B8).withValues(alpha: 0.5),
-                      dotHeight: 6,
-                      dotWidth: 8,
-                      expansionFactor: 2.8,
-                      spacing: 6,
+                    decoration: BoxDecoration(
+                      color: isDark
+                          ? AppColors.surfaceDark.withValues(alpha: 0.2)
+                          : AppColors.surfaceLight.withValues(alpha: 0.2),
+                      borderRadius: BorderRadius.circular(999),
+                      border: Border.all(
+                        color: isDark
+                            ? AppColors.hairlineDark
+                            : AppColors.hairlineLight,
+                        width: 1,
+                      ),
+                    ),
+                    child: SmoothPageIndicator(
+                      controller: _pageController,
+                      count: 2,
+                      effect: ExpandingDotsEffect(
+                        activeDotColor: isDark
+                            ? AppColors.primaryDark
+                            : AppColors.primary,
+                        dotColor: isDark
+                            ? AppColors.hairlineDark
+                            : AppColors.hairlineLight,
+                        dotHeight: 6,
+                        dotWidth: 8,
+                        expansionFactor: 2.8,
+                        spacing: 6,
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildGlassCard(
+  Widget _buildCard(
     BuildContext context,
     bool isDark, {
     required Widget child,
   }) {
-    return Container(
-      clipBehavior: Clip.antiAlias,
-      decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF0F172A) : Colors.white,
-        borderRadius: BorderRadius.circular(24),
-        border: Border.all(
-          color: isDark ? const Color(0xFF1E293B) : const Color(0xFFE2E8F0),
-          width: 1,
-        ),
-      ),
-      child: Stack(
-        children: [
-          // Mosque watermark icon
-          Positioned(
-            right: -20,
-            bottom: -24,
-            child: Icon(
-              Icons.mosque,
-              size: 110,
-              color: isDark
-                  ? Colors.white.withValues(alpha: 0.05)
-                  : const Color(0xFF0D47A1).withValues(alpha: 0.1),
-            ),
+    return Stack(
+      children: [
+        Positioned(
+          right: -20,
+          bottom: -24,
+          child: Icon(
+            Icons.mosque,
+            size: 110,
+            color: isDark
+                ? Colors.white.withValues(alpha: 0.04)
+                : AppColors.primary.withValues(alpha: 0.06),
           ),
-
-          // Content with proper padding
-          Padding(padding: const EdgeInsets.all(24), child: child),
-        ],
-      ),
+        ),
+        Padding(padding: const EdgeInsets.all(24), child: child),
+      ],
     );
   }
 
-  /// Slide 1: Active Prayer & Live Countdown
   Widget _buildPrayerSlide(
     BuildContext context,
     PrayerProvider provider,
     bool isDark,
   ) {
+    final fraunces = GoogleFonts.fraunces();
+    final plusJakarta = GoogleFonts.plusJakartaSans();
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -191,27 +159,25 @@ class _GlassBannerState extends State<GlassBanner> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            // Left side: Badge and prayer info
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  GlassPillBadge(
+                  PillBadge(
                     label: 'CURRENT PRAYER',
                     icon: Icons.auto_awesome,
                     showPulsingDot: true,
-                    textColor: isDark
-                        ? const Color(0xFF93C5FD)
-                        : const Color(0xFF1E3A8A),
+                    textColor: isDark ? AppColors.primaryDark : AppColors.primary,
                   ),
                   const SizedBox(height: 8),
                   Text(
                     '${provider.currentPrayer} Prayer',
-                    style: TextStyle(
+                    style: fraunces.copyWith(
                       fontSize: 24,
-                      fontWeight: FontWeight.w900,
-                      color: isDark ? Colors.white : const Color(0xFF0F172A),
+                      fontWeight: FontWeight.w600,
+                      color: isDark ? AppColors.textMainDark : AppColors.textMainLight,
                       height: 1.2,
+                      letterSpacing: -0.02,
                     ),
                   ),
                   const SizedBox(height: 4),
@@ -221,20 +187,18 @@ class _GlassBannerState extends State<GlassBanner> {
                         Icon(
                           Icons.explore,
                           size: 12,
-                          color: isDark
-                              ? const Color(0xFF60A5FA)
-                              : const Color(0xFF0D47A1),
+                          color: isDark ? AppColors.primaryDark : AppColors.primary,
                         ),
                         const SizedBox(width: 4),
                         Flexible(
                           child: Text(
                             'Qibla: ${provider.qiblaData!.direction.toStringAsFixed(0)}° ${provider.qiblaData!.cardinalDirection} (Mecca) • ${provider.qiblaData!.formattedDistance}',
-                            style: TextStyle(
+                            style: plusJakarta.copyWith(
                               fontSize: 10,
                               fontWeight: FontWeight.w500,
                               color: isDark
-                                  ? const Color(0xFFCBD5E1)
-                                  : const Color(0xFF334155),
+                                  ? AppColors.textMutedDark
+                                  : AppColors.textMutedLight,
                             ),
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -244,68 +208,47 @@ class _GlassBannerState extends State<GlassBanner> {
                 ],
               ),
             ),
-
-            // Right side: Prayer icon
             Container(
               width: 56,
               height: 56,
               decoration: BoxDecoration(
-                color: isDark
-                    ? Colors.white.withValues(alpha: 0.08)
-                    : Colors.white.withValues(alpha: 0.3),
+                color: AppColors.primary.withValues(alpha: isDark ? 0.18 : 0.1),
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(
-                  color: isDark
-                      ? Colors.white.withValues(alpha: 0.15)
-                      : Colors.white.withValues(alpha: 0.5),
+                  color: isDark ? AppColors.hairlineDark : AppColors.hairlineLight,
                   width: 1,
                 ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.1),
-                    blurRadius: 8,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
               ),
               child: Icon(
                 provider.getPrayerIcon(provider.currentPrayer),
                 size: 32,
-                color: isDark
-                    ? const Color(0xFF60A5FA)
-                    : const Color(0xFF0D47A1),
+                color: isDark ? AppColors.primaryDark : AppColors.primary,
               ),
             ),
           ],
         ),
-
-        // Countdown section - simplified without extra Container border
         Padding(
           padding: const EdgeInsets.only(top: 12),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Top border line
               Container(
                 height: 1,
                 width: double.infinity,
-                color: isDark
-                    ? Colors.white.withValues(alpha: 0.1)
-                    : Colors.white.withValues(alpha: 0.2),
+                color: isDark ? AppColors.hairlineDark : AppColors.hairlineLight,
               ),
               const SizedBox(height: 12),
-              // Time remaining section
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     'TIME REMAINING',
-                    style: TextStyle(
+                    style: plusJakarta.copyWith(
                       fontSize: 10,
                       fontWeight: FontWeight.w700,
                       color: isDark
-                          ? const Color(0xFF94A3B8)
-                          : const Color(0xFF475569),
+                          ? AppColors.textMutedDark
+                          : AppColors.textMutedLight,
                       letterSpacing: 1.5,
                     ),
                   ),
@@ -316,12 +259,12 @@ class _GlassBannerState extends State<GlassBanner> {
                     children: [
                       Text(
                         provider.getFormattedCountdown(),
-                        style: TextStyle(
+                        style: fraunces.copyWith(
                           fontSize: 22,
-                          fontWeight: FontWeight.w900,
+                          fontWeight: FontWeight.w600,
                           color: isDark
-                              ? Colors.white
-                              : const Color(0xFF0F172A),
+                              ? AppColors.textMainDark
+                              : AppColors.textMainLight,
                           fontFeatures: const [FontFeature.tabularFigures()],
                           height: 1,
                         ),
@@ -329,12 +272,10 @@ class _GlassBannerState extends State<GlassBanner> {
                       const SizedBox(width: 6),
                       Text(
                         'left',
-                        style: TextStyle(
+                        style: plusJakarta.copyWith(
                           fontSize: 12,
                           fontWeight: FontWeight.w600,
-                          color: isDark
-                              ? const Color(0xFF60A5FA)
-                              : const Color(0xFF0D47A1),
+                          color: isDark ? AppColors.primaryDark : AppColors.primary,
                         ),
                       ),
                     ],
@@ -348,55 +289,47 @@ class _GlassBannerState extends State<GlassBanner> {
     );
   }
 
-  /// Slide 2: Daily Verse Insight
   Widget _buildQuranSlide(BuildContext context, bool isDark) {
+    final plusJakarta = GoogleFonts.plusJakartaSans();
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        GlassPillBadge(
+        PillBadge(
           label: 'QURAN REFLECTION',
           icon: Icons.menu_book,
-          textColor: isDark
-              ? const Color(0xFF5EEAD4) // teal-300
-              : const Color(0xFF134E4A), // teal-900
+          textColor: isDark ? AppColors.primaryDark : AppColors.primary,
         ),
         const SizedBox(height: 12),
-
-        // Arabic text
         Text(
           'إِنَّ مَعَ الْعُسْرِ يُسْرًا',
           textAlign: TextAlign.right,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.w700,
-            color: isDark ? Colors.white : const Color(0xFF0F172A),
             height: 1.6,
             fontFamily: 'serif',
           ),
         ),
-
         const SizedBox(height: 12),
-
-        // Translation
         Text(
           '"Indeed, with hardship comes ease."',
-          style: TextStyle(
+          style: plusJakarta.copyWith(
             fontSize: 12,
             fontWeight: FontWeight.w600,
-            color: isDark ? const Color(0xFFE2E8F0) : const Color(0xFF334155),
+            color: isDark
+                ? AppColors.textMainDark.withValues(alpha: 0.88)
+                : AppColors.textMainLight.withValues(alpha: 0.88),
             fontStyle: FontStyle.italic,
           ),
         ),
-
         const Spacer(),
-
-        // Surah reference
         Text(
           'Surah Ash-Sharh 94:6',
-          style: TextStyle(
+          style: plusJakarta.copyWith(
             fontSize: 10,
-            fontWeight: FontWeight.w700,
-            color: isDark ? const Color(0xFF64748B) : const Color(0xFF94A3B8),
+            fontWeight: FontWeight.w600,
+            color: isDark ? AppColors.textMutedDark : AppColors.textMutedLight,
           ),
         ),
       ],

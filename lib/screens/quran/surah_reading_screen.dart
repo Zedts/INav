@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import '../../core/providers/quran_provider.dart';
@@ -145,14 +146,14 @@ class _SurahReadingScreenState extends State<SurahReadingScreen> {
             children: [
               Text(
                 detail.nameLatin,
-                style: const TextStyle(
+                style: GoogleFonts.plusJakartaSans().copyWith(
                   fontSize: 16,
                   fontWeight: FontWeight.w700,
                 ),
               ),
               Text(
                 '${detail.translation} • ${detail.revelationEn} • ${detail.numberOfAyahs} Ayahs',
-                style: TextStyle(
+                style: GoogleFonts.plusJakartaSans().copyWith(
                   fontSize: 11,
                   color: isDark
                       ? AppColors.textMutedDark
@@ -269,16 +270,16 @@ class _SurahReadingScreenState extends State<SurahReadingScreen> {
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
                     color: isDark
-                        ? AppColors.borderDark.withValues(alpha: 0.5)
-                        : AppColors.borderLight.withValues(alpha: 0.5),
+                        ? AppColors.hairlineDark.withValues(alpha: 0.5)
+                        : AppColors.hairlineLight.withValues(alpha: 0.5),
                   ),
                 ),
                 child: Text(
                   ayah.ayahNumber.toString(),
-                  style: TextStyle(
+                  style: GoogleFonts.plusJakartaSans().copyWith(
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
-                    color: const Color(0xFF0D9488), // Teal color
+                    color: AppColors.teal,
                   ),
                 ),
               ),
@@ -300,7 +301,7 @@ class _SurahReadingScreenState extends State<SurahReadingScreen> {
           Text(
             ayah.arab,
             textAlign: TextAlign.right,
-            style: TextStyle(
+            style: GoogleFonts.fraunces().copyWith(
               fontSize: _arabicBaseFontSize,
               fontWeight: FontWeight.w600,
               height: 2.0,
@@ -312,7 +313,7 @@ class _SurahReadingScreenState extends State<SurahReadingScreen> {
           // Translation
           Text(
             ayah.translation,
-            style: TextStyle(
+            style: GoogleFonts.plusJakartaSans().copyWith(
               fontSize: _translationBaseFontSize,
               height: 1.6,
               color: isDark
@@ -326,8 +327,8 @@ class _SurahReadingScreenState extends State<SurahReadingScreen> {
           // Divider
           Divider(
             color: isDark
-                ? AppColors.borderDark.withValues(alpha: 0.3)
-                : AppColors.borderLight.withValues(alpha: 0.3),
+                ? AppColors.hairlineDark.withValues(alpha: 0.3)
+                : AppColors.hairlineLight.withValues(alpha: 0.3),
           ),
         ],
       ),
@@ -353,7 +354,7 @@ class _SurahReadingScreenState extends State<SurahReadingScreen> {
               width: 40,
               height: 4,
               decoration: BoxDecoration(
-                color: isDark ? AppColors.borderDark : AppColors.borderLight,
+                color: isDark ? AppColors.hairlineDark : AppColors.hairlineLight,
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
@@ -363,7 +364,7 @@ class _SurahReadingScreenState extends State<SurahReadingScreen> {
               padding: const EdgeInsets.all(16),
               child: Text(
                 'Tafsir - Ayah ${ayah.ayahNumber}',
-                style: const TextStyle(
+                style: GoogleFonts.fraunces().copyWith(
                   fontSize: 18,
                   fontWeight: FontWeight.w700,
                 ),
@@ -412,12 +413,15 @@ class _SurahReadingScreenState extends State<SurahReadingScreen> {
       children: [
         Text(
           title,
-          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
+          style: GoogleFonts.plusJakartaSans().copyWith(
+            fontSize: 14,
+            fontWeight: FontWeight.w700,
+          ),
         ),
         const SizedBox(height: 8),
         Text(
           content,
-          style: TextStyle(
+          style: GoogleFonts.plusJakartaSans().copyWith(
             fontSize: 13,
             height: 1.6,
             color: isDark ? AppColors.textMutedDark : AppColors.textMutedLight,
@@ -456,8 +460,8 @@ class _SurahReadingScreenState extends State<SurahReadingScreen> {
             border: Border(
               top: BorderSide(
                 color: isDark
-                    ? AppColors.borderDark.withValues(alpha: 0.5)
-                    : AppColors.borderLight.withValues(alpha: 0.5),
+                    ? AppColors.hairlineDark.withValues(alpha: 0.5)
+                    : AppColors.hairlineLight.withValues(alpha: 0.5),
               ),
             ),
           ),
@@ -480,7 +484,7 @@ class _SurahReadingScreenState extends State<SurahReadingScreen> {
                           url: detail.audioUrl,
                         );
                       },
-                color: const Color(0xFF0D9488), // Teal color
+                color: AppColors.teal,
               ),
               const SizedBox(width: 12),
 
@@ -492,7 +496,7 @@ class _SurahReadingScreenState extends State<SurahReadingScreen> {
                   children: [
                     Text(
                       detail.nameLatin,
-                      style: const TextStyle(
+                      style: GoogleFonts.plusJakartaSans().copyWith(
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
                       ),
@@ -501,7 +505,7 @@ class _SurahReadingScreenState extends State<SurahReadingScreen> {
                       isPlaying
                           ? 'Now Playing'
                           : (isLoading ? 'Loading...' : 'Tap to play'),
-                      style: TextStyle(
+                      style: GoogleFonts.plusJakartaSans().copyWith(
                         fontSize: 11,
                         color: isDark
                             ? AppColors.textMutedDark
@@ -518,14 +522,13 @@ class _SurahReadingScreenState extends State<SurahReadingScreen> {
                   Icons.skip_next,
                   size: 32,
                   color: (_isNearEnd && canGoNext)
-                      ? const Color(0xFF0D9488)
+                      ? AppColors.teal
                       : (isDark
                             ? AppColors.textMutedDark.withValues(alpha: 0.3)
                             : AppColors.textMutedLight.withValues(alpha: 0.3)),
                 ),
                 onPressed: (_isNearEnd && canGoNext)
                     ? () {
-                        // Navigate to next surah
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(

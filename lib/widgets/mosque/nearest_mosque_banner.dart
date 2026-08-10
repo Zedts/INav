@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../core/errors/error_messages.dart';
 import '../../core/providers/mosque_provider.dart';
 import '../../core/models/mosque_model.dart';
+import '../../core/theme/app_colors.dart';
 import '../common/error_state_view.dart';
-import '../common/glass_pill_badge.dart';
+import '../common/pill_badge.dart';
 import 'mosque_detail_sheet.dart';
 import 'mosque_quick_actions.dart';
 
@@ -52,209 +54,132 @@ class NearestMosqueBanner extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: SizedBox(
         height: 170,
-        child: Stack(
-          clipBehavior: Clip.none,
-          children: [
-            Positioned.fill(
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(24),
-                  boxShadow: [
-                    BoxShadow(
-                      color: const Color(0xFF10B981).withValues(alpha: 0.35),
-                      blurRadius: 60,
-                      spreadRadius: -10,
-                      offset: const Offset(-20, -20),
-                    ),
-                    BoxShadow(
-                      color: const Color(0xFF06B6D4).withValues(alpha: 0.18),
-                      blurRadius: 70,
-                      spreadRadius: -10,
-                      offset: const Offset(20, 20),
-                    ),
-                    BoxShadow(
-                      color: const Color(0xFFD97706).withValues(alpha: 0.18),
-                      blurRadius: 50,
-                      spreadRadius: -15,
-                      offset: const Offset(0, 10),
-                    ),
-                  ],
-                ),
-              ),
+        child: Container(
+          decoration: BoxDecoration(
+            color: isDark ? AppColors.cardDark : AppColors.cardLight,
+            borderRadius: BorderRadius.circular(24),
+            border: Border.all(
+              color: isDark ? AppColors.hairlineDark : AppColors.hairlineLight,
+              width: 1,
             ),
-            Container(
-              decoration: BoxDecoration(
-                color: isDark ? const Color(0xFF0F172A) : Colors.white,
-                borderRadius: BorderRadius.circular(24),
-                boxShadow: [
-                  BoxShadow(
-                    color: isDark
-                        ? Colors.black.withValues(alpha: 0.65)
-                        : const Color(0xFF065F46).withValues(alpha: 0.18),
-                    blurRadius: 50,
-                    offset: const Offset(0, 25),
-                  ),
-                  BoxShadow(
-                    color: isDark
-                        ? Colors.white.withValues(alpha: 0.35)
-                        : Colors.white.withValues(alpha: 0.8),
-                    blurRadius: isDark ? 1 : 2,
-                    offset: const Offset(0, 1),
-                    spreadRadius: -1,
-                  ),
-                  if (isDark)
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.5),
-                      blurRadius: 2,
-                      offset: const Offset(0, -1),
-                      spreadRadius: -1,
-                    ),
-                ],
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: isDark ? 0.2 : 0.02),
+                blurRadius: 3,
+                offset: const Offset(0, 1),
               ),
-              child: Container(
-                clipBehavior: Clip.antiAlias,
-                decoration: BoxDecoration(
-                  border: Border.all(
+            ],
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(24),
+            child: Stack(
+              children: [
+                Positioned(
+                  right: -16,
+                  bottom: -24,
+                  child: Icon(
+                    Icons.mosque,
+                    size: 110,
                     color: isDark
-                        ? const Color(0xFF1E293B)
-                        : const Color(0xFFE2E8F0),
-                    width: 1,
+                        ? Colors.white.withValues(alpha: 0.04)
+                        : AppColors.primary.withValues(alpha: 0.06),
                   ),
-                  borderRadius: BorderRadius.circular(24),
                 ),
-                child: Stack(
-                  children: [
-                    Positioned.fill(
+                if (isOverridden && onResetToNearest != null)
+                  Positioned(
+                    top: 12,
+                    right: 12,
+                    child: GestureDetector(
+                      onTap: onResetToNearest,
                       child: Container(
+                        width: 32,
+                        height: 32,
                         decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: const Alignment(-1.0, -1.0),
-                            end: const Alignment(0.6, 0.6),
-                            colors: isDark
-                                ? [
-                                    Colors.white.withValues(alpha: 0.04),
-                                    Colors.white.withValues(alpha: 0.01),
-                                    Colors.transparent,
-                                  ]
-                                : [
-                                    Colors.white.withValues(alpha: 0.45),
-                                    Colors.white.withValues(alpha: 0.1),
-                                    Colors.transparent,
-                                  ],
-                            stops: const [0.0, 0.35, 0.6],
+                          color: isDark
+                              ? AppColors.surfaceDark.withValues(alpha: 0.6)
+                              : Colors.white.withValues(alpha: 0.8),
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                            color: isDark
+                                ? AppColors.hairlineDark
+                                : AppColors.hairlineLight,
                           ),
-                          borderRadius: BorderRadius.circular(24),
+                        ),
+                        child: Icon(
+                          Icons.replay,
+                          size: 17,
+                          color: isDark
+                              ? AppColors.primaryDark
+                              : AppColors.primary,
                         ),
                       ),
                     ),
-                    Positioned(
-                      right: -16,
-                      bottom: -24,
-                      child: Icon(
-                        Icons.mosque,
-                        size: 110,
-                        color: isDark
-                            ? Colors.white.withValues(alpha: 0.06)
-                            : const Color(0xFF065F46).withValues(alpha: 0.1),
+                  ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 20, 20, 16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      PillBadge(
+                        label: isOverridden ? 'SELECTED MOSQUE' : 'NEAREST TO YOU',
+                        icon: isOverridden
+                            ? Icons.push_pin_outlined
+                            : Icons.location_on,
+                        showPulsingDot: !isOverridden,
+                        textColor: isOverridden
+                            ? AppColors.roseAccent
+                            : (isDark
+                                ? AppColors.primaryDark
+                                : AppColors.primary),
                       ),
-                    ),
-                    if (isOverridden && onResetToNearest != null)
-                      Positioned(
-                        top: 12,
-                        right: 12,
-                        child: GestureDetector(
-                          onTap: onResetToNearest,
-                          child: Container(
-                            width: 32,
-                            height: 32,
-                            decoration: BoxDecoration(
-                              color: isDark
-                                  ? Colors.black.withValues(alpha: 0.45)
-                                  : Colors.white.withValues(alpha: 0.75),
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(
-                                color: isDark
-                                    ? Colors.white.withValues(alpha: 0.15)
-                                    : const Color(0xFF0F172A)
-                                        .withValues(alpha: 0.08),
+                      const SizedBox(height: 8),
+                      Expanded(
+                        child: m == null
+                            ? _buildEmptyContent(context, isDark)
+                            : _buildContent(
+                                context,
+                                isDark,
+                                m,
+                                provider.isFavorite(m.id),
                               ),
-                            ),
-                            child: Icon(
-                              Icons.replay,
-                              size: 17,
-                              color: isDark
-                                  ? const Color(0xFF6EE7B7)
-                                  : const Color(0xFF059669),
-                            ),
-                          ),
-                        ),
                       ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 20, 20, 16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          GlassPillBadge(
-                            label: isOverridden
-                                ? 'SELECTED MOSQUE'
-                                : 'NEAREST TO YOU',
-                            icon: isOverridden
-                                ? Icons.push_pin_outlined
-                                : Icons.location_on,
-                            showPulsingDot: !isOverridden,
-                            textColor: isOverridden
-                                ? (isDark
-                                    ? const Color(0xFFFCD34D)
-                                    : const Color(0xFFD97706))
-                                : (isDark
-                                    ? const Color(0xFF6EE7B7)
-                                    : const Color(0xFF065F46)),
-                          ),
-                          const SizedBox(height: 8),
-                          Expanded(
-                            child: m == null
-                                ? _buildEmptyContent(context, isDark)
-                                : _buildContent(
-                                    context,
-                                    isDark,
-                                    m,
-                                    provider.isFavorite(m.id),
-                                  ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
   }
 
   Widget _buildEmptyContent(BuildContext context, bool isDark) {
+    final fraunces = GoogleFonts.fraunces();
+    final plusJakarta = GoogleFonts.plusJakartaSans();
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           'Searching nearby…',
-          style: TextStyle(
+          style: fraunces.copyWith(
             fontSize: 22,
-            fontWeight: FontWeight.w900,
-            color: isDark ? Colors.white : const Color(0xFF0F172A),
+            fontWeight: FontWeight.w600,
+            color: isDark ? AppColors.textMainDark : AppColors.textMainLight,
             height: 1.2,
-            letterSpacing: -0.5,
+            letterSpacing: -0.02,
           ),
         ),
         const SizedBox(height: 6),
         Text(
           'Fetching nearest mosques',
-          style: TextStyle(
+          style: plusJakarta.copyWith(
             fontSize: 12,
             fontWeight: FontWeight.w600,
-            color: isDark ? const Color(0xFFCBD5E1) : const Color(0xFF334155),
+            color: isDark
+                ? AppColors.textMainDark.withValues(alpha: 0.88)
+                : AppColors.textMainLight.withValues(alpha: 0.88),
           ),
         ),
         const Spacer(),
@@ -276,17 +201,20 @@ class NearestMosqueBanner extends StatelessWidget {
     MosqueModel m,
     bool isFavorite,
   ) {
+    final fraunces = GoogleFonts.fraunces();
+    final plusJakarta = GoogleFonts.plusJakartaSans();
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           m.name,
-          style: TextStyle(
+          style: fraunces.copyWith(
             fontSize: 22,
-            fontWeight: FontWeight.w900,
-            color: isDark ? Colors.white : const Color(0xFF0F172A),
+            fontWeight: FontWeight.w600,
+            color: isDark ? AppColors.textMainDark : AppColors.textMainLight,
             height: 1.1,
-            letterSpacing: -0.3,
+            letterSpacing: -0.02,
           ),
           overflow: TextOverflow.ellipsis,
           maxLines: 1,
@@ -297,20 +225,18 @@ class NearestMosqueBanner extends StatelessWidget {
             Icon(
               Icons.directions_walk_rounded,
               size: 14,
-              color: isDark
-                  ? const Color(0xFF6EE7B7)
-                  : const Color(0xFF10B981),
+              color: isDark ? AppColors.primaryDark : AppColors.primary,
             ),
             const SizedBox(width: 4),
             Flexible(
               child: Text(
                 '${m.estimatedWalkingTime} walk (${m.formattedDistance})',
-                style: TextStyle(
+                style: plusJakarta.copyWith(
                   fontSize: 12,
                   fontWeight: FontWeight.w600,
                   color: isDark
-                      ? const Color(0xFFCBD5E1)
-                      : const Color(0xFF334155),
+                      ? AppColors.textMainDark.withValues(alpha: 0.88)
+                      : AppColors.textMainLight.withValues(alpha: 0.88),
                 ),
                 overflow: TextOverflow.ellipsis,
               ),
@@ -323,9 +249,7 @@ class NearestMosqueBanner extends StatelessWidget {
           decoration: BoxDecoration(
             border: Border(
               top: BorderSide(
-                color: isDark
-                    ? Colors.white.withValues(alpha: 0.1)
-                    : Colors.white.withValues(alpha: 0.2),
+                color: isDark ? AppColors.hairlineDark : AppColors.hairlineLight,
               ),
             ),
           ),

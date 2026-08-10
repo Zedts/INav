@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/providers/qibla_provider.dart';
@@ -162,12 +163,12 @@ class _QiblaScreenState extends State<QiblaScreen> {
                   'Kaaba (21.4225°N, 39.8262°E). Accuracy depends on your '
                   "device's magnetometer calibration and location precision.",
                   textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: GoogleFonts.plusJakartaSans().copyWith(
                     fontSize: 11,
                     height: 1.5,
                     color: isDark
-                        ? const Color(0xFF94A3B8)
-                        : const Color(0xFF64748B),
+                        ? AppColors.textMutedDark
+                        : AppColors.textMutedLight,
                   ),
                 ),
               ),

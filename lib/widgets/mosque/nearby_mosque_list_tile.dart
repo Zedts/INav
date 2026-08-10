@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../core/models/mosque_model.dart';
+import '../../core/theme/app_colors.dart';
 
 class NearbyMosqueListTile extends StatelessWidget {
   final MosqueModel mosque;
@@ -19,7 +21,7 @@ class NearbyMosqueListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final accent =
-        isSelected ? const Color(0xFFF59E0B) : const Color(0xFF10B981);
+        isSelected ? AppColors.roseAccent : AppColors.success;
     return Material(
       color: Colors.transparent,
       borderRadius: BorderRadius.circular(24),
@@ -30,14 +32,14 @@ class NearbyMosqueListTile extends StatelessWidget {
           decoration: BoxDecoration(
             color:
                 isDark
-                    ? const Color(0xFF1E293B)
-                    : Colors.white,
+                    ? AppColors.cardDark
+                    : AppColors.cardLight,
             borderRadius: BorderRadius.circular(24),
             border: Border.all(
               color:
                   isDark
                       ? Colors.white.withValues(alpha: 0.10)
-                      : const Color(0xFF0F172A).withValues(alpha: 0.06),
+                      : AppColors.cardDark.withValues(alpha: 0.06),
               width: 1,
             ),
           ),
@@ -55,13 +57,13 @@ class NearbyMosqueListTile extends StatelessWidget {
                     children: [
                       Text(
                         mosque.name,
-                        style: TextStyle(
+                        style: GoogleFonts.plusJakartaSans().copyWith(
                           fontSize: 14,
                           fontWeight: FontWeight.w800,
                           color:
                               isDark
                                   ? Colors.white
-                                  : const Color(0xFF0F172A),
+                                  : AppColors.textMainLight,
                           height: 1.2,
                           letterSpacing: -0.2,
                         ),
@@ -76,20 +78,20 @@ class NearbyMosqueListTile extends StatelessWidget {
                             size: 11,
                             color:
                                 isDark
-                                    ? const Color(0xFF94A3B8)
-                                    : const Color(0xFF64748B),
+                                    ? AppColors.textMutedDark
+                                    : AppColors.textMutedLight,
                           ),
                           const SizedBox(width: 3),
                           Expanded(
                             child: Text(
                               mosque.address,
-                              style: TextStyle(
+                              style: GoogleFonts.plusJakartaSans().copyWith(
                                 fontSize: 10.5,
                                 fontWeight: FontWeight.w600,
                                 color:
                                     isDark
-                                        ? const Color(0xFF94A3B8)
-                                        : const Color(0xFF64748B),
+                                        ? AppColors.textMutedDark
+                                        : AppColors.textMutedLight,
                                 height: 1.25,
                               ),
                               overflow: TextOverflow.ellipsis,
@@ -117,7 +119,7 @@ class NearbyMosqueListTile extends StatelessWidget {
       height: 34,
       decoration: BoxDecoration(
         color: accent.withValues(alpha: 0.14),
-        borderRadius: BorderRadius.circular(14),
+        borderRadius: BorderRadius.circular(16),
       ),
       child: Icon(
         Icons.mosque,
@@ -137,14 +139,14 @@ class NearbyMosqueListTile extends StatelessWidget {
           decoration: BoxDecoration(
             color:
                 isDark
-                    ? const Color(0xFF0F172A).withValues(alpha: 0.55)
-                    : const Color(0xFFF1F5F9),
+                    ? AppColors.cardDark.withValues(alpha: 0.2)
+                    : AppColors.cardLight,
             borderRadius: BorderRadius.circular(999),
             border: Border.all(
               color:
                   isDark
                       ? Colors.white.withValues(alpha: 0.08)
-                      : const Color(0xFF0F172A).withValues(alpha: 0.05),
+                      : AppColors.cardDark.withValues(alpha: 0.05),
             ),
           ),
           child: Row(
@@ -158,7 +160,7 @@ class NearbyMosqueListTile extends StatelessWidget {
               const SizedBox(width: 4),
               Text(
                 mosque.formattedDistance,
-                style: TextStyle(
+                style: GoogleFonts.plusJakartaSans().copyWith(
                   fontSize: 10,
                   fontWeight: FontWeight.w800,
                   color: accent,
@@ -176,12 +178,12 @@ class NearbyMosqueListTile extends StatelessWidget {
               const Icon(
                 Icons.star_rounded,
                 size: 12,
-                color: Color(0xFFF59E0B),
+                color: AppColors.roseAccent,
               ),
               const SizedBox(width: 2),
               Text(
                 mosque.rating!.toStringAsFixed(1),
-                style: TextStyle(
+                style: GoogleFonts.plusJakartaSans().copyWith(
                   fontSize: 10,
                   fontWeight: FontWeight.w700,
                   color:

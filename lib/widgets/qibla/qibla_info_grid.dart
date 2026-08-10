@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../core/models/qibla_model.dart';
+import '../../core/theme/app_colors.dart';
 
-/// Detail info grid: Qibla bearing, distance to Kaaba and current location.
 class QiblaInfoGrid extends StatelessWidget {
   final QiblaModel? qiblaData;
   final String cityName;
@@ -23,8 +24,9 @@ class QiblaInfoGrid extends StatelessWidget {
     final bearingText = qiblaData != null
         ? '${qiblaData!.direction.round()}° ${qiblaData!.cardinalDirection}'
         : '--°';
-    final distanceText =
-        qiblaData != null ? qiblaData!.formattedDistance : '-- km';
+    final distanceText = qiblaData != null
+        ? qiblaData!.formattedDistance
+        : '-- km';
     final coordsText = qiblaData != null
         ? '${qiblaData!.latitude.toStringAsFixed(4)}°, ${qiblaData!.longitude.toStringAsFixed(4)}°'
         : '-- , --';
@@ -43,8 +45,9 @@ class QiblaInfoGrid extends StatelessWidget {
                   iconColor: isDark
                       ? const Color(0xFF818CF8)
                       : const Color(0xFF4F46E5),
-                  iconBackground: const Color(0xFF4F46E5)
-                      .withValues(alpha: isDark ? 0.2 : 0.1),
+                  iconBackground: const Color(
+                    0xFF4F46E5,
+                  ).withValues(alpha: isDark ? 0.2 : 0.1),
                   label: 'QIBLA BEARING',
                   value: bearingText,
                 ),
@@ -54,9 +57,10 @@ class QiblaInfoGrid extends StatelessWidget {
                 child: _buildCard(
                   isDark,
                   icon: Icons.map,
-                  iconColor: const Color(0xFFD97706),
-                  iconBackground: const Color(0xFFD97706)
-                      .withValues(alpha: isDark ? 0.2 : 0.1),
+                  iconColor: AppColors.roseAccent,
+                  iconBackground: AppColors.roseAccent.withValues(
+                    alpha: isDark ? 0.2 : 0.1,
+                  ),
                   label: 'DISTANCE TO KAABA',
                   value: distanceText,
                 ),
@@ -76,44 +80,44 @@ class QiblaInfoGrid extends StatelessWidget {
                     children: [
                       _buildIconTile(
                         icon: Icons.location_on,
-                        iconColor: const Color(0xFF0D9488),
-                        background: const Color(0xFF0D9488)
-                            .withValues(alpha: isDark ? 0.2 : 0.1),
+                        iconColor: AppColors.teal,
+                        background: AppColors.teal.withValues(
+                          alpha: isDark ? 0.2 : 0.1,
+                        ),
                       ),
                       const SizedBox(height: 8),
                       Text(
                         'YOUR LOCATION',
-                        style: TextStyle(
+                        style: GoogleFonts.plusJakartaSans(
                           fontSize: 10,
                           fontWeight: FontWeight.w700,
                           letterSpacing: 0.8,
                           color: isDark
-                              ? const Color(0xFF94A3B8)
-                              : const Color(0xFF64748B),
+                              ? AppColors.textMutedDark
+                              : AppColors.textMutedLight,
                         ),
                       ),
                       const SizedBox(height: 2),
                       Text(
                         cityName,
-                        style: TextStyle(
+                        style: GoogleFonts.plusJakartaSans(
                           fontSize: 14,
                           fontWeight: FontWeight.w700,
                           color: isDark
-                              ? const Color(0xFFF8FAFC)
-                              : const Color(0xFF0F172A),
+                              ? AppColors.textMainDark
+                              : AppColors.textMainLight,
                         ),
                       ),
                       const SizedBox(height: 2),
                       Text(
                         coordsText,
-                        style: TextStyle(
+                        style: GoogleFonts.plusJakartaSans(
                           fontSize: 11,
-                          fontFamily: 'monospace',
                           fontFeatures: const [FontFeature.tabularFigures()],
                           color: isDark
-                              ? const Color(0xFF94A3B8)
-                              : const Color(0xFF64748B),
-                        ),
+                              ? AppColors.textMutedDark
+                              : AppColors.textMutedLight,
+                        ).copyWith(fontFamily: 'monospace'),
                       ),
                     ],
                   ),
@@ -127,8 +131,8 @@ class QiblaInfoGrid extends StatelessWidget {
                     height: 40,
                     decoration: BoxDecoration(
                       color: isDark
-                          ? const Color(0xFF1E293B)
-                          : const Color(0xFFF1F5F9),
+                          ? AppColors.hairlineDark
+                          : AppColors.surfaceLight,
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: isRefreshing
@@ -140,8 +144,8 @@ class QiblaInfoGrid extends StatelessWidget {
                             Icons.refresh,
                             size: 20,
                             color: isDark
-                                ? const Color(0xFF94A3B8)
-                                : const Color(0xFF64748B),
+                                ? AppColors.textMutedDark
+                                : AppColors.textMutedLight,
                           ),
                   ),
                 ),
@@ -155,18 +159,18 @@ class QiblaInfoGrid extends StatelessWidget {
 
   BoxDecoration _cardDecoration(bool isDark) {
     return BoxDecoration(
-      color: isDark ? const Color(0xFF0F172A) : Colors.white,
+      color: isDark ? AppColors.cardDark : Colors.white,
       borderRadius: BorderRadius.circular(24),
       border: Border.all(
         color: isDark
-            ? const Color(0xFF1E293B).withValues(alpha: 0.8)
-            : const Color(0xFFE2E8F0).withValues(alpha: 0.8),
+            ? AppColors.hairlineDark.withValues(alpha: 0.8)
+            : AppColors.hairlineLight.withValues(alpha: 0.8),
         width: 1,
       ),
       boxShadow: [
         BoxShadow(
           color: Colors.black.withValues(alpha: 0.05),
-          blurRadius: 4,
+          blurRadius: 3,
           offset: const Offset(0, 1),
         ),
       ],
@@ -183,7 +187,7 @@ class QiblaInfoGrid extends StatelessWidget {
       height: 36,
       decoration: BoxDecoration(
         color: background,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(16),
       ),
       child: Icon(icon, size: 18, color: iconColor),
     );
@@ -211,25 +215,23 @@ class QiblaInfoGrid extends StatelessWidget {
           const SizedBox(height: 8),
           Text(
             label,
-            style: TextStyle(
+            style: GoogleFonts.plusJakartaSans(
               fontSize: 10,
               fontWeight: FontWeight.w700,
               letterSpacing: 0.8,
               color: isDark
-                  ? const Color(0xFF94A3B8)
-                  : const Color(0xFF64748B),
+                  ? AppColors.textMutedDark
+                  : AppColors.textMutedLight,
             ),
           ),
           const SizedBox(height: 2),
           Text(
             value,
-            style: TextStyle(
+            style: GoogleFonts.plusJakartaSans(
               fontSize: 16,
               fontWeight: FontWeight.w900,
               letterSpacing: -0.3,
-              color: isDark
-                  ? const Color(0xFFF8FAFC)
-                  : const Color(0xFF0F172A),
+              color: isDark ? AppColors.textMainDark : AppColors.textMainLight,
             ),
           ),
         ],

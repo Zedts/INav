@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../core/providers/prayer_provider.dart';
 import '../../core/theme/app_colors.dart';
 import '../../screens/settings/prayer_notification_settings_screen.dart';
 
-/// Horizontal prayer stepper timeline matching the reference design
-/// Shows 5 prayers in a row with progress line and proper states.
-/// The whole card is one tap target that pushes the prayer notification
-/// settings screen (individual prayer stops are not separately clickable).
 class HorizontalPrayerStepper extends StatelessWidget {
   const HorizontalPrayerStepper({super.key});
 
@@ -48,22 +45,22 @@ class HorizontalPrayerStepper extends StatelessWidget {
       },
     ];
 
+    final plusJakarta = GoogleFonts.plusJakartaSans();
+
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
         color: isDark ? AppColors.cardDark : AppColors.cardLight,
         borderRadius: BorderRadius.circular(24),
         border: Border.all(
-          color: isDark
-              ? AppColors.borderDark.withValues(alpha: 0.8)
-              : AppColors.borderLight.withValues(alpha: 0.8),
+          color: isDark ? AppColors.hairlineDark : AppColors.hairlineLight,
           width: 1,
         ),
         boxShadow: [
           BoxShadow(
-            color: (isDark ? Colors.black : Colors.grey).withValues(alpha: 0.1),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
+            color: Colors.black.withValues(alpha: isDark ? 0.2 : 0.02),
+            blurRadius: 3,
+            offset: const Offset(0, 1),
           ),
         ],
       ),
@@ -83,174 +80,150 @@ class HorizontalPrayerStepper extends StatelessWidget {
             },
             child: Padding(
               padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Header
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 4),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.schedule,
-                            size: 16,
-                            color: isDark
-                                ? AppColors.primaryDark
-                                : AppColors.primaryLight,
-                          ),
-                          const SizedBox(width: 6),
-                          Text(
-                            'TODAY\'S SCHEDULE',
-                            style: TextStyle(
-                              fontSize: 11,
-                              fontWeight: FontWeight.w700,
-                              color: isDark
-                                  ? AppColors.textMutedDark
-                                  : AppColors.textMutedLight,
-                              letterSpacing: 1.2,
-                            ),
-                          ),
-                        ],
-                      ),
-                      if (prayerProvider.calendar != null)
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 4),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
                         Row(
-                          mainAxisSize: MainAxisSize.min,
                           children: [
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 10,
-                                vertical: 4,
-                              ),
-                              decoration: BoxDecoration(
-                                color:
-                                    (isDark
-                                            ? AppColors.primaryDark
-                                            : AppColors.primaryLight)
-                                        .withValues(alpha: 0.1),
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: Text(
-                                '${prayerProvider.calendar!.hijri.dayOfMonth} ${prayerProvider.calendar!.hijri.monthName} ${prayerProvider.calendar!.hijri.year} AH',
-                                style: TextStyle(
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w700,
-                                  color: isDark
-                                      ? AppColors.primaryDark
-                                      : AppColors.primaryLight,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: 4),
                             Icon(
-                              Icons.chevron_right,
+                              Icons.schedule,
                               size: 16,
                               color: isDark
-                                  ? AppColors.textMutedDark
-                                  : AppColors.textMutedLight,
+                                  ? AppColors.primaryDark
+                                  : AppColors.primary,
+                            ),
+                            const SizedBox(width: 6),
+                            Text(
+                              'TODAY\'S SCHEDULE',
+                              style: plusJakarta.copyWith(
+                                fontSize: 11,
+                                fontWeight: FontWeight.w700,
+                                color: isDark
+                                    ? AppColors.textMutedDark
+                                    : AppColors.textMutedLight,
+                                letterSpacing: 1.2,
+                              ),
                             ),
                           ],
                         ),
-                    ],
-                  ),
-                ),
-
-                const SizedBox(height: 16),
-
-                // Stepper Container
-                SizedBox(
-                  height: 90,
-                  child: Stack(
-                    clipBehavior: Clip.none,
-                    children: [
-                      // Progress line background - aligned at 31px to match HTML ref
-                      Positioned(
-                        top: 31,
-                        left: 0,
-                        right: 0,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: Container(
-                            height: 4,
-                            decoration: BoxDecoration(
-                              color: isDark
-                                  ? const Color(0xFF334155) // slate-700
-                                  : const Color(0xFFE2E8F0), // slate-200
-                              borderRadius: BorderRadius.circular(2),
-                            ),
-                            child: FractionallySizedBox(
-                              alignment: Alignment.centerLeft,
-                              widthFactor: _calculateProgress(
-                                prayers,
-                                prayerProvider,
-                              ),
-                              child: Container(
+                        if (prayerProvider.calendar != null)
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                  vertical: 4,
+                                ),
                                 decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    colors: [
-                                      isDark
-                                          ? AppColors.primaryDark
-                                          : AppColors.primaryLight,
-                                      isDark
-                                          ? const Color(0xFF3B82F6)
-                                          : const Color(0xFF60A5FA),
-                                    ],
+                                  color: AppColors.primary.withValues(
+                                    alpha: isDark ? 0.18 : 0.1,
                                   ),
-                                  borderRadius: BorderRadius.circular(2),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color:
-                                          (isDark
-                                                  ? AppColors.primaryDark
-                                                  : AppColors.primaryLight)
-                                              .withValues(alpha: 0.5),
-                                      blurRadius: 8,
-                                    ),
-                                  ],
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Text(
+                                  '${prayerProvider.calendar!.hijri.dayOfMonth} ${prayerProvider.calendar!.hijri.monthName} ${prayerProvider.calendar!.hijri.year} AH',
+                                  style: plusJakarta.copyWith(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w700,
+                                    color: isDark
+                                        ? AppColors.primaryDark
+                                        : AppColors.primary,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 4),
+                              Icon(
+                                Icons.chevron_right,
+                                size: 16,
+                                color: isDark
+                                    ? AppColors.textMutedDark
+                                    : AppColors.textMutedLight,
+                              ),
+                            ],
+                          ),
+                      ],
+                    ),
+                  ),
+
+                  const SizedBox(height: 16),
+
+                  SizedBox(
+                    height: 90,
+                    child: Stack(
+                      clipBehavior: Clip.none,
+                      children: [
+                        Positioned(
+                          top: 31,
+                          left: 0,
+                          right: 0,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: Container(
+                              height: 4,
+                              decoration: BoxDecoration(
+                                color: isDark
+                                    ? AppColors.hairlineDark
+                                    : AppColors.hairlineLight,
+                                borderRadius: BorderRadius.circular(2),
+                              ),
+                              child: FractionallySizedBox(
+                                alignment: Alignment.centerLeft,
+                                widthFactor: _calculateProgress(
+                                  prayers,
+                                  prayerProvider,
+                                ),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: isDark
+                                        ? AppColors.primaryDark
+                                        : AppColors.primary,
+                                    borderRadius: BorderRadius.circular(2),
+                                  ),
                                 ),
                               ),
                             ),
                           ),
                         ),
-                      ),
+                        Positioned(
+                          top: 0,
+                          left: 0,
+                          right: 0,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: prayers.map((prayer) {
+                              final name = prayer['name'] as String;
+                              final time = prayer['time'] as String;
+                              final icon = prayer['icon'] as IconData;
+                              final isActive =
+                                  name == prayerProvider.currentPrayer;
+                              final isPassed = prayerProvider.isPrayerPassed(
+                                time,
+                              );
 
-                      // Prayer steps
-                      Positioned(
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: prayers.map((prayer) {
-                            final name = prayer['name'] as String;
-                            final time = prayer['time'] as String;
-                            final icon = prayer['icon'] as IconData;
-                            final isActive =
-                                name == prayerProvider.currentPrayer;
-                            final isPassed = prayerProvider.isPrayerPassed(
-                              time,
-                            );
-
-                            return _buildPrayerStep(
-                              context,
-                              name: name,
-                              time: time,
-                              icon: icon,
-                              isActive: isActive,
-                              isPassed: isPassed,
-                              isDark: isDark,
-                            );
-                          }).toList(),
+                              return _buildPrayerStep(
+                                context,
+                                name: name,
+                                time: time,
+                                icon: icon,
+                                isActive: isActive,
+                                isPassed: isPassed,
+                                isDark: isDark,
+                              );
+                            }).toList(),
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            ),
+                ],
+              ),
             ),
           ),
         ),
@@ -258,13 +231,10 @@ class HorizontalPrayerStepper extends StatelessWidget {
     );
   }
 
-  /// Calculate progress percentage (0.0 to 1.0)
-  /// Progress fills up to and stops at the current prayer dot
   double _calculateProgress(
     List<Map<String, dynamic>> prayers,
     PrayerProvider provider,
   ) {
-    // Find the index of the current prayer
     int currentPrayerIndex = -1;
 
     for (int i = 0; i < prayers.length; i++) {
@@ -274,7 +244,6 @@ class HorizontalPrayerStepper extends StatelessWidget {
       }
     }
 
-    // If current prayer not found, calculate based on passed prayers
     if (currentPrayerIndex == -1) {
       int completedCount = 0;
       for (var prayer in prayers) {
@@ -285,13 +254,9 @@ class HorizontalPrayerStepper extends StatelessWidget {
       return completedCount.toDouble() / prayers.length;
     }
 
-    // Progress fills from start to current prayer position
-    // Each prayer represents 1/5 of the total width (0.2)
-    // We add 0.5 to reach the center of the current prayer dot
     return ((currentPrayerIndex + 1) - 0.5) / prayers.length;
   }
 
-  /// Build individual prayer step
   Widget _buildPrayerStep(
     BuildContext context, {
     required String name,
@@ -303,21 +268,21 @@ class HorizontalPrayerStepper extends StatelessWidget {
   }) {
     final primaryColor = isDark
         ? AppColors.primaryDark
-        : AppColors.primaryLight;
+        : AppColors.primary;
     final mutedColor = isDark
         ? AppColors.textMutedDark
         : AppColors.textMutedLight;
+    final plusJakarta = GoogleFonts.plusJakartaSans();
 
     return Expanded(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // Time above circle
           Text(
             time,
-            style: TextStyle(
+            style: plusJakarta.copyWith(
               fontSize: isActive ? 10 : 9,
-              fontWeight: isActive ? FontWeight.w900 : FontWeight.w700,
+              fontWeight: isActive ? FontWeight.w700 : FontWeight.w600,
               color: isActive
                   ? primaryColor
                   : mutedColor.withValues(alpha: 0.8),
@@ -326,56 +291,31 @@ class HorizontalPrayerStepper extends StatelessWidget {
 
           const SizedBox(height: 6),
 
-          // Circle with state - centered at line position
           SizedBox(
             height: isActive ? 32 : 24,
             child: Stack(
               alignment: Alignment.center,
               children: [
-                // Pulsing animation for active prayer only
                 if (isActive)
                   Positioned.fill(child: _PulsingRing(color: primaryColor)),
-
-                // Main circle - w-6 h-6 (24px) normal, w-8 h-8 (32px) active
                 Container(
                   width: isActive ? 32 : 24,
                   height: isActive ? 32 : 24,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    gradient: isActive
-                        ? LinearGradient(
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                            colors: [
-                              primaryColor,
-                              isDark
-                                  ? const Color(0xFF3B82F6)
-                                  : const Color(0xFF60A5FA),
-                            ],
-                          )
-                        : null,
-                    color: isPassed
+                    color: isPassed || isActive
                         ? primaryColor
-                        : isDark
-                        ? const Color(0xFF1E293B).withValues(alpha: 0.8)
-                        : const Color(0xFFF1F5F9),
+                        : (isDark
+                            ? AppColors.cardDark
+                            : AppColors.surfaceLight),
                     border: Border.all(
                       color: isActive || isPassed
-                          ? Colors.white
-                          : isDark
-                          ? const Color(0xFF475569) // slate-600
-                          : const Color(0xFFCBD5E1), // slate-300
+                          ? (isDark ? AppColors.cardDark : AppColors.cardLight)
+                          : (isDark
+                              ? AppColors.hairlineDark
+                              : AppColors.hairlineLight),
                       width: 4,
                     ),
-                    boxShadow: isActive || isPassed
-                        ? [
-                            BoxShadow(
-                              color: primaryColor.withValues(alpha: 0.3),
-                              blurRadius: isActive ? 8 : 4,
-                              spreadRadius: isActive ? 1 : 0,
-                            ),
-                          ]
-                        : null,
                   ),
                   child: _getCircleContent(
                     isPassed: isPassed,
@@ -391,17 +331,16 @@ class HorizontalPrayerStepper extends StatelessWidget {
 
           const SizedBox(height: 6),
 
-          // Prayer name below circle
           Text(
             name,
-            style: TextStyle(
+            style: plusJakarta.copyWith(
               fontSize: isActive ? 11 : 10,
-              fontWeight: isActive ? FontWeight.w900 : FontWeight.w600,
+              fontWeight: isActive ? FontWeight.w700 : FontWeight.w600,
               color: isActive
                   ? primaryColor
                   : isPassed
-                  ? mutedColor
-                  : mutedColor.withValues(alpha: 0.6),
+                      ? mutedColor
+                      : mutedColor.withValues(alpha: 0.6),
             ),
           ),
         ],
@@ -409,7 +348,6 @@ class HorizontalPrayerStepper extends StatelessWidget {
     );
   }
 
-  /// Get circle content based on state
   Widget _getCircleContent({
     required bool isPassed,
     required bool isActive,
@@ -418,13 +356,10 @@ class HorizontalPrayerStepper extends StatelessWidget {
     required Color mutedColor,
   }) {
     if (isPassed) {
-      // Completed: Show checkmark
       return Icon(Icons.check, size: isActive ? 16 : 12, color: Colors.white);
     } else if (isActive) {
-      // Active: Show prayer icon
       return Icon(icon, size: 16, color: Colors.white);
     } else {
-      // Upcoming: Show small dot
       return Container(
         width: 6,
         height: 6,
@@ -437,7 +372,6 @@ class HorizontalPrayerStepper extends StatelessWidget {
   }
 }
 
-/// Pulsing ring animation for active prayer
 class _PulsingRing extends StatefulWidget {
   final Color color;
 
@@ -467,7 +401,7 @@ class _PulsingRingState extends State<_PulsingRing>
     ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
 
     _opacityAnimation = Tween<double>(
-      begin: 0.6,
+      begin: 0.5,
       end: 0.0,
     ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
 
@@ -494,7 +428,7 @@ class _PulsingRingState extends State<_PulsingRing>
               height: 32,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: widget.color.withValues(alpha: 0.4),
+                color: widget.color.withValues(alpha: 0.35),
               ),
             ),
           ),

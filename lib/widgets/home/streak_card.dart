@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../core/providers/streak_provider.dart';
 import '../../core/theme/app_colors.dart';
 
-/// Streak Card widget - shows doughnut progress and fire button in one card
 class StreakCard extends StatefulWidget {
   const StreakCard({super.key});
 
@@ -66,6 +66,7 @@ class _StreakCardState extends State<StreakCard>
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final plusJakarta = GoogleFonts.plusJakartaSans();
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -77,8 +78,8 @@ class _StreakCardState extends State<StreakCard>
               borderRadius: BorderRadius.circular(24),
               border: Border.all(
                 color: isDark
-                    ? AppColors.borderDark.withValues(alpha: 0.8)
-                    : AppColors.borderLight.withValues(alpha: 0.8),
+                    ? AppColors.hairlineDark.withValues(alpha: 0.8)
+                    : AppColors.hairlineLight.withValues(alpha: 0.8),
                 width: 1,
               ),
               boxShadow: [
@@ -86,7 +87,7 @@ class _StreakCardState extends State<StreakCard>
                   color: (isDark ? Colors.black : Colors.grey).withValues(
                     alpha: 0.1,
                   ),
-                  blurRadius: 10,
+                  blurRadius: 3,
                   offset: const Offset(0, 4),
                 ),
               ],
@@ -95,7 +96,6 @@ class _StreakCardState extends State<StreakCard>
               padding: const EdgeInsets.all(20),
               child: Consumer<StreakProvider>(
                 builder: (context, provider, child) {
-                  // Update animation when provider changes
                   WidgetsBinding.instance.addPostFrameCallback((_) {
                     final newProgress = provider.completedCount / 5;
                     if (newProgress != _currentProgress) {
@@ -118,7 +118,7 @@ class _StreakCardState extends State<StreakCard>
                         children: [
                           Text(
                             'STREAK',
-                            style: TextStyle(
+                            style: plusJakarta.copyWith(
                               fontSize: 11,
                               fontWeight: FontWeight.w800,
                               color: isDark
@@ -133,7 +133,7 @@ class _StreakCardState extends State<StreakCard>
                               vertical: 2,
                             ),
                             decoration: BoxDecoration(
-                              color: const Color(0xFFD97706).withValues(
+                              color: AppColors.roseAccent.withValues(
                                 alpha: isDark ? 0.15 : 0.1,
                               ),
                               borderRadius: BorderRadius.circular(12),
@@ -144,15 +144,15 @@ class _StreakCardState extends State<StreakCard>
                                 const Icon(
                                   Icons.local_fire_department,
                                   size: 12,
-                                  color: Color(0xFFD97706),
+                                  color: AppColors.roseAccent,
                                 ),
                                 const SizedBox(width: 2),
                                 Text(
                                   '${provider.streakDays}d',
-                                  style: const TextStyle(
+                                  style: plusJakarta.copyWith(
                                     fontSize: 10,
                                     fontWeight: FontWeight.w700,
-                                    color: Color(0xFFD97706),
+                                    color: AppColors.roseAccent,
                                   ),
                                 ),
                               ],
@@ -164,7 +164,6 @@ class _StreakCardState extends State<StreakCard>
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          // Doughnut chart
                           SizedBox(
                             width: 80,
                             height: 80,
@@ -185,7 +184,7 @@ class _StreakCardState extends State<StreakCard>
                                 Center(
                                   child: Text(
                                     '${provider.completedCount}/5',
-                                    style: TextStyle(
+                                    style: plusJakarta.copyWith(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w800,
                                       color: isDark
@@ -197,7 +196,6 @@ class _StreakCardState extends State<StreakCard>
                               ],
                             ),
                           ),
-                          // Fire button
                           _FireButton(
                             isActive: provider.isCurrentPrayerCompleted,
                             onTap: () => provider.markCurrentPrayerCompleted(),
@@ -215,7 +213,6 @@ class _StreakCardState extends State<StreakCard>
   }
 }
 
-/// Fire button (no animations)
 class _FireButton extends StatelessWidget {
   final bool isActive;
   final VoidCallback onTap;
@@ -230,7 +227,6 @@ class _FireButton extends StatelessWidget {
       child: Stack(
         alignment: Alignment.center,
         children: [
-          // Static glow effect when active
           if (isActive)
             Container(
               width: 80,
@@ -239,27 +235,26 @@ class _FireButton extends StatelessWidget {
                 shape: BoxShape.circle,
                 gradient: RadialGradient(
                   colors: [
-                    const Color(0xFFD97706).withValues(alpha: 0.6),
-                    const Color(0xFFD97706).withValues(alpha: 0.0),
+                    AppColors.roseAccent.withValues(alpha: 0.6),
+                    AppColors.roseAccent.withValues(alpha: 0.0),
                   ],
                   stops: const [0.3, 1],
                 ),
               ),
             ),
-          // Fire icon
           Icon(
             Icons.local_fire_department,
             size: 64,
             color: isActive
-                ? const Color(0xFFD97706)
+                ? AppColors.roseAccent
                 : isDark
-                    ? const Color(0xFF64748B)
-                    : const Color(0xFFCBD5E1),
+                    ? AppColors.textMutedLight
+                    : AppColors.textMutedDark,
             shadows: isActive
                 ? [
                     BoxShadow(
-                      color: const Color(0xFFD97706).withValues(alpha: 0.8),
-                      blurRadius: 20,
+                      color: AppColors.roseAccent.withValues(alpha: 0.2),
+                      blurRadius: 3,
                       spreadRadius: 2,
                     ),
                   ]
@@ -271,7 +266,6 @@ class _FireButton extends StatelessWidget {
   }
 }
 
-/// Custom painter for doughnut chart
 class _DoughnutPainter extends CustomPainter {
   final double progress;
   final bool isDark;
@@ -284,7 +278,6 @@ class _DoughnutPainter extends CustomPainter {
     final radius = size.width / 2 - 8;
     const strokeWidth = 10.0;
 
-    // Background circle
     final bgPaint = Paint()
       ..color = isDark ? const Color(0xFF334155) : const Color(0xFFE2E8F0)
       ..style = PaintingStyle.stroke
@@ -292,7 +285,6 @@ class _DoughnutPainter extends CustomPainter {
       ..strokeCap = StrokeCap.round;
     canvas.drawCircle(center, radius, bgPaint);
 
-    // Progress arc
     if (progress > 0) {
       final progressPaint = Paint()
         ..color = AppColors.success
@@ -302,7 +294,7 @@ class _DoughnutPainter extends CustomPainter {
       final sweepAngle = 2 * 3.14159 * progress;
       canvas.drawArc(
         Rect.fromCircle(center: center, radius: radius),
-        -3.14159 / 2, // Start at top
+        -3.14159 / 2,
         sweepAngle,
         false,
         progressPaint,

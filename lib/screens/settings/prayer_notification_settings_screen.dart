@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../core/models/prayer_notification_settings_model.dart';
 import '../../core/providers/prayer_provider.dart';
 import '../../core/providers/prayer_settings_provider.dart';
 import '../../core/theme/app_colors.dart';
 
-/// Prayer Notification Settings screen — pushed from the home stepper card.
-/// Mirrors the reference design: master toggle, per-prayer settings and
-/// global adhan playback preferences (UI + saved preferences only).
 class PrayerNotificationSettingsScreen extends StatefulWidget {
   const PrayerNotificationSettingsScreen({super.key});
 
@@ -21,7 +19,6 @@ class _PrayerNotificationSettingsScreenState
   @override
   void initState() {
     super.initState();
-    // Ensure persisted settings are loaded (no-op if already initialized)
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<PrayerSettingsProvider>().initialize();
     });
@@ -71,7 +68,6 @@ class _PrayerNotificationSettingsScreenState
     );
   }
 
-  /// Header with back button, title and reset action
   Widget _buildHeader(
     BuildContext context,
     bool isDark,
@@ -81,7 +77,6 @@ class _PrayerNotificationSettingsScreenState
       padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
       child: Row(
         children: [
-          // Back button (Navigator.pop)
           GestureDetector(
             onTap: () => Navigator.pop(context),
             child: Container(
@@ -89,11 +84,11 @@ class _PrayerNotificationSettingsScreenState
               height: 40,
               decoration: BoxDecoration(
                 color: isDark ? AppColors.cardDark : AppColors.cardLight,
-                borderRadius: BorderRadius.circular(14),
+                borderRadius: BorderRadius.circular(16),
                 border: Border.all(
                   color: isDark
-                      ? AppColors.borderDark.withValues(alpha: 0.8)
-                      : AppColors.borderLight.withValues(alpha: 0.8),
+                      ? AppColors.hairlineDark.withValues(alpha: 0.2)
+                      : AppColors.hairlineLight.withValues(alpha: 0.2),
                   width: 1,
                 ),
               ),
@@ -111,7 +106,7 @@ class _PrayerNotificationSettingsScreenState
               children: [
                 Text(
                   'Prayer Notifications',
-                  style: TextStyle(
+                  style: GoogleFonts.plusJakartaSans().copyWith(
                     fontSize: 14,
                     fontWeight: FontWeight.w800,
                     color: isDark
@@ -121,7 +116,7 @@ class _PrayerNotificationSettingsScreenState
                 ),
                 Text(
                   'Adhan & alert preferences',
-                  style: TextStyle(
+                  style: GoogleFonts.plusJakartaSans().copyWith(
                     fontSize: 11,
                     fontWeight: FontWeight.w500,
                     color: isDark
@@ -146,7 +141,7 @@ class _PrayerNotificationSettingsScreenState
               padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
               child: Text(
                 'Reset',
-                style: TextStyle(
+                style: GoogleFonts.plusJakartaSans().copyWith(
                   fontSize: 12,
                   fontWeight: FontWeight.w700,
                   color: isDark ? AppColors.primaryDark : AppColors.primaryLight,
@@ -164,7 +159,7 @@ class _PrayerNotificationSettingsScreenState
       padding: const EdgeInsets.symmetric(horizontal: 4),
       child: Text(
         title,
-        style: TextStyle(
+        style: GoogleFonts.plusJakartaSans().copyWith(
           fontSize: 11,
           fontWeight: FontWeight.w700,
           letterSpacing: 1.2,
@@ -174,28 +169,26 @@ class _PrayerNotificationSettingsScreenState
     );
   }
 
-  /// Shared card decoration matching the home screen card idiom
   BoxDecoration _cardDecoration(bool isDark) {
     return BoxDecoration(
       color: isDark ? AppColors.cardDark : AppColors.cardLight,
       borderRadius: BorderRadius.circular(24),
       border: Border.all(
         color: isDark
-            ? AppColors.borderDark.withValues(alpha: 0.8)
-            : AppColors.borderLight.withValues(alpha: 0.8),
+            ? AppColors.hairlineDark.withValues(alpha: 0.2)
+            : AppColors.hairlineLight.withValues(alpha: 0.2),
         width: 1,
       ),
       boxShadow: [
         BoxShadow(
-          color: (isDark ? Colors.black : Colors.grey).withValues(alpha: 0.08),
-          blurRadius: 8,
-          offset: const Offset(0, 2),
+          color: Colors.black.withValues(alpha: isDark ? 0.2 : 0.02),
+          blurRadius: 3,
+          offset: const Offset(0, 1),
         ),
       ],
     );
   }
 
-  /// Master switch card for all prayer notifications
   Widget _buildMasterToggleCard(
     bool isDark,
     PrayerSettingsProvider provider,
@@ -223,7 +216,7 @@ class _PrayerNotificationSettingsScreenState
               children: [
                 Text(
                   'All Prayer Notifications',
-                  style: TextStyle(
+                  style: GoogleFonts.plusJakartaSans().copyWith(
                     fontSize: 14,
                     fontWeight: FontWeight.w700,
                     color: isDark
@@ -233,7 +226,7 @@ class _PrayerNotificationSettingsScreenState
                 ),
                 Text(
                   'Master switch for all 5 daily prayers',
-                  style: TextStyle(
+                  style: GoogleFonts.plusJakartaSans().copyWith(
                     fontSize: 11,
                     color: isDark
                         ? AppColors.textMutedDark
@@ -253,21 +246,19 @@ class _PrayerNotificationSettingsScreenState
     );
   }
 
-  /// Accent color per prayer (mirrors the reference palette)
   Color _prayerAccent(String key, bool isDark) {
     switch (key) {
       case 'dhuhr':
-        return const Color(0xFFD97706); // amber
+        return AppColors.roseAccent;
       case 'asr':
         return AppColors.teal;
       case 'isha':
-        return const Color(0xFF6366F1); // indigo
+        return AppColors.primary;
       default:
         return isDark ? AppColors.primaryDark : AppColors.primaryLight;
     }
   }
 
-  /// Today's time for a prayer from the already-loaded prayer times
   String? _prayerTime(PrayerProvider provider, String key) {
     final times = provider.prayerTimes;
     if (times == null) return null;
@@ -287,7 +278,6 @@ class _PrayerNotificationSettingsScreenState
     }
   }
 
-  /// Per-prayer settings card
   Widget _buildPrayerCard(
     bool isDark,
     PrayerSettingsProvider provider,
@@ -297,14 +287,13 @@ class _PrayerNotificationSettingsScreenState
     final accent = _prayerAccent(setting.key, isDark);
     final time = _prayerTime(prayerProvider, setting.key);
     final dividerColor = isDark
-        ? AppColors.borderDark.withValues(alpha: 0.8)
-        : AppColors.borderLight.withValues(alpha: 0.8);
+        ? AppColors.hairlineDark.withValues(alpha: 0.2)
+        : AppColors.hairlineLight.withValues(alpha: 0.2);
 
     return Container(
       decoration: _cardDecoration(isDark),
       child: Column(
         children: [
-          // Prayer row: icon + name/time + enable switch
           Padding(
             padding: const EdgeInsets.all(16),
             child: Row(
@@ -329,7 +318,7 @@ class _PrayerNotificationSettingsScreenState
                     children: [
                       Text(
                         setting.name,
-                        style: TextStyle(
+                        style: GoogleFonts.plusJakartaSans().copyWith(
                           fontSize: 14,
                           fontWeight: FontWeight.w700,
                           color: isDark
@@ -340,7 +329,7 @@ class _PrayerNotificationSettingsScreenState
                       if (time != null)
                         Text(
                           time,
-                          style: TextStyle(
+                          style: GoogleFonts.plusJakartaSans().copyWith(
                             fontSize: 11,
                             color: isDark
                                 ? AppColors.textMutedDark
@@ -361,8 +350,6 @@ class _PrayerNotificationSettingsScreenState
               ],
             ),
           ),
-
-          // Expanded options when enabled, otherwise an "off" footer
           if (setting.enabled) ...[
             Divider(height: 1, thickness: 1, color: dividerColor),
             Padding(
@@ -397,7 +384,7 @@ class _PrayerNotificationSettingsScreenState
                 alignment: Alignment.centerLeft,
                 child: Text(
                   'Notifications off for ${setting.name}',
-                  style: TextStyle(
+                  style: GoogleFonts.plusJakartaSans().copyWith(
                     fontSize: 11,
                     fontWeight: FontWeight.w600,
                     color: isDark
@@ -413,7 +400,6 @@ class _PrayerNotificationSettingsScreenState
     );
   }
 
-  /// "Remind before" row with minus/plus stepper
   Widget _buildReminderRow(
     bool isDark,
     PrayerSettingsProvider provider,
@@ -424,7 +410,7 @@ class _PrayerNotificationSettingsScreenState
       children: [
         Text(
           'Remind before',
-          style: TextStyle(
+          style: GoogleFonts.plusJakartaSans().copyWith(
             fontSize: 12,
             fontWeight: FontWeight.w600,
             color: isDark ? AppColors.textMainDark : AppColors.textMainLight,
@@ -445,7 +431,7 @@ class _PrayerNotificationSettingsScreenState
               child: Text(
                 '${setting.preReminderMinutes} min',
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: GoogleFonts.plusJakartaSans().copyWith(
                   fontSize: 12,
                   fontWeight: FontWeight.w700,
                   color: isDark
@@ -481,8 +467,8 @@ class _PrayerNotificationSettingsScreenState
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: isDark
-              ? AppColors.borderDark.withValues(alpha: 0.6)
-              : const Color(0xFFF1F5F9),
+              ? AppColors.hairlineDark.withValues(alpha: 0.2)
+              : AppColors.cardLight,
         ),
         child: Icon(
           icon,
@@ -493,7 +479,6 @@ class _PrayerNotificationSettingsScreenState
     );
   }
 
-  /// Switch row used for "Play Adhan" and "Vibrate"
   Widget _buildOptionSwitchRow(
     bool isDark, {
     required String label,
@@ -505,7 +490,7 @@ class _PrayerNotificationSettingsScreenState
       children: [
         Text(
           label,
-          style: TextStyle(
+          style: GoogleFonts.plusJakartaSans().copyWith(
             fontSize: 12,
             fontWeight: FontWeight.w600,
             color: isDark ? AppColors.textMainDark : AppColors.textMainLight,
@@ -522,21 +507,19 @@ class _PrayerNotificationSettingsScreenState
     );
   }
 
-  /// Global adhan playback settings card
   Widget _buildAdhanPlaybackCard(
     bool isDark,
     PrayerSettingsProvider provider,
   ) {
     final primaryColor = isDark ? AppColors.primaryDark : AppColors.primaryLight;
     final dividerColor = isDark
-        ? AppColors.borderDark.withValues(alpha: 0.8)
-        : AppColors.borderLight.withValues(alpha: 0.8);
+        ? AppColors.hairlineDark.withValues(alpha: 0.2)
+        : AppColors.hairlineLight.withValues(alpha: 0.2);
 
     return Container(
       decoration: _cardDecoration(isDark),
       child: Column(
         children: [
-          // Adhan volume slider
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
             child: Column(
@@ -550,7 +533,7 @@ class _PrayerNotificationSettingsScreenState
                         const SizedBox(width: 8),
                         Text(
                           'Adhan Volume',
-                          style: TextStyle(
+                          style: GoogleFonts.plusJakartaSans().copyWith(
                             fontSize: 14,
                             fontWeight: FontWeight.w700,
                             color: isDark
@@ -562,7 +545,7 @@ class _PrayerNotificationSettingsScreenState
                     ),
                     Text(
                       '${provider.adhanVolume}%',
-                      style: TextStyle(
+                      style: GoogleFonts.plusJakartaSans().copyWith(
                         fontSize: 12,
                         fontWeight: FontWeight.w700,
                         color: isDark
@@ -587,7 +570,7 @@ class _PrayerNotificationSettingsScreenState
           _buildPlaybackToggleRow(
             isDark,
             icon: Icons.notifications_on,
-            iconColor: const Color(0xFFD97706),
+            iconColor: AppColors.roseAccent,
             title: 'Play Even On Silent',
             subtitle: "Overrides your phone's silent switch",
             value: provider.playOnSilent,
@@ -637,7 +620,7 @@ class _PrayerNotificationSettingsScreenState
               children: [
                 Text(
                   title,
-                  style: TextStyle(
+                  style: GoogleFonts.plusJakartaSans().copyWith(
                     fontSize: 14,
                     fontWeight: FontWeight.w700,
                     color: isDark
@@ -647,7 +630,7 @@ class _PrayerNotificationSettingsScreenState
                 ),
                 Text(
                   subtitle,
-                  style: TextStyle(
+                  style: GoogleFonts.plusJakartaSans().copyWith(
                     fontSize: 11,
                     color: isDark
                         ? AppColors.textMutedDark

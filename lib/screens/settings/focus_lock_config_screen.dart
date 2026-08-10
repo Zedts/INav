@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../core/theme/app_colors.dart';
 
 /// Focus Lock Configuration Screen
@@ -119,8 +120,8 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                 borderRadius: BorderRadius.circular(14),
                 border: Border.all(
                   color: isDark
-                      ? AppColors.borderDark.withValues(alpha: 0.8)
-                      : AppColors.borderLight.withValues(alpha: 0.8),
+                      ? AppColors.hairlineDark.withValues(alpha: 0.8)
+                      : AppColors.hairlineLight.withValues(alpha: 0.8),
                   width: 1,
                 ),
               ),
@@ -140,7 +141,7 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
               children: [
                 Text(
                   'Focus Lock',
-                  style: TextStyle(
+                  style: GoogleFonts.plusJakartaSans().copyWith(
                     fontSize: 14,
                     fontWeight: FontWeight.w800,
                     color: isDark
@@ -150,7 +151,7 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                 ),
                 Text(
                   'App blocking & focus schedules',
-                  style: TextStyle(
+                  style: GoogleFonts.plusJakartaSans().copyWith(
                     fontSize: 11,
                     fontWeight: FontWeight.w500,
                     color: isDark
@@ -167,7 +168,7 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
               child: Text(
                 'Reset',
-                style: TextStyle(
+                style: GoogleFonts.plusJakartaSans().copyWith(
                   fontSize: 12,
                   fontWeight: FontWeight.w700,
                   color: isDark
@@ -190,15 +191,15 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
         borderRadius: BorderRadius.circular(24),
         border: Border.all(
           color: isDark
-              ? AppColors.borderDark.withValues(alpha: 0.8)
-              : AppColors.borderLight.withValues(alpha: 0.8),
+              ? AppColors.hairlineDark.withValues(alpha: 0.8)
+              : AppColors.hairlineLight.withValues(alpha: 0.8),
           width: 1,
         ),
         boxShadow: [
           BoxShadow(
-            color: (isDark ? Colors.black : Colors.grey).withValues(alpha: 0.1),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
+            color: Colors.black.withValues(alpha: isDark ? 0.2 : 0.02),
+            blurRadius: 3,
+            offset: const Offset(0, 1),
           ),
         ],
       ),
@@ -208,12 +209,12 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
             width: 40,
             height: 40,
             decoration: BoxDecoration(
-              color: const Color(0xFFE11D48).withValues(alpha: 0.1),
+              color: AppColors.roseAccent.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(12),
             ),
             child: const Icon(
               Icons.lock_rounded,
-              color: Color(0xFFE11D48),
+              color: AppColors.roseAccent,
               size: 20,
             ),
           ),
@@ -224,7 +225,7 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
               children: [
                 Text(
                   'Enable Focus Lock',
-                  style: TextStyle(
+                  style: GoogleFonts.plusJakartaSans().copyWith(
                     fontSize: 14,
                     fontWeight: FontWeight.w700,
                     color: isDark
@@ -234,7 +235,7 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                 ),
                 Text(
                   'Block distracting apps during focus windows',
-                  style: TextStyle(
+                  style: GoogleFonts.plusJakartaSans().copyWith(
                     fontSize: 11,
                     color: isDark
                         ? AppColors.textMutedDark
@@ -278,7 +279,7 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
         'x',
         'X (Twitter)',
         Icons.chat_bubble_outline,
-        const Color(0xFF64748B),
+        AppColors.textMutedLight,
       ),
     ];
 
@@ -292,7 +293,7 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
             children: [
               Text(
                 'APPS TO LOCK',
-                style: TextStyle(
+                style: GoogleFonts.plusJakartaSans().copyWith(
                   fontSize: 11,
                   fontWeight: FontWeight.w700,
                   color: isDark
@@ -316,7 +317,7 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                     horizontal: 12,
                     vertical: 8,
                   ),
-                  textStyle: const TextStyle(
+                  textStyle: GoogleFonts.plusJakartaSans().copyWith(
                     fontSize: 11,
                     fontWeight: FontWeight.w700,
                   ),
@@ -335,17 +336,15 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
             borderRadius: BorderRadius.circular(24),
             border: Border.all(
               color: isDark
-                  ? AppColors.borderDark.withValues(alpha: 0.8)
-                  : AppColors.borderLight.withValues(alpha: 0.8),
+                  ? AppColors.hairlineDark.withValues(alpha: 0.8)
+                  : AppColors.hairlineLight.withValues(alpha: 0.8),
               width: 1,
             ),
             boxShadow: [
               BoxShadow(
-                color: (isDark ? Colors.black : Colors.grey).withValues(
-                  alpha: 0.1,
-                ),
-                blurRadius: 10,
-                offset: const Offset(0, 4),
+                color: Colors.black.withValues(alpha: isDark ? 0.2 : 0.02),
+                blurRadius: 3,
+                offset: const Offset(0, 1),
               ),
             ],
           ),
@@ -362,8 +361,8 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                       height: 1,
                       thickness: 1,
                       color: isDark
-                          ? const Color(0xFF1E293B).withValues(alpha: 0.8)
-                          : const Color(0xFFF1F5F9),
+                          ? AppColors.hairlineDark
+                          : AppColors.hairlineLight,
                     ),
                   Padding(
                     padding: const EdgeInsets.all(16),
@@ -382,7 +381,7 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                         Expanded(
                           child: Text(
                             app.name,
-                            style: TextStyle(
+                            style: GoogleFonts.plusJakartaSans().copyWith(
                               fontSize: 14,
                               fontWeight: FontWeight.w700,
                               color: isDark
@@ -420,7 +419,7 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 4),
           child: Text(
             'LOCK SCHEDULE',
-            style: TextStyle(
+            style: GoogleFonts.plusJakartaSans().copyWith(
               fontSize: 11,
               fontWeight: FontWeight.w700,
               color: isDark
@@ -437,17 +436,15 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
             borderRadius: BorderRadius.circular(24),
             border: Border.all(
               color: isDark
-                  ? AppColors.borderDark.withValues(alpha: 0.8)
-                  : AppColors.borderLight.withValues(alpha: 0.8),
+                  ? AppColors.hairlineDark.withValues(alpha: 0.8)
+                  : AppColors.hairlineLight.withValues(alpha: 0.8),
               width: 1,
             ),
             boxShadow: [
               BoxShadow(
-                color: (isDark ? Colors.black : Colors.grey).withValues(
-                  alpha: 0.1,
-                ),
-                blurRadius: 10,
-                offset: const Offset(0, 4),
+                color: Colors.black.withValues(alpha: isDark ? 0.2 : 0.02),
+                blurRadius: 3,
+                offset: const Offset(0, 1),
               ),
             ],
           ),
@@ -484,7 +481,7 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                         children: [
                           Text(
                             'Lock During Prayer Times',
-                            style: TextStyle(
+                            style: GoogleFonts.plusJakartaSans().copyWith(
                               fontSize: 14,
                               fontWeight: FontWeight.w700,
                               color: isDark
@@ -494,7 +491,7 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                           ),
                           Text(
                             'Uses today\'s Adhan schedule',
-                            style: TextStyle(
+                            style: GoogleFonts.plusJakartaSans().copyWith(
                               fontSize: 11,
                               color: isDark
                                   ? AppColors.textMutedDark
@@ -523,8 +520,8 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                   height: 1,
                   thickness: 1,
                   color: isDark
-                      ? const Color(0xFF1E293B).withValues(alpha: 0.8)
-                      : const Color(0xFFF1F5F9),
+                      ? AppColors.hairlineDark
+                      : AppColors.hairlineLight,
                 ),
                 Padding(
                   padding: const EdgeInsets.all(16),
@@ -533,7 +530,7 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                     children: [
                       Text(
                         'LOCKS DURING',
-                        style: TextStyle(
+                        style: GoogleFonts.plusJakartaSans().copyWith(
                           fontSize: 10,
                           fontWeight: FontWeight.w700,
                           color: isDark
@@ -562,7 +559,7 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                         children: [
                           Text(
                             'Starts before Adhan',
-                            style: TextStyle(
+                            style: GoogleFonts.plusJakartaSans().copyWith(
                               fontSize: 12,
                               fontWeight: FontWeight.w600,
                               color: isDark
@@ -582,8 +579,8 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                                 },
                                 style: IconButton.styleFrom(
                                   backgroundColor: isDark
-                                      ? const Color(0xFF1E293B)
-                                      : const Color(0xFFF1F5F9),
+                                      ? AppColors.cardDark
+                                      : AppColors.cardLight,
                                   minimumSize: const Size(28, 28),
                                 ),
                               ),
@@ -592,7 +589,7 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                                 child: Text(
                                   '$_startOffsetMin min',
                                   textAlign: TextAlign.center,
-                                  style: TextStyle(
+                                  style: GoogleFonts.plusJakartaSans().copyWith(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w700,
                                     color: isDark
@@ -611,8 +608,8 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                                 },
                                 style: IconButton.styleFrom(
                                   backgroundColor: isDark
-                                      ? const Color(0xFF1E293B)
-                                      : const Color(0xFFF1F5F9),
+                                      ? AppColors.cardDark
+                                      : AppColors.cardLight,
                                   minimumSize: const Size(28, 28),
                                 ),
                               ),
@@ -629,7 +626,7 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                         children: [
                           Text(
                             'Lock duration',
-                            style: TextStyle(
+                            style: GoogleFonts.plusJakartaSans().copyWith(
                               fontSize: 12,
                               fontWeight: FontWeight.w600,
                               color: isDark
@@ -649,8 +646,8 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                                 },
                                 style: IconButton.styleFrom(
                                   backgroundColor: isDark
-                                      ? const Color(0xFF1E293B)
-                                      : const Color(0xFFF1F5F9),
+                                      ? AppColors.cardDark
+                                      : AppColors.cardLight,
                                   minimumSize: const Size(28, 28),
                                 ),
                               ),
@@ -659,7 +656,7 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                                 child: Text(
                                   '$_lockDurationMin min',
                                   textAlign: TextAlign.center,
-                                  style: TextStyle(
+                                  style: GoogleFonts.plusJakartaSans().copyWith(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w700,
                                     color: isDark
@@ -678,8 +675,8 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                                 },
                                 style: IconButton.styleFrom(
                                   backgroundColor: isDark
-                                      ? const Color(0xFF1E293B)
-                                      : const Color(0xFFF1F5F9),
+                                      ? AppColors.cardDark
+                                      : AppColors.cardLight,
                                   minimumSize: const Size(28, 28),
                                 ),
                               ),
@@ -709,7 +706,7 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
             children: [
               Text(
                 'CUSTOM FOCUS TIMES',
-                style: TextStyle(
+                style: GoogleFonts.plusJakartaSans().copyWith(
                   fontSize: 11,
                   fontWeight: FontWeight.w700,
                   color: isDark
@@ -733,7 +730,7 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                     horizontal: 12,
                     vertical: 8,
                   ),
-                  textStyle: const TextStyle(
+                  textStyle: GoogleFonts.plusJakartaSans().copyWith(
                     fontSize: 11,
                     fontWeight: FontWeight.w700,
                   ),
@@ -751,7 +748,7 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 4),
             child: Text(
               'No custom focus times yet — tap "Add Custom Time" for blocks like study time or bedtime.',
-              style: TextStyle(
+              style: GoogleFonts.plusJakartaSans().copyWith(
                 fontSize: 11,
                 color: isDark
                     ? AppColors.textMutedDark
@@ -773,8 +770,8 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(
                     color: isDark
-                        ? AppColors.borderDark.withValues(alpha: 0.8)
-                        : AppColors.borderLight.withValues(alpha: 0.8),
+                        ? AppColors.hairlineDark.withValues(alpha: 0.8)
+                        : AppColors.hairlineLight.withValues(alpha: 0.8),
                     width: 1,
                   ),
                   boxShadow: [
@@ -792,7 +789,7 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                     Expanded(
                       child: TextFormField(
                         initialValue: schedule['label'],
-                        style: TextStyle(
+                        style: GoogleFonts.plusJakartaSans().copyWith(
                           fontSize: 12,
                           fontWeight: FontWeight.w700,
                           color: isDark
@@ -804,7 +801,7 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                           isDense: true,
                           contentPadding: EdgeInsets.zero,
                           border: InputBorder.none,
-                          hintStyle: TextStyle(
+                          hintStyle: GoogleFonts.plusJakartaSans().copyWith(
                             color: isDark
                                 ? AppColors.textMutedDark
                                 : AppColors.textMutedLight,
@@ -828,7 +825,7 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                       padding: const EdgeInsets.symmetric(horizontal: 4),
                       child: Text(
                         'to',
-                        style: TextStyle(
+                        style: GoogleFonts.plusJakartaSans().copyWith(
                           fontSize: 10,
                           color: isDark
                               ? AppColors.textMutedDark
@@ -859,7 +856,7 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                     IconButton(
                       icon: const Icon(Icons.delete_outline),
                       iconSize: 18,
-                      color: const Color(0xFFE11D48),
+                      color: AppColors.roseAccent,
                       onPressed: () {
                         setState(() {
                           _customSchedules.removeAt(index);
@@ -899,12 +896,12 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         decoration: BoxDecoration(
-          color: isDark ? const Color(0xFF1E293B) : const Color(0xFFF1F5F9),
+          color: isDark ? AppColors.cardDark : AppColors.cardLight,
           borderRadius: BorderRadius.circular(8),
         ),
         child: Text(
           time,
-          style: TextStyle(
+          style: GoogleFonts.plusJakartaSans().copyWith(
             fontSize: 12,
             fontWeight: FontWeight.w600,
             color: isDark ? AppColors.textMainDark : AppColors.textMainLight,
@@ -916,8 +913,8 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
 
   Widget _buildUnlockMethodSection(bool isDark) {
     final dividerColor = isDark
-        ? AppColors.borderDark.withValues(alpha: 0.8)
-        : AppColors.borderLight.withValues(alpha: 0.8);
+        ? AppColors.hairlineDark.withValues(alpha: 0.8)
+        : AppColors.hairlineLight.withValues(alpha: 0.8);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -997,8 +994,8 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
             color: isSelected
                 ? (isDark ? AppColors.primaryDark : AppColors.primaryLight)
                 : (isDark
-                      ? AppColors.borderDark.withValues(alpha: 0.8)
-                      : AppColors.borderLight.withValues(alpha: 0.8)),
+                      ? AppColors.hairlineDark.withValues(alpha: 0.8)
+                      : AppColors.hairlineLight.withValues(alpha: 0.8)),
             width: isSelected ? 2 : 1,
           ),
           boxShadow: [
@@ -1025,9 +1022,7 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                           ? (isDark
                                 ? AppColors.primaryDark
                                 : AppColors.primaryLight)
-                          : (isDark
-                                ? const Color(0xFF1E293B)
-                                : const Color(0xFFF1F5F9)),
+                          : (isDark ? AppColors.cardDark : AppColors.cardLight),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Icon(
@@ -1047,7 +1042,7 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                       children: [
                         Text(
                           title,
-                          style: TextStyle(
+                          style: GoogleFonts.plusJakartaSans().copyWith(
                             fontSize: 14,
                             fontWeight: FontWeight.w700,
                             color: isDark
@@ -1057,7 +1052,7 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                         ),
                         Text(
                           description,
-                          style: TextStyle(
+                          style: GoogleFonts.plusJakartaSans().copyWith(
                             fontSize: 11,
                             color: isDark
                                 ? AppColors.textMutedDark
@@ -1075,8 +1070,8 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                               ? AppColors.primaryDark
                               : AppColors.primaryLight)
                         : (isDark
-                              ? const Color(0xFF475569)
-                              : const Color(0xFFCBD5E1)),
+                              ? AppColors.textMutedDark
+                              : AppColors.textMutedLight),
                   ),
                 ],
               ),
@@ -1097,7 +1092,7 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
       children: [
         Text(
           'Pause length',
-          style: TextStyle(
+          style: GoogleFonts.plusJakartaSans().copyWith(
             fontSize: 12,
             fontWeight: FontWeight.w600,
             color: isDark ? AppColors.textMainDark : AppColors.textMainLight,
@@ -1117,8 +1112,8 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
               },
               style: IconButton.styleFrom(
                 backgroundColor: isDark
-                    ? const Color(0xFF1E293B)
-                    : const Color(0xFFF1F5F9),
+                    ? AppColors.cardDark
+                    : AppColors.cardLight,
                 minimumSize: const Size(28, 28),
               ),
             ),
@@ -1127,7 +1122,7 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
               child: Text(
                 '${_mindfulPauseSeconds}s',
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: GoogleFonts.plusJakartaSans().copyWith(
                   fontSize: 12,
                   fontWeight: FontWeight.w700,
                   color: isDark
@@ -1148,8 +1143,8 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
               },
               style: IconButton.styleFrom(
                 backgroundColor: isDark
-                    ? const Color(0xFF1E293B)
-                    : const Color(0xFFF1F5F9),
+                    ? AppColors.cardDark
+                    : AppColors.cardLight,
                 minimumSize: const Size(28, 28),
               ),
             ),
@@ -1165,7 +1160,7 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
       children: [
         Text(
           'PHRASE TO TYPE',
-          style: TextStyle(
+          style: GoogleFonts.plusJakartaSans().copyWith(
             fontSize: 10,
             fontWeight: FontWeight.w700,
             color: isDark ? AppColors.textMutedDark : AppColors.textMutedLight,
@@ -1175,16 +1170,14 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
         const SizedBox(height: 8),
         TextFormField(
           initialValue: _unlockPhrase,
-          style: TextStyle(
+          style: GoogleFonts.plusJakartaSans().copyWith(
             fontSize: 12,
             fontWeight: FontWeight.w600,
             color: isDark ? AppColors.textMainDark : AppColors.textMainLight,
           ),
           decoration: InputDecoration(
             filled: true,
-            fillColor: isDark
-                ? const Color(0xFF1E293B)
-                : const Color(0xFFF1F5F9),
+            fillColor: isDark ? AppColors.cardDark : AppColors.cardLight,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
               borderSide: BorderSide.none,
@@ -1194,7 +1187,7 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
               vertical: 10,
             ),
             hintText: 'Enter reminder phrase',
-            hintStyle: TextStyle(
+            hintStyle: GoogleFonts.plusJakartaSans().copyWith(
               color: isDark
                   ? AppColors.textMutedDark
                   : AppColors.textMutedLight,
@@ -1215,7 +1208,7 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
       padding: const EdgeInsets.symmetric(horizontal: 4),
       child: Text(
         title,
-        style: TextStyle(
+        style: GoogleFonts.plusJakartaSans().copyWith(
           fontSize: 11,
           fontWeight: FontWeight.w700,
           letterSpacing: 1.2,
@@ -1233,7 +1226,7 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 4),
           child: Text(
             'EXCEPTIONS & LIMITS',
-            style: TextStyle(
+            style: GoogleFonts.plusJakartaSans().copyWith(
               fontSize: 11,
               fontWeight: FontWeight.w700,
               color: isDark
@@ -1250,17 +1243,15 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
             borderRadius: BorderRadius.circular(24),
             border: Border.all(
               color: isDark
-                  ? AppColors.borderDark.withValues(alpha: 0.8)
-                  : AppColors.borderLight.withValues(alpha: 0.8),
+                  ? AppColors.hairlineDark.withValues(alpha: 0.8)
+                  : AppColors.hairlineLight.withValues(alpha: 0.8),
               width: 1,
             ),
             boxShadow: [
               BoxShadow(
-                color: (isDark ? Colors.black : Colors.grey).withValues(
-                  alpha: 0.1,
-                ),
-                blurRadius: 10,
-                offset: const Offset(0, 4),
+                color: Colors.black.withValues(alpha: isDark ? 0.2 : 0.02),
+                blurRadius: 3,
+                offset: const Offset(0, 1),
               ),
             ],
           ),
@@ -1275,12 +1266,12 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                       width: 36,
                       height: 36,
                       decoration: BoxDecoration(
-                        color: const Color(0xFF10B981).withValues(alpha: 0.1),
+                        color: AppColors.success.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: const Icon(
                         Icons.phone,
-                        color: Color(0xFF10B981),
+                        color: AppColors.success,
                         size: 18,
                       ),
                     ),
@@ -1291,7 +1282,7 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                         children: [
                           Text(
                             'Allow Calls & Messages',
-                            style: TextStyle(
+                            style: GoogleFonts.plusJakartaSans().copyWith(
                               fontSize: 14,
                               fontWeight: FontWeight.w700,
                               color: isDark
@@ -1301,7 +1292,7 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                           ),
                           Text(
                             'Emergency contact apps stay unlocked',
-                            style: TextStyle(
+                            style: GoogleFonts.plusJakartaSans().copyWith(
                               fontSize: 11,
                               color: isDark
                                   ? AppColors.textMutedDark
@@ -1328,8 +1319,8 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                 height: 1,
                 thickness: 1,
                 color: isDark
-                    ? const Color(0xFF1E293B).withValues(alpha: 0.8)
-                    : const Color(0xFFF1F5F9),
+                    ? AppColors.hairlineDark
+                    : AppColors.hairlineLight,
               ),
 
               // Daily skip allowance
@@ -1344,7 +1335,7 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                         children: [
                           Text(
                             'Daily Skip Allowance',
-                            style: TextStyle(
+                            style: GoogleFonts.plusJakartaSans().copyWith(
                               fontSize: 14,
                               fontWeight: FontWeight.w700,
                               color: isDark
@@ -1354,7 +1345,7 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                           ),
                           Text(
                             'Times you can skip per day',
-                            style: TextStyle(
+                            style: GoogleFonts.plusJakartaSans().copyWith(
                               fontSize: 11,
                               color: isDark
                                   ? AppColors.textMutedDark
@@ -1376,8 +1367,8 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                           },
                           style: IconButton.styleFrom(
                             backgroundColor: isDark
-                                ? const Color(0xFF1E293B)
-                                : const Color(0xFFF1F5F9),
+                                ? AppColors.cardDark
+                                : AppColors.cardLight,
                             minimumSize: const Size(28, 28),
                           ),
                         ),
@@ -1386,7 +1377,7 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                           child: Text(
                             '$_dailySkipAllowance',
                             textAlign: TextAlign.center,
-                            style: TextStyle(
+                            style: GoogleFonts.plusJakartaSans().copyWith(
                               fontSize: 12,
                               fontWeight: FontWeight.w700,
                               color: isDark
@@ -1405,8 +1396,8 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                           },
                           style: IconButton.styleFrom(
                             backgroundColor: isDark
-                                ? const Color(0xFF1E293B)
-                                : const Color(0xFFF1F5F9),
+                                ? AppColors.cardDark
+                                : AppColors.cardLight,
                             minimumSize: const Size(28, 28),
                           ),
                         ),
@@ -1420,8 +1411,8 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                 height: 1,
                 thickness: 1,
                 color: isDark
-                    ? const Color(0xFF1E293B).withValues(alpha: 0.8)
-                    : const Color(0xFFF1F5F9),
+                    ? AppColors.hairlineDark
+                    : AppColors.hairlineLight,
               ),
 
               // Prevent uninstall
@@ -1433,12 +1424,12 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                       width: 36,
                       height: 36,
                       decoration: BoxDecoration(
-                        color: const Color(0xFFF59E0B).withValues(alpha: 0.1),
+                        color: AppColors.roseAccent.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: const Icon(
                         Icons.security,
-                        color: Color(0xFFF59E0B),
+                        color: AppColors.roseAccent,
                         size: 18,
                       ),
                     ),
@@ -1449,7 +1440,7 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                         children: [
                           Text(
                             'Prevent Uninstall During Lock',
-                            style: TextStyle(
+                            style: GoogleFonts.plusJakartaSans().copyWith(
                               fontSize: 14,
                               fontWeight: FontWeight.w700,
                               color: isDark
@@ -1459,7 +1450,7 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                           ),
                           Text(
                             'Requires device admin permission',
-                            style: TextStyle(
+                            style: GoogleFonts.plusJakartaSans().copyWith(
                               fontSize: 11,
                               color: isDark
                                   ? AppColors.textMutedDark
@@ -1497,13 +1488,11 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
       onSelected: (value) {
         setState(() => _prayerTriggers[key] = value);
       },
-      backgroundColor: isDark
-          ? const Color(0xFF1E293B)
-          : const Color(0xFFF1F5F9),
+      backgroundColor: isDark ? AppColors.cardDark : AppColors.cardLight,
       selectedColor: (isDark ? AppColors.primaryDark : AppColors.primaryLight)
           .withValues(alpha: 0.2),
       checkmarkColor: isDark ? AppColors.primaryDark : AppColors.primaryLight,
-      labelStyle: TextStyle(
+      labelStyle: GoogleFonts.plusJakartaSans().copyWith(
         fontSize: 12,
         fontWeight: FontWeight.w600,
         color: isSelected
@@ -1513,7 +1502,7 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
       side: BorderSide(
         color: isSelected
             ? (isDark ? AppColors.primaryDark : AppColors.primaryLight)
-            : (isDark ? const Color(0xFF1E293B) : const Color(0xFFF1F5F9)),
+            : (isDark ? AppColors.cardDark : AppColors.cardLight),
         width: 1,
       ),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -1536,14 +1525,30 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Add Apps'),
-        content: const Text(
+        title: Text(
+          'Add Apps',
+          style: GoogleFonts.plusJakartaSans().copyWith(
+            fontSize: 18,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        content: Text(
           'App selection from device will be implemented in a future update.',
+          style: GoogleFonts.plusJakartaSans().copyWith(
+            fontSize: 14,
+            fontWeight: FontWeight.w400,
+          ),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('OK'),
+            child: Text(
+              'OK',
+              style: GoogleFonts.plusJakartaSans().copyWith(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
           ),
         ],
       ),
@@ -1576,9 +1581,16 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
     });
 
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Reset to default settings'),
-        duration: Duration(seconds: 2),
+      SnackBar(
+        content: Text(
+          'Reset to default settings',
+          style: GoogleFonts.plusJakartaSans().copyWith(
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+            color: Colors.white,
+          ),
+        ),
+        duration: const Duration(seconds: 2),
       ),
     );
   }

@@ -1,21 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../core/errors/error_messages.dart';
 import '../../core/theme/app_colors.dart';
 
-/// Reusable error state view used by every screen.
-///
-/// Guarantees the SAME error always gets the SAME icon, title, message
-/// style, and actions, no matter which screen it appears on. The icon and
-/// title are derived from the message via [categorizeErrorMessage].
 class ErrorStateView extends StatelessWidget {
-  /// User-facing error message (from a provider's errorMessage)
   final String message;
-
-  /// Called when the user taps Retry
   final VoidCallback onRetry;
-
-  /// Optional — shown as an "Open Settings" button, but only for
-  /// location-related errors where settings can actually help
   final VoidCallback? onOpenSettings;
 
   const ErrorStateView({
@@ -49,7 +39,7 @@ class ErrorStateView extends StatelessWidget {
       case ErrorCategory.generic:
         icon = Icons.error_outline;
         title = 'Something Went Wrong';
-        iconColor = const Color(0xFFEF4444);
+        iconColor = AppColors.roseAccent;
     }
 
     final showSettings =
@@ -66,14 +56,14 @@ class ErrorStateView extends StatelessWidget {
               height: 64,
               decoration: BoxDecoration(
                 color: iconColor.withValues(alpha: 0.12),
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(24),
               ),
               child: Icon(icon, size: 32, color: iconColor),
             ),
             const SizedBox(height: 16),
             Text(
               title,
-              style: TextStyle(
+              style: GoogleFonts.fraunces(
                 color: isDark ? AppColors.textMainDark : AppColors.textMainLight,
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -83,7 +73,7 @@ class ErrorStateView extends StatelessWidget {
             const SizedBox(height: 8),
             Text(
               message,
-              style: TextStyle(
+              style: GoogleFonts.plusJakartaSans(
                 color:
                     isDark ? AppColors.textMutedDark : AppColors.textMutedLight,
                 fontSize: 14,
@@ -98,9 +88,11 @@ class ErrorStateView extends StatelessWidget {
                 ElevatedButton.icon(
                   onPressed: onRetry,
                   icon: const Icon(Icons.refresh, size: 18),
-                  label: const Text(
+                  label: Text(
                     'Retry',
-                    style: TextStyle(fontWeight: FontWeight.w700),
+                    style: GoogleFonts.plusJakartaSans(
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                   style: ElevatedButton.styleFrom(
                     backgroundColor:
@@ -120,9 +112,11 @@ class ErrorStateView extends StatelessWidget {
                   OutlinedButton.icon(
                     onPressed: onOpenSettings,
                     icon: const Icon(Icons.settings, size: 18),
-                    label: const Text(
+                    label: Text(
                       'Open Settings',
-                      style: TextStyle(fontWeight: FontWeight.w700),
+                      style: GoogleFonts.plusJakartaSans(
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                     style: OutlinedButton.styleFrom(
                       foregroundColor: isDark
@@ -147,7 +141,6 @@ class ErrorStateView extends StatelessWidget {
   }
 }
 
-/// Show an error snackbar with a consistent style everywhere in the app
 void showErrorSnackBar(BuildContext context, String message) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(content: Text(message), duration: const Duration(seconds: 2)),

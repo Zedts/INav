@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../core/errors/error_messages.dart';
 import '../../core/models/surah_model.dart';
 import '../../core/providers/quran_provider.dart';
+import '../../core/theme/app_colors.dart';
 import '../../screens/quran/surah_reading_screen.dart';
 
 class SurahDetailSheet extends StatefulWidget {
@@ -76,12 +78,12 @@ class _SurahDetailSheetState extends State<SurahDetailSheet> {
             minHeight: minHeight,
           ),
           decoration: BoxDecoration(
-            color: isDark ? const Color(0xFF0F172A) : Colors.white,
+            color: isDark ? AppColors.cardDark : Colors.white,
             borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withValues(alpha: 0.35),
-                blurRadius: 40,
+                color: Colors.black.withValues(alpha: 0.2),
+                blurRadius: 3,
                 offset: const Offset(0, -10),
               ),
             ],
@@ -122,7 +124,7 @@ class _SurahDetailSheetState extends State<SurahDetailSheet> {
           width: 48,
           height: 5,
           decoration: BoxDecoration(
-            color: isDark ? const Color(0xFF475569) : const Color(0xFFCBD5E1),
+            color: isDark ? AppColors.textMutedLight : AppColors.textMutedDark,
             borderRadius: BorderRadius.circular(999),
           ),
         ),
@@ -138,8 +140,8 @@ class _SurahDetailSheetState extends State<SurahDetailSheet> {
           border: Border(
             bottom: BorderSide(
               color: isDark
-                  ? const Color(0xFF1E293B).withValues(alpha: 0.8)
-                  : const Color(0xFFE2E8F0).withValues(alpha: 0.8),
+                  ? AppColors.textMainDark.withValues(alpha: 0.8)
+                  : AppColors.hairlineLight.withValues(alpha: 0.8),
               width: 1,
             ),
           ),
@@ -155,18 +157,18 @@ class _SurahDetailSheetState extends State<SurahDetailSheet> {
                     width: 48,
                     height: 48,
                     decoration: BoxDecoration(
-                      color: const Color(
-                        0xFF0D9488,
-                      ).withValues(alpha: isDark ? 0.2 : 0.1),
+                      color: AppColors.primary.withValues(
+                        alpha: isDark ? 0.2 : 0.1,
+                      ),
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: Center(
                       child: Text(
                         '${widget.surah.number}',
-                        style: const TextStyle(
+                        style: GoogleFonts.plusJakartaSans().copyWith(
                           fontSize: 15,
                           fontWeight: FontWeight.w800,
-                          color: Color(0xFF0D9488),
+                          color: AppColors.primary,
                         ),
                       ),
                     ),
@@ -178,24 +180,24 @@ class _SurahDetailSheetState extends State<SurahDetailSheet> {
                       children: [
                         Text(
                           widget.surah.nameEn,
-                          style: TextStyle(
+                          style: GoogleFonts.plusJakartaSans().copyWith(
                             fontSize: 17,
                             fontWeight: FontWeight.w800,
                             color: isDark
-                                ? const Color(0xFFF8FAFC)
-                                : const Color(0xFF0F172A),
+                                ? AppColors.textMainDark
+                                : AppColors.textMainLight,
                             height: 1.2,
                           ),
                         ),
                         const SizedBox(height: 3),
                         Text(
                           widget.surah.nameId,
-                          style: TextStyle(
+                          style: GoogleFonts.plusJakartaSans().copyWith(
                             fontSize: 11,
                             fontWeight: FontWeight.w600,
                             color: isDark
-                                ? const Color(0xFF94A3B8)
-                                : const Color(0xFF64748B),
+                                ? AppColors.textMutedDark
+                                : AppColors.textMutedLight,
                           ),
                         ),
                       ],
@@ -208,14 +210,13 @@ class _SurahDetailSheetState extends State<SurahDetailSheet> {
                       Text(
                         widget.surah.nameLong,
                         textAlign: TextAlign.right,
-                        style: TextStyle(
+                        style: GoogleFonts.fraunces().copyWith(
                           fontSize: 24,
                           fontWeight: FontWeight.w700,
                           color: isDark
-                              ? const Color(0xFFF8FAFC)
-                              : const Color(0xFF0F172A),
+                              ? AppColors.textMainDark
+                              : AppColors.textMainLight,
                           height: 1,
-                          fontFamily: 'serif',
                         ),
                       ),
                     ],
@@ -233,10 +234,8 @@ class _SurahDetailSheetState extends State<SurahDetailSheet> {
     final isMeccan = widget.surah.isMeccan;
     final revelationBg = isMeccan
         ? const Color(0xFFD97706).withValues(alpha: 0.1)
-        : const Color(0xFF2563EB).withValues(alpha: 0.1);
-    final revelationFg = isMeccan
-        ? const Color(0xFFD97706)
-        : const Color(0xFF2563EB);
+        : AppColors.primary.withValues(alpha: 0.1);
+    final revelationFg = isMeccan ? const Color(0xFFD97706) : AppColors.primary;
 
     return Wrap(
       spacing: 8,
@@ -250,24 +249,23 @@ class _SurahDetailSheetState extends State<SurahDetailSheet> {
           suffix: TextSpan(
             text:
                 '  (${widget.surah.revelationId} · ${widget.surah.revelation})',
-            style: TextStyle(
+            style: GoogleFonts.plusJakartaSans().copyWith(
               fontSize: 11,
               fontWeight: FontWeight.w700,
               color: revelationFg.withValues(alpha: 0.6),
-              fontFamily: 'serif',
             ),
           ),
         ),
         _buildBadge(
           icon: Icons.format_align_left,
-          bg: const Color(0xFF2563EB).withValues(alpha: 0.1),
-          fg: isDark ? const Color(0xFF3B82F6) : const Color(0xFF2563EB),
+          bg: AppColors.primary.withValues(alpha: 0.1),
+          fg: AppColors.primary,
           text: '${widget.surah.numberOfVerses} Ayahs',
         ),
         _buildBadge(
           icon: Icons.sort,
-          bg: const Color(0xFF0D9488).withValues(alpha: 0.1),
-          fg: const Color(0xFF0D9488),
+          bg: AppColors.primary.withValues(alpha: 0.1),
+          fg: AppColors.primary,
           text: 'Order ${widget.surah.sequence}',
         ),
       ],
@@ -299,7 +297,7 @@ class _SurahDetailSheetState extends State<SurahDetailSheet> {
             ),
             TextSpan(
               text: text,
-              style: TextStyle(
+              style: GoogleFonts.plusJakartaSans().copyWith(
                 fontSize: 11,
                 fontWeight: FontWeight.w700,
                 color: fg,
@@ -317,37 +315,37 @@ class _SurahDetailSheetState extends State<SurahDetailSheet> {
       children: [
         Text(
           'Translation:',
-          style: TextStyle(
+          style: GoogleFonts.plusJakartaSans().copyWith(
             fontSize: 11,
             fontWeight: FontWeight.w600,
-            color: isDark ? const Color(0xFF94A3B8) : const Color(0xFF64748B),
+            color: isDark ? AppColors.textMutedDark : AppColors.textMutedLight,
           ),
         ),
         const SizedBox(width: 8),
         Text(
           widget.surah.translationEn,
-          style: TextStyle(
+          style: GoogleFonts.plusJakartaSans().copyWith(
             fontSize: 12,
             fontWeight: FontWeight.w700,
-            color: isDark ? const Color(0xFFF8FAFC) : const Color(0xFF0F172A),
+            color: isDark ? AppColors.textMainDark : AppColors.textMainLight,
           ),
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8),
           child: Text(
             '•',
-            style: TextStyle(
-              color: isDark ? const Color(0xFF334155) : const Color(0xFFCBD5E1),
+            style: GoogleFonts.plusJakartaSans().copyWith(
+              color: isDark ? AppColors.hairlineDark : AppColors.textMutedDark,
               fontWeight: FontWeight.w600,
             ),
           ),
         ),
         Text(
           widget.surah.translationId,
-          style: TextStyle(
+          style: GoogleFonts.plusJakartaSans().copyWith(
             fontSize: 12,
             fontWeight: FontWeight.w700,
-            color: isDark ? const Color(0xFFF8FAFC) : const Color(0xFF0F172A),
+            color: isDark ? AppColors.textMainDark : AppColors.textMainLight,
           ),
         ),
       ],
@@ -360,17 +358,17 @@ class _SurahDetailSheetState extends State<SurahDetailSheet> {
       children: [
         Row(
           children: [
-            const Icon(Icons.menu_book, size: 13, color: Color(0xFF0D9488)),
+            const Icon(Icons.menu_book, size: 13, color: AppColors.primary),
             const SizedBox(width: 6),
             Text(
               'TAFSIR / DESCRIPTION',
-              style: TextStyle(
+              style: GoogleFonts.plusJakartaSans().copyWith(
                 fontSize: 10,
                 fontWeight: FontWeight.w700,
                 letterSpacing: 1.2,
                 color: isDark
-                    ? const Color(0xFF94A3B8)
-                    : const Color(0xFF64748B),
+                    ? AppColors.textMutedDark
+                    : AppColors.textMutedLight,
               ),
             ),
           ],
@@ -378,10 +376,10 @@ class _SurahDetailSheetState extends State<SurahDetailSheet> {
         const SizedBox(height: 8),
         Text(
           widget.surah.tafsir,
-          style: TextStyle(
+          style: GoogleFonts.plusJakartaSans().copyWith(
             fontSize: 13,
             fontWeight: FontWeight.w500,
-            color: (isDark ? const Color(0xFFF8FAFC) : const Color(0xFF0F172A))
+            color: (isDark ? AppColors.textMainDark : AppColors.textMainLight)
                 .withValues(alpha: 0.9),
             height: 1.65,
           ),
@@ -412,12 +410,12 @@ class _SurahDetailSheetState extends State<SurahDetailSheet> {
         16 + MediaQuery.of(context).padding.bottom,
       ),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF0F172A) : Colors.white,
+        color: isDark ? AppColors.cardDark : Colors.white,
         border: Border(
           top: BorderSide(
             color: isDark
-                ? const Color(0xFF1E293B).withValues(alpha: 0.8)
-                : const Color(0xFFE2E8F0).withValues(alpha: 0.8),
+                ? AppColors.textMainDark.withValues(alpha: 0.8)
+                : AppColors.hairlineLight.withValues(alpha: 0.8),
             width: 1,
           ),
         ),
@@ -428,13 +426,12 @@ class _SurahDetailSheetState extends State<SurahDetailSheet> {
             children: [
               _buildActionButton(
                 icon: Icons.menu_book,
-                bg: const Color(0xFF0D9488),
+                bg: AppColors.primary,
                 fg: Colors.white,
                 hasShadow: true,
-                shadowColor: const Color(0xFF0D9488),
+                shadowColor: AppColors.primary,
                 onTap: () {
-                  // Navigate to reading screen
-                  Navigator.of(context).pop(); // Close detail sheet first
+                  Navigator.of(context).pop();
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -448,15 +445,15 @@ class _SurahDetailSheetState extends State<SurahDetailSheet> {
               _buildActionButton(
                 icon: isBookmarked ? Icons.bookmark : Icons.bookmark_border,
                 bg: isBookmarked
-                    ? const Color(0xFF0D9488).withValues(alpha: 0.1)
+                    ? AppColors.primary.withValues(alpha: 0.1)
                     : (isDark
-                          ? const Color(0xFF1E293B)
-                          : const Color(0xFFF1F5F9)),
+                          ? AppColors.hairlineDark
+                          : AppColors.hairlineLight),
                 fg: isBookmarked
-                    ? const Color(0xFF0D9488)
+                    ? AppColors.primary
                     : (isDark
-                          ? const Color(0xFFF8FAFC)
-                          : const Color(0xFF0F172A)),
+                          ? AppColors.textMutedDark
+                          : AppColors.textMutedLight),
                 hasShadow: false,
                 onTap: () {
                   quranProvider.toggleBookmark(surahKey);
@@ -477,10 +474,10 @@ class _SurahDetailSheetState extends State<SurahDetailSheet> {
                 icon: audioIcon,
                 bg: isPlaying || isActive
                     ? const Color(0xFF1D4ED8)
-                    : const Color(0xFF2563EB),
+                    : AppColors.primary,
                 fg: Colors.white,
                 hasShadow: true,
-                shadowColor: const Color(0xFF2563EB),
+                shadowColor: AppColors.primary,
                 pulsing: isPlaying,
                 onTap: _toggleAudio,
               ),
@@ -492,26 +489,26 @@ class _SurahDetailSheetState extends State<SurahDetailSheet> {
             children: [
               Text(
                 'RECITATION',
-                style: TextStyle(
+                style: GoogleFonts.plusJakartaSans().copyWith(
                   fontSize: 9,
                   fontWeight: FontWeight.w700,
                   letterSpacing: 1,
                   color:
                       (isDark
-                              ? const Color(0xFFF8FAFC)
-                              : const Color(0xFF0F172A))
+                              ? AppColors.textMainDark
+                              : AppColors.textMainLight)
                           .withValues(alpha: 0.6),
                 ),
               ),
               const SizedBox(height: 2),
               Text(
                 'Al-ʿAfāṣī atau Al-Afasy',
-                style: TextStyle(
+                style: GoogleFonts.plusJakartaSans().copyWith(
                   fontSize: 11,
                   fontWeight: FontWeight.w800,
                   color: isDark
-                      ? const Color(0xFFF8FAFC)
-                      : const Color(0xFF0F172A),
+                      ? AppColors.textMainDark
+                      : AppColors.textMainLight,
                 ),
               ),
             ],
@@ -542,8 +539,8 @@ class _SurahDetailSheetState extends State<SurahDetailSheet> {
           boxShadow: hasShadow && shadowColor != null
               ? [
                   BoxShadow(
-                    color: shadowColor.withValues(alpha: 0.3),
-                    blurRadius: 16,
+                    color: shadowColor.withValues(alpha: 0.2),
+                    blurRadius: 3,
                     offset: const Offset(0, 4),
                   ),
                 ]

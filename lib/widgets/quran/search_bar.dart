@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../core/providers/quran_provider.dart';
+import '../../core/theme/app_colors.dart';
 
 class QuranSearchBar extends StatefulWidget {
   const QuranSearchBar({super.key});
@@ -44,14 +46,14 @@ class _QuranSearchBarState extends State<QuranSearchBar> {
         controller: _controller,
         focusNode: _focusNode,
         onChanged: (value) => quranProvider.setSearchQuery(value),
-        style: TextStyle(
+        style: GoogleFonts.plusJakartaSans().copyWith(
           fontSize: 13,
           fontWeight: FontWeight.w600,
-          color: isDark ? const Color(0xFFF8FAFC) : const Color(0xFF0F172A),
+          color: isDark ? AppColors.textMainDark : AppColors.textMainLight,
         ),
         decoration: InputDecoration(
           filled: true,
-          fillColor: isDark ? const Color(0xFF0F172A) : Colors.white,
+          fillColor: isDark ? AppColors.cardDark : Colors.white,
           contentPadding: const EdgeInsets.symmetric(
             horizontal: 16,
             vertical: 14,
@@ -60,8 +62,8 @@ class _QuranSearchBarState extends State<QuranSearchBar> {
             borderRadius: BorderRadius.circular(16),
             borderSide: BorderSide(
               color: isDark
-                  ? const Color(0xFF1E293B).withValues(alpha: 0.8)
-                  : const Color(0xFFE2E8F0).withValues(alpha: 0.8),
+                  ? AppColors.textMainDark.withValues(alpha: 0.8)
+                  : AppColors.hairlineLight.withValues(alpha: 0.8),
               width: 1,
             ),
           ),
@@ -69,15 +71,15 @@ class _QuranSearchBarState extends State<QuranSearchBar> {
             borderRadius: BorderRadius.circular(16),
             borderSide: BorderSide(
               color: isDark
-                  ? const Color(0xFF1E293B).withValues(alpha: 0.8)
-                  : const Color(0xFFE2E8F0).withValues(alpha: 0.8),
+                  ? AppColors.textMainDark.withValues(alpha: 0.8)
+                  : AppColors.hairlineLight.withValues(alpha: 0.8),
               width: 1,
             ),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(16),
             borderSide: BorderSide(
-              color: const Color(0xFF0D9488).withValues(alpha: 0.5),
+              color: AppColors.primary.withValues(alpha: 0.5),
               width: 1,
             ),
           ),
@@ -85,16 +87,16 @@ class _QuranSearchBarState extends State<QuranSearchBar> {
             Icons.search,
             size: 18,
             color: _isFocused
-                ? const Color(0xFF0D9488)
+                ? AppColors.primary
                 : isDark
-                    ? const Color(0xFF94A3B8)
-                    : const Color(0xFF64748B),
+                    ? AppColors.textMutedDark
+                    : AppColors.textMutedLight,
           ),
           hintText: 'Search Surah names...',
-          hintStyle: TextStyle(
+          hintStyle: GoogleFonts.plusJakartaSans().copyWith(
             fontSize: 13,
             fontWeight: FontWeight.w600,
-            color: isDark ? const Color(0xFF94A3B8) : const Color(0xFF64748B),
+            color: isDark ? AppColors.textMutedDark : AppColors.textMutedLight,
           ),
           suffixIcon: _controller.text.isNotEmpty
               ? GestureDetector(
@@ -106,8 +108,8 @@ class _QuranSearchBarState extends State<QuranSearchBar> {
                     Icons.clear,
                     size: 16,
                     color: isDark
-                        ? const Color(0xFF94A3B8)
-                        : const Color(0xFF64748B),
+                        ? AppColors.textMutedDark
+                        : AppColors.textMutedLight,
                   ),
                 )
               : null,

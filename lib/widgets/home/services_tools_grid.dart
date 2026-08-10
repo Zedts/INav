@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../core/theme/app_colors.dart';
 
-/// Services & Tools grid section with 8 feature buttons
 class ServicesToolsGrid extends StatelessWidget {
   final Function(int) onNavigate;
 
@@ -10,58 +10,58 @@ class ServicesToolsGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final plusJakarta = GoogleFonts.plusJakartaSans();
 
-    // Define all service items
     final services = [
       _ServiceItem(
         icon: Icons.menu_book_outlined,
         label: 'Quran',
-        color: const Color(0xFF0D9488), // teal
+        color: AppColors.teal,
         isActive: true,
-        targetIndex: 1, // QuranScreen index
+        targetIndex: 1,
       ),
       _ServiceItem(
         icon: Icons.mosque_outlined,
         label: 'Mosque',
-        color: const Color(0xFF059669), // emerald
+        color: const Color(0xFF059669),
         isActive: true,
-        targetIndex: 2, // MosqueScreen index
+        targetIndex: 2,
       ),
       _ServiceItem(
         icon: Icons.explore_outlined,
         label: 'Qibla',
-        color: const Color(0xFF2563EB), // blue
+        color: AppColors.primary,
         isActive: true,
-        targetIndex: 3, // QiblaScreen index
+        targetIndex: 3,
       ),
       _ServiceItem(
         icon: Icons.auto_stories_outlined,
         label: 'Duas',
-        color: const Color(0xFF7C3AED), // purple
+        color: const Color(0xFF7C3AED),
         isActive: false,
       ),
       _ServiceItem(
         icon: Icons.circle_outlined,
         label: 'Tasbih',
-        color: const Color(0xFFE11D48), // rose
+        color: AppColors.roseAccent,
         isActive: false,
       ),
       _ServiceItem(
         icon: Icons.trending_up,
         label: 'Tracker',
-        color: const Color(0xFFD97706), // amber
+        color: AppColors.roseAccent,
         isActive: false,
       ),
       _ServiceItem(
         icon: Icons.article_outlined,
         label: 'Hadith',
-        color: const Color(0xFF4F46E5), // indigo
+        color: const Color(0xFF4F46E5),
         isActive: false,
       ),
       _ServiceItem(
         icon: Icons.more_horiz,
         label: 'More',
-        color: const Color(0xFF64748B), // slate
+        color: AppColors.textMutedLight,
         isActive: false,
       ),
     ];
@@ -69,7 +69,6 @@ class ServicesToolsGrid extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Section header
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Row(
@@ -77,7 +76,7 @@ class ServicesToolsGrid extends StatelessWidget {
             children: [
               Text(
                 'SERVICES & TOOLS',
-                style: TextStyle(
+                style: plusJakarta.copyWith(
                   fontSize: 11,
                   fontWeight: FontWeight.w700,
                   color: isDark
@@ -97,7 +96,7 @@ class ServicesToolsGrid extends StatelessWidget {
                 },
                 child: Text(
                   'View All',
-                  style: TextStyle(
+                  style: plusJakarta.copyWith(
                     fontSize: 11,
                     fontWeight: FontWeight.w600,
                     color: isDark
@@ -112,7 +111,6 @@ class ServicesToolsGrid extends StatelessWidget {
 
         const SizedBox(height: 8),
 
-        // Single horizontally-scrolling row of service buttons
         SizedBox(
           height: 96,
           child: ListView.separated(
@@ -129,10 +127,8 @@ class ServicesToolsGrid extends StatelessWidget {
                   isDark: isDark,
                   onTap: () {
                     if (service.isActive && service.targetIndex != null) {
-                      // Navigate to target screen
                       onNavigate(service.targetIndex!);
                     } else {
-                      // Show coming soon toast
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text('${service.label} feature coming soon'),
@@ -151,7 +147,6 @@ class ServicesToolsGrid extends StatelessWidget {
   }
 }
 
-/// Data model for service item
 class _ServiceItem {
   final IconData icon;
   final String label;
@@ -168,7 +163,6 @@ class _ServiceItem {
   });
 }
 
-/// Individual service button widget
 class _ServiceButton extends StatelessWidget {
   final _ServiceItem service;
   final bool isDark;
@@ -182,6 +176,8 @@ class _ServiceButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final plusJakarta = GoogleFonts.plusJakartaSans();
+
     return GestureDetector(
       onTap: onTap,
       child: ClipRRect(
@@ -192,8 +188,8 @@ class _ServiceButton extends StatelessWidget {
               borderRadius: BorderRadius.circular(16),
               border: Border.all(
                 color: isDark
-                    ? AppColors.borderDark.withValues(alpha: 0.8)
-                    : AppColors.borderLight.withValues(alpha: 0.8),
+                    ? AppColors.hairlineDark.withValues(alpha: 0.8)
+                    : AppColors.hairlineLight.withValues(alpha: 0.8),
                 width: 1,
               ),
               boxShadow: [
@@ -201,7 +197,7 @@ class _ServiceButton extends StatelessWidget {
                   color: (isDark ? Colors.black : Colors.grey).withValues(
                     alpha: 0.05,
                   ),
-                  blurRadius: 4,
+                  blurRadius: 3,
                   offset: const Offset(0, 1),
                 ),
               ],
@@ -212,7 +208,6 @@ class _ServiceButton extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  // Icon with colored background
                   Container(
                     width: 40,
                     height: 40,
@@ -220,17 +215,16 @@ class _ServiceButton extends StatelessWidget {
                       color: service.color.withValues(
                         alpha: isDark ? 0.2 : 0.1,
                       ),
-                      borderRadius: BorderRadius.circular(14),
+                      borderRadius: BorderRadius.circular(16),
                     ),
                     child: Icon(service.icon, color: service.color, size: 22),
                   ),
 
                   const SizedBox(height: 4),
 
-                  // Label
                   Text(
                     service.label,
-                    style: TextStyle(
+                    style: plusJakarta.copyWith(
                       fontSize: 10,
                       fontWeight: FontWeight.w700,
                       color: isDark

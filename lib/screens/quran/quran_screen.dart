@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import '../../core/theme/app_colors.dart';
 import '../../core/providers/quran_provider.dart';
 import '../../core/models/surah_model.dart';
 import '../../widgets/common/error_state_view.dart';
@@ -114,30 +116,30 @@ class _QuranScreenState extends State<QuranScreen> {
         children: [
           Text(
             'ALL SURAH',
-            style: TextStyle(
+            style: GoogleFonts.plusJakartaSans().copyWith(
               fontSize: 10,
               fontWeight: FontWeight.w700,
               letterSpacing: 1.2,
               color: isDark
-                  ? const Color(0xFF94A3B8)
-                  : const Color(0xFF64748B),
+                  ? AppColors.textMutedDark
+                  : AppColors.textMutedLight,
             ),
           ),
           const Spacer(),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
             decoration: BoxDecoration(
-              color: const Color(0xFF0D9488).withValues(
+              color: AppColors.teal.withValues(
                 alpha: isDark ? 0.2 : 0.1,
               ),
               borderRadius: BorderRadius.circular(999),
             ),
             child: Text(
               '${quranProvider.filteredSurahs.length} Total',
-              style: const TextStyle(
+              style: GoogleFonts.plusJakartaSans().copyWith(
                 fontSize: 10,
                 fontWeight: FontWeight.w700,
-                color: Color(0xFF0D9488),
+                color: AppColors.teal,
               ),
             ),
           ),
@@ -160,19 +162,19 @@ class _QuranScreenState extends State<QuranScreen> {
               child: CircularProgressIndicator(
                 strokeWidth: 3,
                 valueColor: AlwaysStoppedAnimation<Color>(
-                  isDark ? const Color(0xFF3B82F6) : const Color(0xFF0D47A1),
+                  isDark ? AppColors.primaryDark : AppColors.primary,
                 ),
               ),
             ),
             const SizedBox(height: 16),
             Text(
               'Loading Surahs...',
-              style: TextStyle(
+              style: GoogleFonts.plusJakartaSans().copyWith(
                 fontSize: 13,
                 fontWeight: FontWeight.w600,
                 color: isDark
-                    ? const Color(0xFF94A3B8)
-                    : const Color(0xFF64748B),
+                    ? AppColors.textMutedDark
+                    : AppColors.textMutedLight,
               ),
             ),
           ],
@@ -192,37 +194,37 @@ class _QuranScreenState extends State<QuranScreen> {
               height: 64,
               decoration: BoxDecoration(
                 color:
-                    (isDark ? const Color(0xFF1E293B) : const Color(0xFFF1F5F9)),
+                    (isDark ? AppColors.cardDark : AppColors.cardLight),
                 borderRadius: BorderRadius.circular(999),
               ),
               child: Icon(
                 Icons.search,
                 size: 28,
                 color: isDark
-                    ? const Color(0xFF94A3B8).withValues(alpha: 0.6)
-                    : const Color(0xFF64748B).withValues(alpha: 0.6),
+                    ? AppColors.textMutedDark.withValues(alpha: 0.6)
+                    : AppColors.textMutedLight.withValues(alpha: 0.6),
               ),
             ),
             const SizedBox(height: 12),
             Text(
               'No Surah found',
-              style: TextStyle(
+              style: GoogleFonts.plusJakartaSans().copyWith(
                 fontSize: 13,
                 fontWeight: FontWeight.w700,
                 color: isDark
-                    ? const Color(0xFFF8FAFC)
-                    : const Color(0xFF0F172A),
+                    ? AppColors.textMainDark
+                    : AppColors.textMainLight,
               ),
             ),
             const SizedBox(height: 4),
             Text(
               'Try searching a different name.',
-              style: TextStyle(
+              style: GoogleFonts.plusJakartaSans().copyWith(
                 fontSize: 11,
                 fontWeight: FontWeight.w500,
                 color: isDark
-                    ? const Color(0xFF94A3B8)
-                    : const Color(0xFF64748B),
+                    ? AppColors.textMutedDark
+                    : AppColors.textMutedLight,
               ),
             ),
           ],

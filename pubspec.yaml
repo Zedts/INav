@@ -75,6 +75,9 @@ dependencies:
   # Scroll position tracking
   scrollable_positioned_list: ^0.3.8
 
+  # Google Fonts
+  google_fonts: ^8.2.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:latlong2/latlong.dart' hide Path;
 import '../../core/models/mosque_model.dart';
+import '../../core/theme/app_colors.dart';
 
 class MapViewSection extends StatefulWidget {
   final List<MosqueModel> mosques;
@@ -159,7 +161,7 @@ class _MapViewSectionState extends State<MapViewSection>
               Positioned(
                 right: 12,
                 bottom: 12,
-                child: _glassPillIconButton(
+                child: _pillIconButton(
                   icon: Icons.fullscreen,
                   onTap: widget.onToggleExpand,
                   semanticLabel: 'Expand map',
@@ -169,7 +171,7 @@ class _MapViewSectionState extends State<MapViewSection>
               Positioned(
                 right: 16,
                 bottom: 34,
-                child: _glassPillIconButton(
+                child: _pillIconButton(
                   icon: Icons.fullscreen_exit,
                   onTap: widget.onToggleExpand,
                   size: 42,
@@ -234,25 +236,36 @@ class _MapViewSectionState extends State<MapViewSection>
       decoration: BoxDecoration(
         color:
             isDark
-                ? Colors.black.withValues(alpha: 0.55)
-                : Colors.white.withValues(alpha: 0.75),
-        borderRadius: BorderRadius.circular(8),
+                ? AppColors.cardDark
+                : AppColors.cardLight,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: isDark ? AppColors.hairlineDark : AppColors.hairlineLight,
+          width: 1,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: isDark ? 0.2 : 0.02),
+            blurRadius: 3,
+            offset: const Offset(0, 1),
+          ),
+        ],
       ),
       child: Text(
         '© OpenStreetMap',
-        style: TextStyle(
+        style: GoogleFonts.plusJakartaSans().copyWith(
           fontSize: 9,
           fontWeight: FontWeight.w600,
           color:
               isDark
-                  ? Colors.white.withValues(alpha: 0.85)
-                  : const Color(0xFF334155),
+                  ? AppColors.textMutedDark
+                  : AppColors.textMutedLight,
         ),
       ),
     );
   }
 
-  Widget _glassPillIconButton({
+  Widget _pillIconButton({
     required IconData icon,
     required VoidCallback onTap,
     required String semanticLabel,
@@ -271,21 +284,21 @@ class _MapViewSectionState extends State<MapViewSection>
           decoration: BoxDecoration(
             color:
                 isDark
-                    ? const Color(0xFF1E293B)
-                    : Colors.white,
+                    ? AppColors.cardDark
+                    : AppColors.cardLight,
             borderRadius: BorderRadius.circular(999),
             border: Border.all(
               color:
                   isDark
-                      ? Colors.white.withValues(alpha: 0.18)
-                      : const Color(0xFF0F172A).withValues(alpha: 0.08),
+                      ? AppColors.hairlineDark
+                      : AppColors.hairlineLight,
               width: 1,
             ),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withValues(alpha: 0.18),
-                blurRadius: 16,
-                offset: const Offset(0, 6),
+                color: Colors.black.withValues(alpha: isDark ? 0.2 : 0.02),
+                blurRadius: 3,
+                offset: const Offset(0, 1),
               ),
             ],
           ),
@@ -294,7 +307,7 @@ class _MapViewSectionState extends State<MapViewSection>
             child: Icon(
               icon,
               size: size * 0.45,
-              color: isDark ? const Color(0xFFE2E8F0) : const Color(0xFF0F172A),
+              color: isDark ? AppColors.textMainDark : AppColors.textMainLight,
             ),
           ),
         ),
@@ -311,21 +324,21 @@ class _MapViewSectionState extends State<MapViewSection>
           decoration: BoxDecoration(
             color:
                 isDark
-                    ? const Color(0xFF1E293B)
-                    : Colors.white,
+                    ? AppColors.cardDark
+                    : AppColors.cardLight,
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
               color:
                   isDark
-                      ? Colors.white.withValues(alpha: 0.18)
-                      : const Color(0xFF0F172A).withValues(alpha: 0.08),
+                      ? AppColors.hairlineDark
+                      : AppColors.hairlineLight,
               width: 1,
             ),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withValues(alpha: 0.25),
-                blurRadius: 20,
-                offset: const Offset(0, 8),
+                color: Colors.black.withValues(alpha: isDark ? 0.2 : 0.02),
+                blurRadius: 3,
+                offset: const Offset(0, 1),
               ),
             ],
           ),
@@ -343,17 +356,17 @@ class _MapViewSectionState extends State<MapViewSection>
                   height: 36,
                   decoration: BoxDecoration(
                     color: widget.isOverridden
-                        ? const Color(0xFFF59E0B).withValues(alpha: 0.15)
-                        : const Color(0xFF10B981).withValues(alpha: 0.15),
-                    borderRadius: BorderRadius.circular(10),
+                        ? AppColors.roseAccent.withValues(alpha: isDark ? 0.18 : 0.12)
+                        : AppColors.primary.withValues(alpha: isDark ? 0.18 : 0.12),
+                    borderRadius: BorderRadius.circular(12),
                   ),
                   child: Icon(
                     widget.isOverridden
                         ? Icons.push_pin_outlined
                         : Icons.mosque,
                     color: widget.isOverridden
-                        ? const Color(0xFFD97706)
-                        : const Color(0xFF059669),
+                        ? AppColors.roseAccent
+                        : AppColors.primary,
                     size: 20,
                   ),
                 ),
@@ -364,27 +377,25 @@ class _MapViewSectionState extends State<MapViewSection>
                     children: [
                       Text(
                         widget.isOverridden ? 'SELECTED MOSQUE' : 'NEAREST TO YOU',
-                        style: TextStyle(
+                        style: GoogleFonts.plusJakartaSans().copyWith(
                           fontSize: 9,
-                          fontWeight: FontWeight.w800,
+                          fontWeight: FontWeight.w700,
                           letterSpacing: 0.8,
                           color: widget.isOverridden
-                              ? (isDark
-                                  ? const Color(0xFFFCD34D)
-                                  : const Color(0xFFD97706))
+                              ? AppColors.roseAccent
                               : (isDark
-                                  ? const Color(0xFF6EE7B7)
-                                  : const Color(0xFF059669)),
+                                  ? AppColors.primaryDark
+                                  : AppColors.primary),
                         ),
                       ),
                       const SizedBox(height: 2),
                       Text(
                         m.name,
-                        style: TextStyle(
+                        style: GoogleFonts.plusJakartaSans().copyWith(
                           fontSize: 13,
-                          fontWeight: FontWeight.w800,
+                          fontWeight: FontWeight.w700,
                           color:
-                              isDark ? Colors.white : const Color(0xFF0F172A),
+                              isDark ? AppColors.textMainDark : AppColors.textMainLight,
                           overflow: TextOverflow.ellipsis,
                         ),
                         maxLines: 1,
@@ -392,13 +403,13 @@ class _MapViewSectionState extends State<MapViewSection>
                       const SizedBox(height: 2),
                       Text(
                         '${m.formattedDistance} · ${m.estimatedWalkingTime} walk',
-                        style: TextStyle(
+                        style: GoogleFonts.plusJakartaSans().copyWith(
                           fontSize: 11,
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.w500,
                           color:
                               isDark
-                                  ? const Color(0xFF94A3B8)
-                                  : const Color(0xFF64748B),
+                                  ? AppColors.textMutedDark
+                                  : AppColors.textMutedLight,
                         ),
                       ),
                     ],
@@ -419,21 +430,28 @@ class _MapViewSectionState extends State<MapViewSection>
                 height: 28,
                 decoration: BoxDecoration(
                   color: isDark
-                      ? Colors.black.withValues(alpha: 0.55)
-                      : Colors.white.withValues(alpha: 0.85),
-                  borderRadius: BorderRadius.circular(8),
+                      ? AppColors.cardDark
+                      : AppColors.cardLight,
+                  borderRadius: BorderRadius.circular(12),
                   border: Border.all(
                     color: isDark
-                        ? Colors.white.withValues(alpha: 0.15)
-                        : const Color(0xFF0F172A).withValues(alpha: 0.08),
+                        ? AppColors.hairlineDark
+                        : AppColors.hairlineLight,
                   ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: isDark ? 0.2 : 0.02),
+                      blurRadius: 3,
+                      offset: const Offset(0, 1),
+                    ),
+                  ],
                 ),
                 child: Icon(
                   Icons.replay,
                   size: 15,
                   color: isDark
-                      ? const Color(0xFF6EE7B7)
-                      : const Color(0xFF059669),
+                      ? AppColors.primaryDark
+                      : AppColors.primary,
                 ),
               ),
             ),
@@ -460,14 +478,14 @@ class _UserLocationMarker extends StatelessWidget {
           alignment: Alignment.center,
           children: [
             Opacity(
-              opacity: outerOpacity * 0.45,
+              opacity: outerOpacity * 0.35,
               child: Transform.scale(
                 scale: outerScale,
                 child: Container(
                   width: 38,
                   height: 38,
                   decoration: const BoxDecoration(
-                    color: Color(0xFF3B82F6),
+                    color: AppColors.primaryLight,
                     shape: BoxShape.circle,
                   ),
                 ),
@@ -479,7 +497,7 @@ class _UserLocationMarker extends StatelessWidget {
                 width: 20,
                 height: 20,
                 decoration: const BoxDecoration(
-                  color: Color(0xFF3B82F6),
+                  color: AppColors.primaryLight,
                   shape: BoxShape.circle,
                 ),
               ),
@@ -488,7 +506,7 @@ class _UserLocationMarker extends StatelessWidget {
               width: 14,
               height: 14,
               decoration: BoxDecoration(
-                color: const Color(0xFF2563EB),
+                color: AppColors.primary,
                 shape: BoxShape.circle,
                 border: Border.all(color: Colors.white, width: 1.5),
               ),
@@ -508,7 +526,7 @@ class _MosquePinMarker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final accent =
-        isSelected ? const Color(0xFFF59E0B) : const Color(0xFF059669);
+        isSelected ? AppColors.roseAccent : AppColors.primary;
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
@@ -524,9 +542,9 @@ class _MosquePinMarker extends StatelessWidget {
             ),
             boxShadow: [
               BoxShadow(
-                color: accent.withValues(alpha: 0.45),
-                blurRadius: 14,
-                offset: const Offset(0, 4),
+                color: Colors.black.withValues(alpha: 0.15),
+                blurRadius: 3,
+                offset: const Offset(0, 1),
               ),
             ],
           ),

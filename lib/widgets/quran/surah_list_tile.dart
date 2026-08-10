@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../core/errors/error_messages.dart';
 import '../../core/models/surah_model.dart';
 import '../../core/providers/quran_provider.dart';
+import '../../core/theme/app_colors.dart';
 
 class SurahListTile extends StatelessWidget {
   final SurahModel surah;
   final VoidCallback onTap;
 
-  const SurahListTile({
-    super.key,
-    required this.surah,
-    required this.onTap,
-  });
+  const SurahListTile({super.key, required this.surah, required this.onTap});
 
   Future<void> _handleAudioTap(BuildContext context) async {
     final quranProvider = context.read<QuranProvider>();
@@ -52,10 +50,9 @@ class SurahListTile extends StatelessWidget {
     final isLoading = quranProvider.isSurahLoading(surahKey);
     final isActive = quranProvider.isSurahActive(surahKey);
 
-    final audioIcon =
-        isLoading
-            ? Icons.hourglass_empty
-            : (isPlaying ? Icons.volume_up : Icons.volume_down);
+    final audioIcon = isLoading
+        ? Icons.hourglass_empty
+        : (isPlaying ? Icons.volume_up : Icons.volume_down);
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
@@ -67,18 +64,18 @@ class SurahListTile extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: isDark ? const Color(0xFF0F172A) : Colors.white,
+              color: isDark ? AppColors.cardDark : Colors.white,
               borderRadius: BorderRadius.circular(24),
               border: Border.all(
                 color: isDark
-                    ? const Color(0xFF1E293B).withValues(alpha: 0.8)
-                    : const Color(0xFFE2E8F0).withValues(alpha: 0.8),
+                    ? AppColors.hairlineDark
+                    : AppColors.hairlineLight.withValues(alpha: 0.8),
                 width: 1,
               ),
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withValues(alpha: 0.05),
-                  blurRadius: 4,
+                  blurRadius: 3,
                   offset: const Offset(0, 1),
                 ),
               ],
@@ -93,24 +90,24 @@ class SurahListTile extends StatelessWidget {
                     children: [
                       Text(
                         surah.nameEn,
-                        style: TextStyle(
+                        style: GoogleFonts.plusJakartaSans().copyWith(
                           fontSize: 14,
                           fontWeight: FontWeight.w700,
                           color: isDark
-                              ? const Color(0xFFF8FAFC)
-                              : const Color(0xFF0F172A),
+                              ? AppColors.textMainDark
+                              : AppColors.textMainLight,
                           height: 1.2,
                         ),
                       ),
                       const SizedBox(height: 4),
                       Text(
                         surah.translationEn,
-                        style: TextStyle(
+                        style: GoogleFonts.plusJakartaSans().copyWith(
                           fontSize: 11,
                           fontWeight: FontWeight.w500,
                           color: isDark
-                              ? const Color(0xFF94A3B8)
-                              : const Color(0xFF64748B),
+                              ? AppColors.textMutedDark
+                              : AppColors.textMutedLight,
                         ),
                       ),
                     ],
@@ -125,31 +122,27 @@ class SurahListTile extends StatelessWidget {
                     width: 40,
                     height: 40,
                     decoration: BoxDecoration(
-                      color:
-                          isPlaying || isActive
-                              ? const Color(0xFF2563EB).withValues(
-                                  alpha: isDark ? 0.3 : 0.18,
-                                )
-                              : const Color(0xFF0D9488).withValues(
-                                  alpha: isDark ? 0.2 : 0.12,
-                                ),
-                      borderRadius: BorderRadius.circular(14),
-                      border:
-                          isActive
-                              ? Border.all(
-                                  color: const Color(0xFF2563EB).withValues(
-                                    alpha: 0.5,
-                                  ),
-                                  width: 1.2,
-                                )
-                              : null,
+                      color: isPlaying || isActive
+                          ? AppColors.primary.withValues(
+                              alpha: isDark ? 0.3 : 0.18,
+                            )
+                          : AppColors.primary.withValues(
+                              alpha: isDark ? 0.2 : 0.12,
+                            ),
+                      borderRadius: BorderRadius.circular(16),
+                      border: isActive
+                          ? Border.all(
+                              color: AppColors.primary.withValues(alpha: 0.5),
+                              width: 1.2,
+                            )
+                          : null,
                     ),
                     child: Icon(
                       audioIcon,
                       size: 20,
                       color: isPlaying || isActive
-                          ? const Color(0xFF2563EB)
-                          : const Color(0xFF0D9488),
+                          ? AppColors.primary
+                          : AppColors.primary,
                     ),
                   ),
                 ),
@@ -159,25 +152,24 @@ class SurahListTile extends StatelessWidget {
                   children: [
                     Text(
                       surah.nameShort,
-                      style: TextStyle(
+                      style: GoogleFonts.fraunces().copyWith(
                         fontSize: 22,
                         fontWeight: FontWeight.w700,
                         color: isDark
-                            ? const Color(0xFFF8FAFC)
-                            : const Color(0xFF0F172A),
+                            ? AppColors.textMainDark
+                            : AppColors.textMainLight,
                         height: 1,
-                        fontFamily: 'serif',
                       ),
                     ),
                     const SizedBox(height: 8),
                     Text(
                       '${surah.numberOfVerses} Ayahs',
-                      style: TextStyle(
+                      style: GoogleFonts.plusJakartaSans().copyWith(
                         fontSize: 10,
                         fontWeight: FontWeight.w600,
                         color: isDark
-                            ? const Color(0xFF94A3B8)
-                            : const Color(0xFF64748B),
+                            ? AppColors.textMutedDark
+                            : AppColors.textMutedLight,
                       ),
                     ),
                   ],
@@ -195,18 +187,16 @@ class SurahListTile extends StatelessWidget {
       width: 44,
       height: 44,
       decoration: BoxDecoration(
-        color: const Color(0xFF0D9488).withValues(
-          alpha: isDark ? 0.2 : 0.1,
-        ),
+        color: AppColors.primary.withValues(alpha: isDark ? 0.2 : 0.1),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Center(
         child: Text(
           '${surah.number}',
-          style: const TextStyle(
+          style: GoogleFonts.plusJakartaSans().copyWith(
             fontSize: 13,
             fontWeight: FontWeight.w700,
-            color: Color(0xFF0D9488),
+            color: AppColors.primary,
           ),
         ),
       ),

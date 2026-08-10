@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../core/theme/theme_provider.dart';
+import '../../core/theme/app_colors.dart';
 import '../../core/providers/prayer_provider.dart';
 import '../../core/providers/mosque_provider.dart';
 import '../../core/providers/qibla_provider.dart';
@@ -26,12 +28,10 @@ class AppHeader extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF070B14) : const Color(0xFFF1F5F9),
+        color: isDark ? AppColors.surfaceDark : AppColors.surfaceLight,
         border: Border(
           bottom: BorderSide(
-            color: isDark
-                ? const Color(0xFF1E293B).withValues(alpha: 0.5)
-                : const Color(0xFFE2E8F0).withValues(alpha: 0.5),
+            color: isDark ? AppColors.hairlineDark : AppColors.hairlineLight,
             width: 1,
           ),
         ),
@@ -66,23 +66,8 @@ class AppHeader extends StatelessWidget {
                     width: 40,
                     height: 40,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                      gradient: const LinearGradient(
-                        colors: [
-                          Color(0xFF0D47A1),
-                          Color(0xFF2563EB),
-                        ],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color:
-                              const Color(0xFF0D47A1).withValues(alpha: 0.2),
-                          blurRadius: 8,
-                          offset: const Offset(0, 2),
-                        ),
-                      ],
+                      borderRadius: BorderRadius.circular(12),
+                      color: AppColors.primary,
                     ),
                     child: const Center(
                       child: Icon(
@@ -99,12 +84,12 @@ class AppHeader extends StatelessWidget {
                       width: 14,
                       height: 14,
                       decoration: BoxDecoration(
-                        color: const Color(0xFF10B981),
+                        color: AppColors.success,
                         shape: BoxShape.circle,
                         border: Border.all(
                           color: isDark
-                              ? const Color(0xFF070B14)
-                              : const Color(0xFFF1F5F9),
+                              ? AppColors.surfaceDark
+                              : AppColors.surfaceLight,
                           width: 2,
                         ),
                       ),
@@ -125,12 +110,12 @@ class AppHeader extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Text(
+                Text(
                   "Al-Qur'an",
-                  style: TextStyle(
+                  style: GoogleFonts.fraunces().copyWith(
                     fontSize: 16,
-                    fontWeight: FontWeight.w800,
-                    letterSpacing: -0.2,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: -0.02,
                   ),
                 ),
                 const SizedBox(height: 2),
@@ -140,18 +125,18 @@ class AppHeader extends StatelessWidget {
                       Icons.menu_book,
                       size: 12,
                       color: isDark
-                          ? const Color(0xFF14B8A6)
-                          : const Color(0xFF0D9488),
+                          ? AppColors.primaryDark
+                          : AppColors.primary,
                     ),
                     const SizedBox(width: 4),
                     Text(
                       'Browse & Study',
-                      style: TextStyle(
+                      style: GoogleFonts.plusJakartaSans().copyWith(
                         fontSize: 11,
                         fontWeight: FontWeight.w500,
                         color: isDark
-                            ? const Color(0xFF94A3B8)
-                            : const Color(0xFF64748B),
+                            ? AppColors.textMutedDark
+                            : AppColors.textMutedLight,
                       ),
                     ),
                   ],
@@ -187,23 +172,8 @@ class AppHeader extends StatelessWidget {
                     width: 40,
                     height: 40,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                      gradient: const LinearGradient(
-                        colors: [
-                          Color(0xFF0D47A1),
-                          Color(0xFF2563EB),
-                        ],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color:
-                              const Color(0xFF0D47A1).withValues(alpha: 0.2),
-                          blurRadius: 8,
-                          offset: const Offset(0, 2),
-                        ),
-                      ],
+                      borderRadius: BorderRadius.circular(12),
+                      color: AppColors.primary,
                     ),
                     child: const Center(
                       child: Icon(
@@ -220,12 +190,12 @@ class AppHeader extends StatelessWidget {
                       width: 14,
                       height: 14,
                       decoration: BoxDecoration(
-                        color: const Color(0xFF10B981),
+                        color: AppColors.success,
                         shape: BoxShape.circle,
                         border: Border.all(
                           color: isDark
-                              ? const Color(0xFF070B14)
-                              : const Color(0xFFF1F5F9),
+                              ? AppColors.surfaceDark
+                              : AppColors.surfaceLight,
                           width: 2,
                         ),
                       ),
@@ -246,12 +216,12 @@ class AppHeader extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Text(
+                Text(
                   'Assalamualaikum',
-                  style: TextStyle(
+                  style: GoogleFonts.fraunces().copyWith(
                     fontSize: 13,
-                    fontWeight: FontWeight.w800,
-                    letterSpacing: -0.2,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: -0.02,
                   ),
                 ),
                 const SizedBox(height: 2),
@@ -261,18 +231,18 @@ class AppHeader extends StatelessWidget {
                       Icons.location_on,
                       size: 12,
                       color: isDark
-                          ? const Color(0xFF3B82F6)
-                          : const Color(0xFF0D47A1),
+                          ? AppColors.primaryDark
+                          : AppColors.primary,
                     ),
                     const SizedBox(width: 4),
                     Text(
                       location,
-                      style: TextStyle(
+                      style: GoogleFonts.plusJakartaSans().copyWith(
                         fontSize: 11,
                         fontWeight: FontWeight.w500,
                         color: isDark
-                            ? const Color(0xFF94A3B8)
-                            : const Color(0xFF64748B),
+                            ? AppColors.textMutedDark
+                            : AppColors.textMutedLight,
                       ),
                     ),
                     const SizedBox(width: 4),
@@ -293,8 +263,8 @@ class AppHeader extends StatelessWidget {
                           Icons.refresh,
                           size: 12,
                           color: isDark
-                              ? const Color(0xFF64748B)
-                              : const Color(0xFF94A3B8),
+                              ? AppColors.textMutedDark
+                              : AppColors.textMutedLight,
                         ),
                       ),
                     ),
@@ -336,23 +306,21 @@ class AppHeader extends StatelessWidget {
           ),
         );
       },
-      borderRadius: BorderRadius.circular(16),
+      borderRadius: BorderRadius.circular(12),
       child: Container(
         width: 40,
         height: 40,
         decoration: BoxDecoration(
-          color: isDark ? const Color(0xFF0F172A) : Colors.white,
-          borderRadius: BorderRadius.circular(16),
+          color: isDark ? AppColors.cardDark : AppColors.cardLight,
+          borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: isDark
-                ? const Color(0xFF1E293B).withValues(alpha: 0.8)
-                : const Color(0xFFE2E8F0).withValues(alpha: 0.8),
+            color: isDark ? AppColors.hairlineDark : AppColors.hairlineLight,
             width: 1,
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.05),
-              blurRadius: 4,
+              color: Colors.black.withValues(alpha: isDark ? 0.2 : 0.02),
+              blurRadius: 3,
               offset: const Offset(0, 1),
             ),
           ],
@@ -364,8 +332,8 @@ class AppHeader extends StatelessWidget {
                 Icons.notifications_outlined,
                 size: 20,
                 color: isDark
-                    ? const Color(0xFFF8FAFC)
-                    : const Color(0xFF0F172A),
+                    ? AppColors.textMainDark
+                    : AppColors.textMainLight,
               ),
             ),
             Positioned(
@@ -375,10 +343,10 @@ class AppHeader extends StatelessWidget {
                 width: 8,
                 height: 8,
                 decoration: BoxDecoration(
-                  color: const Color(0xFFEF4444),
+                  color: AppColors.roseAccent,
                   shape: BoxShape.circle,
                   border: Border.all(
-                    color: isDark ? const Color(0xFF0F172A) : Colors.white,
+                    color: isDark ? AppColors.cardDark : AppColors.cardLight,
                     width: 2,
                   ),
                 ),
@@ -393,23 +361,21 @@ class AppHeader extends StatelessWidget {
   Widget _buildQuranBookmarkButton(BuildContext context, bool isDark) {
     return InkWell(
       onTap: onToggleBookmarks,
-      borderRadius: BorderRadius.circular(16),
+      borderRadius: BorderRadius.circular(12),
       child: Container(
         width: 40,
         height: 40,
         decoration: BoxDecoration(
-          color: isDark ? const Color(0xFF0F172A) : Colors.white,
-          borderRadius: BorderRadius.circular(16),
+          color: isDark ? AppColors.cardDark : AppColors.cardLight,
+          borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: isDark
-                ? const Color(0xFF1E293B).withValues(alpha: 0.8)
-                : const Color(0xFFE2E8F0).withValues(alpha: 0.8),
+            color: isDark ? AppColors.hairlineDark : AppColors.hairlineLight,
             width: 1,
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.05),
-              blurRadius: 4,
+              color: Colors.black.withValues(alpha: isDark ? 0.2 : 0.02),
+              blurRadius: 3,
               offset: const Offset(0, 1),
             ),
           ],
@@ -419,8 +385,8 @@ class AppHeader extends StatelessWidget {
             Icons.bookmark_border,
             size: 20,
             color: isDark
-                ? const Color(0xFFF8FAFC)
-                : const Color(0xFF0F172A),
+                ? AppColors.textMainDark
+                : AppColors.textMainLight,
           ),
         ),
       ),
@@ -430,35 +396,38 @@ class AppHeader extends StatelessWidget {
   Widget _buildThemeButton(ThemeProvider themeProvider, bool isDark) {
     return InkWell(
       onTap: () => themeProvider.toggleTheme(),
-      borderRadius: BorderRadius.circular(16),
+      borderRadius: BorderRadius.circular(12),
       child: Container(
         width: 40,
         height: 40,
         decoration: BoxDecoration(
-          color: isDark ? const Color(0xFF0F172A) : Colors.white,
-          borderRadius: BorderRadius.circular(16),
+          color: isDark ? AppColors.cardDark : AppColors.cardLight,
+          borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: isDark
-                ? const Color(0xFF1E293B).withValues(alpha: 0.8)
-                : const Color(0xFFE2E8F0).withValues(alpha: 0.8),
+            color: isDark ? AppColors.hairlineDark : AppColors.hairlineLight,
             width: 1,
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.05),
-              blurRadius: 4,
+              color: Colors.black.withValues(alpha: isDark ? 0.2 : 0.02),
+              blurRadius: 3,
               offset: const Offset(0, 1),
             ),
           ],
         ),
         child: Center(
-          child: Icon(
-            isDark ? Icons.wb_sunny_outlined : Icons.nightlight_round,
-            size: 20,
-            color: isDark
-                ? const Color(0xFFF8FAFC)
-                : const Color(0xFF0F172A),
-          ),
+          child: isDark
+              ? const Icon(
+                  Icons.wb_sunny_outlined,
+                  size: 20,
+                )
+              : Transform.rotate(
+                  angle: -0.4,
+                  child: const Icon(
+                    Icons.nightlight_round,
+                    size: 20,
+                  ),
+                ),
         ),
       ),
     );
@@ -472,27 +441,25 @@ class AppHeader extends StatelessWidget {
 
     return InkWell(
       onTap: onToggleFavorites,
-      borderRadius: BorderRadius.circular(16),
+      borderRadius: BorderRadius.circular(12),
       child: Container(
         width: 40,
         height: 40,
         decoration: BoxDecoration(
           color: isActive
-              ? const Color(0xFFEF4444).withValues(alpha: isDark ? 0.2 : 0.12)
-              : (isDark ? const Color(0xFF0F172A) : Colors.white),
-          borderRadius: BorderRadius.circular(16),
+              ? AppColors.roseAccent.withValues(alpha: isDark ? 0.18 : 0.1)
+              : (isDark ? AppColors.cardDark : AppColors.cardLight),
+          borderRadius: BorderRadius.circular(12),
           border: Border.all(
             color: isActive
-                ? const Color(0xFFEF4444).withValues(alpha: 0.35)
-                : (isDark
-                    ? const Color(0xFF1E293B).withValues(alpha: 0.8)
-                    : const Color(0xFFE2E8F0).withValues(alpha: 0.8)),
+                ? AppColors.roseAccent.withValues(alpha: 0.35)
+                : (isDark ? AppColors.hairlineDark : AppColors.hairlineLight),
             width: 1,
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.05),
-              blurRadius: 4,
+              color: Colors.black.withValues(alpha: isDark ? 0.2 : 0.02),
+              blurRadius: 3,
               offset: const Offset(0, 1),
             ),
           ],
@@ -501,9 +468,7 @@ class AppHeader extends StatelessWidget {
           child: Icon(
             isActive ? Icons.favorite : Icons.favorite_border,
             size: 20,
-            color: isDark
-                ? const Color(0xFFF87171)
-                : const Color(0xFFEF4444),
+            color: AppColors.roseAccent,
           ),
         ),
       ),
@@ -529,22 +494,8 @@ class AppHeader extends StatelessWidget {
                 width: 40,
                 height: 40,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  gradient: const LinearGradient(
-                    colors: [
-                      Color(0xFF0D47A1),
-                      Color(0xFF2563EB),
-                    ],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: const Color(0xFF0D47A1).withValues(alpha: 0.2),
-                      blurRadius: 8,
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
+                  borderRadius: BorderRadius.circular(12),
+                  color: AppColors.primary,
                 ),
                 child: const Center(
                   child: Icon(
@@ -561,12 +512,12 @@ class AppHeader extends StatelessWidget {
                   width: 14,
                   height: 14,
                   decoration: BoxDecoration(
-                    color: const Color(0xFF2563EB),
+                    color: AppColors.primary,
                     shape: BoxShape.circle,
                     border: Border.all(
                       color: isDark
-                          ? const Color(0xFF070B14)
-                          : const Color(0xFFF1F5F9),
+                          ? AppColors.surfaceDark
+                          : AppColors.surfaceLight,
                       width: 2,
                     ),
                   ),
@@ -587,12 +538,12 @@ class AppHeader extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text(
+            Text(
               'Find Mosque',
-              style: TextStyle(
+              style: GoogleFonts.fraunces().copyWith(
                 fontSize: 13,
-                fontWeight: FontWeight.w800,
-                letterSpacing: -0.2,
+                fontWeight: FontWeight.w600,
+                letterSpacing: -0.02,
               ),
             ),
             const SizedBox(height: 2),
@@ -602,18 +553,18 @@ class AppHeader extends StatelessWidget {
                   Icons.location_on,
                   size: 12,
                   color: isDark
-                      ? const Color(0xFF3B82F6)
-                      : const Color(0xFF0D47A1),
+                      ? AppColors.primaryDark
+                      : AppColors.primary,
                 ),
                 const SizedBox(width: 4),
                 Text(
                   location,
-                  style: TextStyle(
+                  style: GoogleFonts.plusJakartaSans().copyWith(
                     fontSize: 11,
                     fontWeight: FontWeight.w500,
                     color: isDark
-                        ? const Color(0xFF94A3B8)
-                        : const Color(0xFF64748B),
+                        ? AppColors.textMutedDark
+                        : AppColors.textMutedLight,
                   ),
                 ),
                 const SizedBox(width: 4),
@@ -634,8 +585,8 @@ class AppHeader extends StatelessWidget {
                       Icons.refresh,
                       size: 12,
                       color: isDark
-                          ? const Color(0xFF64748B)
-                          : const Color(0xFF94A3B8),
+                          ? AppColors.textMutedDark
+                          : AppColors.textMutedLight,
                     ),
                   ),
                 ),
@@ -666,22 +617,8 @@ class AppHeader extends StatelessWidget {
                 width: 40,
                 height: 40,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  gradient: const LinearGradient(
-                    colors: [
-                      Color(0xFF0D47A1),
-                      Color(0xFF2563EB),
-                    ],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: const Color(0xFF0D47A1).withValues(alpha: 0.2),
-                      blurRadius: 8,
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
+                  borderRadius: BorderRadius.circular(12),
+                  color: AppColors.primary,
                 ),
                 child: const Center(
                   child: Icon(
@@ -698,12 +635,12 @@ class AppHeader extends StatelessWidget {
                   width: 14,
                   height: 14,
                   decoration: BoxDecoration(
-                    color: const Color(0xFF10B981),
+                    color: AppColors.success,
                     shape: BoxShape.circle,
                     border: Border.all(
                       color: isDark
-                          ? const Color(0xFF070B14)
-                          : const Color(0xFFF1F5F9),
+                          ? AppColors.surfaceDark
+                          : AppColors.surfaceLight,
                       width: 2,
                     ),
                   ),
@@ -724,12 +661,12 @@ class AppHeader extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text(
+            Text(
               'Qibla Compass',
-              style: TextStyle(
+              style: GoogleFonts.fraunces().copyWith(
                 fontSize: 13,
-                fontWeight: FontWeight.w800,
-                letterSpacing: -0.2,
+                fontWeight: FontWeight.w600,
+                letterSpacing: -0.02,
               ),
             ),
             const SizedBox(height: 2),
@@ -739,18 +676,18 @@ class AppHeader extends StatelessWidget {
                   Icons.location_on,
                   size: 12,
                   color: isDark
-                      ? const Color(0xFF3B82F6)
-                      : const Color(0xFF0D47A1),
+                      ? AppColors.primaryDark
+                      : AppColors.primary,
                 ),
                 const SizedBox(width: 4),
                 Text(
                   location,
-                  style: TextStyle(
+                  style: GoogleFonts.plusJakartaSans().copyWith(
                     fontSize: 11,
                     fontWeight: FontWeight.w500,
                     color: isDark
-                        ? const Color(0xFF94A3B8)
-                        : const Color(0xFF64748B),
+                        ? AppColors.textMutedDark
+                        : AppColors.textMutedLight,
                   ),
                 ),
                 const SizedBox(width: 4),
@@ -771,8 +708,8 @@ class AppHeader extends StatelessWidget {
                       Icons.refresh,
                       size: 12,
                       color: isDark
-                          ? const Color(0xFF64748B)
-                          : const Color(0xFF94A3B8),
+                          ? AppColors.textMutedDark
+                          : AppColors.textMutedLight,
                     ),
                   ),
                 ),

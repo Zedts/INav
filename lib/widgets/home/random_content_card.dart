@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -7,7 +8,6 @@ import '../../core/providers/verse_provider.dart';
 import '../../core/providers/hadith_provider.dart';
 import '../../core/theme/app_colors.dart';
 
-/// Swipeable card that shows a "Random Verse" and a "Random Hadist" page.
 class RandomContentCard extends StatefulWidget {
   const RandomContentCard({super.key});
 
@@ -39,8 +39,8 @@ class _RandomContentCardState extends State<RandomContentCard> {
             borderRadius: BorderRadius.circular(24),
             border: Border.all(
               color: isDark
-                  ? AppColors.borderDark.withValues(alpha: 0.8)
-                  : AppColors.borderLight.withValues(alpha: 0.8),
+                  ? AppColors.hairlineDark.withValues(alpha: 0.8)
+                  : AppColors.hairlineLight.withValues(alpha: 0.8),
               width: 1,
             ),
             boxShadow: [
@@ -48,7 +48,7 @@ class _RandomContentCardState extends State<RandomContentCard> {
                 color: (isDark ? Colors.black : Colors.grey).withValues(
                   alpha: 0.1,
                 ),
-                blurRadius: 10,
+                blurRadius: 3,
                 offset: const Offset(0, 4),
               ),
             ],
@@ -63,7 +63,6 @@ class _RandomContentCardState extends State<RandomContentCard> {
                 ],
               ),
 
-              // Dot indicators at bottom center
               Positioned(
                 left: 0,
                 right: 0,
@@ -77,8 +76,8 @@ class _RandomContentCardState extends State<RandomContentCard> {
                           ? AppColors.primaryDark
                           : AppColors.primaryLight,
                       dotColor: isDark
-                          ? const Color(0xFF475569).withValues(alpha: 0.5)
-                          : const Color(0xFF94A3B8).withValues(alpha: 0.5),
+                          ? AppColors.textMutedLight.withValues(alpha: 0.2)
+                          : AppColors.textMutedDark.withValues(alpha: 0.2),
                       dotHeight: 6,
                       dotWidth: 8,
                       expansionFactor: 2.8,
@@ -94,7 +93,6 @@ class _RandomContentCardState extends State<RandomContentCard> {
     );
   }
 
-  /// Shared copy/share bottom sheet — reused by both pages
   void _showShareOptions(
     BuildContext context, {
     required String shareText,
@@ -104,17 +102,17 @@ class _RandomContentCardState extends State<RandomContentCard> {
     showModalBottomSheet(
       context: context,
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),
       builder: (bottomSheetContext) {
         final isDark = Theme.of(context).brightness == Brightness.dark;
+        final plusJakarta = GoogleFonts.plusJakartaSans();
 
         return Container(
           padding: const EdgeInsets.symmetric(vertical: 20),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // Handle bar
               Container(
                 width: 40,
                 height: 4,
@@ -127,10 +125,9 @@ class _RandomContentCardState extends State<RandomContentCard> {
                 ),
               ),
 
-              // Title
               Text(
                 'Share $snackLabel',
-                style: TextStyle(
+                style: plusJakarta.copyWith(
                   fontSize: 16,
                   fontWeight: FontWeight.w700,
                   color: isDark
@@ -141,7 +138,6 @@ class _RandomContentCardState extends State<RandomContentCard> {
 
               const SizedBox(height: 20),
 
-              // Copy option
               ListTile(
                 leading: Icon(
                   Icons.copy_outlined,
@@ -151,7 +147,7 @@ class _RandomContentCardState extends State<RandomContentCard> {
                 ),
                 title: Text(
                   'Copy to Clipboard',
-                  style: TextStyle(
+                  style: plusJakarta.copyWith(
                     color: isDark
                         ? AppColors.textMainDark
                         : AppColors.textMainLight,
@@ -172,7 +168,6 @@ class _RandomContentCardState extends State<RandomContentCard> {
                 },
               ),
 
-              // Share option
               ListTile(
                 leading: Icon(
                   Icons.share_outlined,
@@ -182,7 +177,7 @@ class _RandomContentCardState extends State<RandomContentCard> {
                 ),
                 title: Text(
                   'Share via...',
-                  style: TextStyle(
+                  style: plusJakarta.copyWith(
                     color: isDark
                         ? AppColors.textMainDark
                         : AppColors.textMainLight,
@@ -206,7 +201,6 @@ class _RandomContentCardState extends State<RandomContentCard> {
   }
 }
 
-/// Callback signature for opening the shared share sheet
 typedef ShareCallback =
     void Function(
       BuildContext context, {
@@ -215,9 +209,6 @@ typedef ShareCallback =
       required String snackLabel,
     });
 
-/// ------------------------------------------------------------------
-/// Page 1: Random Verse
-/// ------------------------------------------------------------------
 class _RandomVersePage extends StatelessWidget {
   final bool isDark;
   final ShareCallback onShare;
@@ -282,9 +273,6 @@ class _RandomVersePage extends StatelessWidget {
   }
 }
 
-/// ------------------------------------------------------------------
-/// Page 2: Random Hadist
-/// ------------------------------------------------------------------
 class _RandomHadithPage extends StatelessWidget {
   final bool isDark;
   final ShareCallback onShare;
@@ -354,7 +342,6 @@ class _RandomHadithPage extends StatelessWidget {
   }
 }
 
-/// Shared page shell: header row (badge + optional share icon) then content
 class _ContentPageScaffold extends StatelessWidget {
   final bool isDark;
   final Color accent;
@@ -376,11 +363,12 @@ class _ContentPageScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final plusJakarta = GoogleFonts.plusJakartaSans();
+
     return GestureDetector(
       onTap: onShare,
       behavior: HitTestBehavior.opaque,
       child: Padding(
-        // Extra bottom padding leaves room for the dot indicators
         padding: const EdgeInsets.fromLTRB(20, 20, 20, 28),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -394,7 +382,7 @@ class _ContentPageScaffold extends StatelessWidget {
                     const SizedBox(width: 6),
                     Text(
                       headerLabel,
-                      style: TextStyle(
+                      style: plusJakarta.copyWith(
                         fontSize: 11,
                         fontWeight: FontWeight.w700,
                         color: accent,
@@ -422,7 +410,6 @@ class _ContentPageScaffold extends StatelessWidget {
   }
 }
 
-/// Arabic + translation + reference, scrollable for long content
 class _ContentBody extends StatelessWidget {
   final bool isDark;
   final String arabic;
@@ -438,32 +425,32 @@ class _ContentBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final fraunces = GoogleFonts.fraunces();
+    final plusJakarta = GoogleFonts.plusJakartaSans();
+
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Arabic text (RTL)
           Directionality(
             textDirection: TextDirection.rtl,
             child: Text(
               arabic,
-              style: TextStyle(
+              style: fraunces.copyWith(
                 fontSize: 18,
                 fontWeight: FontWeight.w700,
                 color: isDark
                     ? AppColors.textMainDark
                     : AppColors.textMainLight,
                 height: 1.8,
-                fontFamily: 'serif',
               ),
             ),
           ),
           const SizedBox(height: 12),
 
-          // Translation
           Text(
             '"$translation"',
-            style: TextStyle(
+            style: plusJakarta.copyWith(
               fontSize: 12,
               fontWeight: FontWeight.w600,
               color: isDark
@@ -475,15 +462,14 @@ class _ContentBody extends StatelessWidget {
           ),
           const SizedBox(height: 12),
 
-          // Reference
           Text(
             reference,
-            style: TextStyle(
+            style: plusJakarta.copyWith(
               fontSize: 10,
               fontWeight: FontWeight.w700,
               color: isDark
-                  ? const Color(0xFF64748B) // slate-500
-                  : const Color(0xFF94A3B8), // slate-400
+                  ? AppColors.textMutedLight
+                  : AppColors.textMutedDark,
             ),
           ),
         ],
@@ -500,6 +486,8 @@ class _LoadingState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final plusJakarta = GoogleFonts.plusJakartaSans();
+
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -508,7 +496,7 @@ class _LoadingState extends StatelessWidget {
           const SizedBox(height: 12),
           Text(
             'Loading...',
-            style: TextStyle(
+            style: plusJakarta.copyWith(
               fontSize: 12,
               color: isDark
                   ? AppColors.textMutedDark
@@ -536,6 +524,8 @@ class _ErrorState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final plusJakarta = GoogleFonts.plusJakartaSans();
+
     return Center(
       child: SingleChildScrollView(
         child: Column(
@@ -549,7 +539,7 @@ class _ErrorState extends StatelessWidget {
             const SizedBox(height: 12),
             Text(
               message,
-              style: TextStyle(
+              style: plusJakarta.copyWith(
                 fontSize: 12,
                 color: isDark
                     ? AppColors.textMutedDark
@@ -569,7 +559,7 @@ class _ErrorState extends StatelessWidget {
                   horizontal: 20,
                   vertical: 10,
                 ),
-                textStyle: const TextStyle(
+                textStyle: plusJakarta.copyWith(
                   fontSize: 12,
                   fontWeight: FontWeight.w600,
                 ),
@@ -590,10 +580,12 @@ class _EmptyState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final plusJakarta = GoogleFonts.plusJakartaSans();
+
     return Center(
       child: Text(
         message,
-        style: TextStyle(
+        style: plusJakarta.copyWith(
           fontSize: 12,
           color: isDark ? AppColors.textMutedDark : AppColors.textMutedLight,
         ),

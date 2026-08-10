@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
+import '../../core/theme/app_colors.dart';
 
-/// Pill badge used as a section label on cards and banners
-class GlassPillBadge extends StatelessWidget {
+class PillBadge extends StatelessWidget {
   final String label;
   final IconData? icon;
   final Color? textColor;
+  final Color? backgroundColor;
   final bool showPulsingDot;
   final Color? pulsingDotColor;
 
-  const GlassPillBadge({
+  const PillBadge({
     super.key,
     required this.label,
     this.icon,
     this.textColor,
+    this.backgroundColor,
     this.showPulsingDot = false,
     this.pulsingDotColor,
   });
@@ -20,38 +22,30 @@ class GlassPillBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final defaultTextColor = textColor ??
+    final defaultTextColor = textColor ?? AppColors.primary;
+    final defaultBgColor = backgroundColor ??
         (isDark
-            ? const Color(0xFF93C5FD) // blue-300
-            : const Color(0xFF1E3A8A)); // blue-900
+            ? AppColors.primaryDark.withValues(alpha: 0.12)
+            : AppColors.primary.withValues(alpha: 0.08));
+    final defaultBorderColor =
+        isDark ? AppColors.hairlineDark : AppColors.hairlineLight;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
-        color: isDark
-            ? Colors.white.withValues(alpha: 0.08)
-            : const Color(0xFFF1F5F9),
-        borderRadius: BorderRadius.circular(20),
+        color: defaultBgColor,
+        borderRadius: BorderRadius.circular(999),
         border: Border.all(
-          color: isDark
-              ? Colors.white.withValues(alpha: 0.15)
-              : const Color(0xFFE2E8F0),
+          color: defaultBorderColor,
           width: 1,
         ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
-            blurRadius: 4,
-            offset: const Offset(0, 2),
-          ),
-        ],
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           if (showPulsingDot) ...[
             _PulsingDot(
-              color: pulsingDotColor ?? const Color(0xFF10B981), // emerald-500
+              color: pulsingDotColor ?? AppColors.primary,
             ),
             const SizedBox(width: 6),
           ],
@@ -67,7 +61,7 @@ class GlassPillBadge extends StatelessWidget {
             label,
             style: TextStyle(
               fontSize: 11,
-              fontWeight: FontWeight.w800,
+              fontWeight: FontWeight.w700,
               color: defaultTextColor,
               letterSpacing: 0.5,
             ),
@@ -78,7 +72,6 @@ class GlassPillBadge extends StatelessWidget {
   }
 }
 
-/// Pulsing dot animation for badge
 class _PulsingDot extends StatefulWidget {
   final Color color;
 
@@ -127,9 +120,9 @@ class _PulsingDotState extends State<_PulsingDot>
             color: widget.color,
             boxShadow: [
               BoxShadow(
-                color: widget.color.withValues(alpha: 0.6),
-                blurRadius: 4 * _animation.value,
-                spreadRadius: 1 * _animation.value,
+                color: widget.color.withValues(alpha: 0.4),
+                blurRadius: 3 * _animation.value,
+                spreadRadius: 0.5 * _animation.value,
               ),
             ],
           ),

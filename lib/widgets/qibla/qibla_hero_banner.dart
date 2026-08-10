@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../core/models/qibla_model.dart';
+import '../../core/theme/app_colors.dart';
 
-/// Hero banner for the Qibla screen: bearing badge + headline + distance.
-/// Glows emerald while the device is facing the Qibla.
 class QiblaHeroBanner extends StatelessWidget {
   final QiblaModel? qiblaData;
   final String cityName;
@@ -36,30 +36,27 @@ class QiblaHeroBanner extends StatelessWidget {
           boxShadow: isAligned
               ? [
                   BoxShadow(
-                    color: const Color(0xFF10B981).withValues(alpha: 0.6),
-                    blurRadius: 45,
+                    color: AppColors.success.withValues(alpha: 0.2),
+                    blurRadius: 3,
                     spreadRadius: -5,
                   ),
                 ]
               : [
-                  // Indigo glow (top-left)
                   BoxShadow(
-                    color: const Color(0xFF4F46E5).withValues(alpha: 0.3),
-                    blurRadius: 60,
+                    color: const Color(0xFF4F46E5).withValues(alpha: 0.2),
+                    blurRadius: 3,
                     spreadRadius: -10,
                     offset: const Offset(-20, -20),
                   ),
-                  // Amber glow (bottom-right)
                   BoxShadow(
-                    color: const Color(0xFFD97706).withValues(alpha: 0.25),
-                    blurRadius: 70,
+                    color: AppColors.roseAccent.withValues(alpha: 0.2),
+                    blurRadius: 3,
                     spreadRadius: -10,
                     offset: const Offset(20, 20),
                   ),
-                  // Teal glow (center)
                   BoxShadow(
-                    color: const Color(0xFF0D9488).withValues(alpha: 0.15),
-                    blurRadius: 50,
+                    color: AppColors.teal.withValues(alpha: 0.15),
+                    blurRadius: 3,
                     spreadRadius: -15,
                     offset: const Offset(0, 10),
                   ),
@@ -68,14 +65,14 @@ class QiblaHeroBanner extends StatelessWidget {
         child: Container(
           constraints: const BoxConstraints(minHeight: 110),
           decoration: BoxDecoration(
-            color: isDark ? const Color(0xFF0F172A) : Colors.white,
+            color: isDark ? AppColors.cardDark : Colors.white,
             borderRadius: BorderRadius.circular(24),
             border: Border.all(
               color: isAligned
-                  ? const Color(0xFF10B981).withValues(alpha: 0.8)
+                  ? AppColors.success.withValues(alpha: 0.8)
                   : isDark
-                      ? const Color(0xFF1E293B)
-                      : const Color(0xFFE2E8F0),
+                      ? AppColors.hairlineDark
+                      : AppColors.hairlineLight,
               width: 1,
             ),
           ),
@@ -95,25 +92,25 @@ class QiblaHeroBanner extends StatelessWidget {
                           const SizedBox(height: 6),
                           Text(
                             bearingText,
-                            style: TextStyle(
+                            style: GoogleFonts.fraunces(
                               fontSize: 30,
                               fontWeight: FontWeight.w900,
                               letterSpacing: -0.5,
                               color: isDark
                                   ? Colors.white
-                                  : const Color(0xFF0F172A),
+                                  : AppColors.textMainLight,
                               height: 1.1,
                             ),
                           ),
                           const SizedBox(height: 2),
                           Text(
                             sublineText,
-                            style: TextStyle(
+                            style: GoogleFonts.plusJakartaSans(
                               fontSize: 11,
                               fontWeight: FontWeight.w600,
                               color: isDark
-                                  ? const Color(0xFFCBD5E1)
-                                  : const Color(0xFF334155),
+                                  ? AppColors.textMutedDark
+                                  : AppColors.textMutedLight,
                             ),
                           ),
                         ],
@@ -126,25 +123,25 @@ class QiblaHeroBanner extends StatelessWidget {
                       children: [
                         Text(
                           'DISTANCE',
-                          style: TextStyle(
+                          style: GoogleFonts.plusJakartaSans(
                             fontSize: 10,
                             fontWeight: FontWeight.w700,
                             letterSpacing: 1.5,
                             color: isDark
-                                ? const Color(0xFF94A3B8)
-                                : const Color(0xFF475569),
+                                ? AppColors.textMutedDark
+                                : AppColors.textMutedLight,
                           ),
                         ),
                         const SizedBox(height: 2),
                         Text(
                           distanceText,
-                          style: TextStyle(
+                          style: GoogleFonts.fraunces(
                             fontSize: 18,
                             fontWeight: FontWeight.w900,
                             letterSpacing: -0.3,
                             color: isDark
                                 ? Colors.white
-                                : const Color(0xFF0F172A),
+                                : AppColors.textMainLight,
                           ),
                         ),
                       ],
@@ -164,20 +161,20 @@ class QiblaHeroBanner extends StatelessWidget {
       return Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
         decoration: BoxDecoration(
-          color: const Color(0xFF10B981),
-          borderRadius: BorderRadius.circular(20),
+          color: AppColors.success,
+          borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: const Color(0xFF10B981).withValues(alpha: 0.4),
-              blurRadius: 8,
+              color: AppColors.success.withValues(alpha: 0.2),
+              blurRadius: 3,
               offset: const Offset(0, 2),
             ),
           ],
         ),
-        child: const Row(
+        child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            SizedBox(
+            const SizedBox(
               width: 8,
               height: 8,
               child: DecoratedBox(
@@ -187,10 +184,10 @@ class QiblaHeroBanner extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(width: 6),
+            const SizedBox(width: 6),
             Text(
               'ALIGNED WITH KAABA',
-              style: TextStyle(
+              style: GoogleFonts.plusJakartaSans(
                 fontSize: 11,
                 fontWeight: FontWeight.w900,
                 letterSpacing: 0.5,
@@ -207,12 +204,12 @@ class QiblaHeroBanner extends StatelessWidget {
       decoration: BoxDecoration(
         color: isDark
             ? Colors.white.withValues(alpha: 0.08)
-            : Colors.white.withValues(alpha: 0.3),
-        borderRadius: BorderRadius.circular(20),
+            : Colors.white.withValues(alpha: 0.2),
+        borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color: isDark
               ? Colors.white.withValues(alpha: 0.15)
-              : Colors.white.withValues(alpha: 0.4),
+              : Colors.white.withValues(alpha: 0.2),
           width: 1,
         ),
       ),
@@ -224,7 +221,7 @@ class QiblaHeroBanner extends StatelessWidget {
             height: 8,
             child: DecoratedBox(
               decoration: BoxDecoration(
-                color: Color(0xFFF59E0B),
+                color: AppColors.roseAccent,
                 shape: BoxShape.circle,
               ),
             ),
@@ -232,7 +229,7 @@ class QiblaHeroBanner extends StatelessWidget {
           const SizedBox(width: 6),
           Text(
             'QIBLA BEARING',
-            style: TextStyle(
+            style: GoogleFonts.plusJakartaSans(
               fontSize: 11,
               fontWeight: FontWeight.w800,
               letterSpacing: 0.5,

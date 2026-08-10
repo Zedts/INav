@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-/// Shimmering placeholder shown while a screen's provider is loading.
-///
-/// Wraps [Bone]-based section placeholders in a [Skeletonizer.zone] so every
-/// screen shares the exact same loading look. Used by home, mosque and qibla.
 class ScreenSkeleton extends StatelessWidget {
   final List<Widget> children;
 
@@ -25,7 +21,6 @@ class ScreenSkeleton extends StatelessWidget {
   }
 }
 
-/// A rounded skeleton block shaped like one of the screen's cards/sections.
 class SectionSkeleton extends StatelessWidget {
   final double height;
   final double? width;
@@ -48,7 +43,6 @@ class SectionSkeleton extends StatelessWidget {
   }
 }
 
-/// A circular skeleton (e.g. the qibla compass dial).
 class CircleSkeleton extends StatelessWidget {
   final double size;
 

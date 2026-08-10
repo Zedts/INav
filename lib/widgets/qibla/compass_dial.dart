@@ -1,17 +1,19 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../../core/providers/qibla_provider.dart';
+import '../../core/theme/app_colors.dart';
 
-/// The Qibla compass dial: glass face, rotating ring with ticks, cardinal
+/// The Qibla compass dial: minimalist face, rotating ring with ticks, cardinal
 /// labels and the Kaaba pin sitting on the dial's circumference, center
 /// readout and the accuracy badge underneath.
 ///
 /// The compass starts automatically — there is no enable overlay or
 /// manual mode.
 class CompassDial extends StatelessWidget {
-  /// Diameter of the glass dial face
+  /// Diameter of the dial face
   static const double _dialSize = 260;
 
   /// Outer box size — extra room so the Kaaba pin can sit on the rim
@@ -55,12 +57,14 @@ class CompassDial extends StatelessWidget {
                   Icons.arrow_drop_down,
                   size: 40,
                   color: isAligned
-                      ? const Color(0xFF10B981)
-                      : const Color(0xFF94A3B8),
+                      ? AppColors.primary
+                      : (isDark
+                          ? AppColors.textMutedDark
+                          : AppColors.textMutedLight),
                 ),
               ),
 
-              // Glass dial face with decorative rings
+              // Minimalist dial face with decorative rings
               Center(
                 child: SizedBox(
                   width: _dialSize,
@@ -72,22 +76,19 @@ class CompassDial extends StatelessWidget {
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: isDark
-                                ? const Color(0xFF0F172A)
-                                : Colors.white,
+                                ? AppColors.cardDark
+                                : AppColors.cardLight,
                             border: Border.all(
                               color: isDark
-                                  ? const Color(0xFF1E293B)
-                                  : const Color(0xFFE2E8F0),
+                                  ? AppColors.hairlineDark
+                                  : AppColors.hairlineLight,
                               width: 1,
                             ),
                             boxShadow: [
                               BoxShadow(
-                                color: isDark
-                                    ? Colors.black.withValues(alpha: 0.5)
-                                    : const Color(0xFF4F46E5)
-                                        .withValues(alpha: 0.18),
-                                blurRadius: 40,
-                                offset: const Offset(0, 18),
+                                color: Colors.black.withValues(alpha: isDark ? 0.2 : 0.02),
+                                blurRadius: 3,
+                                offset: const Offset(0, 1),
                               ),
                             ],
                           ),
@@ -101,10 +102,10 @@ class CompassDial extends StatelessWidget {
                           child: CustomPaint(
                             painter: _DashedCirclePainter(
                               color: isDark
-                                  ? const Color(0xFF334155)
-                                      .withValues(alpha: 0.6)
-                                  : const Color(0xFFCBD5E1)
-                                      .withValues(alpha: 0.6),
+                                  ? AppColors.textMutedDark
+                                      .withValues(alpha: 0.4)
+                                  : AppColors.textMutedLight
+                                      .withValues(alpha: 0.4),
                             ),
                           ),
                         ),
@@ -117,10 +118,8 @@ class CompassDial extends StatelessWidget {
                             shape: BoxShape.circle,
                             border: Border.all(
                               color: isDark
-                                  ? const Color(0xFF1E293B)
-                                      .withValues(alpha: 0.5)
-                                  : const Color(0xFFE2E8F0)
-                                      .withValues(alpha: 0.7),
+                                  ? AppColors.hairlineDark
+                                  : AppColors.hairlineLight,
                               width: 1,
                             ),
                           ),
@@ -185,13 +184,15 @@ class CompassDial extends StatelessWidget {
       final Color color;
       final double fontSize;
       if (label.text == 'N') {
-        color = const Color(0xFFF43F5E);
+        color = AppColors.roseAccent;
         fontSize = 14;
       } else if (label.major) {
-        color = isDark ? const Color(0xFF94A3B8) : const Color(0xFF64748B);
+        color = isDark ? AppColors.textMutedDark : AppColors.textMutedLight;
         fontSize = 12;
       } else {
-        color = isDark ? const Color(0xFF64748B) : const Color(0xFF94A3B8);
+        color = isDark
+            ? AppColors.textMutedDark.withValues(alpha: 0.65)
+            : AppColors.textMutedLight.withValues(alpha: 0.65);
         fontSize = 10;
       }
 
@@ -207,9 +208,9 @@ class CompassDial extends StatelessWidget {
                 angle: headingRad - angleRad,
                 child: Text(
                   label.text,
-                  style: TextStyle(
+                  style: GoogleFonts.plusJakartaSans().copyWith(
                     fontSize: fontSize,
-                    fontWeight: FontWeight.w900,
+                    fontWeight: FontWeight.w700,
                     color: color,
                   ),
                 ),
@@ -244,25 +245,25 @@ class CompassDial extends StatelessWidget {
                     width: 36,
                     height: 36,
                     decoration: BoxDecoration(
-                      color: const Color(0xFF0F172A),
+                      color: AppColors.cardDark,
                       shape: BoxShape.circle,
                       border: Border.all(
-                        color: const Color(0xFFFBBF24),
+                        color: AppColors.roseAccent,
                         width: 2,
                       ),
                       boxShadow: [
                         BoxShadow(
                           color:
-                              const Color(0xFFF59E0B).withValues(alpha: 0.4),
-                          blurRadius: 8,
-                          offset: const Offset(0, 2),
+                              Colors.black.withValues(alpha: 0.15),
+                          blurRadius: 3,
+                          offset: const Offset(0, 1),
                         ),
                       ],
                     ),
-                    child: const Icon(
+                    child: Icon(
                       Icons.mosque,
                       size: 18,
-                      color: Color(0xFFFBBF24),
+                      color: AppColors.roseAccent,
                     ),
                   ),
                   const SizedBox(height: 2),
@@ -272,16 +273,16 @@ class CompassDial extends StatelessWidget {
                       vertical: 2,
                     ),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFF59E0B),
-                      borderRadius: BorderRadius.circular(10),
+                      color: AppColors.roseAccent,
+                      borderRadius: BorderRadius.circular(12),
                     ),
-                    child: const Text(
+                    child: Text(
                       'KAABA',
-                      style: TextStyle(
+                      style: GoogleFonts.plusJakartaSans().copyWith(
                         fontSize: 8,
-                        fontWeight: FontWeight.w900,
+                        fontWeight: FontWeight.w700,
                         letterSpacing: 0.3,
-                        color: Color(0xFF0F172A),
+                        color: Colors.white,
                       ),
                     ),
                   ),
@@ -301,23 +302,23 @@ class CompassDial extends StatelessWidget {
       height: 112,
       decoration: BoxDecoration(
         color: isDark
-            ? const Color(0xFF1E293B)
-            : const Color(0xFFF1F5F9),
+            ? AppColors.surfaceDark
+            : AppColors.surfaceLight,
         shape: BoxShape.circle,
         border: Border.all(
           color: isAligned
-              ? const Color(0xFF10B981).withValues(alpha: 0.7)
+              ? AppColors.primary.withValues(alpha: 0.7)
               : isDark
-                  ? Colors.white.withValues(alpha: 0.2)
-                  : Colors.white.withValues(alpha: 0.6),
+                  ? AppColors.hairlineDark
+                  : AppColors.hairlineLight,
           width: 1,
         ),
         boxShadow: isAligned
             ? [
                 BoxShadow(
-                  color: const Color(0xFF10B981).withValues(alpha: 0.35),
-                  blurRadius: 24,
-                  spreadRadius: 4,
+                  color: AppColors.primary.withValues(alpha: 0.15),
+                  blurRadius: 3,
+                  spreadRadius: 2,
                 ),
               ]
             : [],
@@ -328,16 +329,16 @@ class CompassDial extends StatelessWidget {
           Icon(
             Icons.explore,
             size: 20,
-            color: isDark ? const Color(0xFF818CF8) : const Color(0xFF4F46E5),
+            color: isDark ? AppColors.primaryDark : AppColors.primary,
           ),
           const SizedBox(height: 2),
           Text(
             '${heading.round()}°',
-            style: TextStyle(
+            style: GoogleFonts.fraunces().copyWith(
               fontSize: 18,
-              fontWeight: FontWeight.w900,
+              fontWeight: FontWeight.w600,
               fontFeatures: const [FontFeature.tabularFigures()],
-              color: isDark ? const Color(0xFFF8FAFC) : const Color(0xFF0F172A),
+              color: isDark ? AppColors.textMainDark : AppColors.textMainLight,
               height: 1,
             ),
           ),
@@ -349,16 +350,16 @@ class CompassDial extends StatelessWidget {
               textAlign: TextAlign.center,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
-              style: TextStyle(
+              style: GoogleFonts.plusJakartaSans().copyWith(
                 fontSize: 9,
-                fontWeight: FontWeight.w700,
+                fontWeight: FontWeight.w600,
                 letterSpacing: 0.5,
                 height: 1.2,
                 color: isAligned
-                    ? const Color(0xFF10B981)
+                    ? AppColors.primary
                     : isDark
-                        ? const Color(0xFF94A3B8)
-                        : const Color(0xFF64748B),
+                        ? AppColors.textMutedDark
+                        : AppColors.textMutedLight,
               ),
             ),
           ),
@@ -370,23 +371,23 @@ class CompassDial extends StatelessWidget {
   Widget _buildAccuracyBadge(bool isDark) {
     final (Color dotColor, Color textColor, String label) = switch (status) {
       CompassStatus.calibrated => (
-          const Color(0xFF10B981),
-          isDark ? const Color(0xFF34D399) : const Color(0xFF059669),
+          AppColors.primary,
+          isDark ? AppColors.primaryDark : AppColors.primary,
           'Calibrated',
         ),
       CompassStatus.approximate => (
-          const Color(0xFFF59E0B),
-          isDark ? const Color(0xFFFBBF24) : const Color(0xFFD97706),
+          AppColors.roseAccent,
+          isDark ? AppColors.roseAccent.withValues(alpha: 0.9) : AppColors.roseAccent,
           'Approximate',
         ),
       CompassStatus.unavailable => (
-          const Color(0xFFF43F5E),
-          isDark ? const Color(0xFFFB7185) : const Color(0xFFE11D48),
+          AppColors.roseAccent,
+          isDark ? AppColors.roseAccent.withValues(alpha: 0.9) : AppColors.roseAccent,
           'Sensor unavailable',
         ),
       CompassStatus.initializing => (
-          const Color(0xFF94A3B8),
-          isDark ? const Color(0xFF94A3B8) : const Color(0xFF64748B),
+          AppColors.textMutedLight,
+          isDark ? AppColors.textMutedDark : AppColors.textMutedLight,
           'Starting compass…',
         ),
     };
@@ -394,8 +395,19 @@ class CompassDial extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF1E293B) : const Color(0xFFF1F5F9),
-        borderRadius: BorderRadius.circular(20),
+        color: isDark ? AppColors.cardDark : AppColors.cardLight,
+        borderRadius: BorderRadius.circular(999),
+        border: Border.all(
+          color: isDark ? AppColors.hairlineDark : AppColors.hairlineLight,
+          width: 1,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: isDark ? 0.2 : 0.02),
+            blurRadius: 3,
+            offset: const Offset(0, 1),
+          ),
+        ],
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -411,9 +423,9 @@ class CompassDial extends StatelessWidget {
           const SizedBox(width: 6),
           Text(
             label,
-            style: TextStyle(
+            style: GoogleFonts.plusJakartaSans().copyWith(
               fontSize: 11,
-              fontWeight: FontWeight.w700,
+              fontWeight: FontWeight.w600,
               color: textColor,
             ),
           ),
@@ -437,14 +449,14 @@ class _TicksPainter extends CustomPainter {
 
     final minorPaint = Paint()
       ..color = isDark
-          ? const Color(0xFF94A3B8).withValues(alpha: 0.3)
-          : const Color(0xFF64748B).withValues(alpha: 0.35)
+          ? AppColors.textMutedDark.withValues(alpha: 0.3)
+          : AppColors.textMutedLight.withValues(alpha: 0.35)
       ..strokeWidth = 2
       ..strokeCap = StrokeCap.round;
     final majorPaint = Paint()
       ..color = isDark
-          ? const Color(0xFF94A3B8).withValues(alpha: 0.55)
-          : const Color(0xFF64748B).withValues(alpha: 0.6)
+          ? AppColors.textMutedDark.withValues(alpha: 0.55)
+          : AppColors.textMutedLight.withValues(alpha: 0.6)
       ..strokeWidth = 3
       ..strokeCap = StrokeCap.round;
 

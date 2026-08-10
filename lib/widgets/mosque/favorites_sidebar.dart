@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../core/providers/mosque_provider.dart';
+import '../../core/theme/app_colors.dart';
 import '../../core/models/mosque_model.dart';
 
 class FavoritesSidebar extends StatelessWidget {
@@ -27,7 +29,7 @@ class FavoritesSidebar extends StatelessWidget {
               duration: const Duration(milliseconds: 300),
               curve: Curves.easeOut,
               color: isOpen
-                  ? Colors.black.withValues(alpha: 0.6)
+                  ? Colors.black.withValues(alpha: 0.2)
                   : Colors.transparent,
               child: isOpen
                   ? GestureDetector(
@@ -49,19 +51,19 @@ class FavoritesSidebar extends StatelessWidget {
             child: Container(
               width: 280,
               decoration: BoxDecoration(
-                color: isDark ? const Color(0xFF0F172A) : Colors.white,
+                color: isDark ? AppColors.cardDark : Colors.white,
                 border: Border(
                   right: BorderSide(
                     color: isDark
-                        ? const Color(0xFF1E293B).withValues(alpha: 0.5)
-                        : const Color(0xFFE2E8F0).withValues(alpha: 0.5),
+                        ? AppColors.hairlineDark.withValues(alpha: 0.5)
+                        : AppColors.hairlineLight.withValues(alpha: 0.5),
                     width: 1,
                   ),
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.35),
-                    blurRadius: 40,
+                    color: Colors.black.withValues(alpha: 0.2),
+                    blurRadius: 3,
                     offset: const Offset(4, 0),
                   ),
                 ],
@@ -106,8 +108,8 @@ class FavoritesSidebar extends StatelessWidget {
         border: Border(
           bottom: BorderSide(
             color: isDark
-                ? const Color(0xFF1E293B).withValues(alpha: 0.8)
-                : const Color(0xFFE2E8F0).withValues(alpha: 0.8),
+                ? AppColors.hairlineDark.withValues(alpha: 0.8)
+                : AppColors.hairlineLight.withValues(alpha: 0.8),
             width: 1,
           ),
         ),
@@ -118,20 +120,20 @@ class FavoritesSidebar extends StatelessWidget {
             width: 36,
             height: 36,
             decoration: BoxDecoration(
-              color: const Color(0xFFEF4444).withValues(alpha: 0.1),
+              color: AppColors.roseAccent.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(12),
             ),
             child: const Icon(
               Icons.favorite,
               size: 20,
-              color: Color(0xFFEF4444),
+              color: AppColors.roseAccent,
             ),
           ),
           const SizedBox(width: 12),
-          const Expanded(
+          Expanded(
             child: Text(
               'Favorites',
-              style: TextStyle(
+              style: GoogleFonts.fraunces().copyWith(
                 fontSize: 17,
                 fontWeight: FontWeight.w800,
                 letterSpacing: -0.2,
@@ -144,15 +146,15 @@ class FavoritesSidebar extends StatelessWidget {
               width: 32,
               height: 32,
               decoration: BoxDecoration(
-                color: isDark ? const Color(0xFF1E293B) : const Color(0xFFF1F5F9),
-                borderRadius: BorderRadius.circular(8),
+                color: isDark ? AppColors.cardDark : AppColors.cardLight,
+                borderRadius: BorderRadius.circular(12),
               ),
               child: Icon(
                 Icons.close,
                 size: 18,
                 color: isDark
-                    ? const Color(0xFF94A3B8)
-                    : const Color(0xFF64748B),
+                    ? AppColors.textMutedDark
+                    : AppColors.textMutedLight,
               ),
             ),
           ),
@@ -170,18 +172,18 @@ class FavoritesSidebar extends StatelessWidget {
             Icons.favorite_border,
             size: 40,
             color: isDark
-                ? const Color(0xFF64748B).withValues(alpha: 0.4)
-                : const Color(0xFF94A3B8).withValues(alpha: 0.4),
+                ? AppColors.textMutedLight.withValues(alpha: 0.4)
+                : AppColors.textMutedDark.withValues(alpha: 0.4),
           ),
           const SizedBox(height: 8),
           Text(
             'No favorites yet',
-            style: TextStyle(
+            style: GoogleFonts.plusJakartaSans().copyWith(
               fontSize: 11,
               fontWeight: FontWeight.w700,
               color: isDark
-                  ? const Color(0xFF64748B).withValues(alpha: 0.6)
-                  : const Color(0xFF94A3B8).withValues(alpha: 0.6),
+                  ? AppColors.textMutedLight.withValues(alpha: 0.6)
+                  : AppColors.textMutedDark.withValues(alpha: 0.6),
             ),
           ),
         ],
@@ -214,8 +216,8 @@ class FavoritesSidebar extends StatelessWidget {
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
                 color: isDark
-                    ? const Color(0xFF1E293B).withValues(alpha: 0.5)
-                    : const Color(0xFFF8FAFC),
+                    ? AppColors.cardDark.withValues(alpha: 0.2)
+                    : AppColors.surfaceLight,
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Row(
@@ -224,13 +226,13 @@ class FavoritesSidebar extends StatelessWidget {
                     width: 32,
                     height: 32,
                     decoration: BoxDecoration(
-                      color: const Color(0xFFEF4444).withValues(alpha: 0.15),
-                      borderRadius: BorderRadius.circular(8),
+                      color: AppColors.roseAccent.withValues(alpha: 0.15),
+                      borderRadius: BorderRadius.circular(12),
                     ),
                     child: const Icon(
                       Icons.mosque,
                       size: 16,
-                      color: Color(0xFFEF4444),
+                      color: AppColors.roseAccent,
                     ),
                   ),
                   const SizedBox(width: 12),
@@ -240,12 +242,12 @@ class FavoritesSidebar extends StatelessWidget {
                       children: [
                         Text(
                           mosque.name,
-                          style: TextStyle(
+                          style: GoogleFonts.plusJakartaSans().copyWith(
                             fontSize: 13,
                             fontWeight: FontWeight.w700,
                             color: isDark
-                                ? const Color(0xFFF8FAFC)
-                                : const Color(0xFF0F172A),
+                                ? AppColors.textMainDark
+                                : AppColors.textMainLight,
                           ),
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
@@ -253,12 +255,12 @@ class FavoritesSidebar extends StatelessWidget {
                         const SizedBox(height: 2),
                         Text(
                           '${mosque.formattedDistance} · ${mosque.address}',
-                          style: TextStyle(
+                          style: GoogleFonts.plusJakartaSans().copyWith(
                             fontSize: 10,
                             fontWeight: FontWeight.w500,
                             color: isDark
-                                ? const Color(0xFF94A3B8)
-                                : const Color(0xFF64748B),
+                                ? AppColors.textMutedDark
+                                : AppColors.textMutedLight,
                           ),
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
@@ -270,8 +272,8 @@ class FavoritesSidebar extends StatelessWidget {
                     Icons.chevron_right,
                     size: 18,
                     color: isDark
-                        ? const Color(0xFF94A3B8)
-                        : const Color(0xFF64748B),
+                        ? AppColors.textMutedDark
+                        : AppColors.textMutedLight,
                   ),
                 ],
               ),
@@ -289,8 +291,8 @@ class FavoritesSidebar extends StatelessWidget {
         border: Border(
           top: BorderSide(
             color: isDark
-                ? const Color(0xFF1E293B).withValues(alpha: 0.8)
-                : const Color(0xFFE2E8F0).withValues(alpha: 0.8),
+                ? AppColors.hairlineDark.withValues(alpha: 0.8)
+                : AppColors.hairlineLight.withValues(alpha: 0.8),
             width: 1,
           ),
         ),
@@ -298,13 +300,13 @@ class FavoritesSidebar extends StatelessWidget {
       child: Center(
         child: Text(
           'SAVED MOSQUES',
-          style: TextStyle(
+          style: GoogleFonts.plusJakartaSans().copyWith(
             fontSize: 9,
             fontWeight: FontWeight.w700,
             letterSpacing: 1.5,
             color: isDark
-                ? const Color(0xFF94A3B8).withValues(alpha: 0.6)
-                : const Color(0xFF64748B).withValues(alpha: 0.6),
+                ? AppColors.textMutedDark.withValues(alpha: 0.6)
+                : AppColors.textMutedLight.withValues(alpha: 0.6),
           ),
         ),
       ),

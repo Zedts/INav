@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>INav - Minimal Home</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <!-- Google Fonts: Fraunces (display), Plus Jakarta Sans (body/UI), IBM Plex Sans Arabic (Arabic) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=IBM+Plex+Sans+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        serif: ['Fraunces', 'serif'],
+                        arabic: ['"IBM Plex Sans Arabic"', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            DEFAULT: '#1F5D4F',
+                            light: '#2B7A68',
+                            dark: '#5FB89C',
+                        },
+                        surface: { light: '#FAF9F6', dark: '#141310' },
+                        card:    { light: '#FFFFFF', dark: '#1C1B18' },
+                        textMain:  { light: '#211F1B', dark: '#F3F1EA' },
+                        textMuted: { light: '#8A8578', dark: '#9C9788' },
+                        hairline:  { light: '#E7E3D9', dark: '#2B2924' },
+                        roseAccent: '#A6483A',
+                    },
+                    animation: {
+                        'prayer-pulse': 'prayerPulse 2.2s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        prayerPulse: {
+                            '0%, 100%': { opacity: '0.55', transform: 'scale(1)' },
+                            '50%':      { opacity: '0',    transform: 'scale(1.9)' },
+                        },
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            letter-spacing: -0.01em;
+        }
+        ::-webkit-scrollbar { display: none; }
+        * { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Typography Refinements */
+        .text-display { font-family: 'Fraunces', serif; font-variation-settings: 'opsz' 72; }
+        .text-arabic { font-family: 'IBM Plex Sans Arabic', sans-serif; }
+        .tracking-premium { letter-spacing: 0.05em; }
+        .tracking-tight-premium { letter-spacing: -0.02em; }
+
+        /* ===== Toggle Switch ===== */
+        .toggle-switch { position: relative; display: inline-flex; align-items: center; width: 42px; height: 24px; flex-shrink: 0; cursor: pointer; }
+        .toggle-switch input { position: absolute; opacity: 0; width: 0; height: 0; }
+        .toggle-track {
+            position: absolute; inset: 0; border-radius: 999px;
+            background: #E7E3D9;
+            transition: background-color 0.25s ease;
+        }
+        .dark .toggle-track { background: #2B2924; }
+        .toggle-knob {
+            position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 999px;
+            background: #FFFFFF;
+            transition: transform 0.25s cubic-bezier(0.32,0.72,0,1);
+        }
+        .dark .toggle-knob { background: #F3F1EA; }
+        .toggle-switch input:checked + .toggle-track { background: #1F5D4F; }
+        .toggle-switch input:checked + .toggle-track + .toggle-knob { transform: translateX(18px); background: #FFFFFF; }
+
+        /* Pushed routes slide in from the right */
+        #prayerSettingsRoute, #lockScreenConfigRoute {
+            transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+            will-change: transform;
+        }
+
+        .tabular { font-variant-numeric: tabular-nums; }
+        
+        /* Subtle elevation for cards */
+        .card-minimal {
+            box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+        }
+        .dark .card-minimal {
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body class="bg-surface-light dark:bg-surface-dark transition-colors duration-300 min-h-screen text-textMain-light dark:text-textMain-dark antialiased">
+
+    <div class="w-full max-w-md mx-auto min-h-screen flex flex-col relative bg-surface-light dark:bg-surface-dark transition-colors duration-300">
+
+        <!-- App Top Bar -->
+        <header class="flex justify-between items-center px-6 pt-7 pb-5 bg-surface-light dark:bg-surface-dark sticky top-0 z-40 border-b border-hairline-light dark:border-hairline-dark">
+            <div class="flex items-center gap-3.5">
+                <div class="relative w-11 h-11 rounded-full border border-hairline-light dark:border-hairline-dark flex items-center justify-center text-textMain-light dark:text-textMain-dark shrink-0">
+                    <i class="ph ph-user text-xl"></i>
+                    <span class="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-primary dark:bg-primary-dark rounded-full ring-2 ring-surface-light dark:ring-surface-dark"></span>
+                </div>
+                <div>
+                    <div class="flex items-center gap-1.5 text-[11px] font-semibold text-textMuted-light dark:text-textMuted-dark tracking-premium uppercase">
+                        <i class="ph ph-map-pin text-xs"></i>
+                        <span>Jakarta, ID</span>
+                        <button onclick="refreshLocation()" aria-label="Refresh location" class="text-textMuted-light dark:text-textMuted-dark hover:text-primary dark:hover:text-primary-dark transition-colors">
+                            <i id="locSpinner" class="ph ph-arrows-clockwise text-[11px]"></i>
+                        </button>
+                    </div>
+                    <h1 class="text-display text-xl font-semibold text-textMain-light dark:text-textMain-dark mt-0.5 tracking-tight-premium">As-salamu alaykum</h1>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-1.5">
+                <button aria-label="Notifications" onclick="showToast('Notifications are up to date')" class="w-10 h-10 rounded-full flex items-center justify-center text-textMain-light dark:text-textMain-dark active:opacity-50 transition-opacity relative">
+                    <i class="ph ph-bell text-xl"></i>
+                    <span class="absolute top-2.5 right-2.5 w-1.5 h-1.5 bg-roseAccent rounded-full"></span>
+                </button>
+                <button id="themeToggleBtn" aria-label="Toggle Dark Mode" class="w-10 h-10 rounded-full flex items-center justify-center text-textMain-light dark:text-textMain-dark active:opacity-50 transition-opacity">
+                    <i id="themeIcon" class="ph ph-moon text-xl"></i>
+                </button>
+            </div>
+        </header>
+
+        <main class="flex-1 px-5 pt-6 pb-32 space-y-6">
+
+            <!-- 1. NEXT PRAYER -->
+            <section class="border border-hairline-light dark:border-hairline-dark rounded-3xl px-6 pt-7 pb-6 bg-card-light dark:bg-card-dark card-minimal">
+
+                <div id="liquidBannerSlides">
+                    <!-- SLIDE 1: ACTIVE PRAYER & LIVE COUNTDOWN -->
+                    <div id="liquidSlide1" class="transition-opacity duration-300">
+                        <div class="flex items-start justify-between mb-8">
+                            <div>
+                                <span class="text-[10px] font-bold text-primary dark:text-primary-dark uppercase tracking-premium">Next Prayer</span>
+                                <h3 class="text-display text-5xl font-bold text-textMain-light dark:text-textMain-dark mt-2 leading-none tracking-tight-premium">Maghrib</h3>
+                                <p class="text-[12px] font-medium text-textMuted-light dark:text-textMuted-dark mt-3.5 flex items-center gap-2">
+                                    <i class="ph ph-compass text-sm"></i> Qibla 294° NW
+                                </p>
+                            </div>
+                            <div class="text-right shrink-0 pl-4">
+                                <span class="block text-[10px] font-bold text-textMuted-light dark:text-textMuted-dark uppercase tracking-widest">In</span>
+                                <div id="countdownTimer" class="text-display text-3xl font-bold text-textMain-light dark:text-textMain-dark tabular mt-2 tracking-tight-premium">00:09:42</div>
+                            </div>
+                        </div>
+
+                        <!-- Day arc -->
+                        <div class="relative pt-2">
+                            <div class="h-px bg-hairline-light dark:bg-hairline-dark w-full"></div>
+                            <div class="flex justify-between items-center -mt-[3.5px]">
+                                <span class="block w-[7px] h-[7px] rounded-full bg-textMain-light dark:bg-textMain-dark"></span>
+                                <span class="block w-[7px] h-[7px] rounded-full bg-textMain-light dark:bg-textMain-dark"></span>
+                                <span class="block w-[7px] h-[7px] rounded-full bg-textMain-light dark:bg-textMain-dark"></span>
+                                <span class="relative block w-2.5 h-2.5 -mt-[1px]">
+                                    <span class="absolute inset-0 rounded-full bg-primary dark:bg-primary-dark"></span>
+                                    <span class="absolute inset-0 rounded-full bg-primary dark:bg-primary-dark animate-prayer-pulse"></span>
+                                </span>
+                                <span class="block w-[7px] h-[7px] rounded-full border border-textMuted-light dark:border-textMuted-dark"></span>
+                            </div>
+                            <div class="flex justify-between mt-3 text-[10px] font-bold text-textMuted-light dark:text-textMuted-dark uppercase tracking-premium">
+                                <span>Fajr</span><span>Dhuhr</span><span>Asr</span><span class="text-primary dark:text-primary-dark">Maghrib</span><span>Isha</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SLIDE 2: DAILY VERSE INSIGHT -->
+                    <div id="liquidSlide2" class="hidden transition-opacity duration-300">
+                        <span class="text-[10px] font-bold text-primary dark:text-primary-dark uppercase tracking-premium">Quran Reflection</span>
+                        <p class="text-arabic text-3xl text-right text-textMain-light dark:text-textMain-dark font-bold leading-relaxed mt-5">
+                            إِنَّ مَعَ الْعُسْرِ يُسْرًا
+                        </p>
+                        <p class="text-sm font-medium text-textMuted-light dark:text-textMuted-dark italic mt-4 leading-relaxed">
+                            "Indeed, with hardship comes ease."
+                        </p>
+                        <span class="block text-[10px] font-bold text-textMuted-light dark:text-textMuted-dark mt-4 tracking-premium uppercase">Surah Ash-Sharh 94:6</span>
+                    </div>
+                </div>
+
+                <div class="flex justify-center items-center gap-2 mt-7 pt-5 border-t border-hairline-light dark:border-hairline-dark">
+                    <button onclick="switchBannerSlide(1)" id="liquidDot1" aria-label="Slide 1" class="w-5 h-1.5 rounded-full bg-primary dark:bg-primary-dark transition-all duration-300"></button>
+                    <button onclick="switchBannerSlide(2)" id="liquidDot2" aria-label="Slide 2" class="w-1.5 h-1.5 rounded-full bg-hairline-light dark:bg-hairline-dark hover:bg-textMuted-light dark:hover:bg-textMuted-dark transition-all duration-300"></button>
+                </div>
+            </section>
+
+            <!-- 2. TODAY'S SCHEDULE -->
+            <button type="button" onclick="pushPrayerSettings()" aria-label="Open prayer notification settings" class="w-full text-left bg-card-light dark:bg-card-dark rounded-3xl p-6 border border-hairline-light dark:border-hairline-dark active:scale-[0.985] transition-all card-minimal">
+
+                <div class="flex items-center justify-between mb-7">
+                    <h2 class="text-[10px] font-bold uppercase tracking-premium text-textMuted-light dark:text-textMuted-dark">Today's Schedule</h2>
+                    <div class="flex items-center gap-1.5">
+                        <span class="text-[11px] font-bold text-textMuted-light dark:text-textMuted-dark">12 Rajab 1445 AH</span>
+                        <i class="ph ph-caret-right text-textMuted-light dark:text-textMuted-dark text-xs"></i>
+                    </div>
+                </div>
+
+                <div class="relative w-full pb-1">
+                    <div class="absolute top-[6px] left-[6%] right-[6%] h-px bg-hairline-light dark:bg-hairline-dark z-0"></div>
+
+                    <div class="flex justify-between items-start relative z-10">
+                        <!-- Fajr -->
+                        <div class="flex flex-col items-center w-10">
+                            <div class="w-[12px] h-[12px] rounded-full bg-textMain-light dark:bg-textMain-dark ring-[5px] ring-card-light dark:ring-card-dark"></div>
+                            <span class="text-[10px] font-bold text-textMuted-light dark:text-textMuted-dark mt-2.5 tabular">04:45</span>
+                            <span class="text-[11px] font-semibold text-textMain-light dark:text-textMain-dark mt-0.5">Fajr</span>
+                        </div>
+
+                        <!-- Dhuhr -->
+                        <div class="flex flex-col items-center w-10">
+                            <div class="w-[12px] h-[12px] rounded-full bg-textMain-light dark:bg-textMain-dark ring-[5px] ring-card-light dark:ring-card-dark"></div>
+                            <span class="text-[10px] font-bold text-textMuted-light dark:text-textMuted-dark mt-2.5 tabular">12:30</span>
+                            <span class="text-[11px] font-semibold text-textMain-light dark:text-textMain-dark mt-0.5">Dhuhr</span>
+                        </div>
+
+                        <!-- Asr -->
+                        <div class="flex flex-col items-center w-10">
+                            <div class="w-[12px] h-[12px] rounded-full bg-textMain-light dark:bg-textMain-dark ring-[5px] ring-card-light dark:ring-card-dark"></div>
+                            <span class="text-[10px] font-bold text-textMuted-light dark:text-textMuted-dark mt-2.5 tabular">15:15</span>
+                            <span class="text-[11px] font-semibold text-textMain-light dark:text-textMain-dark mt-0.5">Asr</span>
+                        </div>
+
+                        <!-- Maghrib (current) -->
+                        <div class="flex flex-col items-center w-12">
+                            <span class="relative w-[12px] h-[12px] block ring-[5px] ring-card-light dark:ring-card-dark rounded-full">
+                                <span class="absolute inset-0 rounded-full bg-primary dark:bg-primary-dark"></span>
+                                <span class="absolute inset-0 rounded-full bg-primary dark:bg-primary-dark animate-prayer-pulse"></span>
+                            </span>
+                            <span class="text-[11px] font-bold text-primary dark:text-primary-dark mt-2.5 tabular">18:04</span>
+                            <span class="text-[12px] font-bold text-primary dark:text-primary-dark mt-0.5">Maghrib</span>
+                        </div>
+
+                        <!-- Isha -->
+                        <div class="flex flex-col items-center w-10">
+                            <div class="w-[12px] h-[12px] rounded-full border border-textMuted-light dark:border-textMuted-dark bg-card-light dark:bg-card-dark ring-[5px] ring-card-light dark:ring-card-dark"></div>
+                            <span class="text-[10px] font-bold text-textMuted-light dark:text-textMuted-dark mt-2.5 tabular">19:30</span>
+                            <span class="text-[11px] font-semibold text-textMuted-light dark:text-textMuted-dark mt-0.5">Isha</span>
+                        </div>
+                    </div>
+                </div>
+            </button>
+
+            <!-- 3. QUICK FEATURES GRID -->
+            <section class="space-y-4">
+                <div class="flex items-center justify-between px-1">
+                    <h2 class="text-[10px] font-bold text-textMuted-light dark:text-textMuted-dark uppercase tracking-premium">Services &amp; Tools</h2>
+                    <button onclick="showToast('More tools section opened')" class="text-[11px] font-bold text-primary dark:text-primary-dark">View All</button>
+                </div>
+
+                <div class="grid grid-cols-4 gap-3">
+                    <button onclick="showToast('Opening Quran App')" class="flex flex-col items-center justify-center bg-card-light dark:bg-card-dark border border-hairline-light dark:border-hairline-dark rounded-2xl py-5 active:scale-95 transition-all card-minimal">
+                        <i class="ph ph-book-open text-textMain-light dark:text-textMain-dark text-2xl mb-2.5"></i>
+                        <span class="text-[11px] font-semibold text-textMain-light dark:text-textMain-dark">Quran</span>
+                    </button>
+
+                    <button onclick="showToast('Opening Qibla Compass')" class="flex flex-col items-center justify-center bg-card-light dark:bg-card-dark border border-hairline-light dark:border-hairline-dark rounded-2xl py-5 active:scale-95 transition-all card-minimal">
+                        <i class="ph ph-compass text-textMain-light dark:text-textMain-dark text-2xl mb-2.5"></i>
+                        <span class="text-[11px] font-semibold text-textMain-light dark:text-textMain-dark">Qibla</span>
+                    </button>
+
+                    <button onclick="showToast('Searching nearby mosques...')" class="flex flex-col items-center justify-center bg-card-light dark:bg-card-dark border border-hairline-light dark:border-hairline-dark rounded-2xl py-5 active:scale-95 transition-all card-minimal">
+                        <i class="ph ph-mosque text-textMain-light dark:text-textMain-dark text-2xl mb-2.5"></i>
+                        <span class="text-[11px] font-semibold text-textMain-light dark:text-textMain-dark">Mosque</span>
+                    </button>
+
+                    <button onclick="showToast('Opening Duas library')" class="flex flex-col items-center justify-center bg-card-light dark:bg-card-dark border border-hairline-light dark:border-hairline-dark rounded-2xl py-5 active:scale-95 transition-all card-minimal">
+                        <i class="ph ph-hands-praying text-textMain-light dark:text-textMain-dark text-2xl mb-2.5"></i>
+                        <span class="text-[11px] font-semibold text-textMain-light dark:text-textMain-dark">Duas</span>
+                    </button>
+
+                    <button onclick="showToast('Opening Digital Tasbih')" class="flex flex-col items-center justify-center bg-card-light dark:bg-card-dark border border-hairline-light dark:border-hairline-dark rounded-2xl py-5 active:scale-95 transition-all card-minimal">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-textMain-light dark:text-textMain-dark mb-2.5">
+                            <circle cx="12" cy="5" r="1.5" fill="currentColor"/><circle cx="16" cy="6.5" r="1.5" fill="currentColor"/><circle cx="19" cy="10" r="1.5" fill="currentColor"/><circle cx="19" cy="14" r="1.5" fill="currentColor"/><circle cx="16" cy="17.5" r="1.5" fill="currentColor"/><circle cx="12" cy="19" r="1.5" fill="currentColor"/><circle cx="8" cy="17.5" r="1.5" fill="currentColor"/><circle cx="5" cy="14" r="1.5" fill="currentColor"/><circle cx="5" cy="10" r="1.5" fill="currentColor"/><circle cx="8" cy="6.5" r="1.5" fill="currentColor"/>
+                            <path d="M12 19v3M10 23h4" stroke-linecap="round"/>
+                        </svg>
+                        <span class="text-[11px] font-semibold text-textMain-light dark:text-textMain-dark">Tasbih</span>
+                    </button>
+
+                    <button onclick="showToast('Opening Prayer Analytics')" class="flex flex-col items-center justify-center bg-card-light dark:bg-card-dark border border-hairline-light dark:border-hairline-dark rounded-2xl py-5 active:scale-95 transition-all card-minimal">
+                        <i class="ph ph-chart-line-up text-textMain-light dark:text-textMain-dark text-2xl mb-2.5"></i>
+                        <span class="text-[11px] font-semibold text-textMain-light dark:text-textMain-dark">Tracker</span>
+                    </button>
+
+                    <button onclick="showToast('Opening Hadith collection')" class="flex flex-col items-center justify-center bg-card-light dark:bg-card-dark border border-hairline-light dark:border-hairline-dark rounded-2xl py-5 active:scale-95 transition-all card-minimal">
+                        <i class="ph ph-scroll text-textMain-light dark:text-textMain-dark text-2xl mb-2.5"></i>
+                        <span class="text-[11px] font-semibold text-textMain-light dark:text-textMain-dark">Hadith</span>
+                    </button>
+
+                    <button onclick="showToast('More features menu')" class="flex flex-col items-center justify-center bg-card-light dark:bg-card-dark border border-hairline-light dark:border-hairline-dark rounded-2xl py-5 active:scale-95 transition-all card-minimal">
+                        <i class="ph ph-dots-three-circle text-textMuted-light dark:text-textMuted-dark text-2xl mb-2.5"></i>
+                        <span class="text-[11px] font-semibold text-textMain-light dark:text-textMain-dark">More</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- 4. FOCUS LOCK + STREAK -->
+            <div id="widgetsWrapper" class="flex flex-col space-y-4 transition-all duration-300">
+
+                <button type="button" onclick="pushLockScreenConfig()" aria-label="Open lock screen app configuration" id="lockScreenCard" class="bg-card-light dark:bg-card-dark rounded-3xl p-6 border border-hairline-light dark:border-hairline-dark text-left active:scale-[0.985] transition-all w-full card-minimal">
+                    <div class="flex justify-between items-center mb-5">
+                        <h3 class="text-[10px] font-bold text-roseAccent uppercase tracking-premium flex items-center gap-2">
+                            <i class="ph ph-lock-key text-base"></i> Focus Lock
+                        </h3>
+                        <i class="ph ph-caret-right text-textMuted-light dark:text-textMuted-dark text-xs"></i>
+                    </div>
+
+                    <div class="flex items-center justify-between">
+                        <div class="flex-1 min-w-0">
+                            <p id="lockStatusHeadline" class="text-[15px] font-bold text-textMain-light dark:text-textMain-dark flex items-center gap-2.5">
+                                <span id="lockStatusDot" class="w-2 h-2 rounded-full bg-primary dark:bg-primary-dark"></span>
+                                <span id="lockStatusText">Active</span>
+                            </p>
+                            <p id="lockSummarySubline" class="text-xs font-medium text-textMuted-light dark:text-textMuted-dark mt-2.5 leading-relaxed">
+                                3 apps locked during all 5 prayers
+                            </p>
+                            <p id="lockNextWindowText" class="text-[10px] font-semibold text-textMuted-light dark:text-textMuted-dark mt-2.5 tracking-premium uppercase">
+                                Next lock: Dhuhr in 42 min
+                            </p>
+                        </div>
+
+                        <div id="lockAppPreviewStack" class="flex items-center -space-x-2 shrink-0 pl-3">
+                            <div class="w-8 h-8 rounded-full border border-hairline-light dark:border-hairline-dark bg-card-light dark:bg-card-dark text-textMain-light dark:text-textMain-dark flex items-center justify-center shadow-sm">
+                                <i class="ph ph-camera text-sm"></i>
+                            </div>
+                            <div class="w-8 h-8 rounded-full border border-hairline-light dark:border-hairline-dark bg-card-light dark:bg-card-dark text-textMain-light dark:text-textMain-dark flex items-center justify-center shadow-sm">
+                                <i class="ph ph-music-note text-sm"></i>
+                            </div>
+                            <div class="w-8 h-8 rounded-full border border-hairline-light dark:border-hairline-dark bg-card-light dark:bg-card-dark text-textMain-light dark:text-textMain-dark flex items-center justify-center shadow-sm">
+                                <i class="ph ph-play-circle text-sm"></i>
+                            </div>
+                        </div>
+                    </div>
+                </button>
+
+                <div id="streakSection" class="w-full grid grid-cols-2 gap-4">
+                    <div id="streakDoughnutCard" class="bg-card-light dark:bg-card-dark rounded-3xl p-5 border border-hairline-light dark:border-hairline-dark flex flex-col justify-between card-minimal">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-[10px] font-bold text-textMuted-light dark:text-textMuted-dark uppercase tracking-premium">Streak</span>
+                            <span class="text-[11px] font-bold text-textMain-light dark:text-textMain-dark">6d</span>
+                        </div>
+                        <div class="flex items-center justify-center py-2">
+                            <div class="relative w-16 h-16 flex items-center justify-center shrink-0">
+                                <svg class="absolute inset-0 w-full h-full transform -rotate-90" viewBox="0 0 80 80">
+                                    <circle cx="40" cy="40" r="34" fill="none" stroke="currentColor" stroke-width="5" class="text-hairline-light dark:text-hairline-dark"></circle>
+                                    <circle id="streakProgressCircle" cx="40" cy="40" r="34" fill="none" stroke="currentColor" stroke-width="5" class="text-primary dark:text-primary-dark transition-all duration-700 ease-out" stroke-dasharray="213" stroke-dashoffset="43" stroke-linecap="round"></circle>
+                                </svg>
+                                <div class="text-display text-base font-bold text-textMain-light dark:text-textMain-dark z-10">4/5</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button id="streakFireBtn" onclick="logCurrentPrayer()" aria-label="Log current prayer" class="bg-card-light dark:bg-card-dark rounded-3xl p-5 border border-hairline-light dark:border-hairline-dark flex items-center justify-center text-center active:scale-[0.97] transition-all card-minimal">
+                        <i id="streakFireIcon" class="ph ph-fire text-5xl text-textMuted-light dark:text-textMuted-dark transition-colors duration-300"></i>
+                    </button>
+                </div>
+
+            </div>
+
+        </main>
+
+        <!-- Fixed Navigation Bar -->
+        <nav class="bg-surface-light dark:bg-surface-dark border-t border-hairline-light dark:border-hairline-dark fixed bottom-0 left-0 right-0 max-w-md mx-auto z-50 px-4 pt-3 pb-2 safe-area-pb">
+            <ul class="flex justify-between items-center">
+                <li class="flex-1">
+                    <button class="w-full flex flex-col items-center justify-center p-1 text-textMain-light dark:text-textMain-dark relative">
+                        <i class="ph-fill ph-house text-2xl mb-1.5"></i>
+                        <span class="text-[10px] font-bold tracking-premium uppercase">Home</span>
+                        <span class="absolute -bottom-2 w-1.5 h-1.5 rounded-full bg-primary dark:bg-primary-dark"></span>
+                    </button>
+                </li>
+                <li class="flex-1">
+                    <button onclick="showToast('Quran feature loaded')" class="w-full flex flex-col items-center justify-center p-1 text-textMuted-light dark:text-textMuted-dark active:opacity-60 transition-opacity">
+                        <i class="ph ph-book-open text-2xl mb-1.5"></i>
+                        <span class="text-[10px] font-medium tracking-premium uppercase">Quran</span>
+                    </button>
+                </li>
+                <li class="flex-1">
+                    <button onclick="showToast('Mosque Finder loaded')" class="w-full flex flex-col items-center justify-center p-1 text-textMuted-light dark:text-textMuted-dark active:opacity-60 transition-opacity">
+                        <i class="ph ph-mosque text-2xl mb-1.5"></i>
+                        <span class="text-[10px] font-medium tracking-premium uppercase">Mosque</span>
+                    </button>
+                </li>
+                <li class="flex-1">
+                    <button onclick="showToast('Qibla Compass loaded')" class="w-full flex flex-col items-center justify-center p-1 text-textMuted-light dark:text-textMuted-dark active:opacity-60 transition-opacity">
+                        <i class="ph ph-compass text-2xl mb-1.5"></i>
+                        <span class="text-[10px] font-medium tracking-premium uppercase">Qibla</span>
+                    </button>
+                </li>
+                <li class="flex-1">
+                    <button onclick="showToast('Settings loaded')" class="w-full flex flex-col items-center justify-center p-1 text-textMuted-light dark:text-textMuted-dark active:opacity-60 transition-opacity">
+                        <i class="ph ph-gear text-2xl mb-1.5"></i>
+                        <span class="text-[10px] font-medium tracking-premium uppercase">Settings</span>
+                    </button>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- PRAYER SETTINGS ROUTE -->
+        <div id="prayerSettingsRoute" class="fixed inset-y-0 left-0 right-0 max-w-md mx-auto z-[80] bg-surface-light dark:bg-surface-dark flex flex-col" style="transform: translateX(100%);">
+            <header class="flex items-center gap-4 px-5 pt-7 pb-5 bg-surface-light dark:bg-surface-dark sticky top-0 z-10 border-b border-hairline-light dark:border-hairline-dark shrink-0">
+                <button onclick="popPrayerSettings()" aria-label="Back" class="w-10 h-10 rounded-full flex items-center justify-center text-textMain-light dark:text-textMain-dark active:opacity-50 transition-opacity shrink-0 border border-hairline-light dark:border-hairline-dark">
+                    <i class="ph ph-arrow-left text-xl"></i>
+                </button>
+                <div class="flex-1 min-w-0">
+                    <h1 class="text-display text-lg font-semibold text-textMain-light dark:text-textMain-dark truncate">Prayer Notifications</h1>
+                    <p class="text-[11px] font-semibold text-textMuted-light dark:text-textMuted-dark truncate tracking-premium uppercase">Customize your prayer alerts</p>
+                </div>
+            </header>
+            <main class="flex-1 overflow-y-auto px-5 py-6 space-y-6 pb-12">
+                <section class="bg-card-light dark:bg-card-dark rounded-3xl p-6 border border-hairline-light dark:border-hairline-dark card-minimal">
+                    <p class="text-base font-bold text-textMain-light dark:text-textMain-dark mb-3.5 tracking-tight-premium">Adhan Notifications</p>
+                    <p class="text-sm font-medium text-textMuted-light dark:text-textMuted-dark leading-relaxed">Receive alerts for each prayer time throughout the day. You can customize the sound and reminder timing for each prayer individually.</p>
+                </section>
+            </main>
+        </div>
+
+        <!-- LOCK SCREEN APP CONFIGURATION ROUTE -->
+        <div id="lockScreenConfigRoute" class="fixed inset-y-0 left-0 right-0 max-w-md mx-auto z-[80] bg-surface-light dark:bg-surface-dark flex flex-col" style="transform: translateX(100%);">
+            <header class="flex items-center gap-4 px-5 pt-7 pb-5 bg-surface-light dark:bg-surface-dark sticky top-0 z-10 border-b border-hairline-light dark:border-hairline-dark shrink-0">
+                <button onclick="popLockScreenConfig()" aria-label="Back" class="w-10 h-10 rounded-full flex items-center justify-center text-textMain-light dark:text-textMain-dark active:opacity-50 transition-opacity shrink-0 border border-hairline-light dark:border-hairline-dark">
+                    <i class="ph ph-arrow-left text-xl"></i>
+                </button>
+                <div class="flex-1 min-w-0">
+                    <h1 class="text-display text-lg font-semibold text-textMain-light dark:text-textMain-dark truncate">Lock Screen Config</h1>
+                    <p class="text-[11px] font-semibold text-textMuted-light dark:text-textMuted-dark truncate tracking-premium uppercase">Focus Lock & distraction blocking</p>
+                </div>
+                <button onclick="resetLockScreenConfigDefaults()" class="text-[11px] font-bold text-primary dark:text-primary-dark shrink-0 px-2">Reset</button>
+            </header>
+            <main class="flex-1 overflow-y-auto px-5 py-6 space-y-6 pb-12">
+                <section class="bg-card-light dark:bg-card-dark rounded-3xl p-5 border border-hairline-light dark:border-hairline-dark flex items-center gap-4 card-minimal">
+                    <div class="w-10 h-10 rounded-full border border-roseAccent/30 flex items-center justify-center text-roseAccent shrink-0 bg-roseAccent/5">
+                        <i class="ph ph-lock-key text-lg"></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-[15px] font-bold text-textMain-light dark:text-textMain-dark tracking-tight-premium">Enable Focus Lock</p>
+                        <p class="text-xs font-medium text-textMuted-light dark:text-textMuted-dark mt-1">Block distracting apps during focus windows</p>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="masterToggleLock" onchange="onLockMasterToggle(this.checked)">
+                        <span class="toggle-track"></span>
+                        <span class="toggle-knob"></span>
+                    </label>
+                </section>
+                
+                <section>
+                    <h2 class="text-[10px] font-bold text-textMuted-light dark:text-textMuted-dark uppercase tracking-premium px-1 mb-3.5">Apps to Lock</h2>
+                    <div id="lockAppList" class="bg-card-light dark:bg-card-dark rounded-3xl border border-hairline-light dark:border-hairline-dark divide-y divide-hairline-light dark:divide-hairline-dark overflow-hidden card-minimal"></div>
+                </section>
+            </main>
+        </div>
+
+    </div>
+
+    <script>
+        // Theme Toggle Logic
+        const themeToggleBtn = document.getElementById('themeToggleBtn');
+        const themeIcon = document.getElementById('themeIcon');
+        if (themeToggleBtn) {
+            themeToggleBtn.addEventListener('click', () => {
+                document.documentElement.classList.toggle('dark');
+                if (document.documentElement.classList.contains('dark')) {
+                    themeIcon.className = "ph ph-sun text-xl";
+                    showToast('Dark mode enabled');
+                } else {
+                    themeIcon.className = "ph ph-moon text-xl";
+                    showToast('Light mode enabled');
+                }
+            });
+        }
+
+        // Banner Slide Switcher
+        function switchBannerSlide(slideNumber) {
+            const slide1 = document.getElementById('liquidSlide1');
+            const slide2 = document.getElementById('liquidSlide2');
+            const dot1 = document.getElementById('liquidDot1');
+            const dot2 = document.getElementById('liquidDot2');
+
+            slide1.classList.add('hidden');
+            slide2.classList.add('hidden');
+
+            dot1.className = "w-1.5 h-1.5 rounded-full bg-hairline-light dark:bg-hairline-dark hover:bg-textMuted-light dark:hover:bg-textMuted-dark transition-all duration-300";
+            dot2.className = "w-1.5 h-1.5 rounded-full bg-hairline-light dark:bg-hairline-dark hover:bg-textMuted-light dark:hover:bg-textMuted-dark transition-all duration-300";
+
+            if (slideNumber === 1) {
+                slide1.classList.remove('hidden');
+                dot1.className = "w-5 h-1.5 rounded-full bg-primary dark:bg-primary-dark transition-all duration-300";
+            } else if (slideNumber === 2) {
+                slide2.classList.remove('hidden');
+                dot2.className = "w-5 h-1.5 rounded-full bg-primary dark:bg-primary-dark transition-all duration-300";
+            }
+        }
+
+        // Live Countdown Clock Simulation
+        let secondsLeft = 582;
+        function updateCountdown() {
+            if (secondsLeft > 0) {
+                secondsLeft--;
+            } else {
+                secondsLeft = 3600;
+            }
+            const hours = Math.floor(secondsLeft / 3600);
+            const minutes = Math.floor((secondsLeft % 3600) / 60);
+            const seconds = secondsLeft % 60;
+            document.getElementById('countdownTimer').textContent = 
+                String(hours).padStart(2, '0') + ':' +
+                String(minutes).padStart(2, '0') + ':' +
+                String(seconds).padStart(2, '0');
+        }
+        setInterval(updateCountdown, 1000);
+
+        // Route Navigation
+        function pushPrayerSettings() {
+            document.getElementById('prayerSettingsRoute').style.transform = 'translateX(0)';
+        }
+        function popPrayerSettings() {
+            document.getElementById('prayerSettingsRoute').style.transform = 'translateX(100%)';
+        }
+        function pushLockScreenConfig() {
+            document.getElementById('lockScreenConfigRoute').style.transform = 'translateX(0)';
+        }
+        function popLockScreenConfig() {
+            document.getElementById('lockScreenConfigRoute').style.transform = 'translateX(100%)';
+        }
+
+        // Stub Functions
+        function onLockMasterToggle(checked) {
+            showToast(checked ? 'Focus Lock enabled' : 'Focus Lock disabled');
+        }
+        function resetLockScreenConfigDefaults() {
+            showToast('Settings reset to defaults');
+        }
+        function logCurrentPrayer() {
+            showToast('Prayer logged!');
+        }
+        function refreshLocation() {
+            const spinner = document.getElementById('locSpinner');
+            spinner.classList.add('animate-spin');
+            showToast('Syncing location...');
+            setTimeout(() => {
+                spinner.classList.remove('animate-spin');
+                showToast('Location updated');
+            }, 1200);
+        }
+
+        // Toast Helper
+        let toastTimer;
+        function showToast(message) {
+            const existingToast = document.querySelector('.custom-toast');
+            if (existingToast) existingToast.remove();
+
+            const toast = document.createElement('div');
+            toast.className = 'custom-toast fixed bottom-28 left-1/2 -translate-x-1/2 px-5 py-3 rounded-2xl bg-textMain-light dark:bg-textMain-dark text-surface-light dark:text-surface-dark text-xs font-bold shadow-2xl backdrop-blur-xl z-[102] flex items-center gap-3 animate-in fade-in slide-in-from-bottom-4 duration-300';
+            toast.innerHTML = '<i class="ph-fill ph-check-circle text-lg text-primary-dark"></i><span>' + message + '</span>';
+            document.body.appendChild(toast);
+            
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => {
+                toast.classList.add('animate-out', 'fade-out', 'slide-out-to-bottom-4');
+                setTimeout(() => toast.remove(), 300);
+            }, 2500);
+        }
+    </script>
+</body>
+</html>
