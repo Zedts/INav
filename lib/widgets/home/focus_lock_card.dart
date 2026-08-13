@@ -1,8 +1,12 @@
+// ignore_for_file: non_const_argument_for_const_parameter
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/providers/prayer_provider.dart';
+import '../../core/providers/focus_lock_provider.dart';
+import '../../core/constants/default_apps.dart';
 import '../../screens/settings/focus_lock_config_screen.dart';
 
 class FocusLockCard extends StatelessWidget {
@@ -25,11 +29,20 @@ class FocusLockCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final prayerProvider = context.watch<PrayerProvider>();
+    final focusLockProvider = context.watch<FocusLockProvider>();
     final plusJakarta = GoogleFonts.plusJakartaSans();
 
     final nextPrayer = prayerProvider.nextPrayer;
     final timeUntilNext = prayerProvider.timeRemaining;
     final formattedCountdown = _formatNextLockCountdown(timeUntilNext);
+
+    // Get real-time status
+    final isEnabled = focusLockProvider.masterEnabled;
+    final lockedAppsCount = focusLockProvider.lockedApps.length;
+    final prayerSchedule = focusLockProvider.prayerSchedule;
+    final enabledPrayersCount = prayerSchedule?.enabledPrayers.length ?? 0;
+    final isCurrentlyLocked = focusLockProvider.isInLockWindow();
+    final activePrayer = focusLockProvider.getActivePrayerName();
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16),
@@ -114,14 +127,22 @@ class FocusLockCard extends StatelessWidget {
                                 Container(
                                   width: 8,
                                   height: 8,
-                                  decoration: const BoxDecoration(
+                                  decoration: BoxDecoration(
                                     shape: BoxShape.circle,
-                                    color: AppColors.success,
+                                    color: isEnabled
+                                        ? (isCurrentlyLocked
+                                              ? AppColors.warning
+                                              : AppColors.success)
+                                        : AppColors.textMutedDark,
                                   ),
                                 ),
                                 const SizedBox(width: 6),
                                 Text(
-                                  'Active',
+                                  isEnabled
+                                      ? (isCurrentlyLocked
+                                            ? 'Locked'
+                                            : 'Active')
+                                      : 'Disabled',
                                   style: plusJakarta.copyWith(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w900,
@@ -136,7 +157,11 @@ class FocusLockCard extends StatelessWidget {
                             const SizedBox(height: 8),
 
                             Text(
-                              '3 apps locked during all 5 prayers',
+                              isEnabled
+                                  ? isCurrentlyLocked
+                                        ? 'Currently blocking $lockedAppsCount apps during ${activePrayer ?? "prayer"}'
+                                        : '$lockedAppsCount ${lockedAppsCount == 1 ? "app" : "apps"} locked during $enabledPrayersCount ${enabledPrayersCount == 1 ? "prayer" : "prayers"}'
+                                  : 'Tap to enable focus lock',
                               style: plusJakarta.copyWith(
                                 fontSize: 12,
                                 color: isDark
@@ -149,7 +174,11 @@ class FocusLockCard extends StatelessWidget {
                             const SizedBox(height: 12),
 
                             Text(
-                              'Next lock: $nextPrayer in $formattedCountdown',
+                              isEnabled && !isCurrentlyLocked
+                                  ? 'Next lock: $nextPrayer in $formattedCountdown'
+                                  : isCurrentlyLocked
+                                  ? 'Lock active now'
+                                  : 'Configure lock settings',
                               style: plusJakarta.copyWith(
                                 fontSize: 10,
                                 fontWeight: FontWeight.w700,
@@ -164,40 +193,44 @@ class FocusLockCard extends StatelessWidget {
 
                       const SizedBox(width: 12),
 
-                      SizedBox(
-                        width: 72,
-                        height: 32,
-                        child: Stack(
-                          children: [
-                            Positioned(
-                              left: 0,
-                              child: _buildAppIcon(
-                                Icons.photo_camera,
-                                const Color(0xFFD946EF),
-                                isDark,
-                              ),
+                      if (lockedAppsCount > 0) ...[
+                        SizedBox(
+                          width: lockedAppsCount >= 3
+                              ? 72
+                              : (lockedAppsCount * 32.0),
+                          height: 32,
+                          child: Stack(
+                            children: List.generate(
+                              lockedAppsCount > 3 ? 3 : lockedAppsCount,
+                              (index) {
+                                final app = focusLockProvider.lockedApps[index];
+                                final defaultApp = DefaultApps.getApp(
+                                  app.packageName,
+                                );
+
+                                final iconData = defaultApp != null
+                                    ? IconData(
+                                        defaultApp.iconCodePoint,
+                                        fontFamily: defaultApp.iconFontFamily,
+                                        fontPackage: defaultApp.iconFontPackage,
+                                        matchTextDirection:
+                                            defaultApp.iconMatchTextDirection,
+                                      )
+                                    : Icons.apps;
+
+                                return Positioned(
+                                  left: index * 24.0,
+                                  child: _buildAppIcon(
+                                    iconData,
+                                    defaultApp?.color ?? AppColors.primaryDark,
+                                    isDark,
+                                  ),
+                                );
+                              },
                             ),
-                            Positioned(
-                              left: 24,
-                              child: _buildAppIcon(
-                                Icons.music_note,
-                                isDark
-                                    ? const Color(0xFFE2E8F0)
-                                    : AppColors.textMutedLight,
-                                isDark,
-                              ),
-                            ),
-                            Positioned(
-                              left: 48,
-                              child: _buildAppIcon(
-                                Icons.play_circle_filled,
-                                const Color(0xFFEF4444),
-                                isDark,
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
-                      ),
+                      ],
                     ],
                   ),
                 ],

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="accessibility_service_description">Focus Lock helps you stay focused during prayer times by temporarily blocking distracting apps. We only monitor which apps are opened, not your screen content or personal data.</string>
+
+    <string name="device_admin_label">INav Focus Lock</string>
+    <string name="device_admin_description">Required to protect the Focus Lock configuration. Device admin allows the app to enforce security policies, including the ability to lock the screen when needed.</string>
+</resources>

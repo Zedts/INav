@@ -78,6 +78,12 @@ dependencies:
   # Google Fonts
   google_fonts: ^8.2.1
 
+  # Focus Lock Feature
+  flutter_accessibility_service: ^1.2.0
+  workmanager: ^0.10.7
+  flutter_local_notifications: ^22.3.0
+  device_info_plus: ^13.2.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -88,6 +94,15 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^6.0.0
+
+# Override workmanager to use latest main branch with AGP 9 / Built-in Kotlin fix
+# PR #682: Removes kotlin-android plugin to resolve KGP warning
+dependency_overrides:
+  workmanager:
+    git:
+      url: https://github.com/fluttercommunity/flutter_workmanager.git
+      ref: af5d75ae94574e9f2952768617ced738c140c52f
+      path: workmanager
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

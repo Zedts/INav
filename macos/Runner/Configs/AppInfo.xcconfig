@@ -8,7 +8,7 @@
 PRODUCT_NAME = inav
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.example.inav
+PRODUCT_BUNDLE_IDENTIFIER = com.zedt.inav
 
 // The copyright displayed in application information
 PRODUCT_COPYRIGHT = Copyright © 2026 com.example. All rights reserved.

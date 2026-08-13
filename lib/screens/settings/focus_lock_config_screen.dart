@@ -1,9 +1,17 @@
+// ignore_for_file: non_const_argument_for_const_parameter
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import '../../core/theme/app_colors.dart';
+import '../../core/providers/focus_lock_provider.dart';
+import '../../core/models/app_definition.dart';
+import '../../core/models/lock_schedule.dart';
+import '../../core/models/unlock_config.dart';
+import '../../core/constants/default_apps.dart';
+import '../../core/services/accessibility_service_helper.dart';
+import '../../widgets/dialogs/app_selection_dialog.dart';
 
-/// Focus Lock Configuration Screen
-/// Allows users to configure which apps to lock during prayer times or custom schedules
 class FocusLockConfigScreen extends StatefulWidget {
   const FocusLockConfigScreen({super.key});
 
@@ -12,87 +20,418 @@ class FocusLockConfigScreen extends StatefulWidget {
 }
 
 class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
-  // Master toggle
-  bool _masterEnabled = true;
+  final GlobalKey _preventUninstallSwitchKey = GlobalKey();
 
-  // Apps to lock state
-  final Map<String, bool> _lockedApps = {
-    'instagram': true,
-    'tiktok': true,
-    'youtube': true,
-    'facebook': false,
-    'x': false,
+  final List<String> _allPrayerKeys = const [
+    'fajr',
+    'dhuhr',
+    'asr',
+    'maghrib',
+    'isha',
+  ];
+  final Map<String, String> _prayerLabels = const {
+    'fajr': 'Fajr',
+    'dhuhr': 'Dhuhr',
+    'asr': 'Asr',
+    'maghrib': 'Maghrib',
+    'isha': 'Isha',
   };
 
-  // Lock schedule state
-  bool _lockDuringPrayer = true;
-  final Map<String, bool> _prayerTriggers = {
-    'fajr': true,
-    'dhuhr': true,
-    'asr': true,
-    'maghrib': true,
-    'isha': true,
-  };
+  Future<void> _showAddAppsDialog(FocusLockProvider provider) async {
+    final AppDefinition? result = await showDialog<AppDefinition>(
+      context: context,
+      builder: (context) =>
+          AppSelectionDialog(currentlyLockedApps: provider.lockedApps),
+    );
 
-  int _startOffsetMin = 0;
-  int _lockDurationMin = 20;
+    if (result != null && mounted) {
+      await provider.addLockedApp(result);
+    }
+  }
 
-  // Custom focus times
-  final List<Map<String, dynamic>> _customSchedules = [];
+  Future<void> _addCustomSchedule(FocusLockProvider provider) async {
+    final now = TimeOfDay.now();
+    final TimeOfDay? pickedStart = await showTimePicker(
+      context: context,
+      initialTime: now,
+      helpText: 'Select start time',
+    );
+    if (pickedStart == null) return;
+    if (!mounted) return;
 
-  // Unlock method
-  String _unlockMethod =
-      'markPrayed'; // waitItOut, markPrayed, mindfulPause, typePhrase
-  int _mindfulPauseSeconds = 60;
-  String _unlockPhrase = 'Prayer comes first';
+    final TimeOfDay? pickedEnd = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay(hour: (now.hour + 1) % 24, minute: now.minute),
+      helpText: 'Select end time',
+    );
+    if (pickedEnd == null) return;
+    if (!mounted) return;
 
-  // Exceptions & limits
-  bool _allowEmergency = true;
-  int _dailySkipAllowance = 1;
-  bool _preventUninstall = true;
+    final TextEditingController labelController = TextEditingController(
+      text: 'Focus Time',
+    );
+    final bool? confirm = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: Theme.of(context).brightness == Brightness.dark
+            ? AppColors.cardDark
+            : AppColors.cardLight,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: Text(
+          'Name this focus block',
+          style: GoogleFonts.plusJakartaSans().copyWith(
+            fontWeight: FontWeight.w800,
+            color: Theme.of(context).brightness == Brightness.dark
+                ? AppColors.textMainDark
+                : AppColors.textMainLight,
+          ),
+        ),
+        content: TextField(
+          autofocus: true,
+          controller: labelController,
+          style: GoogleFonts.plusJakartaSans().copyWith(
+            color: Theme.of(context).brightness == Brightness.dark
+                ? AppColors.textMainDark
+                : AppColors.textMainLight,
+          ),
+          decoration: InputDecoration(
+            hintText: 'e.g. Study, Bedtime, Work',
+            hintStyle: GoogleFonts.plusJakartaSans().copyWith(
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? AppColors.textMutedDark
+                  : AppColors.textMutedLight,
+            ),
+            filled: true,
+            fillColor: Theme.of(context).brightness == Brightness.dark
+                ? AppColors.surfaceDark
+                : AppColors.surfaceLight,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide.none,
+            ),
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: Text(
+              'Cancel',
+              style: GoogleFonts.plusJakartaSans().copyWith(
+                fontWeight: FontWeight.w600,
+                color: Theme.of(context).brightness == Brightness.dark
+                    ? AppColors.textMutedDark
+                    : AppColors.textMutedLight,
+              ),
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.pop(context, true),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Theme.of(context).brightness == Brightness.dark
+                  ? AppColors.primaryDark
+                  : AppColors.primaryLight,
+              foregroundColor: Colors.white,
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+            child: Text(
+              'Save',
+              style: GoogleFonts.plusJakartaSans().copyWith(
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+
+    if (confirm == true && mounted) {
+      final id = 'custom_${DateTime.now().millisecondsSinceEpoch}';
+      await provider.addCustomSchedule(
+        CustomLockSchedule(
+          id: id,
+          label: labelController.text.trim().isEmpty
+              ? 'Focus Time'
+              : labelController.text.trim(),
+          enabled: true,
+          startTime: pickedStart,
+          endTime: pickedEnd,
+        ),
+      );
+    }
+  }
+
+  Future<void> _updateCustomScheduleTime(
+    FocusLockProvider provider,
+    CustomLockSchedule schedule, {
+    required bool isStart,
+  }) async {
+    final picked = await showTimePicker(
+      context: context,
+      initialTime: isStart ? schedule.startTime : schedule.endTime,
+    );
+    if (picked == null) return;
+    await provider.updateCustomSchedule(
+      schedule.copyWith(
+        startTime: isStart ? picked : schedule.startTime,
+        endTime: isStart ? schedule.endTime : picked,
+      ),
+    );
+  }
+
+  Future<void> _requestAccessibilityPermission() async {
+    final bool enabled =
+        await AccessibilityServiceHelper.isAccessibilityServiceEnabled();
+    if (!mounted) return;
+
+    if (enabled) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Accessibility is already enabled',
+            style: GoogleFonts.plusJakartaSans().copyWith(color: Colors.white),
+          ),
+          backgroundColor: AppColors.success,
+        ),
+      );
+      return;
+    }
+    await AccessibilityServiceHelper.openAccessibilitySettings();
+  }
+
+  Future<void> _requestUsagePermission() async {
+    final bool granted =
+        await AccessibilityServiceHelper.hasUsageStatsPermission();
+    if (!mounted) return;
+    if (granted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Usage access is already granted',
+            style: GoogleFonts.plusJakartaSans().copyWith(color: Colors.white),
+          ),
+          backgroundColor: AppColors.success,
+        ),
+      );
+      return;
+    }
+    await AccessibilityServiceHelper.openUsageAccessSettings();
+  }
+
+  Future<void> _resetToDefaults(FocusLockProvider provider) async {
+    final confirm = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: Theme.of(context).brightness == Brightness.dark
+            ? AppColors.cardDark
+            : AppColors.cardLight,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: Text(
+          'Reset all settings?',
+          style: GoogleFonts.plusJakartaSans().copyWith(
+            fontWeight: FontWeight.w800,
+            color: Theme.of(context).brightness == Brightness.dark
+                ? AppColors.textMainDark
+                : AppColors.textMainLight,
+          ),
+        ),
+        content: Text(
+          'This will reset lock apps, schedules, unlock methods, and other Focus Lock settings to their defaults.',
+          style: GoogleFonts.plusJakartaSans().copyWith(
+            color: Theme.of(context).brightness == Brightness.dark
+                ? AppColors.textMutedDark
+                : AppColors.textMutedLight,
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: Text(
+              'Cancel',
+              style: GoogleFonts.plusJakartaSans().copyWith(
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.pop(context, true),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.roseAccent,
+              foregroundColor: Colors.white,
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+            child: Text(
+              'Reset',
+              style: GoogleFonts.plusJakartaSans().copyWith(
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+
+    if (confirm == true && mounted) {
+      await provider.resetToDefaults();
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Reset to default settings',
+              style: GoogleFonts.plusJakartaSans().copyWith(
+                color: Colors.white,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            backgroundColor: Theme.of(context).brightness == Brightness.dark
+                ? AppColors.primaryDark
+                : AppColors.primaryLight,
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final focusProvider = context.watch<FocusLockProvider>();
+    final plus = GoogleFonts.plusJakartaSans();
+
+    final masterEnabled = focusProvider.masterEnabled;
+    final prayerSchedule = focusProvider.prayerSchedule;
+    final lockedApps = focusProvider.lockedApps;
+    final customSchedules = focusProvider.customSchedules;
+    final unlockConfig = focusProvider.unlockConfig;
+    final allowEmergency = focusProvider.allowEmergency;
+    final dailySkipAllowance = focusProvider.dailySkipAllowance;
+    final preventUninstall = focusProvider.preventUninstall;
+
+    // Fallbacks if not initialized yet
+    final prayerEnabled = prayerSchedule?.enabled ?? true;
+    final prayerKeys =
+        prayerSchedule?.enabledPrayers.toSet() ?? _allPrayerKeys.toSet();
+    final startOffset = prayerSchedule?.startOffsetMinutes ?? 0;
+    final duration = prayerSchedule?.durationMinutes ?? 20;
+
+    final unlockMethodLabel = switch (unlockConfig.method) {
+      UnlockMethod.waitItOut => 'waitItOut',
+      UnlockMethod.markPrayed => 'markPrayed',
+      UnlockMethod.mindfulPause => 'mindfulPause',
+      UnlockMethod.typePhrase => 'typePhrase',
+    };
+
+    // Show default apps + any user-added ones from provider
+    final List<_AppDisplayItem> appItems = lockedApps
+        .map(
+          (app) => _AppDisplayItem(
+            key: app.packageName,
+            name: app.name,
+            icon: IconData(
+              app.iconCodePoint,
+              fontFamily: app.iconFontFamily,
+              fontPackage: app.iconFontPackage,
+              matchTextDirection: app.iconMatchTextDirection,
+            ),
+            color: app.color,
+            packageName: app.packageName,
+            fromProvider: true,
+          ),
+        )
+        .toList();
+
+    // can still quickly toggle them as in original design
+    final defaultAdditions = <_AppDisplayItem>[];
+    for (final d in defaultAdditions) {
+      if (!appItems.any((a) => a.packageName == d.packageName)) {
+        appItems.add(d);
+      }
+    }
+
+    appItems.sort((a, b) {
+      const order = [
+        'com.instagram.android',
+        'com.zhiliaoapp.musically',
+        'com.google.android.youtube',
+      ];
+      final ia = order.indexOf(a.packageName);
+      final ib = order.indexOf(b.packageName);
+      if (ia != -1 || ib != -1) {
+        final aOrd = ia == -1 ? 999 : ia;
+        final bOrd = ib == -1 ? 999 : ib;
+        return aOrd.compareTo(bOrd);
+      }
+      return a.name.compareTo(b.name);
+    });
 
     return Scaffold(
       backgroundColor: isDark ? AppColors.surfaceDark : AppColors.surfaceLight,
       body: SafeArea(
         child: Column(
           children: [
-            _buildHeader(context, isDark),
+            _buildHeader(context, isDark, focusProvider),
             Expanded(
               child: ListView(
                 padding: const EdgeInsets.fromLTRB(16, 16, 16, 40),
                 children: [
-                  // Master toggle
-                  _buildMasterToggleCard(isDark),
-
+                  _buildMasterToggleCard(
+                    isDark,
+                    plus,
+                    focusProvider,
+                    masterEnabled,
+                  ),
                   const SizedBox(height: 20),
-
-                  // Apps to lock section
-                  _buildAppsToLockSection(isDark),
-
+                  _buildSectionTitle(isDark, plus, 'PERMISSIONS & ACCESS'),
+                  const SizedBox(height: 8),
+                  _buildPermissionsQuickCard(isDark, plus, focusProvider),
                   const SizedBox(height: 20),
-
-                  // Lock schedule section
-                  _buildLockScheduleSection(isDark),
-
+                  _buildAppsToLockSection(
+                    isDark,
+                    plus,
+                    focusProvider,
+                    appItems,
+                    lockedApps,
+                  ),
                   const SizedBox(height: 20),
-
-                  // Custom Focus Times section
-                  _buildCustomFocusTimesSection(isDark),
-
+                  _buildLockScheduleSection(
+                    isDark,
+                    plus,
+                    focusProvider,
+                    prayerEnabled,
+                    prayerKeys,
+                    startOffset,
+                    duration,
+                  ),
                   const SizedBox(height: 20),
-
-                  // Unlock Method section
-                  _buildUnlockMethodSection(isDark),
-
+                  _buildCustomFocusTimesSection(
+                    isDark,
+                    plus,
+                    focusProvider,
+                    customSchedules,
+                  ),
                   const SizedBox(height: 20),
-
-                  // Exceptions & limits section
-                  _buildExceptionsSection(isDark),
-
+                  _buildUnlockMethodSection(
+                    isDark,
+                    plus,
+                    focusProvider,
+                    unlockConfig,
+                    unlockMethodLabel,
+                  ),
+                  const SizedBox(height: 20),
+                  _buildExceptionsSection(
+                    isDark,
+                    plus,
+                    focusProvider,
+                    allowEmergency,
+                    dailySkipAllowance,
+                    preventUninstall,
+                  ),
                   const SizedBox(height: 40),
                 ],
               ),
@@ -103,13 +442,15 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
     );
   }
 
-  /// Header with back button, title and reset action
-  Widget _buildHeader(BuildContext context, bool isDark) {
+  Widget _buildHeader(
+    BuildContext context,
+    bool isDark,
+    FocusLockProvider provider,
+  ) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
       child: Row(
         children: [
-          // Back button (Navigator.pop)
           GestureDetector(
             onTap: () => Navigator.pop(context),
             child: Container(
@@ -163,7 +504,7 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
             ),
           ),
           GestureDetector(
-            onTap: _resetToDefaults,
+            onTap: () => _resetToDefaults(provider),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
               child: Text(
@@ -183,7 +524,12 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
     );
   }
 
-  Widget _buildMasterToggleCard(bool isDark) {
+  Widget _buildMasterToggleCard(
+    bool isDark,
+    TextStyle plus,
+    FocusLockProvider provider,
+    bool masterEnabled,
+  ) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -225,7 +571,7 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
               children: [
                 Text(
                   'Enable Focus Lock',
-                  style: GoogleFonts.plusJakartaSans().copyWith(
+                  style: plus.copyWith(
                     fontSize: 14,
                     fontWeight: FontWeight.w700,
                     color: isDark
@@ -235,7 +581,7 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                 ),
                 Text(
                   'Block distracting apps during focus windows',
-                  style: GoogleFonts.plusJakartaSans().copyWith(
+                  style: plus.copyWith(
                     fontSize: 11,
                     color: isDark
                         ? AppColors.textMutedDark
@@ -246,42 +592,202 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
             ),
           ),
           Switch.adaptive(
-            value: _masterEnabled,
+            value: masterEnabled,
             activeTrackColor: isDark
                 ? AppColors.primaryDark
                 : AppColors.primaryLight,
-            onChanged: (value) {
-              setState(() => _masterEnabled = value);
-            },
+            onChanged: (value) => provider.setMasterEnabled(value),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildAppsToLockSection(bool isDark) {
-    final apps = [
-      _AppItem(
-        'instagram',
-        'Instagram',
-        Icons.photo_camera,
-        const Color(0xFFD946EF),
+  Widget _buildPermissionsQuickCard(
+    bool isDark,
+    TextStyle plus,
+    FocusLockProvider provider,
+  ) {
+    final dividerColor = isDark
+        ? AppColors.hairlineDark.withValues(alpha: 0.8)
+        : AppColors.hairlineLight.withValues(alpha: 0.8);
+    final preventUninstall = provider.preventUninstall;
+
+    return Container(
+      decoration: BoxDecoration(
+        color: isDark ? AppColors.cardDark : AppColors.cardLight,
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: dividerColor, width: 1),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: isDark ? 0.2 : 0.02),
+            blurRadius: 3,
+            offset: const Offset(0, 1),
+          ),
+        ],
       ),
-      _AppItem('tiktok', 'TikTok', Icons.music_note, const Color(0xFF475569)),
-      _AppItem(
-        'youtube',
-        'YouTube',
-        Icons.play_circle_filled,
-        const Color(0xFFEF4444),
+      child: Column(
+        children: [
+          Material(
+            color: Colors.transparent,
+            child: ListTile(
+              onTap: _requestAccessibilityPermission,
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 4,
+              ),
+              leading: Icon(
+                Icons.visibility_outlined,
+                color: isDark ? AppColors.primaryDark : AppColors.primaryLight,
+              ),
+              title: Text(
+                'Accessibility Service',
+                style: plus.copyWith(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w700,
+                  color: isDark
+                      ? AppColors.textMainDark
+                      : AppColors.textMainLight,
+                ),
+              ),
+              subtitle: Text(
+                'Detects app launches to show overlay',
+                style: plus.copyWith(
+                  fontSize: 11,
+                  color: isDark
+                      ? AppColors.textMutedDark
+                      : AppColors.textMutedLight,
+                ),
+              ),
+              trailing: const Icon(Icons.open_in_new, size: 18),
+            ),
+          ),
+          Divider(thickness: 1, height: 1, color: dividerColor),
+          Material(
+            color: Colors.transparent,
+            child: ListTile(
+              onTap: _requestUsagePermission,
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 4,
+              ),
+              leading: Icon(
+                Icons.timer_outlined,
+                color: isDark ? AppColors.primaryDark : AppColors.primaryLight,
+              ),
+              title: Text(
+                'Usage Stats Access',
+                style: plus.copyWith(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w700,
+                  color: isDark
+                      ? AppColors.textMainDark
+                      : AppColors.textMainLight,
+                ),
+              ),
+              subtitle: Text(
+                'Tracks blocked app attempts (optional)',
+                style: plus.copyWith(
+                  fontSize: 11,
+                  color: isDark
+                      ? AppColors.textMutedDark
+                      : AppColors.textMutedLight,
+                ),
+              ),
+              trailing: const Icon(Icons.open_in_new, size: 18),
+            ),
+          ),
+          Divider(thickness: 1, height: 1, color: dividerColor),
+          Material(
+            color: Colors.transparent,
+            child: ListTile(
+              onTap: () {
+                final ctx = _preventUninstallSwitchKey.currentContext;
+                if (ctx != null) {
+                  Scrollable.ensureVisible(
+                    ctx,
+                    duration: const Duration(milliseconds: 400),
+                    curve: Curves.easeInOutCubic,
+                  );
+                }
+              },
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 4,
+              ),
+              leading: const Icon(
+                Icons.security_outlined,
+                color: AppColors.roseAccent,
+              ),
+              title: Text(
+                'Prevent Uninstall (Admin)',
+                style: plus.copyWith(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w700,
+                  color: isDark
+                      ? AppColors.textMainDark
+                      : AppColors.textMainLight,
+                ),
+              ),
+              subtitle: Text(
+                preventUninstall
+                    ? 'Enabled \u2022 tap to jump to switch'
+                    : 'Disabled \u2022 tap to jump to switch',
+                style: plus.copyWith(
+                  fontSize: 11,
+                  color: isDark
+                      ? AppColors.textMutedDark
+                      : AppColors.textMutedLight,
+                ),
+              ),
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 3,
+                    ),
+                    decoration: BoxDecoration(
+                      color: preventUninstall
+                          ? AppColors.success.withValues(alpha: 0.12)
+                          : AppColors.textMutedDark.withValues(alpha: 0.08),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text(
+                      preventUninstall ? 'ON' : 'OFF',
+                      style: plus.copyWith(
+                        fontSize: 10,
+                        fontWeight: FontWeight.w800,
+                        letterSpacing: 0.5,
+                        color: preventUninstall
+                            ? AppColors.success
+                            : (isDark
+                                  ? AppColors.textMutedDark
+                                  : AppColors.textMutedLight),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 6),
+                  const Icon(Icons.arrow_downward, size: 16),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 8),
+        ],
       ),
-      _AppItem('facebook', 'Facebook', Icons.thumb_up, const Color(0xFF2563EB)),
-      _AppItem(
-        'x',
-        'X (Twitter)',
-        Icons.chat_bubble_outline,
-        AppColors.textMutedLight,
-      ),
-    ];
+    );
+  }
+
+  Widget _buildAppsToLockSection(
+    bool isDark,
+    TextStyle plus,
+    FocusLockProvider provider,
+    List<_AppDisplayItem> appItems,
+    List<AppDefinition> lockedApps,
+  ) {
+    final lockedSet = lockedApps.map((e) => e.packageName).toSet();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -293,7 +799,7 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
             children: [
               Text(
                 'APPS TO LOCK',
-                style: GoogleFonts.plusJakartaSans().copyWith(
+                style: plus.copyWith(
                   fontSize: 11,
                   fontWeight: FontWeight.w700,
                   color: isDark
@@ -302,9 +808,8 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                   letterSpacing: 1.2,
                 ),
               ),
-              // Add Apps button
               ElevatedButton.icon(
-                onPressed: _showAddAppsDialog,
+                onPressed: () => _showAddAppsDialog(provider),
                 icon: const Icon(Icons.add_circle_outline, size: 16),
                 label: const Text('Add Apps'),
                 style: ElevatedButton.styleFrom(
@@ -317,7 +822,7 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                     horizontal: 12,
                     vertical: 8,
                   ),
-                  textStyle: GoogleFonts.plusJakartaSans().copyWith(
+                  textStyle: plus.copyWith(
                     fontSize: 11,
                     fontWeight: FontWeight.w700,
                   ),
@@ -349,10 +854,11 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
             ],
           ),
           child: Column(
-            children: apps.asMap().entries.map((entry) {
+            children: appItems.asMap().entries.map((entry) {
               final index = entry.key;
               final app = entry.value;
-              final isLocked = _lockedApps[app.key] ?? false;
+
+              final actuallyLocked = lockedSet.contains(app.packageName);
 
               return Column(
                 children: [
@@ -379,26 +885,56 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                         ),
                         const SizedBox(width: 12),
                         Expanded(
-                          child: Text(
-                            app.name,
-                            style: GoogleFonts.plusJakartaSans().copyWith(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w700,
-                              color: isDark
-                                  ? AppColors.textMainDark
-                                  : AppColors.textMainLight,
-                            ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                app.name,
+                                style: plus.copyWith(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w700,
+                                  color: isDark
+                                      ? AppColors.textMainDark
+                                      : AppColors.textMainLight,
+                                ),
+                              ),
+                              if (!app.fromProvider)
+                                Text(
+                                  app.packageName,
+                                  style: plus.copyWith(
+                                    fontSize: 10,
+                                    color: isDark
+                                        ? AppColors.textMutedDark
+                                        : AppColors.textMutedLight,
+                                  ),
+                                ),
+                            ],
                           ),
                         ),
-                        Switch.adaptive(
-                          value: isLocked,
-                          activeTrackColor: isDark
-                              ? AppColors.primaryDark
-                              : AppColors.primaryLight,
-                          onChanged: (value) {
-                            setState(() => _lockedApps[app.key] = value);
-                          },
-                        ),
+                        if (app.fromProvider) ...[
+                          Switch.adaptive(
+                            value: actuallyLocked,
+                            activeTrackColor: isDark
+                                ? AppColors.primaryDark
+                                : AppColors.primaryLight,
+                            onChanged: (value) async {
+                              final AppDefinition target =
+                                  await _resolveAppDefinition(app);
+                              await provider.toggleLockedApp(target, value);
+                            },
+                          ),
+                        ] else
+                          Switch.adaptive(
+                            value: actuallyLocked,
+                            activeTrackColor: isDark
+                                ? AppColors.primaryDark
+                                : AppColors.primaryLight,
+                            onChanged: (value) async {
+                              final AppDefinition target =
+                                  await _resolveAppDefinition(app);
+                              await provider.toggleLockedApp(target, value);
+                            },
+                          ),
                       ],
                     ),
                   ),
@@ -411,7 +947,29 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
     );
   }
 
-  Widget _buildLockScheduleSection(bool isDark) {
+  Future<AppDefinition> _resolveAppDefinition(_AppDisplayItem app) async {
+    final existing = DefaultApps.getApp(app.packageName);
+    if (existing != null) return existing;
+    return AppDefinition(
+      packageName: app.packageName,
+      name: app.name,
+      iconCodePoint: app.icon.codePoint,
+      iconFontFamily: app.icon.fontFamily,
+      iconFontPackage: app.icon.fontPackage,
+      iconMatchTextDirection: app.icon.matchTextDirection,
+      colorARGB: app.color.toARGB32(),
+    );
+  }
+
+  Widget _buildLockScheduleSection(
+    bool isDark,
+    TextStyle plus,
+    FocusLockProvider provider,
+    bool prayerEnabled,
+    Set<String> prayerKeys,
+    int startOffsetMin,
+    int lockDurationMin,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -419,7 +977,7 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 4),
           child: Text(
             'LOCK SCHEDULE',
-            style: GoogleFonts.plusJakartaSans().copyWith(
+            style: plus.copyWith(
               fontSize: 11,
               fontWeight: FontWeight.w700,
               color: isDark
@@ -450,7 +1008,6 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
           ),
           child: Column(
             children: [
-              // Lock during prayer times toggle
               Padding(
                 padding: const EdgeInsets.all(16),
                 child: Row(
@@ -481,7 +1038,7 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                         children: [
                           Text(
                             'Lock During Prayer Times',
-                            style: GoogleFonts.plusJakartaSans().copyWith(
+                            style: plus.copyWith(
                               fontSize: 14,
                               fontWeight: FontWeight.w700,
                               color: isDark
@@ -491,7 +1048,7 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                           ),
                           Text(
                             'Uses today\'s Adhan schedule',
-                            style: GoogleFonts.plusJakartaSans().copyWith(
+                            style: plus.copyWith(
                               fontSize: 11,
                               color: isDark
                                   ? AppColors.textMutedDark
@@ -502,20 +1059,30 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                       ),
                     ),
                     Switch.adaptive(
-                      value: _lockDuringPrayer,
+                      value: prayerEnabled,
                       activeTrackColor: isDark
                           ? AppColors.primaryDark
                           : AppColors.primaryLight,
                       onChanged: (value) {
-                        setState(() => _lockDuringPrayer = value);
+                        final current =
+                            provider.prayerSchedule ??
+                            PrayerLockSchedule(
+                              id: 'prayer_default',
+                              label: 'Lock During Prayer Times',
+                              enabled: value,
+                              enabledPrayers: _allPrayerKeys,
+                              startOffsetMinutes: 0,
+                              durationMinutes: 20,
+                            );
+                        provider.updatePrayerSchedule(
+                          current.copyWith(enabled: value),
+                        );
                       },
                     ),
                   ],
                 ),
               ),
-
-              // Prayer trigger chips and timing controls
-              if (_lockDuringPrayer) ...[
+              if (prayerEnabled) ...[
                 Divider(
                   height: 1,
                   thickness: 1,
@@ -530,7 +1097,7 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                     children: [
                       Text(
                         'LOCKS DURING',
-                        style: GoogleFonts.plusJakartaSans().copyWith(
+                        style: plus.copyWith(
                           fontSize: 10,
                           fontWeight: FontWeight.w700,
                           color: isDark
@@ -543,23 +1110,25 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                       Wrap(
                         spacing: 8,
                         runSpacing: 8,
-                        children: [
-                          _buildPrayerChip('fajr', 'Fajr', isDark),
-                          _buildPrayerChip('dhuhr', 'Dhuhr', isDark),
-                          _buildPrayerChip('asr', 'Asr', isDark),
-                          _buildPrayerChip('maghrib', 'Maghrib', isDark),
-                          _buildPrayerChip('isha', 'Isha', isDark),
-                        ],
+                        children: _allPrayerKeys
+                            .map(
+                              (k) => _buildPrayerChip(
+                                k,
+                                _prayerLabels[k] ?? k,
+                                isDark,
+                                prayerKeys,
+                                provider,
+                              ),
+                            )
+                            .toList(),
                       ),
                       const SizedBox(height: 14),
-
-                      // Start offset control
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
                             'Starts before Adhan',
-                            style: GoogleFonts.plusJakartaSans().copyWith(
+                            style: plus.copyWith(
                               fontSize: 12,
                               fontWeight: FontWeight.w600,
                               color: isDark
@@ -572,10 +1141,16 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                               IconButton(
                                 icon: const Icon(Icons.remove, size: 18),
                                 onPressed: () {
-                                  setState(() {
-                                    _startOffsetMin = (_startOffsetMin - 5)
-                                        .clamp(0, 60);
-                                  });
+                                  final newStart = (startOffsetMin - 5).clamp(
+                                    0,
+                                    60,
+                                  );
+                                  final s = provider.prayerSchedule;
+                                  if (s != null) {
+                                    provider.updatePrayerSchedule(
+                                      s.copyWith(startOffsetMinutes: newStart),
+                                    );
+                                  }
                                 },
                                 style: IconButton.styleFrom(
                                   backgroundColor: isDark
@@ -587,9 +1162,9 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                               SizedBox(
                                 width: 64,
                                 child: Text(
-                                  '$_startOffsetMin min',
+                                  '$startOffsetMin min',
                                   textAlign: TextAlign.center,
-                                  style: GoogleFonts.plusJakartaSans().copyWith(
+                                  style: plus.copyWith(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w700,
                                     color: isDark
@@ -601,10 +1176,16 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                               IconButton(
                                 icon: const Icon(Icons.add, size: 18),
                                 onPressed: () {
-                                  setState(() {
-                                    _startOffsetMin = (_startOffsetMin + 5)
-                                        .clamp(0, 60);
-                                  });
+                                  final newStart = (startOffsetMin + 5).clamp(
+                                    0,
+                                    60,
+                                  );
+                                  final s = provider.prayerSchedule;
+                                  if (s != null) {
+                                    provider.updatePrayerSchedule(
+                                      s.copyWith(startOffsetMinutes: newStart),
+                                    );
+                                  }
                                 },
                                 style: IconButton.styleFrom(
                                   backgroundColor: isDark
@@ -617,16 +1198,13 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                           ),
                         ],
                       ),
-
                       const SizedBox(height: 14),
-
-                      // Lock duration control
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
                             'Lock duration',
-                            style: GoogleFonts.plusJakartaSans().copyWith(
+                            style: plus.copyWith(
                               fontSize: 12,
                               fontWeight: FontWeight.w600,
                               color: isDark
@@ -639,10 +1217,16 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                               IconButton(
                                 icon: const Icon(Icons.remove, size: 18),
                                 onPressed: () {
-                                  setState(() {
-                                    _lockDurationMin = (_lockDurationMin - 5)
-                                        .clamp(5, 120);
-                                  });
+                                  final newDur = (lockDurationMin - 5).clamp(
+                                    5,
+                                    120,
+                                  );
+                                  final s = provider.prayerSchedule;
+                                  if (s != null) {
+                                    provider.updatePrayerSchedule(
+                                      s.copyWith(durationMinutes: newDur),
+                                    );
+                                  }
                                 },
                                 style: IconButton.styleFrom(
                                   backgroundColor: isDark
@@ -654,9 +1238,9 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                               SizedBox(
                                 width: 64,
                                 child: Text(
-                                  '$_lockDurationMin min',
+                                  '$lockDurationMin min',
                                   textAlign: TextAlign.center,
-                                  style: GoogleFonts.plusJakartaSans().copyWith(
+                                  style: plus.copyWith(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w700,
                                     color: isDark
@@ -668,10 +1252,16 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                               IconButton(
                                 icon: const Icon(Icons.add, size: 18),
                                 onPressed: () {
-                                  setState(() {
-                                    _lockDurationMin = (_lockDurationMin + 5)
-                                        .clamp(5, 120);
-                                  });
+                                  final newDur = (lockDurationMin + 5).clamp(
+                                    5,
+                                    120,
+                                  );
+                                  final s = provider.prayerSchedule;
+                                  if (s != null) {
+                                    provider.updatePrayerSchedule(
+                                      s.copyWith(durationMinutes: newDur),
+                                    );
+                                  }
                                 },
                                 style: IconButton.styleFrom(
                                   backgroundColor: isDark
@@ -695,7 +1285,66 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
     );
   }
 
-  Widget _buildCustomFocusTimesSection(bool isDark) {
+  Widget _buildPrayerChip(
+    String key,
+    String label,
+    bool isDark,
+    Set<String> enabledPrayers,
+    FocusLockProvider provider,
+  ) {
+    final isSelected = enabledPrayers.contains(key);
+
+    return FilterChip(
+      label: Text(label),
+      selected: isSelected,
+      onSelected: (value) {
+        final schedule =
+            provider.prayerSchedule ??
+            PrayerLockSchedule(
+              id: 'prayer_default',
+              label: 'Lock During Prayer Times',
+              enabled: true,
+              enabledPrayers: _allPrayerKeys,
+              startOffsetMinutes: 0,
+              durationMinutes: 20,
+            );
+        final set = Set<String>.from(schedule.enabledPrayers);
+        if (value) {
+          set.add(key);
+        } else {
+          set.remove(key);
+        }
+        provider.updatePrayerSchedule(
+          schedule.copyWith(enabledPrayers: set.toList()),
+        );
+      },
+      backgroundColor: isDark ? AppColors.cardDark : AppColors.cardLight,
+      selectedColor: (isDark ? AppColors.primaryDark : AppColors.primaryLight)
+          .withValues(alpha: 0.2),
+      checkmarkColor: isDark ? AppColors.primaryDark : AppColors.primaryLight,
+      labelStyle: GoogleFonts.plusJakartaSans().copyWith(
+        fontSize: 12,
+        fontWeight: FontWeight.w600,
+        color: isSelected
+            ? (isDark ? AppColors.primaryDark : AppColors.primaryLight)
+            : (isDark ? AppColors.textMainDark : AppColors.textMainLight),
+      ),
+      side: BorderSide(
+        color: isSelected
+            ? (isDark ? AppColors.primaryDark : AppColors.primaryLight)
+            : (isDark ? AppColors.cardDark : AppColors.cardLight),
+        width: 1,
+      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+    );
+  }
+
+  Widget _buildCustomFocusTimesSection(
+    bool isDark,
+    TextStyle plus,
+    FocusLockProvider provider,
+    List<CustomLockSchedule> customSchedules,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -706,7 +1355,7 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
             children: [
               Text(
                 'CUSTOM FOCUS TIMES',
-                style: GoogleFonts.plusJakartaSans().copyWith(
+                style: plus.copyWith(
                   fontSize: 11,
                   fontWeight: FontWeight.w700,
                   color: isDark
@@ -715,9 +1364,8 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                   letterSpacing: 1.2,
                 ),
               ),
-              // Add button styled like Add Apps
               ElevatedButton.icon(
-                onPressed: _addCustomSchedule,
+                onPressed: () => _addCustomSchedule(provider),
                 icon: const Icon(Icons.add_circle_outline, size: 16),
                 label: const Text('Add Custom Time'),
                 style: ElevatedButton.styleFrom(
@@ -730,7 +1378,7 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                     horizontal: 12,
                     vertical: 8,
                   ),
-                  textStyle: GoogleFonts.plusJakartaSans().copyWith(
+                  textStyle: plus.copyWith(
                     fontSize: 11,
                     fontWeight: FontWeight.w700,
                   ),
@@ -743,12 +1391,12 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
           ),
         ),
         const SizedBox(height: 8),
-        if (_customSchedules.isEmpty)
+        if (customSchedules.isEmpty)
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 4),
             child: Text(
               'No custom focus times yet — tap "Add Custom Time" for blocks like study time or bedtime.',
-              style: GoogleFonts.plusJakartaSans().copyWith(
+              style: plus.copyWith(
                 fontSize: 11,
                 color: isDark
                     ? AppColors.textMutedDark
@@ -757,9 +1405,10 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
             ),
           )
         else
-          ..._customSchedules.asMap().entries.map((entry) {
-            final index = entry.key;
+          ...customSchedules.asMap().entries.map((entry) {
             final schedule = entry.value;
+            final String startStr = _fmtTime(schedule.startTime);
+            final String endStr = _fmtTime(schedule.endTime);
 
             return Padding(
               padding: const EdgeInsets.only(bottom: 10),
@@ -788,8 +1437,8 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                   children: [
                     Expanded(
                       child: TextFormField(
-                        initialValue: schedule['label'],
-                        style: GoogleFonts.plusJakartaSans().copyWith(
+                        initialValue: schedule.label,
+                        style: plus.copyWith(
                           fontSize: 12,
                           fontWeight: FontWeight.w700,
                           color: isDark
@@ -801,31 +1450,34 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                           isDense: true,
                           contentPadding: EdgeInsets.zero,
                           border: InputBorder.none,
-                          hintStyle: GoogleFonts.plusJakartaSans().copyWith(
+                          hintStyle: plus.copyWith(
                             color: isDark
                                 ? AppColors.textMutedDark
                                 : AppColors.textMutedLight,
                           ),
                         ),
                         onChanged: (value) {
-                          setState(() {
-                            _customSchedules[index]['label'] = value;
-                          });
+                          provider.updateCustomSchedule(
+                            schedule.copyWith(label: value),
+                          );
                         },
                       ),
                     ),
                     const SizedBox(width: 8),
-                    // Time pickers
-                    _buildTimeField(schedule['start'], isDark, (time) {
-                      setState(() {
-                        _customSchedules[index]['start'] = time;
-                      });
-                    }),
+                    _buildTimeField(
+                      startStr,
+                      isDark,
+                      () => _updateCustomScheduleTime(
+                        provider,
+                        schedule,
+                        isStart: true,
+                      ),
+                    ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 4),
                       child: Text(
                         'to',
-                        style: GoogleFonts.plusJakartaSans().copyWith(
+                        style: plus.copyWith(
                           fontSize: 10,
                           color: isDark
                               ? AppColors.textMutedDark
@@ -833,35 +1485,34 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                         ),
                       ),
                     ),
-                    _buildTimeField(schedule['end'], isDark, (time) {
-                      setState(() {
-                        _customSchedules[index]['end'] = time;
-                      });
-                    }),
+                    _buildTimeField(
+                      endStr,
+                      isDark,
+                      () => _updateCustomScheduleTime(
+                        provider,
+                        schedule,
+                        isStart: false,
+                      ),
+                    ),
                     const SizedBox(width: 8),
                     Transform.scale(
                       scale: 0.85,
                       child: Switch.adaptive(
-                        value: schedule['enabled'],
+                        value: schedule.enabled,
                         activeTrackColor: isDark
                             ? AppColors.primaryDark
                             : AppColors.primaryLight,
-                        onChanged: (value) {
-                          setState(() {
-                            _customSchedules[index]['enabled'] = value;
-                          });
-                        },
+                        onChanged: (value) => provider.updateCustomSchedule(
+                          schedule.copyWith(enabled: value),
+                        ),
                       ),
                     ),
                     IconButton(
                       icon: const Icon(Icons.delete_outline),
                       iconSize: 18,
                       color: AppColors.roseAccent,
-                      onPressed: () {
-                        setState(() {
-                          _customSchedules.removeAt(index);
-                        });
-                      },
+                      onPressed: () =>
+                          provider.removeCustomSchedule(schedule.id),
                       padding: EdgeInsets.zero,
                       constraints: const BoxConstraints(
                         minWidth: 32,
@@ -877,22 +1528,12 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
     );
   }
 
-  Widget _buildTimeField(String time, bool isDark, Function(String) onChanged) {
+  String _fmtTime(TimeOfDay t) =>
+      '${t.hour.toString().padLeft(2, '0')}:${t.minute.toString().padLeft(2, '0')}';
+
+  Widget _buildTimeField(String time, bool isDark, VoidCallback onTap) {
     return GestureDetector(
-      onTap: () async {
-        final TimeOfDay? picked = await showTimePicker(
-          context: context,
-          initialTime: TimeOfDay(
-            hour: int.parse(time.split(':')[0]),
-            minute: int.parse(time.split(':')[1]),
-          ),
-        );
-        if (picked != null) {
-          onChanged(
-            '${picked.hour.toString().padLeft(2, '0')}:${picked.minute.toString().padLeft(2, '0')}',
-          );
-        }
-      },
+      onTap: onTap,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         decoration: BoxDecoration(
@@ -911,7 +1552,13 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
     );
   }
 
-  Widget _buildUnlockMethodSection(bool isDark) {
+  Widget _buildUnlockMethodSection(
+    bool isDark,
+    TextStyle plus,
+    FocusLockProvider provider,
+    UnlockConfig unlockConfig,
+    String currentMethodLabel,
+  ) {
     final dividerColor = isDark
         ? AppColors.hairlineDark.withValues(alpha: 0.8)
         : AppColors.hairlineLight.withValues(alpha: 0.8);
@@ -919,48 +1566,82 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildSectionTitle(isDark, 'UNLOCK METHOD'),
+        _buildSectionTitle(isDark, plus, 'UNLOCK METHOD'),
         const SizedBox(height: 8),
         Column(
           children: [
             _buildUnlockMethodCard(
               isDark,
+              plus,
+              dividerColor: dividerColor,
               method: 'waitItOut',
               icon: Icons.hourglass_bottom,
               title: 'Wait It Out',
               description: 'A forced countdown — no early exit.',
-              dividerColor: dividerColor,
+              isSelected: currentMethodLabel == 'waitItOut',
+              onTap: () => provider.updateUnlockConfig(
+                unlockConfig.copyWith(method: UnlockMethod.waitItOut),
+              ),
             ),
             const SizedBox(height: 10),
             _buildUnlockMethodCard(
               isDark,
+              plus,
+              dividerColor: dividerColor,
               method: 'markPrayed',
               icon: Icons.check_circle_outline,
               title: 'Mark Prayer as Prayed',
               description: 'Auto-unlocks once you log the prayer.',
-              dividerColor: dividerColor,
+              isSelected: currentMethodLabel == 'markPrayed',
+              onTap: () => provider.updateUnlockConfig(
+                unlockConfig.copyWith(method: UnlockMethod.markPrayed),
+              ),
             ),
             const SizedBox(height: 10),
             _buildUnlockMethodCard(
               isDark,
+              plus,
+              dividerColor: dividerColor,
               method: 'mindfulPause',
               icon: Icons.air,
               title: 'Mindful Pause',
               description: 'A short breathing pause before you continue.',
-              dividerColor: dividerColor,
-              showExtraControl: _unlockMethod == 'mindfulPause',
-              extraControl: _buildMindfulPauseControl(isDark),
+              isSelected: currentMethodLabel == 'mindfulPause',
+              showExtraControl: currentMethodLabel == 'mindfulPause',
+              extraControl: _buildMindfulPauseControl(
+                isDark,
+                plus,
+                unlockConfig.mindfulPauseSeconds,
+                (v) => provider.updateUnlockConfig(
+                  unlockConfig.copyWith(mindfulPauseSeconds: v),
+                ),
+              ),
+              onTap: () => provider.updateUnlockConfig(
+                unlockConfig.copyWith(method: UnlockMethod.mindfulPause),
+              ),
             ),
             const SizedBox(height: 10),
             _buildUnlockMethodCard(
               isDark,
+              plus,
+              dividerColor: dividerColor,
               method: 'typePhrase',
               icon: Icons.text_fields,
               title: 'Type a Reminder Phrase',
               description: 'Type a short phrase to confirm your intention.',
-              dividerColor: dividerColor,
-              showExtraControl: _unlockMethod == 'typePhrase',
-              extraControl: _buildTypePhraseControl(isDark),
+              isSelected: currentMethodLabel == 'typePhrase',
+              showExtraControl: currentMethodLabel == 'typePhrase',
+              extraControl: _buildTypePhraseControl(
+                isDark,
+                plus,
+                unlockConfig.unlockPhrase,
+                (v) => provider.updateUnlockConfig(
+                  unlockConfig.copyWith(unlockPhrase: v),
+                ),
+              ),
+              onTap: () => provider.updateUnlockConfig(
+                unlockConfig.copyWith(method: UnlockMethod.typePhrase),
+              ),
             ),
           ],
         ),
@@ -968,24 +1649,36 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
     );
   }
 
+  Widget _buildSectionTitle(bool isDark, TextStyle plus, String title) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 4),
+      child: Text(
+        title,
+        style: plus.copyWith(
+          fontSize: 11,
+          fontWeight: FontWeight.w700,
+          letterSpacing: 1.2,
+          color: isDark ? AppColors.textMutedDark : AppColors.textMutedLight,
+        ),
+      ),
+    );
+  }
+
   Widget _buildUnlockMethodCard(
-    bool isDark, {
+    bool isDark,
+    TextStyle plus, {
     required String method,
     required IconData icon,
     required String title,
     required String description,
     required Color dividerColor,
+    required bool isSelected,
+    required VoidCallback onTap,
     bool showExtraControl = false,
     Widget? extraControl,
   }) {
-    final isSelected = _unlockMethod == method;
-
     return GestureDetector(
-      onTap: () {
-        setState(() {
-          _unlockMethod = method;
-        });
-      },
+      onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
           color: isDark ? AppColors.cardDark : AppColors.cardLight,
@@ -1042,7 +1735,7 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                       children: [
                         Text(
                           title,
-                          style: GoogleFonts.plusJakartaSans().copyWith(
+                          style: plus.copyWith(
                             fontSize: 14,
                             fontWeight: FontWeight.w700,
                             color: isDark
@@ -1052,7 +1745,7 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                         ),
                         Text(
                           description,
-                          style: GoogleFonts.plusJakartaSans().copyWith(
+                          style: plus.copyWith(
                             fontSize: 11,
                             color: isDark
                                 ? AppColors.textMutedDark
@@ -1086,13 +1779,18 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
     );
   }
 
-  Widget _buildMindfulPauseControl(bool isDark) {
+  Widget _buildMindfulPauseControl(
+    bool isDark,
+    TextStyle plus,
+    int value,
+    ValueChanged<int> onChange,
+  ) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
           'Pause length',
-          style: GoogleFonts.plusJakartaSans().copyWith(
+          style: plus.copyWith(
             fontSize: 12,
             fontWeight: FontWeight.w600,
             color: isDark ? AppColors.textMainDark : AppColors.textMainLight,
@@ -1102,14 +1800,7 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
           children: [
             IconButton(
               icon: const Icon(Icons.remove, size: 18),
-              onPressed: () {
-                setState(() {
-                  _mindfulPauseSeconds = (_mindfulPauseSeconds - 15).clamp(
-                    15,
-                    300,
-                  );
-                });
-              },
+              onPressed: () => onChange((value - 15).clamp(15, 300)),
               style: IconButton.styleFrom(
                 backgroundColor: isDark
                     ? AppColors.cardDark
@@ -1120,9 +1811,9 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
             SizedBox(
               width: 48,
               child: Text(
-                '${_mindfulPauseSeconds}s',
+                '${value}s',
                 textAlign: TextAlign.center,
-                style: GoogleFonts.plusJakartaSans().copyWith(
+                style: plus.copyWith(
                   fontSize: 12,
                   fontWeight: FontWeight.w700,
                   color: isDark
@@ -1133,14 +1824,7 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
             ),
             IconButton(
               icon: const Icon(Icons.add, size: 18),
-              onPressed: () {
-                setState(() {
-                  _mindfulPauseSeconds = (_mindfulPauseSeconds + 15).clamp(
-                    15,
-                    300,
-                  );
-                });
-              },
+              onPressed: () => onChange((value + 15).clamp(15, 300)),
               style: IconButton.styleFrom(
                 backgroundColor: isDark
                     ? AppColors.cardDark
@@ -1154,13 +1838,18 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
     );
   }
 
-  Widget _buildTypePhraseControl(bool isDark) {
+  Widget _buildTypePhraseControl(
+    bool isDark,
+    TextStyle plus,
+    String phrase,
+    ValueChanged<String> onChange,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           'PHRASE TO TYPE',
-          style: GoogleFonts.plusJakartaSans().copyWith(
+          style: plus.copyWith(
             fontSize: 10,
             fontWeight: FontWeight.w700,
             color: isDark ? AppColors.textMutedDark : AppColors.textMutedLight,
@@ -1169,8 +1858,8 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
         ),
         const SizedBox(height: 8),
         TextFormField(
-          initialValue: _unlockPhrase,
-          style: GoogleFonts.plusJakartaSans().copyWith(
+          initialValue: phrase,
+          style: plus.copyWith(
             fontSize: 12,
             fontWeight: FontWeight.w600,
             color: isDark ? AppColors.textMainDark : AppColors.textMainLight,
@@ -1187,38 +1876,26 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
               vertical: 10,
             ),
             hintText: 'Enter reminder phrase',
-            hintStyle: GoogleFonts.plusJakartaSans().copyWith(
+            hintStyle: plus.copyWith(
               color: isDark
                   ? AppColors.textMutedDark
                   : AppColors.textMutedLight,
             ),
           ),
-          onChanged: (value) {
-            setState(() {
-              _unlockPhrase = value;
-            });
-          },
+          onChanged: onChange,
         ),
       ],
     );
   }
 
-  Widget _buildSectionTitle(bool isDark, String title) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 4),
-      child: Text(
-        title,
-        style: GoogleFonts.plusJakartaSans().copyWith(
-          fontSize: 11,
-          fontWeight: FontWeight.w700,
-          letterSpacing: 1.2,
-          color: isDark ? AppColors.textMutedDark : AppColors.textMutedLight,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildExceptionsSection(bool isDark) {
+  Widget _buildExceptionsSection(
+    bool isDark,
+    TextStyle plus,
+    FocusLockProvider provider,
+    bool allowEmergency,
+    int dailySkipAllowance,
+    bool preventUninstall,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -1226,7 +1903,7 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 4),
           child: Text(
             'EXCEPTIONS & LIMITS',
-            style: GoogleFonts.plusJakartaSans().copyWith(
+            style: plus.copyWith(
               fontSize: 11,
               fontWeight: FontWeight.w700,
               color: isDark
@@ -1257,7 +1934,6 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
           ),
           child: Column(
             children: [
-              // Allow emergency calls
               Padding(
                 padding: const EdgeInsets.all(16),
                 child: Row(
@@ -1282,7 +1958,7 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                         children: [
                           Text(
                             'Allow Calls & Messages',
-                            style: GoogleFonts.plusJakartaSans().copyWith(
+                            style: plus.copyWith(
                               fontSize: 14,
                               fontWeight: FontWeight.w700,
                               color: isDark
@@ -1292,7 +1968,7 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                           ),
                           Text(
                             'Emergency contact apps stay unlocked',
-                            style: GoogleFonts.plusJakartaSans().copyWith(
+                            style: plus.copyWith(
                               fontSize: 11,
                               color: isDark
                                   ? AppColors.textMutedDark
@@ -1303,18 +1979,15 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                       ),
                     ),
                     Switch.adaptive(
-                      value: _allowEmergency,
+                      value: allowEmergency,
                       activeTrackColor: isDark
                           ? AppColors.primaryDark
                           : AppColors.primaryLight,
-                      onChanged: (value) {
-                        setState(() => _allowEmergency = value);
-                      },
+                      onChanged: (value) => provider.setAllowEmergency(value),
                     ),
                   ],
                 ),
               ),
-
               Divider(
                 height: 1,
                 thickness: 1,
@@ -1322,8 +1995,6 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                     ? AppColors.hairlineDark
                     : AppColors.hairlineLight,
               ),
-
-              // Daily skip allowance
               Padding(
                 padding: const EdgeInsets.all(16),
                 child: Row(
@@ -1335,7 +2006,7 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                         children: [
                           Text(
                             'Daily Skip Allowance',
-                            style: GoogleFonts.plusJakartaSans().copyWith(
+                            style: plus.copyWith(
                               fontSize: 14,
                               fontWeight: FontWeight.w700,
                               color: isDark
@@ -1345,7 +2016,7 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                           ),
                           Text(
                             'Times you can skip per day',
-                            style: GoogleFonts.plusJakartaSans().copyWith(
+                            style: plus.copyWith(
                               fontSize: 11,
                               color: isDark
                                   ? AppColors.textMutedDark
@@ -1359,12 +2030,9 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                       children: [
                         IconButton(
                           icon: const Icon(Icons.remove, size: 18),
-                          onPressed: () {
-                            setState(() {
-                              _dailySkipAllowance = (_dailySkipAllowance - 1)
-                                  .clamp(0, 5);
-                            });
-                          },
+                          onPressed: () => provider.setDailySkipAllowance(
+                            (dailySkipAllowance - 1).clamp(0, 5),
+                          ),
                           style: IconButton.styleFrom(
                             backgroundColor: isDark
                                 ? AppColors.cardDark
@@ -1375,9 +2043,9 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                         SizedBox(
                           width: 48,
                           child: Text(
-                            '$_dailySkipAllowance',
+                            '$dailySkipAllowance',
                             textAlign: TextAlign.center,
-                            style: GoogleFonts.plusJakartaSans().copyWith(
+                            style: plus.copyWith(
                               fontSize: 12,
                               fontWeight: FontWeight.w700,
                               color: isDark
@@ -1388,12 +2056,9 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                         ),
                         IconButton(
                           icon: const Icon(Icons.add, size: 18),
-                          onPressed: () {
-                            setState(() {
-                              _dailySkipAllowance = (_dailySkipAllowance + 1)
-                                  .clamp(0, 5);
-                            });
-                          },
+                          onPressed: () => provider.setDailySkipAllowance(
+                            (dailySkipAllowance + 1).clamp(0, 5),
+                          ),
                           style: IconButton.styleFrom(
                             backgroundColor: isDark
                                 ? AppColors.cardDark
@@ -1406,7 +2071,6 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                   ],
                 ),
               ),
-
               Divider(
                 height: 1,
                 thickness: 1,
@@ -1414,9 +2078,8 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                     ? AppColors.hairlineDark
                     : AppColors.hairlineLight,
               ),
-
-              // Prevent uninstall
               Padding(
+                key: _preventUninstallSwitchKey,
                 padding: const EdgeInsets.all(16),
                 child: Row(
                   children: [
@@ -1440,7 +2103,7 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                         children: [
                           Text(
                             'Prevent Uninstall During Lock',
-                            style: GoogleFonts.plusJakartaSans().copyWith(
+                            style: plus.copyWith(
                               fontSize: 14,
                               fontWeight: FontWeight.w700,
                               color: isDark
@@ -1450,7 +2113,7 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                           ),
                           Text(
                             'Requires device admin permission',
-                            style: GoogleFonts.plusJakartaSans().copyWith(
+                            style: plus.copyWith(
                               fontSize: 11,
                               color: isDark
                                   ? AppColors.textMutedDark
@@ -1461,13 +2124,11 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                       ),
                     ),
                     Switch.adaptive(
-                      value: _preventUninstall,
+                      value: preventUninstall,
                       activeTrackColor: isDark
                           ? AppColors.primaryDark
                           : AppColors.primaryLight,
-                      onChanged: (value) {
-                        setState(() => _preventUninstall = value);
-                      },
+                      onChanged: (value) => provider.setPreventUninstall(value),
                     ),
                   ],
                 ),
@@ -1478,130 +2139,22 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
       ],
     );
   }
-
-  Widget _buildPrayerChip(String key, String label, bool isDark) {
-    final isSelected = _prayerTriggers[key] ?? false;
-
-    return FilterChip(
-      label: Text(label),
-      selected: isSelected,
-      onSelected: (value) {
-        setState(() => _prayerTriggers[key] = value);
-      },
-      backgroundColor: isDark ? AppColors.cardDark : AppColors.cardLight,
-      selectedColor: (isDark ? AppColors.primaryDark : AppColors.primaryLight)
-          .withValues(alpha: 0.2),
-      checkmarkColor: isDark ? AppColors.primaryDark : AppColors.primaryLight,
-      labelStyle: GoogleFonts.plusJakartaSans().copyWith(
-        fontSize: 12,
-        fontWeight: FontWeight.w600,
-        color: isSelected
-            ? (isDark ? AppColors.primaryDark : AppColors.primaryLight)
-            : (isDark ? AppColors.textMainDark : AppColors.textMainLight),
-      ),
-      side: BorderSide(
-        color: isSelected
-            ? (isDark ? AppColors.primaryDark : AppColors.primaryLight)
-            : (isDark ? AppColors.cardDark : AppColors.cardLight),
-        width: 1,
-      ),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-    );
-  }
-
-  void _addCustomSchedule() {
-    setState(() {
-      _customSchedules.add({
-        'label': 'Focus Time',
-        'start': '21:00',
-        'end': '22:00',
-        'enabled': true,
-      });
-    });
-  }
-
-  void _showAddAppsDialog() {
-    // Placeholder for future implementation
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(
-          'Add Apps',
-          style: GoogleFonts.plusJakartaSans().copyWith(
-            fontSize: 18,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-        content: Text(
-          'App selection from device will be implemented in a future update.',
-          style: GoogleFonts.plusJakartaSans().copyWith(
-            fontSize: 14,
-            fontWeight: FontWeight.w400,
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text(
-              'OK',
-              style: GoogleFonts.plusJakartaSans().copyWith(
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _resetToDefaults() {
-    setState(() {
-      _masterEnabled = true;
-      _lockedApps['instagram'] = true;
-      _lockedApps['tiktok'] = true;
-      _lockedApps['youtube'] = true;
-      _lockedApps['facebook'] = false;
-      _lockedApps['x'] = false;
-      _lockDuringPrayer = true;
-      _prayerTriggers['fajr'] = true;
-      _prayerTriggers['dhuhr'] = true;
-      _prayerTriggers['asr'] = true;
-      _prayerTriggers['maghrib'] = true;
-      _prayerTriggers['isha'] = true;
-      _startOffsetMin = 0;
-      _lockDurationMin = 20;
-      _customSchedules.clear();
-      _unlockMethod = 'markPrayed';
-      _mindfulPauseSeconds = 60;
-      _unlockPhrase = 'Prayer comes first';
-      _allowEmergency = true;
-      _dailySkipAllowance = 1;
-      _preventUninstall = true;
-    });
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          'Reset to default settings',
-          style: GoogleFonts.plusJakartaSans().copyWith(
-            fontSize: 14,
-            fontWeight: FontWeight.w500,
-            color: Colors.white,
-          ),
-        ),
-        duration: const Duration(seconds: 2),
-      ),
-    );
-  }
 }
 
-/// Helper class for app item data
-class _AppItem {
+class _AppDisplayItem {
   final String key;
   final String name;
   final IconData icon;
   final Color color;
+  final String packageName;
+  final bool fromProvider;
 
-  _AppItem(this.key, this.name, this.icon, this.color);
+  _AppDisplayItem({
+    required this.key,
+    required this.name,
+    required this.icon,
+    required this.color,
+    required this.packageName,
+    required this.fromProvider,
+  });
 }

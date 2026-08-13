@@ -24,5 +24,6 @@ class AppColors {
   static const Color hairlineDark = Color(0xFF2B2924);
 
   static const Color success = Color(0xFF10B981);
+  static const Color warning = Color(0xFFF59E0B);
   static const Color teal = Color(0xFF0D9488);
 }

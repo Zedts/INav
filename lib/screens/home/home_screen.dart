@@ -5,6 +5,7 @@ import '../../core/providers/verse_provider.dart';
 import '../../core/providers/hadith_provider.dart';
 import '../../core/providers/streak_provider.dart';
 import '../../core/providers/prayer_settings_provider.dart';
+import '../../core/providers/focus_lock_provider.dart';
 import '../../core/theme/app_colors.dart';
 import '../../widgets/common/error_state_view.dart';
 import '../../widgets/common/section_skeleton.dart';
@@ -36,10 +37,20 @@ class _HomeScreenState extends State<HomeScreen> {
       final hadithProvider = context.read<HadithProvider>();
       final streakProvider = context.read<StreakProvider>();
       final settingsProvider = context.read<PrayerSettingsProvider>();
+      final focusLockProvider = context.read<FocusLockProvider>();
+
       await settingsProvider.initialize();
       if (!mounted) return;
       await prayerProvider.initialize();
       if (!mounted) return;
+
+      // Sync prayer times with Focus Lock
+      if (prayerProvider.prayerTimes != null) {
+        focusLockProvider.updatePrayerTimes(
+          prayerProvider.prayerTimes!.getAllPrayerTimes(),
+        );
+      }
+
       await verseProvider.loadDailyVerse();
       if (!mounted) return;
       await hadithProvider.loadDailyHadith();
