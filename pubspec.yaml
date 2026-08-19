@@ -117,21 +117,6 @@ dependency_overrides:
 # The following section is specific to Flutter packages.
 flutter:
 
-  # Declare this package itself as a Flutter plugin. This causes
-  # `GeneratedPluginRegistrant.registerWith(engine)` to ALSO instantiate
-  # `InavNativePlugin` on EVERY FlutterEngine created in this process —
-  # both:
-  #   (a) the main app engine (MainActivity), AND
-  #   (b) the overlay isolate engine spawned by flutter_accessibility_service.
-  #
-  # This is the only way to guarantee that `com.zedt.inav/native#openInavApp`
-  # has a native handler on BOTH engines without modifying 3rd-party packages.
-  plugin:
-    platforms:
-      android:
-        package: com.zedt.inav
-        pluginClass: InavNativePlugin
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

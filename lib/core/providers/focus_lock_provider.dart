@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
 import 'dart:convert';
@@ -64,6 +65,34 @@ class FocusLockProvider with ChangeNotifier {
   bool get canSkip => remainingSkips > 0;
   LockEngine? get lockEngine => _lockEngine;
 
+  /// Retry helper for SharedPreferences.getInstance(). On some devices the
+  /// pigeon channel is NOT ready synchronously after ensureInitialized(),
+  /// throwing PlatformException(channel-error). If that propagates up
+  /// uncaught during main() init, runApp() is never called and the app
+  /// is PERMANENTLY stuck on the splash logo screen.
+  static Future<SharedPreferences> _getPrefsWithRetry() async {
+    const maxAttempts = 5;
+    const delay = Duration(milliseconds: 100);
+    Object? lastErr;
+    for (var i = 0; i < maxAttempts; i++) {
+      try {
+        final prefs = await SharedPreferences.getInstance();
+        try {
+          await prefs.reload();
+        } catch (_) {}
+        return prefs;
+      } catch (e) {
+        lastErr = e;
+        if (e is PlatformException && e.code == 'channel-error') {
+          await Future.delayed(delay);
+          continue;
+        }
+        rethrow;
+      }
+    }
+    throw lastErr ?? StateError('SharedPreferences unavailable');
+  }
+
   /// Initialize provider and load saved data
   Future<void> initialize({
     LockEngineMode mode = LockEngineMode.mainApp,
@@ -71,25 +100,52 @@ class FocusLockProvider with ChangeNotifier {
   }) async {
     if (_isInitialized) return;
 
-    _prefs = await SharedPreferences.getInstance();
-    // Reload BEFORE reading — the overlay isolate and main isolate have
-    // SEPARATE in-memory SharedPreferences caches (Dart isolates don't share
-    // memory). Without reload() we read stale values written by the other
-    // isolate, causing the timer to show "—" (null prayer times/schedules).
-    await _prefs!.reload();
-    await _loadState();
-    await _checkAndResetDailyCount();
+    try {
+      _prefs = await _getPrefsWithRetry();
+      await _loadState();
+      await _checkAndResetDailyCount();
 
-    // Initialize lock engine
-    _lockEngine = LockEngine(this, mode: mode);
+      // Initialize lock engine
+      _lockEngine = LockEngine(this, mode: mode);
 
-    // Start engine if master is enabled AND caller requested it
-    // (overlay isolate is UI-only, never starts the detector engine)
-    if (_masterEnabled && startEngine) {
-      await _lockEngine?.start();
+      // Start engine if master is enabled AND caller requested it
+      // (overlay isolate is UI-only, never starts the detector engine)
+      if (_masterEnabled && startEngine) {
+        try {
+          await _lockEngine?.start();
+        } catch (e) {
+          debugPrint('FocusLockProvider: LockEngine start failed (non-fatal): $e');
+        }
+      }
+
+      _startTickTimer();
+    } catch (e) {
+      // NEVER propagate up. If we can't load state, fall back to sane
+      // defaults + no engine, so at least the rest of the app boots.
+      debugPrint('FocusLockProvider: init failed (non-fatal, defaults used): $e');
+      _prefs = null;
+      _masterEnabled = true;
+      _lockedApps = DefaultApps.defaultPackages
+          .map((pkg) => DefaultApps.getApp(pkg)!)
+          .toList();
+      _prayerSchedule = PrayerLockSchedule(
+        id: 'prayer_default',
+        label: 'Lock During Prayer Times',
+        enabled: true,
+        enabledPrayers: const ['fajr', 'dhuhr', 'asr', 'maghrib', 'isha'],
+        startOffsetMinutes: 0,
+        durationMinutes: 20,
+      );
+      _customSchedules = [];
+      _unlockConfig = const UnlockConfig(method: UnlockMethod.markPrayed);
+      _allowEmergency = true;
+      _dailySkipAllowance = 1;
+      _preventUninstall = true;
+      _todaySkipCount = 0;
+      try {
+        _startTickTimer();
+      } catch (_) {}
     }
-
-    _startTickTimer();
 
     _isInitialized = true;
     notifyListeners();

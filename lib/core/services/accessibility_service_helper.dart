@@ -37,7 +37,16 @@ class AccessibilityServiceHelper {
     if (_isInitialized) return;
     _isInitialized = true;
 
-    _subscribeToAccessStream();
+    try {
+      await _subscribeToAccessStreamWithRetry();
+    } catch (e) {
+      // Plugin channel may not be ready yet during early init — this is
+      // non-fatal. When the user actually enables the accessibility service,
+      // the polling timer (LockEngine.startReconnectTimer) will call
+      // forceResubscribe(), which will retry again. Never let this throw
+      // up into main() and prevent runApp() from executing.
+      debugPrint('AccessibilityHelper: init stream subscription delayed (non-fatal): $e');
+    }
   }
 
   static Future<void> forceResubscribe() async {
@@ -48,7 +57,11 @@ class AccessibilityServiceHelper {
     _pendingPackage = null;
     _debounceTimer?.cancel();
     await Future.delayed(const Duration(milliseconds: 100));
-    _subscribeToAccessStream();
+    try {
+      await _subscribeToAccessStreamWithRetry();
+    } catch (e) {
+      debugPrint('AccessibilityHelper: forceResubscribe stream error (non-fatal): $e');
+    }
     final connected = await isAccessibilityServiceEnabled();
     if (connected) {
       _serviceConfirmedConnected = true;
@@ -56,7 +69,39 @@ class AccessibilityServiceHelper {
     }
   }
 
-  static void _subscribeToAccessStream() {
+  /// Subscribe to the accessibility stream with retry. During early app init
+  /// the `x-slayer/accessibility_event` EventChannel's native handler may not
+  /// be registered on the BinaryMessenger yet, causing:
+  ///   MissingPluginException(No implementation found for method listen on
+  ///   channel x-slayer/accessibility_event)
+  ///
+  /// Without retry, the exception propagates to the root zone uncaught,
+  /// preventing main() from reaching runApp() → app stuck on launch logo.
+  static Future<void> _subscribeToAccessStreamWithRetry() async {
+    const maxAttempts = 5;
+    const delay = Duration(milliseconds: 200);
+    Object? lastErr;
+    for (var i = 0; i < maxAttempts; i++) {
+      try {
+        _doSubscribe();
+        return;
+      } catch (e) {
+        lastErr = e;
+        final isMissing = e is MissingPluginException ||
+            (e is PlatformException &&
+                (e.code == 'channel-error' ||
+                    (e.message ?? '').contains('listen on channel')));
+        if (isMissing) {
+          await Future.delayed(delay);
+          continue;
+        }
+        rethrow;
+      }
+    }
+    throw lastErr ?? StateError('Accessibility stream unavailable');
+  }
+
+  static void _doSubscribe() {
     _accessStreamSubscription?.cancel();
     _accessStreamSubscription =
         FlutterAccessibilityService.accessStream.listen((event) {
@@ -91,6 +136,9 @@ class AccessibilityServiceHelper {
           }
         });
       }
+    }, onError: (_) {
+      // Swallow stream errors. The polling timer + forceResubscribe will
+      // recover. We never want a stream error to reach the root zone.
     });
   }
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
+import 'dart:async';
 import 'core/theme/app_theme.dart';
 import 'core/theme/theme_provider.dart';
 import 'core/providers/prayer_provider.dart';
@@ -17,86 +18,118 @@ import 'core/services/accessibility_service_helper.dart';
 import 'screens/main_screen.dart';
 import 'screens/lock_overlay_screen.dart';
 
-void main() async {
-  // Ensure Flutter bindings are initialized
-  WidgetsFlutterBinding.ensureInitialized();
+void main() {
+  runZonedGuarded(() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    ThemeProvider? themeProvider;
+    FocusLockProvider? focusLockProvider;
+    try {
+      // Load environment variables (services have safe fallbacks if missing)
+      try {
+        await dotenv.load(fileName: '.env');
+      } catch (e) {
+        debugPrint('Could not load .env file, using default configuration: $e');
+        dotenv.loadFromString(envString: '');
+      }
 
-  // Load environment variables (services have safe fallbacks if missing)
-  try {
-    await dotenv.load(fileName: '.env');
-  } catch (e) {
-    debugPrint('Could not load .env file, using default configuration: $e');
-    // Initialize dotenv with empty content so dotenv.env access is safe
-    dotenv.loadFromString(envString: '');
-  }
+      // Initialize accessibility service helper (best effort, swallow errors)
+      try {
+        await AccessibilityServiceHelper.initialize();
+      } catch (e) {
+        debugPrint('AccessibilityServiceHelper init delayed (non-fatal): $e');
+      }
 
-  // Initialize accessibility service helper
-  await AccessibilityServiceHelper.initialize();
+      // Create theme provider and load saved preference
+      themeProvider = ThemeProvider();
+      try {
+        await themeProvider.loadThemePreference();
+      } catch (e) {
+        debugPrint('ThemeProvider init fallback (non-fatal): $e');
+      }
 
-  // Create theme provider and load saved preference
-  final themeProvider = ThemeProvider();
-  await themeProvider.loadThemePreference();
-
-  // Create focus lock provider and initialize
-  final focusLockProvider = FocusLockProvider();
-  await focusLockProvider.initialize();
-
-  runApp(
-    MyApp(themeProvider: themeProvider, focusLockProvider: focusLockProvider),
-  );
+      // Create focus lock provider and initialize
+      focusLockProvider = FocusLockProvider();
+      try {
+        await focusLockProvider.initialize();
+      } catch (e) {
+        debugPrint('FocusLockProvider init fallback (non-fatal): $e');
+        // Manually set defaults so the app still boots
+        focusLockProvider = FocusLockProvider();
+      }
+    } catch (e, st) {
+      debugPrint('main() init caught (fallback used): $e\n$st');
+    } finally {
+      // GUARANTEE: runApp always executes. If either provider failed, create
+      // safe defaults. This is the final backstop against "stuck on logo".
+      themeProvider ??= ThemeProvider();
+      focusLockProvider ??= FocusLockProvider();
+      // Lock in defaults for both providers without awaiting (would re-trigger
+      // the same startup races that just failed).
+      runApp(
+        MyApp(
+          themeProvider: themeProvider,
+          focusLockProvider: focusLockProvider,
+        ),
+      );
+    }
+  }, (error, stackTrace) {
+    debugPrint('ROOT ZONE ERROR (uncaught): $error\n$stackTrace');
+    // Never let a root-zone error crash the app on startup.
+  });
 }
 
 /// Entry point for lock overlay (called by flutter_accessibility_service)
 @pragma('vm:entry-point')
-void accessibilityOverlay() async {
-  WidgetsFlutterBinding.ensureInitialized();
+void accessibilityOverlay() {
+  runZonedGuarded(() async {
+    WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize dotenv FIRST — VerseService/HadithService -> ApiService static
-  // fields read dotenv.env at class-load time. Without this, overlay isolate
-  // would throw NotInitializedError and crash (blank overlay, no UI).
-  try {
-    await dotenv.load(fileName: '.env');
-  } catch (_) {
-    dotenv.loadFromString(envString: '');
-  }
+    // Initialize dotenv FIRST — VerseService/HadithService -> ApiService static
+    // fields read dotenv.env at class-load time. Without this, overlay isolate
+    // would throw NotInitializedError and crash (blank overlay, no UI).
+    try {
+      await dotenv.load(fileName: '.env');
+    } catch (_) {
+      dotenv.loadFromString(envString: '');
+    }
 
-  // Theme provider (fallback: dark if load fails — safe default for overlay)
-  final themeProvider = ThemeProvider();
-  try {
-    await themeProvider.loadThemePreference();
-  } catch (_) {
-    /* fallback: system default */
-  }
+    // Theme provider (fallback: dark if load fails — safe default for overlay)
+    final themeProvider = ThemeProvider();
+    try {
+      await themeProvider.loadThemePreference();
+    } catch (_) {
+      /* fallback: system default */
+    }
 
-  // Focus lock — overlay isolate is UI-ONLY. NEVER start LockEngine/detector
-  // here (mainApp isolate already runs detector, prevents duplicate logs).
-  final focusLockProvider = FocusLockProvider();
-  try {
-    await focusLockProvider.initialize(
-      mode: LockEngineMode.overlayIsolate,
-      startEngine: false,
-    );
-  } catch (_) {
-    /* initialize best-effort; overlay still shows lock screen */
-  }
+    // Focus lock — overlay isolate is UI-ONLY. NEVER start LockEngine/detector
+    // here (mainApp isolate already runs detector, prevents duplicate logs).
+    final focusLockProvider = FocusLockProvider();
+    try {
+      await focusLockProvider.initialize(
+        mode: LockEngineMode.overlayIsolate,
+        startEngine: false,
+      );
+    } catch (_) {
+      /* initialize best-effort; overlay still shows lock screen */
+    }
 
-  // Verse + Hadith (mindful pause 50/50 coin flip source)
-  final verseProvider = VerseProvider();
-  final hadithProvider = HadithProvider();
-  try {
-    await verseProvider.loadDailyVerse();
-  } catch (_) {
-    /* fallback: overlay shows hardcoded verse instead */
-  }
-  try {
-    await hadithProvider.loadDailyHadith();
-  } catch (_) {
-    /* fallback: overlay shows hardcoded hadith instead */
-  }
+    // Verse + Hadith (mindful pause 50/50 coin flip source)
+    final verseProvider = VerseProvider();
+    final hadithProvider = HadithProvider();
+    try {
+      await verseProvider.loadDailyVerse();
+    } catch (_) {
+      /* fallback: overlay shows hardcoded verse instead */
+    }
+    try {
+      await hadithProvider.loadDailyHadith();
+    } catch (_) {
+      /* fallback: overlay shows hardcoded hadith instead */
+    }
 
-  final streakProvider = StreakProvider();
+    final streakProvider = StreakProvider();
 
-  runApp(
+    runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider.value(value: themeProvider),
@@ -144,7 +177,10 @@ void accessibilityOverlay() async {
         ),
       ),
     ),
-  );
+    );
+  }, (error, stackTrace) {
+    debugPrint('OVERLAY ROOT ZONE ERROR (uncaught): $error\n$stackTrace');
+  });
 }
 
 class MyApp extends StatelessWidget {

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Theme provider for managing light/dark mode with persistence
 /// Uses ChangeNotifier for reactive state updates
 class ThemeProvider extends ChangeNotifier {
   static const String _themeKey = 'theme_mode';
-  
+
   ThemeMode _themeMode = ThemeMode.system;
   SharedPreferences? _prefs;
 
@@ -14,6 +15,35 @@ class ThemeProvider extends ChangeNotifier {
 
   /// Check if dark mode is currently active
   bool get isDarkMode => _themeMode == ThemeMode.dark;
+
+  /// Load SharedPreferences with retry. On some devices, the pigeon channel
+  /// is not immediately available right after WidgetsFlutterBinding.ensureInitialized().
+  /// Without retry, `PlatformException(channel-error, Unable to establish connection
+  /// on channel: "dev.flutter.pigeon.shared_preferences_android.SharedPreferencesApi.getAll")`
+  /// is thrown — and if uncaught, it propagates up and prevents runApp() from
+  /// being called (app stuck on launch logo forever).
+  static Future<SharedPreferences> _getPrefsWithRetry() async {
+    const maxAttempts = 5;
+    const delay = Duration(milliseconds: 100);
+    Object? lastErr;
+    for (var i = 0; i < maxAttempts; i++) {
+      try {
+        final prefs = await SharedPreferences.getInstance();
+        try {
+          await prefs.reload();
+        } catch (_) {}
+        return prefs;
+      } catch (e) {
+        lastErr = e;
+        if (e is PlatformException && e.code == 'channel-error') {
+          await Future.delayed(delay);
+          continue;
+        }
+        rethrow;
+      }
+    }
+    throw lastErr ?? StateError('SharedPreferences unavailable');
+  }
 
   /// Load saved theme preference from SharedPreferences.
   ///
@@ -24,8 +54,7 @@ class ThemeProvider extends ChangeNotifier {
   /// main isolate wrote a new theme to disk.
   Future<void> loadThemePreference() async {
     try {
-      _prefs = await SharedPreferences.getInstance();
-      await _prefs!.reload();
+      _prefs = await _getPrefsWithRetry();
       final String? savedTheme = _prefs?.getString(_themeKey);
 
       if (savedTheme != null) {
