@@ -94,6 +94,16 @@ class LockEngine {
 
     debugPrint('LockEngine[$mode]: Blocking app - $packageName');
 
+    // Bug 3 fix (timer empty): persist ActiveLockInfo snapshot synchronously
+    // RIGHT BEFORE showing the overlay. The overlay reads SharedPreferences
+    // during its FocusLockProvider._loadState, so writing here ensures the
+    // overlay sees a valid snapshot even if it starts mid-lock before the
+    // every-5s periodic save fires. This also means prayer-based locks get
+    // an up-to-date snapshot whenever a new app triggers re-block.
+    try {
+      await _provider.saveActiveLockSnapshotNow();
+    } catch (_) {}
+
     await AccessibilityServiceHelper.showLockOverlay();
   }
 

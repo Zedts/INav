@@ -4,6 +4,18 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- Required on Android 11+ (API 30+) so PackageManager.getInstalledApplications()
+         truly returns EVERY package installed under the current user profile —
+         equivalent to "adb shell pm list packages". Without this, Android applies
+         package-visibility filtering and only returns packages automatically
+         visible to the caller, or those matching <queries> intent filters below.
+         Google Play classifies QUERY_ALL_PACKAGES as sensitive personal data
+         and requires a core-functionality declaration; the core feature here is
+         letting users lock ANY app (including non-launchable system utilities
+         and headless packages, which are invisible under default visibility). -->
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"
+        tools:ignore="QueryAllPackagesPermission" />
     
     <!-- Focus Lock permissions -->
     <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS" 

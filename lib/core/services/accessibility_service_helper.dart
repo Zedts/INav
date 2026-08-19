@@ -3,7 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_accessibility_service/flutter_accessibility_service.dart';
 import 'package:flutter_accessibility_service/accessibility_event.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
+import 'dart:convert';
 
 class AccessibilityServiceHelper {
   static const MethodChannel _channel = MethodChannel(
@@ -22,16 +24,18 @@ class AccessibilityServiceHelper {
   static String? _lastPackageName;
   static Timer? _servicePollTimer;
   static bool _serviceConfirmedConnected = false;
-  /// X-cooldown suppresses re-show. Cooldown-timestamp is LOCAL to each isolate
-  /// (main isolate uses it for detector → suppressor; overlay isolate writes it on
-  /// onCloseViewWithCooldown). Because X-cooldown also reshow on buttons press X.
+  /// In-memory fast-path cooldown (same-isolate only). The cross-engine
+  /// source of truth is written to SharedPreferences below.
   static DateTime? _lastCloseCooldownUntil;
   static Timer? _debounceTimer;
   static String? _pendingPackage;
-  static Timer? _cooldownExpiryTimer;
-  static const MethodChannel _usageStatsChannel = MethodChannel(
-    'com.zedt.inav/usage_stats',
-  );
+
+  // Cross-engine cooldown "mailbox" keys. Perplexity research confirms that
+  // SharedPreferences (with explicit .reload()) is the safest way to exchange
+  // small atomic values between separate FlutterEngines/isolates when the
+  // engines are spawned by native code (no ReceivePort wiring possible).
+  static const String _kCooldownRequestKey = 'inav_lock_cooldown_request';
+  static const String _kCooldownAckKey = 'inav_lock_cooldown_ack';
 
   static Future<void> initialize() async {
     if (_isInitialized) return;
@@ -223,10 +227,49 @@ class AccessibilityServiceHelper {
     }
   }
 
+  /// Check whether a cooldown is currently active. Uses BOTH:
+  ///   1. In-memory static (fast path, same-isolate only), AND
+  ///   2. SharedPreferences persisted record (cross-engine source of truth
+  ///      via disk; explicitly reload()ed to bypass per-isolate Dart cache).
+  ///
+  /// Returns the remaining cooldown Duration (0 if none).
+  static Future<Duration> _getRemainingCooldown() async {
+    // Fast path: same-isolate static flag
+    if (_lastCloseCooldownUntil != null) {
+      final remaining =
+          _lastCloseCooldownUntil!.difference(DateTime.now());
+      if (remaining > Duration.zero) {
+        return remaining;
+      } else {
+        _lastCloseCooldownUntil = null;
+      }
+    }
+    // Cross-engine path: read the "mailbox" from disk
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      try {
+        await prefs.reload();
+      } catch (_) {}
+      final raw = prefs.getString(_kCooldownRequestKey);
+      if (raw == null || raw.isEmpty) return Duration.zero;
+      final map = jsonDecode(raw) as Map<String, dynamic>;
+      final untilMs = map['until'] as int?;
+      if (untilMs == null) return Duration.zero;
+      final until = DateTime.fromMillisecondsSinceEpoch(untilMs);
+      final remaining = until.difference(DateTime.now());
+      return remaining > Duration.zero ? remaining : Duration.zero;
+    } catch (_) {
+      return Duration.zero;
+    }
+  }
+
   static Future<void> showLockOverlay() async {
-    if (_lastCloseCooldownUntil != null &&
-        DateTime.now().isBefore(_lastCloseCooldownUntil!)) {
-      debugPrint('AccessibilityHelper: Suppressing showLockOverlay (X cooldown active)');
+    final remaining = await _getRemainingCooldown();
+    if (remaining > Duration.zero) {
+      debugPrint(
+        'AccessibilityHelper: Suppressing showLockOverlay '
+        '(cooldown active, ${remaining.inSeconds}s remaining)',
+      );
       return;
     }
     // Always forward to the plugin. The plugin's native side tracks window
@@ -256,33 +299,38 @@ class AccessibilityServiceHelper {
   }
 
   /// X button: hide the overlay AND suppress automatic re-show for 3 seconds.
-  /// After the 3s cooldown EXPIRES, re-check the CURRENT foreground app via
-  /// UsageStats and force a re-lock decision. This handles the edge-triggered
-  /// nature of TYPE_WINDOW_STATE_CHANGED: after dismissing the overlay, the
-  /// blocked app remains in the foreground so Android emits no new event —
-  /// without this explicit re-check, the user would stay unblocked until they
-  /// exit and re-open the app.
+  ///
+  /// The cooldown is persisted to SharedPreferences (cross-engine source of
+  /// truth) BEFORE hiding the window. The MAIN ISOLATE's 1s tick timer calls
+  /// [checkAndFireCooldownExpiry] which: reads the persisted record, detects
+  /// when cooldown has elapsed, re-emits [_lastPackageName] through the main
+  /// isolate's app-opened stream, and writes an ack. This 2-isolate mailbox
+  /// pattern (Perplexity-recommended best practice) avoids:
+  ///   - Calling MethodChannels registered on the main engine's binary
+  ///     messenger from the overlay engine → MissingPluginException.
+  ///   - Relying on per-isolate static fields → the other isolate never
+  ///     sees the cooldown flag → instant re-lock or permanent unlock.
+  ///   - Edge-triggered accessibility events → blocked app stays foreground
+  ///     with no new event after cooldown expires (native Android behavior).
   static Future<void> hideLockOverlayWithCooldown() async {
-    _lastCloseCooldownUntil = DateTime.now().add(const Duration(seconds: 3));
-    _cooldownExpiryTimer?.cancel();
-    _cooldownExpiryTimer = Timer(const Duration(seconds: 3), () async {
-      try {
-        final currentPkg = await _usageStatsChannel.invokeMethod('getCurrentApp')
-            as String?;
-        final pkg = currentPkg ?? _lastPackageName;
-        if (pkg != null && pkg.isNotEmpty) {
-          _appOpenedController.add(pkg);
-          debugPrint(
-            'AccessibilityHelper: X-cooldown expired, re-checking pkg=$pkg',
-          );
-        }
-      } catch (e) {
-        debugPrint('AccessibilityHelper: Cooldown re-check error: $e');
-        if (_lastPackageName != null) {
-          _appOpenedController.add(_lastPackageName!);
-        }
-      }
-    });
+    const suppressFor = Duration(seconds: 3);
+    _lastCloseCooldownUntil = DateTime.now().add(suppressFor);
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final untilMs =
+          DateTime.now().add(suppressFor).millisecondsSinceEpoch;
+      // Unique id so main isolate can distinguish successive requests
+      final reqId = 'x_${DateTime.now().millisecondsSinceEpoch}';
+      await prefs.setString(
+        _kCooldownRequestKey,
+        jsonEncode({
+          'id': reqId,
+          'until': untilMs,
+          'pkg': _lastPackageName ?? '',
+          'type': 'x',
+        }),
+      );
+    } catch (_) {}
     await hideLockOverlay();
   }
 
@@ -290,25 +338,86 @@ class AccessibilityServiceHelper {
     Duration suppressFor = const Duration(seconds: 30),
   }) async {
     _lastCloseCooldownUntil = DateTime.now().add(suppressFor);
-    _cooldownExpiryTimer?.cancel();
-    _cooldownExpiryTimer = Timer(suppressFor, () async {
-      try {
-        final currentPkg = await _usageStatsChannel.invokeMethod('getCurrentApp')
-            as String?;
-        final pkg = currentPkg ?? _lastPackageName;
-        if (pkg != null && pkg.isNotEmpty) {
-          _appOpenedController.add(pkg);
-          debugPrint(
-            'AccessibilityHelper: Skip-cooldown expired, re-checking pkg=$pkg',
-          );
-        }
-      } catch (e) {
-        if (_lastPackageName != null) {
-          _appOpenedController.add(_lastPackageName!);
-        }
-      }
-    });
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final untilMs =
+          DateTime.now().add(suppressFor).millisecondsSinceEpoch;
+      final reqId = 'skip_${DateTime.now().millisecondsSinceEpoch}';
+      await prefs.setString(
+        _kCooldownRequestKey,
+        jsonEncode({
+          'id': reqId,
+          'until': untilMs,
+          'pkg': _lastPackageName ?? '',
+          'type': 'skip',
+        }),
+      );
+    } catch (_) {}
     await hideLockOverlay();
+  }
+
+  /// Called by the MAIN ISOLATE's 1s FocusLockProvider tick timer to:
+  ///   1. Check for an un-acknowledged cooldown request from disk (reload)
+  ///   2. If the cooldown has expired → re-emit [_lastPackageName] into the
+  ///      main isolate's stream → LockEngine re-evaluates → overlay re-shows
+  ///   3. Write an ack so the expiry is processed exactly once.
+  ///
+  /// The "only from main isolate" invariant is ensured via the
+  /// `_appOpenedController.hasListener` guard: ONLY the isolate that
+  /// called `LockEngine.start()` → `_subscribeToStreams()` →
+  /// `AccessibilityServiceHelper.onAppOpened.listen()` will have a listener.
+  /// The overlay isolate runs with `startEngine: false` so it has NO
+  /// listener → returns early WITHOUT writing the ack or clearing the
+  /// request → the main isolate's next tick handles it correctly (no race).
+  static Future<void> checkAndFireCooldownExpiry() async {
+    // FAST ELIMINATION: Only the isolate with LockEngine subscribed should
+    // process cooldown expiry (main isolate). Overlay has no listener → skip.
+    final isDetectorIsolate = _appOpenedController.hasListener;
+    if (!isDetectorIsolate) return;
+
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      try {
+        await prefs.reload();
+      } catch (_) {}
+      final raw = prefs.getString(_kCooldownRequestKey);
+      if (raw == null || raw.isEmpty) return;
+      final map = jsonDecode(raw) as Map<String, dynamic>;
+      final reqId = map['id'] as String? ?? '';
+      final untilMs = map['until'] as int?;
+      final storedPkg = (map['pkg'] as String?) ?? '';
+
+      if (reqId.isEmpty || untilMs == null) {
+        await prefs.remove(_kCooldownRequestKey);
+        return;
+      }
+
+      final ackId = prefs.getString(_kCooldownAckKey) ?? '';
+      if (ackId == reqId) {
+        await prefs.remove(_kCooldownRequestKey);
+        return;
+      }
+
+      final remaining = DateTime.fromMillisecondsSinceEpoch(untilMs)
+          .difference(DateTime.now());
+      if (remaining > Duration.zero) return; // not yet
+
+      // Cooldown expired. We confirmed we are the detector isolate (has
+      // listener → main isolate → valid _lastPackageName from accessibility
+      // stream → safe to emit).
+      final pkg = storedPkg.isEmpty ? _lastPackageName : storedPkg;
+      if (pkg != null && pkg.isNotEmpty) {
+        _appOpenedController.add(pkg);
+        debugPrint(
+          'AccessibilityHelper: Cooldown ($reqId) expired, '
+          're-triggering pkg=$pkg',
+        );
+      }
+      await prefs.setString(_kCooldownAckKey, reqId);
+      await prefs.remove(_kCooldownRequestKey);
+    } catch (e) {
+      debugPrint('AccessibilityHelper: Cooldown expiry check error: $e');
+    }
   }
 
   /// Launch INav (the app's own MainActivity).
@@ -331,6 +440,10 @@ class AccessibilityServiceHelper {
       final result = await launcherChannel.invokeMethod<bool>('openInavApp');
       if (result == true) {
         debugPrint('Open INav via inav_launcher plugin succeeded');
+        // Bug 1 fix: dismiss the overlay window after launching INav.
+        // Otherwise the overlay stays on top of the newly-created
+        // MainActivity and the user must manually close it with the X.
+        await hideLockOverlay();
         return;
       }
     } catch (e) {
@@ -355,6 +468,7 @@ class AccessibilityServiceHelper {
       );
       if (ok) {
         debugPrint('Open INav via intent:// succeeded');
+        await hideLockOverlay();
         return;
       }
     } catch (e) {
@@ -363,6 +477,8 @@ class AccessibilityServiceHelper {
 
     try {
       await _channel.invokeMethod('openInavApp');
+      debugPrint('Open INav via legacy focus_lock channel succeeded');
+      await hideLockOverlay();
     } catch (e) {
       debugPrint('Error opening INav app: $e');
     }
@@ -376,8 +492,6 @@ class AccessibilityServiceHelper {
     _accessStreamSubscription = null;
     _debounceTimer?.cancel();
     _debounceTimer = null;
-    _cooldownExpiryTimer?.cancel();
-    _cooldownExpiryTimer = null;
     _appOpenedController.close();
     _servicePollTimer?.cancel();
     _servicePollTimer = null;

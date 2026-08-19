@@ -4,7 +4,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'dart:async';
 import '../core/theme/app_colors.dart';
-import '../core/theme/theme_provider.dart';
 import '../core/models/unlock_config.dart';
 import '../core/models/lock_schedule.dart';
 import '../core/providers/focus_lock_provider.dart';
@@ -13,43 +12,15 @@ import '../core/providers/verse_provider.dart';
 import '../core/providers/hadith_provider.dart';
 
 class _ThemedColors {
-  final Color surface;
-  final Color card;
-  final Color textMain;
-  final Color textMuted;
-  final Color hairline;
-  final Color primary;
-  final Color roseAccent;
+  final Color surface = AppColors.surfaceDark;
+  final Color card = AppColors.cardDark;
+  final Color textMain = AppColors.textMainDark;
+  final Color textMuted = AppColors.textMutedDark;
+  final Color hairline = AppColors.hairlineDark;
+  final Color primary = AppColors.primaryDark;
+  final Color roseAccent = AppColors.roseAccent;
 
-  const _ThemedColors({
-    required this.surface,
-    required this.card,
-    required this.textMain,
-    required this.textMuted,
-    required this.hairline,
-    required this.primary,
-    required this.roseAccent,
-  });
-
-  factory _ThemedColors.resolve(bool isDark) => isDark
-      ? const _ThemedColors(
-          surface: AppColors.surfaceDark,
-          card: AppColors.cardDark,
-          textMain: AppColors.textMainDark,
-          textMuted: AppColors.textMutedDark,
-          hairline: AppColors.hairlineDark,
-          primary: AppColors.primaryDark,
-          roseAccent: AppColors.roseAccent,
-        )
-      : const _ThemedColors(
-          surface: AppColors.surfaceLight,
-          card: AppColors.cardLight,
-          textMain: AppColors.textMainLight,
-          textMuted: AppColors.textMutedLight,
-          hairline: AppColors.hairlineLight,
-          primary: AppColors.primaryLight,
-          roseAccent: AppColors.roseAccent,
-        );
+  const _ThemedColors();
 }
 
 /// Full-screen lock overlay that blocks access to apps
@@ -193,10 +164,11 @@ class _LockOverlayScreenState extends State<LockOverlayScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = context.watch<ThemeProvider>().themeMode == ThemeMode.system
-        ? MediaQuery.of(context).platformBrightness == Brightness.dark
-        : context.watch<ThemeProvider>().isDarkMode;
-    final colors = _ThemedColors.resolve(isDark);
+    // Lock overlay is permanently dark-themed. No ThemeProvider watcher =
+    // no dependency on the (not-registered-in-overlay) ThemeProvider, no
+    // "inherited widget used before being inserted" cross-engine bugs, and
+    // no theme toggle racing between the two FlutterEngine isolates.
+    const colors = _ThemedColors();
 
     return Scaffold(
       backgroundColor: colors.surface,

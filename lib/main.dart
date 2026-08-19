@@ -93,14 +93,6 @@ void accessibilityOverlay() {
       dotenv.loadFromString(envString: '');
     }
 
-    // Theme provider (fallback: dark if load fails — safe default for overlay)
-    final themeProvider = ThemeProvider();
-    try {
-      await themeProvider.loadThemePreference();
-    } catch (_) {
-      /* fallback: system default */
-    }
-
     // Focus lock — overlay isolate is UI-ONLY. NEVER start LockEngine/detector
     // here (mainApp isolate already runs detector, prevents duplicate logs).
     final focusLockProvider = FocusLockProvider();
@@ -132,48 +124,45 @@ void accessibilityOverlay() {
     runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider.value(value: themeProvider),
         ChangeNotifierProvider.value(value: focusLockProvider),
         ChangeNotifierProvider.value(value: verseProvider),
         ChangeNotifierProvider.value(value: hadithProvider),
         ChangeNotifierProvider.value(value: streakProvider),
       ],
-      child: Consumer<ThemeProvider>(
-        builder: (context, tp, _) => MaterialApp(
-          debugShowCheckedModeBanner: false,
-          theme: AppTheme.lightTheme(),
-          darkTheme: AppTheme.darkTheme(),
-          themeMode: tp.themeMode,
-          home: LockOverlayScreen(
-            activeLockInfo: focusLockProvider.getActiveLockInfo(),
-            dailySkipAllowance: focusLockProvider.dailySkipAllowance,
-            remainingSkips: focusLockProvider.remainingSkips,
-            canSkip: focusLockProvider.canSkip,
-            onSkip: () async {
-              final ok = await focusLockProvider.useSkip();
-              if (ok) {
-                // Skip = truly skip the window for the rest of the current
-                // lock window (30s cooldown suppresses re-show). Also hide
-                // the overlay window NOW so the user gets the expected
-                // visual feedback that "skip worked".
-                await AccessibilityServiceHelper.hideLockOverlayWithSkipCooldown(
-                  suppressFor: const Duration(seconds: 30),
-                );
-              }
-              return ok;
-            },
-            onCloseViewWithCooldown: () async {
-              await AccessibilityServiceHelper.hideLockOverlayWithCooldown();
-            },
-            onOpenInav: () async {
-              await AccessibilityServiceHelper.openInavApp();
-            },
-            unlockConfig: focusLockProvider.unlockConfig,
-            currentPrayerName: focusLockProvider.getActivePrayerName(),
-            onUnlock: () async {
-              await AccessibilityServiceHelper.hideLockOverlay();
-            },
-          ),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: AppTheme.darkTheme(),
+        darkTheme: AppTheme.darkTheme(),
+        themeMode: ThemeMode.dark,
+        home: LockOverlayScreen(
+          activeLockInfo: focusLockProvider.getActiveLockInfo(),
+          dailySkipAllowance: focusLockProvider.dailySkipAllowance,
+          remainingSkips: focusLockProvider.remainingSkips,
+          canSkip: focusLockProvider.canSkip,
+          onSkip: () async {
+            final ok = await focusLockProvider.useSkip();
+            if (ok) {
+              // Skip = truly skip the window for the rest of the current
+              // lock window (30s cooldown suppresses re-show). Also hide
+              // the overlay window NOW so the user gets the expected
+              // visual feedback that "skip worked".
+              await AccessibilityServiceHelper.hideLockOverlayWithSkipCooldown(
+                suppressFor: const Duration(seconds: 30),
+              );
+            }
+            return ok;
+          },
+          onCloseViewWithCooldown: () async {
+            await AccessibilityServiceHelper.hideLockOverlayWithCooldown();
+          },
+          onOpenInav: () async {
+            await AccessibilityServiceHelper.openInavApp();
+          },
+          unlockConfig: focusLockProvider.unlockConfig,
+          currentPrayerName: focusLockProvider.getActivePrayerName(),
+          onUnlock: () async {
+            await AccessibilityServiceHelper.hideLockOverlay();
+          },
         ),
       ),
     ),

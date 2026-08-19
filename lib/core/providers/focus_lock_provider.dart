@@ -11,6 +11,7 @@ import '../models/unlock_config.dart';
 import '../constants/default_apps.dart';
 import '../constants/app_constants.dart';
 import '../services/lock_engine.dart';
+import '../services/accessibility_service_helper.dart';
 import '../services/device_admin_service.dart';
 
 /// State management for Focus Lock feature
@@ -148,6 +149,17 @@ class FocusLockProvider with ChangeNotifier {
     }
 
     _isInitialized = true;
+    _lastIsInLockWindow = isInLockWindow();
+    // Bug 3 fix (timer empty): save a snapshot of currently-active lock
+    // immediately on boot so overlay can display the countdown even if it
+    // opens during the first 5 seconds of app life (before the periodic
+    // every-5-tick save fires). Prayer-schedule snapshots can be 0/0 if
+    // prayer times not yet injected; PrayerProvider.updatePrayerTimes()
+    // writes a fresh snapshot below. Custom schedules resolve immediately
+    // from pure Dart so this call gets a concrete endsAt for them.
+    if (_lastIsInLockWindow) {
+      await _saveActiveLockSnapshot();
+    }
     notifyListeners();
   }
 
@@ -156,7 +168,7 @@ class FocusLockProvider with ChangeNotifier {
   void _startTickTimer() {
     _tickTimer?.cancel();
     _tickCount = 0;
-    _tickTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+    _tickTimer = Timer.periodic(const Duration(seconds: 1), (timer) async {
       _tickCount++;
       _checkAndResetDailyCount();
       // Refresh SharedPreferences cache so the overlay-isolate copy of this
@@ -166,6 +178,10 @@ class FocusLockProvider with ChangeNotifier {
       try {
         _prefs?.reload();
       } catch (_) {}
+      // Cross-engine cooldown expiry re-check. Called from BOTH isolates but
+      // AccessibilityServiceHelper internally short-circuits: only the
+      // detector isolate (main, has onAppOpened listener) processes requests.
+      await AccessibilityServiceHelper.checkAndFireCooldownExpiry();
       final nowInWindow = isInLockWindow();
       // Persist an ActiveLockSnapshot every 5s. This snapshot is the overlay
       // isolate's fall-back source of truth when:
@@ -175,7 +191,7 @@ class FocusLockProvider with ChangeNotifier {
       // Storing absolute `endsAt` millis lets the overlay recompute remaining
       // seconds from realtime clock even if it started mid-window.
       if (_tickCount % 5 == 0) {
-        _saveActiveLockSnapshot();
+        await _saveActiveLockSnapshot();
       }
       if (nowInWindow != _lastIsInLockWindow) {
         _lastIsInLockWindow = nowInWindow;
@@ -191,6 +207,12 @@ class FocusLockProvider with ChangeNotifier {
       }
     });
   }
+
+  /// Public wrapper so LockEngine can save a snapshot immediately when it
+  /// decides to block an app (before overlay opens). This removes the race
+  /// where overlay loads before the first every-5s periodic save fires
+  /// and gets null ActiveLockInfo → "—" displayed instead of countdown.
+  Future<void> saveActiveLockSnapshotNow() => _saveActiveLockSnapshot();
 
   /// Serialize the CURRENT ActiveLockInfo to SharedPreferences with absolute
   /// timestamps. The overlay isolate reads this back in getActiveLockInfo()
@@ -532,6 +554,14 @@ class FocusLockProvider with ChangeNotifier {
       );
     } catch (_) {
       /* persist is best-effort */
+    }
+    // Bug 3 fix (timer empty): whenever prayer times are (re)injected from
+    // PrayerProvider, immediately persist an ActiveLockInfo snapshot if
+    // we are inside a lock window. This removes the ~5s window where the
+    // overlay would show "—" for prayer-based locks before the periodic
+    // tick save fires.
+    if (isInLockWindow()) {
+      await _saveActiveLockSnapshot();
     }
     notifyListeners();
   }
