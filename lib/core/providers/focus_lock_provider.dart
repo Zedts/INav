@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
@@ -402,111 +403,6 @@ class FocusLockProvider with ChangeNotifier {
     );
 
     notifyListeners();
-  }
-
-  /// Look up a human-readable app name from a package name (fallback to package name)
-  String getAppName(String packageName) {
-    final match = _lockedApps.where((a) => a.matchesPackage(packageName));
-    if (match.isNotEmpty) return match.first.name;
-    if (DefaultApps.defaultPackages.contains(packageName)) {
-      final d = DefaultApps.getApp(packageName);
-      if (d != null) return d.name;
-    }
-    final parts = packageName.split('.');
-    return parts.isEmpty
-        ? packageName
-        : parts.last.replaceAll('_', ' ').trim().isEmpty
-            ? packageName
-            : parts.last[0].toUpperCase() + parts.last.substring(1);
-  }
-
-  /// Consume a skip. Returns true if the skip was successfully used.
-  Future<bool> consumeSkip() async {
-    return useSkip();
-  }
-
-  DateTime? getLockWindowEndTime() {
-    DateTime? latestEnd;
-
-    if (_prayerSchedule != null && _prayerSchedule!.enabled) {
-      final now = DateTime.now();
-      for (final prayerName in _prayerSchedule!.enabledPrayers) {
-        final startTime = _prayerSchedule!.getLockStartTime(prayerName);
-        final endTime = _prayerSchedule!.getLockEndTime(prayerName);
-        if (startTime != null && endTime != null) {
-          if (now.isAfter(startTime) && now.isBefore(endTime)) {
-            if (latestEnd == null || endTime.isAfter(latestEnd)) {
-              latestEnd = endTime;
-            }
-          }
-        }
-      }
-    }
-
-    for (final schedule in _customSchedules) {
-      if (!schedule.enabled) continue;
-      final now = TimeOfDay.now();
-      final nowMinutes = now.hour * 60 + now.minute;
-      final startMinutes = schedule.startTime.hour * 60 + schedule.startTime.minute;
-      final endMinutes = schedule.endTime.hour * 60 + schedule.endTime.minute;
-
-      bool inWindow = false;
-      DateTime? endDT;
-      final nowDT = DateTime.now();
-      if (startMinutes < endMinutes) {
-        if (nowMinutes >= startMinutes && nowMinutes < endMinutes) {
-          inWindow = true;
-          endDT = DateTime(
-            nowDT.year, nowDT.month, nowDT.day,
-            schedule.endTime.hour, schedule.endTime.minute,
-          );
-        }
-      } else {
-        if (nowMinutes >= startMinutes || nowMinutes < endMinutes) {
-          inWindow = true;
-          if (nowMinutes >= startMinutes) {
-            endDT = DateTime(
-              nowDT.year, nowDT.month, nowDT.day,
-              schedule.endTime.hour, schedule.endTime.minute,
-            ).add(const Duration(days: 1));
-          } else {
-            endDT = DateTime(
-              nowDT.year, nowDT.month, nowDT.day,
-              schedule.endTime.hour, schedule.endTime.minute,
-            );
-          }
-        }
-      }
-
-      if (inWindow && endDT != null) {
-        if (latestEnd == null || endDT.isAfter(latestEnd)) {
-          latestEnd = endDT;
-        }
-      }
-    }
-
-    return latestEnd;
-  }
-
-  Duration? getRemainingLockWindowDuration() {
-    final end = getLockWindowEndTime();
-    if (end == null) return null;
-    final diff = end.difference(DateTime.now());
-    if (diff.isNegative) return Duration.zero;
-    return diff;
-  }
-
-  String getRemainingLockWindowFormatted() {
-    final dur = getRemainingLockWindowDuration();
-    if (dur == null) return '';
-    final totalSecs = dur.inSeconds;
-    if (totalSecs <= 0) return '0m';
-    final h = totalSecs ~/ 3600;
-    final m = (totalSecs % 3600) ~/ 60;
-    final s = totalSecs % 60;
-    if (h > 0) return '${h}h ${m}m';
-    if (m > 0) return '${m}m ${s.toString().padLeft(2, '0')}s';
-    return '${s}s';
   }
 
   @override

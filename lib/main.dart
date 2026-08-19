@@ -50,59 +50,24 @@ void main() async {
 void accessibilityOverlay() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  // Initialize providers for the overlay
   final focusLockProvider = FocusLockProvider();
   await focusLockProvider.initialize();
 
   final streakProvider = StreakProvider();
-
-  final themeProvider = ThemeProvider();
-  await themeProvider.loadThemePreference();
-
-  final savedBlockedPkg =
-      await AccessibilityServiceHelper.getLastBlockedPackage();
-  final savedBlockedName =
-      await AccessibilityServiceHelper.getLastBlockedAppName();
-
-  final displayAppName =
-      savedBlockedName ??
-      (savedBlockedPkg != null
-          ? focusLockProvider.getAppName(savedBlockedPkg)
-          : null);
+  // Note: StreakProvider initialization happens after first frame
 
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider.value(value: themeProvider),
         ChangeNotifierProvider.value(value: focusLockProvider),
         ChangeNotifierProvider.value(value: streakProvider),
       ],
       child: LockOverlayScreen(
-        blockedAppName: displayAppName,
-        blockedPackageName: savedBlockedPkg,
         unlockConfig: focusLockProvider.unlockConfig,
         currentPrayerName: focusLockProvider.getActivePrayerName(),
-        isDarkMode: themeProvider.themeMode == ThemeMode.dark ||
-            (themeProvider.themeMode == ThemeMode.system &&
-                WidgetsBinding.instance.platformDispatcher.platformBrightness ==
-                    Brightness.dark),
         onUnlock: () async {
           await AccessibilityServiceHelper.hideLockOverlay();
-        },
-        onUseSkip: () async {
-          final ok = await focusLockProvider.useSkip();
-          if (ok) {
-            await AccessibilityServiceHelper.hideOverlayAndSuppress(
-                suppressMs: 5000);
-          }
-          return ok;
-        },
-        onOpenInav: () async {
-          await AccessibilityServiceHelper.launchInavApp();
-          await AccessibilityServiceHelper.hideOverlayAndSuppress(
-              suppressMs: 4000);
-        },
-        onHome: () async {
-          await AccessibilityServiceHelper.goToHome();
         },
       ),
     ),

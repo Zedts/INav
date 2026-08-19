@@ -75,18 +75,6 @@ class MainActivity : FlutterActivity() {
                     result.success(true)
                 }
 
-                "launchMainActivity" -> {
-                    try {
-                        val launchIntent = Intent(this, MainActivity::class.java).apply {
-                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
-                        }
-                        startActivity(launchIntent)
-                        result.success(true)
-                    } catch (e: Exception) {
-                        result.error("LAUNCH_FAILED", "Could not launch main activity: ${e.message}", null)
-                    }
-                }
-
                 else -> result.notImplemented()
             }
         }
