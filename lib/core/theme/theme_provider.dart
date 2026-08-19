@@ -15,10 +15,17 @@ class ThemeProvider extends ChangeNotifier {
   /// Check if dark mode is currently active
   bool get isDarkMode => _themeMode == ThemeMode.dark;
 
-  /// Load saved theme preference from SharedPreferences
+  /// Load saved theme preference from SharedPreferences.
+  ///
+  /// NOTE: Always call [SharedPreferences.reload()] before reading.
+  /// The overlay isolate and main isolate run in separate Dart isolates and
+  /// EACH has its OWN in-memory cache of SharedPreferences. Without explicit
+  /// reload(), the overlay would read stale cached theme values even after the
+  /// main isolate wrote a new theme to disk.
   Future<void> loadThemePreference() async {
     try {
       _prefs = await SharedPreferences.getInstance();
+      await _prefs!.reload();
       final String? savedTheme = _prefs?.getString(_themeKey);
 
       if (savedTheme != null) {

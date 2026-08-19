@@ -25,6 +25,8 @@ class FocusLockProvider with ChangeNotifier {
   static const String _keyPreventUninstall = 'focus_lock_prevent_uninstall';
   static const String _keySkipCount = 'focus_lock_skip_count_';
   static const String _keyLastResetDate = 'focus_lock_last_reset_date';
+  static const String _keyActiveLockSnapshot = 'focus_lock_active_snapshot';
+  static const String _keyPrayerTimesSnapshot = 'focus_lock_prayer_times';
 
   SharedPreferences? _prefs;
   bool _isInitialized = false;
@@ -63,18 +65,27 @@ class FocusLockProvider with ChangeNotifier {
   LockEngine? get lockEngine => _lockEngine;
 
   /// Initialize provider and load saved data
-  Future<void> initialize() async {
+  Future<void> initialize({
+    LockEngineMode mode = LockEngineMode.mainApp,
+    bool startEngine = true,
+  }) async {
     if (_isInitialized) return;
 
     _prefs = await SharedPreferences.getInstance();
+    // Reload BEFORE reading — the overlay isolate and main isolate have
+    // SEPARATE in-memory SharedPreferences caches (Dart isolates don't share
+    // memory). Without reload() we read stale values written by the other
+    // isolate, causing the timer to show "—" (null prayer times/schedules).
+    await _prefs!.reload();
     await _loadState();
     await _checkAndResetDailyCount();
 
     // Initialize lock engine
-    _lockEngine = LockEngine(this);
+    _lockEngine = LockEngine(this, mode: mode);
 
-    // Start engine if master is enabled
-    if (_masterEnabled) {
+    // Start engine if master is enabled AND caller requested it
+    // (overlay isolate is UI-only, never starts the detector engine)
+    if (_masterEnabled && startEngine) {
       await _lockEngine?.start();
     }
 
@@ -92,14 +103,99 @@ class FocusLockProvider with ChangeNotifier {
     _tickTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       _tickCount++;
       _checkAndResetDailyCount();
+      // Refresh SharedPreferences cache so the overlay-isolate copy of this
+      // provider always reads the newest skip count / cooldown / snapshot
+      // values written by the main isolate (they share the disk file, not
+      // the in-memory Dart cache).
+      try {
+        _prefs?.reload();
+      } catch (_) {}
       final nowInWindow = isInLockWindow();
+      // Persist an ActiveLockSnapshot every 5s. This snapshot is the overlay
+      // isolate's fall-back source of truth when:
+      //   (a) the main isolate wrote the snapshot, but
+      //   (b) the overlay isolate failed to hydrate _prayerSchedule._prayerTimes
+      //       AND its own native getActiveLockInfo() returned null.
+      // Storing absolute `endsAt` millis lets the overlay recompute remaining
+      // seconds from realtime clock even if it started mid-window.
+      if (_tickCount % 5 == 0) {
+        _saveActiveLockSnapshot();
+      }
       if (nowInWindow != _lastIsInLockWindow) {
         _lastIsInLockWindow = nowInWindow;
         notifyListeners();
-      } else if (_tickCount % 15 == 0) {
+      } else if (_tickCount % 5 == 0) {
+        // Refresh every 5s when idling OUT of lock window. BUT when user is
+        // actively in a lock window, always notify EVERY SECOND so the
+        // overlay header countdown + progress bar + wait-it-out timer
+        // display stay 100% live in both main & overlay isolates.
+        notifyListeners();
+      } else if (_lastIsInLockWindow) {
         notifyListeners();
       }
     });
+  }
+
+  /// Serialize the CURRENT ActiveLockInfo to SharedPreferences with absolute
+  /// timestamps. The overlay isolate reads this back in getActiveLockInfo()
+  /// when its own runtime schedule objects can't resolve (prayer times not
+  /// injected, schedule objects freshly loaded without runtime data).
+  Future<void> _saveActiveLockSnapshot() async {
+    try {
+      final info = _nativeActiveLockInfo();
+      if (info == null) {
+        await _prefs?.remove(_keyActiveLockSnapshot);
+        return;
+      }
+      await _prefs?.setString(
+        _keyActiveLockSnapshot,
+        jsonEncode({
+          'reason': info.reason == LockReason.prayer ? 'prayer' : 'custom',
+          'label': info.label,
+          'startTime': info.startTime.millisecondsSinceEpoch,
+          'endTime': info.endTime.millisecondsSinceEpoch,
+          'prayerName': info.prayerName,
+        }),
+      );
+    } catch (_) {}
+  }
+
+  /// The "native" (schedule-object-based) active-lock calculation. Renamed
+  /// from the old getActiveLockInfo(); the public getter wraps this with
+  /// SharedPreferences snapshot fallback for the overlay isolate.
+  ActiveLockInfo? _nativeActiveLockInfo() {
+    final now = DateTime.now();
+
+    // 1. Check custom schedules FIRST (custom wins overlap — user answer Q2)
+    for (final s in _customSchedules) {
+      if (s.enabled && s.isActiveNow()) {
+        return ActiveLockInfo(
+          reason: LockReason.customFocus,
+          label: s.label,
+          startTime: s.getAbsoluteStartTime(now: now),
+          endTime: s.getAbsoluteEndTime(now: now),
+          customSchedule: s,
+        );
+      }
+    }
+
+    // 2. Prayer schedule SECOND
+    if (_prayerSchedule != null && _prayerSchedule!.enabled) {
+      final activePrayerName = _prayerSchedule!.getActivePrayerName();
+      if (activePrayerName != null) {
+        final start = _prayerSchedule!.getLockStartTime(activePrayerName) ?? now;
+        final end = _prayerSchedule!.getLockEndTime(activePrayerName) ?? now;
+        return ActiveLockInfo(
+          reason: LockReason.prayer,
+          label: activePrayerName.capitalizeFirst(),
+          startTime: start,
+          endTime: end,
+          prayerName: activePrayerName,
+        );
+      }
+    }
+
+    return null;
   }
 
   void _stopTickTimer() {
@@ -162,6 +258,22 @@ class FocusLockProvider with ChangeNotifier {
     // Load skip count
     final today = DateTime.now().toIso8601String().split('T')[0];
     _todaySkipCount = _prefs?.getInt('$_keySkipCount$today') ?? 0;
+
+    // Load persisted prayer times. PrayerLockSchedule._prayerTimes is RUNTIME-
+    // ONLY (not serialized in toJson). Without this, the overlay isolate can
+    // never resolve isActiveNow()/getActivePrayerName() and getActiveLockInfo()
+    // returns null → the countdown timer would permanently show "—".
+    final prayerTimesRaw = _prefs?.getString(_keyPrayerTimesSnapshot);
+    if (prayerTimesRaw != null && _prayerSchedule != null) {
+      try {
+        final map = Map<String, String>.from(
+          jsonDecode(prayerTimesRaw) as Map<String, dynamic>,
+        );
+        _prayerSchedule!.setPrayerTimes(map);
+      } catch (_) {
+        /* best effort; snapshot fallback below handles unknowns */
+      }
+    }
   }
 
   /// Check if daily skip count should be reset
@@ -349,9 +461,22 @@ class FocusLockProvider with ChangeNotifier {
   }
 
   /// Update prayer times from PrayerProvider
-  /// Should be called whenever prayer times are updated
-  void updatePrayerTimes(Map<String, String> prayerTimes) {
+  /// Should be called whenever prayer times are updated.
+  ///
+  /// Also PERSISTS the prayer times to SharedPreferences so the OVERLAY
+  /// isolate (which never creates PrayerProvider / never hits the network)
+  /// can still resolve prayer-based isActiveNow() and getActivePrayerName().
+  /// Without this the overlay's countdown renders as "—".
+  Future<void> updatePrayerTimes(Map<String, String> prayerTimes) async {
     _prayerSchedule?.setPrayerTimes(prayerTimes);
+    try {
+      await _prefs?.setString(
+        _keyPrayerTimesSnapshot,
+        jsonEncode(prayerTimes),
+      );
+    } catch (_) {
+      /* persist is best-effort */
+    }
     notifyListeners();
   }
 
@@ -361,6 +486,50 @@ class FocusLockProvider with ChangeNotifier {
       return _prayerSchedule!.getActivePrayerName();
     }
     return null;
+  }
+
+  /// Get currently active lock window info (custom wins over prayer per user
+  /// request).
+  ///
+  /// TWO-LAYER resolve:
+  ///   1. Fast path — `_nativeActiveLockInfo()` using in-memory schedule
+  ///      objects and (if present) runtime-injected prayer times. Works in
+  ///      the main isolate and works in the overlay IF prayer times were
+  ///      successfully loaded from the SharedPreferences snapshot.
+  ///   2. Fallback path — if native resolve returned null AND a persisted
+  ///      ActiveLockSnapshot exists in SharedPreferences (written by the
+  ///      main isolate every 5 ticks + still within its endTime window),
+  ///      hydrate an ActiveLockInfo from that snapshot. This is the "belt
+  ///      and suspenders" fix for the overlay isolate which has no network
+  ///      access and can end up with null _prayerSchedule._prayerTimes even
+  ///      after successful loadState().
+  ActiveLockInfo? getActiveLockInfo() {
+    final native = _nativeActiveLockInfo();
+    if (native != null) return native;
+
+    try {
+      final raw = _prefs?.getString(_keyActiveLockSnapshot);
+      if (raw == null) return null;
+      final map = jsonDecode(raw) as Map<String, dynamic>;
+      final endMillis = map['endTime'] as int?;
+      final startMillis = map['startTime'] as int?;
+      if (endMillis == null || startMillis == null) return null;
+
+      final now = DateTime.now();
+      final endTime = DateTime.fromMillisecondsSinceEpoch(endMillis);
+      if (endTime.isBefore(now)) return null; // snapshot expired
+
+      final reasonStr = map['reason'] as String? ?? 'prayer';
+      return ActiveLockInfo(
+        reason: reasonStr == 'prayer' ? LockReason.prayer : LockReason.customFocus,
+        label: (map['label'] as String?) ?? 'Focus Time',
+        startTime: DateTime.fromMillisecondsSinceEpoch(startMillis),
+        endTime: endTime,
+        prayerName: map['prayerName'] as String?,
+      );
+    } catch (_) {
+      return null;
+    }
   }
 
   /// Reset to default configuration
@@ -410,5 +579,12 @@ class FocusLockProvider with ChangeNotifier {
     _stopTickTimer();
     _lockEngine?.dispose();
     super.dispose();
+  }
+}
+
+extension _StringCapitalize on String {
+  String capitalizeFirst() {
+    if (isEmpty) return this;
+    return this[0].toUpperCase() + substring(1);
   }
 }

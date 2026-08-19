@@ -12,6 +12,7 @@ import 'core/providers/quran_provider.dart';
 import 'core/providers/mosque_provider.dart';
 import 'core/providers/qibla_provider.dart';
 import 'core/providers/focus_lock_provider.dart';
+import 'core/services/lock_engine.dart';
 import 'core/services/accessibility_service_helper.dart';
 import 'screens/main_screen.dart';
 import 'screens/lock_overlay_screen.dart';
@@ -50,25 +51,97 @@ void main() async {
 void accessibilityOverlay() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize providers for the overlay
+  // Initialize dotenv FIRST — VerseService/HadithService -> ApiService static
+  // fields read dotenv.env at class-load time. Without this, overlay isolate
+  // would throw NotInitializedError and crash (blank overlay, no UI).
+  try {
+    await dotenv.load(fileName: '.env');
+  } catch (_) {
+    dotenv.loadFromString(envString: '');
+  }
+
+  // Theme provider (fallback: dark if load fails — safe default for overlay)
+  final themeProvider = ThemeProvider();
+  try {
+    await themeProvider.loadThemePreference();
+  } catch (_) {
+    /* fallback: system default */
+  }
+
+  // Focus lock — overlay isolate is UI-ONLY. NEVER start LockEngine/detector
+  // here (mainApp isolate already runs detector, prevents duplicate logs).
   final focusLockProvider = FocusLockProvider();
-  await focusLockProvider.initialize();
+  try {
+    await focusLockProvider.initialize(
+      mode: LockEngineMode.overlayIsolate,
+      startEngine: false,
+    );
+  } catch (_) {
+    /* initialize best-effort; overlay still shows lock screen */
+  }
+
+  // Verse + Hadith (mindful pause 50/50 coin flip source)
+  final verseProvider = VerseProvider();
+  final hadithProvider = HadithProvider();
+  try {
+    await verseProvider.loadDailyVerse();
+  } catch (_) {
+    /* fallback: overlay shows hardcoded verse instead */
+  }
+  try {
+    await hadithProvider.loadDailyHadith();
+  } catch (_) {
+    /* fallback: overlay shows hardcoded hadith instead */
+  }
 
   final streakProvider = StreakProvider();
-  // Note: StreakProvider initialization happens after first frame
 
   runApp(
     MultiProvider(
       providers: [
+        ChangeNotifierProvider.value(value: themeProvider),
         ChangeNotifierProvider.value(value: focusLockProvider),
+        ChangeNotifierProvider.value(value: verseProvider),
+        ChangeNotifierProvider.value(value: hadithProvider),
         ChangeNotifierProvider.value(value: streakProvider),
       ],
-      child: LockOverlayScreen(
-        unlockConfig: focusLockProvider.unlockConfig,
-        currentPrayerName: focusLockProvider.getActivePrayerName(),
-        onUnlock: () async {
-          await AccessibilityServiceHelper.hideLockOverlay();
-        },
+      child: Consumer<ThemeProvider>(
+        builder: (context, tp, _) => MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: AppTheme.lightTheme(),
+          darkTheme: AppTheme.darkTheme(),
+          themeMode: tp.themeMode,
+          home: LockOverlayScreen(
+            activeLockInfo: focusLockProvider.getActiveLockInfo(),
+            dailySkipAllowance: focusLockProvider.dailySkipAllowance,
+            remainingSkips: focusLockProvider.remainingSkips,
+            canSkip: focusLockProvider.canSkip,
+            onSkip: () async {
+              final ok = await focusLockProvider.useSkip();
+              if (ok) {
+                // Skip = truly skip the window for the rest of the current
+                // lock window (30s cooldown suppresses re-show). Also hide
+                // the overlay window NOW so the user gets the expected
+                // visual feedback that "skip worked".
+                await AccessibilityServiceHelper.hideLockOverlayWithSkipCooldown(
+                  suppressFor: const Duration(seconds: 30),
+                );
+              }
+              return ok;
+            },
+            onCloseViewWithCooldown: () async {
+              await AccessibilityServiceHelper.hideLockOverlayWithCooldown();
+            },
+            onOpenInav: () async {
+              await AccessibilityServiceHelper.openInavApp();
+            },
+            unlockConfig: focusLockProvider.unlockConfig,
+            currentPrayerName: focusLockProvider.getActivePrayerName(),
+            onUnlock: () async {
+              await AccessibilityServiceHelper.hideLockOverlay();
+            },
+          ),
+        ),
       ),
     ),
   );

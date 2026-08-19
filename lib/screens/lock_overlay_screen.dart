@@ -1,13 +1,66 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'dart:async';
 import '../core/theme/app_colors.dart';
+import '../core/theme/theme_provider.dart';
 import '../core/models/unlock_config.dart';
+import '../core/models/lock_schedule.dart';
+import '../core/providers/focus_lock_provider.dart';
 import '../core/providers/streak_provider.dart';
+import '../core/providers/verse_provider.dart';
+import '../core/providers/hadith_provider.dart';
+
+class _ThemedColors {
+  final Color surface;
+  final Color card;
+  final Color textMain;
+  final Color textMuted;
+  final Color hairline;
+  final Color primary;
+  final Color roseAccent;
+
+  const _ThemedColors({
+    required this.surface,
+    required this.card,
+    required this.textMain,
+    required this.textMuted,
+    required this.hairline,
+    required this.primary,
+    required this.roseAccent,
+  });
+
+  factory _ThemedColors.resolve(bool isDark) => isDark
+      ? const _ThemedColors(
+          surface: AppColors.surfaceDark,
+          card: AppColors.cardDark,
+          textMain: AppColors.textMainDark,
+          textMuted: AppColors.textMutedDark,
+          hairline: AppColors.hairlineDark,
+          primary: AppColors.primaryDark,
+          roseAccent: AppColors.roseAccent,
+        )
+      : const _ThemedColors(
+          surface: AppColors.surfaceLight,
+          card: AppColors.cardLight,
+          textMain: AppColors.textMainLight,
+          textMuted: AppColors.textMutedLight,
+          hairline: AppColors.hairlineLight,
+          primary: AppColors.primaryLight,
+          roseAccent: AppColors.roseAccent,
+        );
+}
 
 /// Full-screen lock overlay that blocks access to apps
 class LockOverlayScreen extends StatefulWidget {
+  final ActiveLockInfo? activeLockInfo;
+  final int dailySkipAllowance;
+  final int remainingSkips;
+  final bool canSkip;
+  final Future<bool> Function()? onSkip;
+  final VoidCallback? onCloseViewWithCooldown;
+  final VoidCallback? onOpenInav;
   final String? blockedAppName;
   final String? blockedPackageName;
   final UnlockConfig unlockConfig;
@@ -16,6 +69,13 @@ class LockOverlayScreen extends StatefulWidget {
 
   const LockOverlayScreen({
     super.key,
+    this.activeLockInfo,
+    this.dailySkipAllowance = 1,
+    this.remainingSkips = 0,
+    this.canSkip = false,
+    this.onSkip,
+    this.onCloseViewWithCooldown,
+    this.onOpenInav,
     this.blockedAppName,
     this.blockedPackageName,
     this.unlockConfig = const UnlockConfig(method: UnlockMethod.waitItOut),
@@ -27,111 +87,76 @@ class LockOverlayScreen extends StatefulWidget {
   State<LockOverlayScreen> createState() => _LockOverlayScreenState();
 }
 
-class _LockOverlayScreenState extends State<LockOverlayScreen>
-    with SingleTickerProviderStateMixin {
+class _LockOverlayScreenState extends State<LockOverlayScreen> {
   Timer? _countdownTimer;
-  int _remainingSeconds = 0;
-  late AnimationController _breathingController;
-  late Animation<double> _breathingAnimation;
-
-  // Type phrase state
-  final TextEditingController _phraseController = TextEditingController();
-  bool _phraseError = false;
-  int _phraseAttempts = 0;
+  Timer? _headerTickTimer;
+  int _waitRemainingSeconds = 0;
+  int _waitTotalSeconds = 0;
 
   // Mark prayer state
   bool _prayerMarked = false;
+  Timer? _prayerPollTimer;
 
-  // Mindful pause state
-  String _breathingPhase = 'Breathe In';
-  int _breathingCycles = 0;
-  final int _requiredCycles = 3;
+  // Mindful pause choice (50/50 verse vs hadith)
+  late final bool _mpUseVerse;
 
   @override
   void initState() {
     super.initState();
+    _mpUseVerse = Random().nextBool();
 
-    // Initialize countdown for waitItOut method
-    if (widget.unlockConfig.method == UnlockMethod.waitItOut) {
-      _remainingSeconds = widget.unlockConfig.waitDurationSeconds;
-      _startCountdown();
+    final info = widget.activeLockInfo;
+    switch (widget.unlockConfig.method) {
+      case UnlockMethod.waitItOut:
+        final infoSecs = info?.remainingSeconds ?? 0;
+        final cfgSecs = widget.unlockConfig.waitDurationSeconds;
+        _waitTotalSeconds = (infoSecs > 0) ? infoSecs : cfgSecs;
+        _waitRemainingSeconds = _waitTotalSeconds;
+        _startCountdown();
+        break;
+      case UnlockMethod.markPrayed:
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          final streakProvider = context.read<StreakProvider>();
+          final isPrayerLock =
+              widget.activeLockInfo?.reason == LockReason.prayer;
+          _prayerMarked = isPrayerLock && streakProvider.isCurrentPrayerCompleted;
+          if (_prayerMarked) {
+            Future.delayed(const Duration(milliseconds: 500), _unlock);
+          } else if (isPrayerLock) {
+            _startPrayerPoll();
+          }
+        });
+        break;
+      case UnlockMethod.mindfulPause:
+      case UnlockMethod.typePhrase:
+        break;
     }
 
-    // Initialize breathing animation for mindfulPause (4s inhale, 4s exhale)
-    _breathingController = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 8),
-    );
-
-    _breathingAnimation = TweenSequence<double>([
-      TweenSequenceItem(
-        tween: Tween<double>(
-          begin: 0.7,
-          end: 1.0,
-        ).chain(CurveTween(curve: Curves.easeInOut)),
-        weight: 50,
-      ),
-      TweenSequenceItem(
-        tween: Tween<double>(
-          begin: 1.0,
-          end: 0.7,
-        ).chain(CurveTween(curve: Curves.easeInOut)),
-        weight: 50,
-      ),
-    ]).animate(_breathingController);
-
-    if (widget.unlockConfig.method == UnlockMethod.mindfulPause) {
-      _startBreathingCycle();
-    }
-
-    // Listen for prayer completion (markPrayed method)
-    if (widget.unlockConfig.method == UnlockMethod.markPrayed) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        final streakProvider = context.read<StreakProvider>();
-        _prayerMarked = streakProvider.isCurrentPrayerCompleted;
-
-        if (_prayerMarked) {
-          // Prayer already marked, unlock immediately
-          Future.delayed(const Duration(milliseconds: 500), _unlock);
-        } else {
-          // ponytail: poll every 2s for prayer completion (no stream available in StreakProvider)
-          _startPrayerCheckTimer();
-        }
-      });
-    }
+    // Periodically rebuild header so countdown/progress updates
+    _headerTickTimer = Timer.periodic(const Duration(seconds: 1), (_) {
+      if (mounted) setState(() {});
+    });
   }
 
-  void _startBreathingCycle() {
-    _breathingController.repeat();
-
-    Timer.periodic(const Duration(seconds: 4), (timer) {
-      if (!mounted) {
+  void _startCountdown() {
+    _countdownTimer?.cancel();
+    _countdownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (_waitRemainingSeconds > 0) {
+        setState(() => _waitRemainingSeconds--);
+      } else {
         timer.cancel();
-        return;
-      }
-
-      setState(() {
-        if (_breathingPhase == 'Breathe In') {
-          _breathingPhase = 'Breathe Out';
-        } else {
-          _breathingPhase = 'Breathe In';
-          _breathingCycles++;
-        }
-      });
-
-      if (_breathingCycles >= _requiredCycles) {
-        timer.cancel();
+        _unlock();
       }
     });
   }
 
-  void _startPrayerCheckTimer() {
-    Timer.periodic(const Duration(seconds: 2), (timer) {
+  void _startPrayerPoll() {
+    _prayerPollTimer?.cancel();
+    _prayerPollTimer = Timer.periodic(const Duration(seconds: 2), (timer) {
       if (!mounted) {
         timer.cancel();
         return;
       }
-
       final streakProvider = context.read<StreakProvider>();
       if (streakProvider.isCurrentPrayerCompleted && !_prayerMarked) {
         setState(() => _prayerMarked = true);
@@ -141,279 +166,457 @@ class _LockOverlayScreenState extends State<LockOverlayScreen>
     });
   }
 
-  void _startCountdown() {
-    _countdownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (_remainingSeconds > 0) {
-        setState(() => _remainingSeconds--);
-      } else {
-        timer.cancel();
-        _unlock();
-      }
-    });
-  }
-
-  void _unlock() {
-    widget.onUnlock?.call();
-  }
-
-  void _validatePhrase() {
-    final input = _phraseController.text.trim();
-    final target = widget.unlockConfig.unlockPhrase.trim();
-
-    if (input.toLowerCase() == target.toLowerCase()) {
-      _unlock();
-    } else {
-      setState(() {
-        _phraseError = true;
-        _phraseAttempts++;
-      });
-
-      // Reset error after 2 seconds
-      Future.delayed(const Duration(seconds: 2), () {
-        if (mounted) {
-          setState(() => _phraseError = false);
-        }
-      });
-    }
-  }
+  void _unlock() => widget.onUnlock?.call();
 
   @override
   void dispose() {
     _countdownTimer?.cancel();
-    _breathingController.dispose();
-    _phraseController.dispose();
+    _headerTickTimer?.cancel();
+    _prayerPollTimer?.cancel();
     super.dispose();
   }
 
-  String _formatTime(int seconds) {
-    final minutes = seconds ~/ 60;
-    final secs = seconds % 60;
-    return '${minutes.toString().padLeft(2, '0')}:${secs.toString().padLeft(2, '0')}';
-  }
+  TextStyle _textStyle({
+    required double fontSize,
+    FontWeight fontWeight = FontWeight.w500,
+    required Color color,
+    double? height,
+    FontStyle? fontStyle,
+  }) =>
+      GoogleFonts.plusJakartaSans().copyWith(
+        fontSize: fontSize,
+        fontWeight: fontWeight,
+        color: color,
+        height: height,
+        fontStyle: fontStyle,
+      );
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData.dark(),
-      home: Scaffold(
-        backgroundColor: AppColors.surfaceDark,
-        body: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [AppColors.surfaceDark, AppColors.cardDark],
-            ),
+    final isDark = context.watch<ThemeProvider>().themeMode == ThemeMode.system
+        ? MediaQuery.of(context).platformBrightness == Brightness.dark
+        : context.watch<ThemeProvider>().isDarkMode;
+    final colors = _ThemedColors.resolve(isDark);
+
+    return Scaffold(
+      backgroundColor: colors.surface,
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [colors.surface, colors.card],
           ),
-          child: SafeArea(
-            child: Center(
-              child: Padding(
-                padding: const EdgeInsets.all(24.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    // Lock icon
-                    Container(
-                      width: 80,
-                      height: 80,
-                      decoration: BoxDecoration(
-                        color: AppColors.roseAccent.withValues(alpha: 0.1),
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(
-                        Icons.lock_rounded,
-                        size: 40,
-                        color: AppColors.roseAccent,
-                      ),
-                    ),
-
-                    const SizedBox(height: 24),
-
-                    // Title
-                    Text(
-                      'App Locked',
-                      style: GoogleFonts.plusJakartaSans().copyWith(
-                        fontSize: 28,
-                        fontWeight: FontWeight.w800,
-                        color: AppColors.textMainDark,
-                      ),
-                    ),
-
-                    const SizedBox(height: 8),
-
-                    // Blocked app name
-                    if (widget.blockedAppName != null)
-                      Text(
-                        widget.blockedAppName!,
-                        style: GoogleFonts.plusJakartaSans().copyWith(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.roseAccent,
-                        ),
-                      ),
-
-                    const SizedBox(height: 16),
-
-                    // Message
-                    Text(
-                      'This app is locked during focus time.\nStay focused on what matters.',
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.plusJakartaSans().copyWith(
-                        fontSize: 14,
-                        color: AppColors.textMutedDark,
-                        height: 1.5,
-                      ),
-                    ),
-
-                    const SizedBox(height: 48),
-
-                    // Unlock method UI
-                    _buildUnlockMethodUI(),
-
-                    const Spacer(),
-
-                    // Motivational quote
-                    Container(
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: AppColors.cardDark,
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border.all(
-                          color: AppColors.hairlineDark.withValues(alpha: 0.3),
-                        ),
-                      ),
-                      child: Row(
+        ),
+        child: SafeArea(
+          child: Stack(
+            children: [
+              _buildXButton(colors),
+              Positioned.fill(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(24, 80, 24, 24),
+                  child: Center(
+                    // Reactive wrapper: FocusLockProvider's tick timer fires
+                    // every 1s (in lock window) → this Consumer rebuilds,
+                    // so header countdown, progress, skip stats all update.
+                    child: Consumer<FocusLockProvider>(
+                      builder: (context, flp, _) => Column(
                         children: [
-                          Icon(
-                            Icons.format_quote,
-                            color: AppColors.primaryDark,
-                            size: 20,
-                          ),
-                          const SizedBox(width: 12),
+                          _buildHeader(colors, flp),
+                          const SizedBox(height: 8),
+                          _buildBlockedAppLabel(colors),
+                          const SizedBox(height: 24),
                           Expanded(
-                            child: Text(
-                              'Prayer is better than sleep',
-                              style: GoogleFonts.plusJakartaSans().copyWith(
-                                fontSize: 12,
-                                fontStyle: FontStyle.italic,
-                                color: AppColors.textMutedDark,
-                              ),
+                            child: SingleChildScrollView(
+                              child: _buildUnlockMethodUI(colors),
                             ),
                           ),
+                          const SizedBox(height: 16),
+                          _buildBottomButtons(colors, flp),
+                          const SizedBox(height: 16),
+                          _buildQuote(colors),
                         ],
                       ),
                     ),
-                  ],
+                  ),
                 ),
               ),
-            ),
+            ],
           ),
         ),
       ),
     );
   }
 
-  Widget _buildUnlockMethodUI() {
-    switch (widget.unlockConfig.method) {
-      case UnlockMethod.waitItOut:
-        return _buildWaitItOutUI();
-      case UnlockMethod.markPrayed:
-        return _buildMarkPrayedUI();
-      case UnlockMethod.mindfulPause:
-        return _buildMindfulPauseUI();
-      case UnlockMethod.typePhrase:
-        return _buildTypePhraseUI();
-    }
-  }
+  Widget _buildXButton(_ThemedColors colors) => Positioned(
+        top: 4,
+        right: 8,
+        child: GestureDetector(
+          onTap: () => widget.onCloseViewWithCooldown?.call(),
+          behavior: HitTestBehavior.opaque,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  Icons.close,
+                  color: colors.textMuted,
+                  size: 28,
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  'Close 3s',
+                  style: _textStyle(
+                    fontSize: 10,
+                    fontWeight: FontWeight.w500,
+                    color: colors.textMuted,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
 
-  Widget _buildWaitItOutUI() {
+  Widget _buildHeader(_ThemedColors colors, FocusLockProvider flp) {
+    final info = flp.getActiveLockInfo();
+    final isPrayer = info?.reason == LockReason.prayer;
+    final String label;
+    final IconData icon;
+    if (info != null) {
+      label = info.label;
+      icon = isPrayer ? Icons.mosque : Icons.menu_book;
+    } else {
+      label = 'Focus Time';
+      icon = Icons.lock;
+    }
+
+    final remainingSecs = info?.remainingSeconds ?? 0;
+    final String remainingText;
+    final double progress;
+    if (info != null) {
+      remainingText = info.formattedRemaining;
+      final total = info.endTime.difference(info.startTime).inSeconds;
+      progress = total > 0
+          ? (1 - (remainingSecs / total)).clamp(0.0, 1.0)
+          : 0.0;
+    } else {
+      remainingText = '—';
+      progress = 0.0;
+    }
+
     return Column(
       children: [
+        Container(
+          width: 80,
+          height: 80,
+          decoration: BoxDecoration(
+            color: colors.roseAccent.withValues(alpha: 0.1),
+            shape: BoxShape.circle,
+          ),
+          child: Icon(
+            Icons.lock_rounded,
+            size: 40,
+            color: colors.roseAccent,
+          ),
+        ),
+        const SizedBox(height: 20),
         Text(
-          'TIME REMAINING',
-          style: GoogleFonts.plusJakartaSans().copyWith(
-            fontSize: 12,
-            fontWeight: FontWeight.w600,
-            color: AppColors.textMutedDark,
-            letterSpacing: 1.2,
+          'LOCKED',
+          style: _textStyle(
+            fontSize: 26,
+            fontWeight: FontWeight.w800,
+            color: colors.textMain,
+          ),
+        ),
+        const SizedBox(height: 12),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          decoration: BoxDecoration(
+            color: colors.primary.withValues(alpha: 0.12),
+            borderRadius: BorderRadius.circular(14),
+            border: Border.all(
+              color: colors.primary.withValues(alpha: 0.3),
+              width: 1,
+            ),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(icon, size: 18, color: colors.primary),
+              const SizedBox(width: 8),
+              Flexible(
+                child: Text(
+                  isPrayer ? 'Prayer Time — $label' : label,
+                  overflow: TextOverflow.ellipsis,
+                  style: _textStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w700,
+                    color: colors.primary,
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
         const SizedBox(height: 16),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-          decoration: BoxDecoration(
-            color: AppColors.cardDark,
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(
-              color: AppColors.primaryDark.withValues(alpha: 0.3),
-              width: 2,
-            ),
-          ),
-          child: Text(
-            _formatTime(_remainingSeconds),
-            style: GoogleFonts.plusJakartaSans().copyWith(
-              fontSize: 48,
-              fontWeight: FontWeight.w800,
-              color: AppColors.primaryDark,
-              fontFeatures: [const FontFeature.tabularFigures()],
-            ),
+        Text(
+          'Unlocks in:  $remainingText',
+          style: _textStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.w600,
+            color: colors.textMain,
           ),
         ),
-        const SizedBox(height: 24),
-        LinearProgressIndicator(
-          value: _remainingSeconds / widget.unlockConfig.waitDurationSeconds,
-          backgroundColor: AppColors.hairlineDark,
-          valueColor: AlwaysStoppedAnimation<Color>(AppColors.primaryDark),
-          minHeight: 4,
-          borderRadius: BorderRadius.circular(2),
+        const SizedBox(height: 12),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(3),
+          child: LinearProgressIndicator(
+            value: progress,
+            backgroundColor: colors.hairline,
+            valueColor: AlwaysStoppedAnimation<Color>(colors.primary),
+            minHeight: 6,
+          ),
         ),
       ],
     );
   }
 
-  Widget _buildMarkPrayedUI() {
+  Widget _buildBlockedAppLabel(_ThemedColors colors) =>
+      widget.blockedAppName != null
+          ? Text(
+              widget.blockedAppName!,
+              style: _textStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                color: colors.roseAccent,
+              ),
+            )
+          : const SizedBox.shrink();
+
+  Widget _buildBottomButtons(_ThemedColors colors, FocusLockProvider flp) {
+    final canSkip = flp.canSkip;
+    final remainingSkips = flp.remainingSkips;
+    final allowance = flp.dailySkipAllowance;
+    return Row(
+      children: [
+        Expanded(
+          flex: 1,
+          child: OutlinedButton(
+            onPressed: canSkip
+                ? () async {
+                    await widget.onSkip?.call();
+                  }
+                : null,
+            style: OutlinedButton.styleFrom(
+              foregroundColor: colors.textMuted,
+              side: BorderSide(color: colors.hairline, width: 1.5),
+              padding: const EdgeInsets.symmetric(vertical: 14),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(14),
+              ),
+              disabledForegroundColor: colors.textMuted.withValues(alpha: 0.4),
+            ),
+            child: Text(
+              'Skip ($remainingSkips/$allowance)',
+              style: _textStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.w700,
+                color: canSkip ? colors.textMain : colors.textMuted,
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          flex: 2,
+          child: ElevatedButton(
+            onPressed: () => widget.onOpenInav?.call(),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: colors.primary,
+              foregroundColor: Colors.white,
+              padding: const EdgeInsets.symmetric(vertical: 14),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(14),
+              ),
+              elevation: 4,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(Icons.open_in_new, size: 18),
+                const SizedBox(width: 6),
+                Text(
+                  'Open INav',
+                  style: _textStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildQuote(_ThemedColors colors) {
+    return Container(
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: colors.card,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(
+          color: colors.hairline.withValues(alpha: 0.3),
+        ),
+      ),
+      child: Row(
+        children: [
+          Icon(
+            Icons.format_quote,
+            color: colors.primary,
+            size: 18,
+          ),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Text(
+              'Prayer is better than sleep',
+              style: _textStyle(
+                fontSize: 12,
+                fontStyle: FontStyle.italic,
+                color: colors.textMuted,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildUnlockMethodUI(_ThemedColors colors) {
+    switch (widget.unlockConfig.method) {
+      case UnlockMethod.waitItOut:
+        return _buildWaitItOutUI(colors);
+      case UnlockMethod.markPrayed:
+        return _buildMarkPrayedUI(colors);
+      case UnlockMethod.mindfulPause:
+        return _buildMindfulPauseUI(colors);
+      case UnlockMethod.typePhrase:
+        return _buildTypePhraseUI(colors);
+    }
+  }
+
+  Widget _buildWaitItOutUI(_ThemedColors colors) {
+    final total = _waitTotalSeconds > 0 ? _waitTotalSeconds : 1;
+    final progress =
+        (_waitTotalSeconds > 0 ? (_waitRemainingSeconds / total) : 0.0)
+            .clamp(0.0, 1.0);
+    return Column(
+      children: [
+        Text(
+          'TIME REMAINING',
+          style: _textStyle(
+            fontSize: 11,
+            fontWeight: FontWeight.w600,
+            color: colors.textMuted,
+          ),
+        ),
+        const SizedBox(height: 14),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 14),
+          decoration: BoxDecoration(
+            color: colors.card,
+            borderRadius: BorderRadius.circular(18),
+            border: Border.all(
+              color: colors.primary.withValues(alpha: 0.3),
+              width: 2,
+            ),
+          ),
+          child: Text(
+            _formatWaitTime(_waitRemainingSeconds),
+            style: _textStyle(
+              fontSize: 42,
+              fontWeight: FontWeight.w800,
+              color: colors.primary,
+            ).copyWith(fontFeatures: [const FontFeature.tabularFigures()]),
+          ),
+        ),
+        const SizedBox(height: 20),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(2),
+          child: LinearProgressIndicator(
+            value: 1.0 - progress,
+            backgroundColor: colors.hairline,
+            valueColor: AlwaysStoppedAnimation<Color>(colors.primary),
+            minHeight: 4,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildMarkPrayedUI(_ThemedColors colors) {
+    final isPrayerLock = widget.activeLockInfo?.reason == LockReason.prayer;
     return Consumer<StreakProvider>(
-      builder: (context, streakProvider, child) {
-        final isPrayerCompleted =
-            _prayerMarked || streakProvider.isCurrentPrayerCompleted;
+      builder: (context, streakProvider, _) {
+        final completed = isPrayerLock &&
+            (_prayerMarked || streakProvider.isCurrentPrayerCompleted);
+        final String title;
+        final String subtitle;
+        final IconData icon;
+        final Color iconColor;
+        if (isPrayerLock) {
+          title = completed ? 'Prayer Completed!' : 'Mark Prayer as Prayed';
+          icon = completed ? Icons.check_circle : Icons.mosque;
+          iconColor = completed ? Colors.green : colors.primary;
+          subtitle = completed
+              ? 'Unlocking app...'
+              : widget.currentPrayerName != null
+                  ? 'Mark ${widget.currentPrayerName} prayer as completed\nin INav to auto-unlock'
+                  : 'Mark your current prayer as completed\nin INav to auto-unlock';
+        } else {
+          title = 'Custom Focus Session Active';
+          icon = Icons.menu_book;
+          iconColor = colors.primary;
+          subtitle =
+              'Auto-unlock by prayer streak is DISABLED during custom focus.\nUse Skip, wait for timer, or open INav to manage.';
+        }
 
         return Column(
           children: [
             AnimatedSwitcher(
               duration: const Duration(milliseconds: 300),
               child: Icon(
-                isPrayerCompleted ? Icons.check_circle : Icons.mosque,
-                key: ValueKey(isPrayerCompleted),
-                size: 64,
-                color: isPrayerCompleted ? Colors.green : AppColors.primaryDark,
+                icon,
+                key: ValueKey<bool>(completed),
+                size: 60,
+                color: iconColor,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 14),
             Text(
-              isPrayerCompleted ? 'Prayer Completed!' : 'Mark Prayer as Prayed',
-              style: GoogleFonts.plusJakartaSans().copyWith(
-                fontSize: 16,
+              title,
+              style: _textStyle(
+                fontSize: 15,
                 fontWeight: FontWeight.w700,
-                color: AppColors.textMainDark,
+                color: colors.textMain,
               ),
             ),
             const SizedBox(height: 8),
             Text(
-              isPrayerCompleted
-                  ? 'Unlocking app...'
-                  : widget.currentPrayerName != null
-                  ? 'Mark ${widget.currentPrayerName} prayer as completed\nin the app to unlock'
-                  : 'Mark your current prayer as completed\nin the app to unlock',
+              subtitle,
               textAlign: TextAlign.center,
-              style: GoogleFonts.plusJakartaSans().copyWith(
-                fontSize: 13,
-                color: AppColors.textMutedDark,
+              style: _textStyle(
+                fontSize: 12.5,
+                color: colors.textMuted,
                 height: 1.5,
               ),
             ),
-            if (isPrayerCompleted) ...[
-              const SizedBox(height: 16),
+            if (completed) ...[
+              const SizedBox(height: 14),
               const CircularProgressIndicator(
                 valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
               ),
@@ -424,200 +627,217 @@ class _LockOverlayScreenState extends State<LockOverlayScreen>
     );
   }
 
-  Widget _buildMindfulPauseUI() {
-    final canContinue = _breathingCycles >= _requiredCycles;
+  Widget _buildMindfulPauseUI(_ThemedColors colors) {
+    if (_mpUseVerse) {
+      final verse = context.watch<VerseProvider>().verse;
+      final loading = context.watch<VerseProvider>().isLoading;
+      return _buildContentCard(
+        colors: colors,
+        label: 'RANDOM VERSE',
+        arabic: verse?.arabic,
+        translation: verse?.translation,
+        reference: verse != null
+            ? '${verse.surahName} ${verse.ayahNumber}'
+            : null,
+        fallbackArabic: 'إِنَّ مَعَ الْعُسْرِ يُسْرًا',
+        fallbackTranslation:
+            'Indeed, with hardship comes ease.',
+        fallbackReference: 'Surah Ash-Sharh 94:6',
+        loading: loading,
+      );
+    } else {
+      final hadith = context.watch<HadithProvider>().hadith;
+      final loading = context.watch<HadithProvider>().isLoading;
+      return _buildContentCard(
+        colors: colors,
+        label: 'RANDOM HADITH',
+        arabic: hadith?.arabic,
+        translation: hadith?.translation,
+        reference: hadith != null
+            ? '${hadith.narrator} — ${hadith.number}'
+            : null,
+        fallbackArabic:
+            'إِنَّمَا الْأَعْمَالُ بِالنِّيَّاتِ',
+        fallbackTranslation:
+            'Actions are judged by intentions.',
+        fallbackReference: 'Sahih al-Bukhari 1',
+        loading: loading,
+      );
+    }
+  }
 
+  Widget _buildContentCard({
+    required _ThemedColors colors,
+    required String label,
+    required String? arabic,
+    required String? translation,
+    required String? reference,
+    required String fallbackArabic,
+    required String fallbackTranslation,
+    required String fallbackReference,
+    required bool loading,
+  }) {
+    final ar = arabic ?? fallbackArabic;
+    final tr = translation ?? fallbackTranslation;
+    final ref = reference ?? fallbackReference;
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        AnimatedBuilder(
-          animation: _breathingAnimation,
-          builder: (context, child) {
-            return Transform.scale(
-              scale: _breathingAnimation.value,
-              child: Container(
-                width: 140,
-                height: 140,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  gradient: RadialGradient(
-                    colors: [
-                      AppColors.primaryDark.withValues(alpha: 0.4),
-                      AppColors.primaryDark.withValues(alpha: 0.1),
-                    ],
-                  ),
-                  border: Border.all(color: AppColors.primaryDark, width: 3),
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppColors.primaryDark.withValues(alpha: 0.3),
-                      blurRadius: 20,
-                      spreadRadius: 5,
-                    ),
-                  ],
-                ),
-                child: Center(
-                  child: Icon(
-                    Icons.air,
-                    size: 56,
-                    color: AppColors.primaryDark,
-                  ),
-                ),
-              ),
-            );
-          },
-        ),
-        const SizedBox(height: 32),
-        AnimatedSwitcher(
-          duration: const Duration(milliseconds: 300),
-          child: Text(
-            _breathingPhase,
-            key: ValueKey(_breathingPhase),
-            style: GoogleFonts.plusJakartaSans().copyWith(
-              fontSize: 20,
-              fontWeight: FontWeight.w700,
-              color: AppColors.primaryDark,
-            ),
-          ),
-        ),
-        const SizedBox(height: 16),
         Text(
-          'Breathing cycles: $_breathingCycles / $_requiredCycles',
-          style: GoogleFonts.plusJakartaSans().copyWith(
-            fontSize: 14,
-            color: AppColors.textMutedDark,
+          label,
+          style: _textStyle(
+            fontSize: 11,
+            fontWeight: FontWeight.w700,
+            color: colors.textMuted,
           ),
         ),
-        const SizedBox(height: 24),
-        AnimatedOpacity(
-          opacity: canContinue ? 1.0 : 0.5,
-          duration: const Duration(milliseconds: 300),
-          child: ElevatedButton(
-            onPressed: canContinue ? _unlock : null,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.primaryDark,
-              foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 16),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              elevation: canContinue ? 4 : 0,
+        const SizedBox(height: 10),
+        if (loading)
+          const Center(
+            child: Padding(
+              padding: EdgeInsets.all(24),
+              child: CircularProgressIndicator(),
             ),
-            child: Text(
-              canContinue ? 'Continue' : 'Complete breathing cycles',
-              style: GoogleFonts.plusJakartaSans().copyWith(
-                fontSize: 14,
-                fontWeight: FontWeight.w700,
-              ),
+          )
+        else
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(18),
+            decoration: BoxDecoration(
+              color: colors.card,
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: colors.hairline.withValues(alpha: 0.6)),
             ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(
+                  ar,
+                  textAlign: TextAlign.right,
+                  textDirection: TextDirection.rtl,
+                  style: _textStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                    color: colors.textMain,
+                    height: 1.8,
+                  ),
+                ),
+                const SizedBox(height: 14),
+                Divider(color: colors.hairline.withValues(alpha: 0.5), height: 1),
+                const SizedBox(height: 14),
+                Text(
+                  '"$tr"',
+                  textAlign: TextAlign.left,
+                  style: _textStyle(
+                    fontSize: 13.5,
+                    fontStyle: FontStyle.italic,
+                    color: colors.textMain,
+                    height: 1.6,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  '— $ref',
+                  textAlign: TextAlign.left,
+                  style: _textStyle(
+                    fontSize: 11.5,
+                    fontWeight: FontWeight.w600,
+                    color: colors.primary,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        const SizedBox(height: 10),
+        Text(
+          'Use buttons below to continue.',
+          textAlign: TextAlign.center,
+          style: _textStyle(
+            fontSize: 11.5,
+            color: colors.textMuted,
           ),
         ),
       ],
     );
   }
 
-  Widget _buildTypePhraseUI() {
+  Widget _buildTypePhraseUI(_ThemedColors colors) {
+    final phrase = widget.unlockConfig.unlockPhrase.trim();
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'TYPE TO CONTINUE',
-          style: GoogleFonts.plusJakartaSans().copyWith(
-            fontSize: 12,
-            fontWeight: FontWeight.w600,
-            color: AppColors.textMutedDark,
-            letterSpacing: 1.2,
+          'YOUR REMINDER',
+          style: _textStyle(
+            fontSize: 11,
+            fontWeight: FontWeight.w700,
+            color: colors.textMuted,
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 10),
         Container(
-          padding: const EdgeInsets.all(16),
+          width: double.infinity,
+          padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
-            color: AppColors.cardDark,
-            borderRadius: BorderRadius.circular(12),
+            color: colors.primary.withValues(alpha: 0.08),
+            borderRadius: BorderRadius.circular(18),
             border: Border.all(
-              color: _phraseError ? Colors.red : AppColors.hairlineDark,
-              width: 2,
+              color: colors.primary.withValues(alpha: 0.35),
+              width: 1.5,
             ),
           ),
-          child: Text(
-            '"${widget.unlockConfig.unlockPhrase}"',
-            textAlign: TextAlign.center,
-            style: GoogleFonts.plusJakartaSans().copyWith(
-              fontSize: 14,
-              fontStyle: FontStyle.italic,
-              color: AppColors.primaryDark,
-              fontWeight: FontWeight.w600,
-            ),
+          child: Column(
+            children: [
+              Icon(
+                Icons.record_voice_over,
+                size: 36,
+                color: colors.primary,
+              ),
+              const SizedBox(height: 14),
+              if (phrase.isNotEmpty)
+                Text(
+                  '"$phrase"',
+                  textAlign: TextAlign.center,
+                  style: _textStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.w700,
+                    fontStyle: FontStyle.italic,
+                    color: colors.primary,
+                    height: 1.5,
+                  ),
+                )
+              else
+                Text(
+                  '"Stay committed to what matters."',
+                  textAlign: TextAlign.center,
+                  style: _textStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    fontStyle: FontStyle.italic,
+                    color: colors.primary,
+                    height: 1.5,
+                  ),
+                ),
+            ],
           ),
         ),
-        const SizedBox(height: 24),
-        TextField(
-          controller: _phraseController,
-          autofocus: true,
-          style: GoogleFonts.plusJakartaSans().copyWith(
-            color: AppColors.textMainDark,
-            fontSize: 14,
-          ),
-          decoration: InputDecoration(
-            hintText: 'Type the phrase...',
-            filled: true,
-            fillColor: AppColors.cardDark,
-            errorText: _phraseError ? 'Incorrect phrase. Try again.' : null,
-            errorStyle: GoogleFonts.plusJakartaSans().copyWith(
-              color: Colors.red,
-              fontSize: 12,
-            ),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: AppColors.hairlineDark),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: AppColors.hairlineDark),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: AppColors.primaryDark, width: 2),
-            ),
-            errorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: Colors.red, width: 2),
-            ),
-            focusedErrorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: Colors.red, width: 2),
-            ),
-          ),
-          onSubmitted: (_) => _validatePhrase(),
-        ),
-        if (_phraseAttempts > 0) ...[
-          const SizedBox(height: 8),
-          Text(
-            'Attempts: $_phraseAttempts',
-            style: GoogleFonts.plusJakartaSans().copyWith(
-              fontSize: 12,
-              color: AppColors.textMutedDark,
-            ),
-          ),
-        ],
-        const SizedBox(height: 16),
-        ElevatedButton(
-          onPressed: _validatePhrase,
-          style: ElevatedButton.styleFrom(
-            backgroundColor: AppColors.primaryDark,
-            foregroundColor: Colors.white,
-            padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 16),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-          ),
-          child: Text(
-            'Unlock',
-            style: GoogleFonts.plusJakartaSans().copyWith(
-              fontSize: 14,
-              fontWeight: FontWeight.w700,
-            ),
+        const SizedBox(height: 14),
+        Text(
+          'Remember why this focus session matters. Stay committed!',
+          textAlign: TextAlign.center,
+          style: _textStyle(
+            fontSize: 12.5,
+            color: colors.textMuted,
+            height: 1.5,
           ),
         ),
       ],
     );
+  }
+
+  String _formatWaitTime(int seconds) {
+    final m = seconds ~/ 60;
+    final s = seconds % 60;
+    return '${m.toString().padLeft(2, '0')}:${s.toString().padLeft(2, '0')}';
   }
 }

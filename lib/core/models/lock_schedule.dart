@@ -226,4 +226,65 @@ class CustomLockSchedule extends LockSchedule {
     startTime: startTime ?? this.startTime,
     endTime: endTime ?? this.endTime,
   );
+
+  DateTime getAbsoluteStartTime({DateTime? now}) {
+    final n = now ?? DateTime.now();
+    final startOfDay = DateTime(n.year, n.month, n.day);
+    var result = startOfDay.add(
+      Duration(hours: startTime.hour, minutes: startTime.minute),
+    );
+    final startMin = startTime.hour * 60 + startTime.minute;
+    final endMin = endTime.hour * 60 + endTime.minute;
+    if (startMin > endMin) {
+      final nowMin = n.hour * 60 + n.minute;
+      if (nowMin < endMin) {
+        result = result.subtract(const Duration(days: 1));
+      }
+    }
+    return result;
+  }
+
+  DateTime getAbsoluteEndTime({DateTime? now}) {
+    final start = getAbsoluteStartTime(now: now);
+    final sMin = startTime.hour * 60 + startTime.minute;
+    final eMin = endTime.hour * 60 + endTime.minute;
+    final diffMin = (sMin <= eMin) ? (eMin - sMin) : (eMin + 24 * 60 - sMin);
+    return start.add(Duration(minutes: diffMin));
+  }
+}
+
+enum LockReason { prayer, customFocus }
+
+class ActiveLockInfo {
+  final LockReason reason;
+  final String label;
+  final DateTime startTime;
+  final DateTime endTime;
+  final CustomLockSchedule? customSchedule;
+  final String? prayerName;
+
+  const ActiveLockInfo({
+    required this.reason,
+    required this.label,
+    required this.startTime,
+    required this.endTime,
+    this.customSchedule,
+    this.prayerName,
+  });
+
+  int get remainingSeconds {
+    final diff = endTime.difference(DateTime.now()).inSeconds;
+    return diff < 0 ? 0 : diff;
+  }
+
+  String get formattedRemaining {
+    final total = remainingSeconds;
+    if (total <= 0) return '0 min';
+    if (total < 60) return '$total sec';
+    final min = total ~/ 60;
+    if (min < 60) return '$min min';
+    final h = min ~/ 60;
+    final m = min % 60;
+    return m == 0 ? '${h}h' : '${h}h ${m}m';
+  }
 }

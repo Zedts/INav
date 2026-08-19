@@ -31,7 +31,12 @@ class MainActivity : FlutterActivity() {
     
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
-        
+
+        // GeneratedPluginRegistrant already registered InavLauncherPlugin
+        // (via the inav_launcher pubspec plugin declaration). That single
+        // plugin handles the cross-engine "open INav" action for both the
+        // main engine AND overlay engine.
+
         // Focus lock channel
         val channel = MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL)
 
@@ -72,6 +77,17 @@ class MainActivity : FlutterActivity() {
                 }
 
                 "hideLockOverlay" -> {
+                    result.success(true)
+                }
+
+                "openInavApp" -> {
+                    val launchIntent = packageManager.getLaunchIntentForPackage(packageName)?.apply {
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                    }
+                    if (launchIntent != null) {
+                        startActivity(launchIntent)
+                    }
                     result.success(true)
                 }
 

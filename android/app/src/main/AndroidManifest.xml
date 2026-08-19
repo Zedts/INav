@@ -16,7 +16,7 @@
     
     <application
         android:label="INav"
-        android:name="${applicationName}"
+        android:name=".InavApplication"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
@@ -86,7 +86,8 @@
         <service
             android:name="slayer.accessibility.service.flutter_accessibility_service.AccessibilityListener"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE"
-            android:exported="true">
+            android:exported="true"
+            tools:node="replace">
             <intent-filter>
                 <action android:name="android.accessibilityservice.AccessibilityService" />
             </intent-filter>

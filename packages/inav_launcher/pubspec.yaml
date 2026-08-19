@@ -1,0 +1,15 @@
+name: inav_launcher
+description: "Native launcher plugin that opens MainActivity from ANY FlutterEngine (including overlay isolate without Activity context). Uses Application-level Context + FLAG_ACTIVITY_NEW_TASK."
+version: 1.0.0
+publish_to: 'none'
+
+environment:
+  sdk: ^3.12.2
+  flutter: ">=3.0.0"
+
+flutter:
+  plugin:
+    platforms:
+      android:
+        package: com.zedt.inav_launcher
+        pluginClass: InavLauncherPlugin

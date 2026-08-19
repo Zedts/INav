@@ -10,8 +10,19 @@ export '../errors/app_exceptions.dart' show ApiException;
 
 /// Base API service for handling HTTP requests
 class ApiService {
-  static final String _defaultBaseUrl =
-      dotenv.env['MYQURAN_API_BASE_URL']!;
+  static const String _fallbackBaseUrl =
+      'https://api.myquran.com/v2';
+
+  static final String _defaultBaseUrl = (() {
+    try {
+      final v = dotenv.env['MYQURAN_API_BASE_URL'];
+      if (v != null && v.isNotEmpty) return v;
+    } catch (_) {
+      /* dotenv not initialized in this isolate (overlay isolate).
+         Use the hardcoded default — same value as shipped in .env.example. */
+    }
+    return _fallbackBaseUrl;
+  })();
 
   final String _baseUrl;
   final http.Client _client;

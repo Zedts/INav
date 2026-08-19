@@ -84,6 +84,13 @@ dependencies:
   flutter_local_notifications: ^22.3.0
   device_info_plus: ^13.2.0
 
+  # Local plugin: launches MainActivity from ANY engine (main + overlay)
+  # using Application-level context + FLAG_ACTIVITY_NEW_TASK. Fixes the
+  # "Open INav" button NO_ACTIVITY error from the overlay-isolate engine
+  # (which has no foreground FlutterActivity, so url_launcher fails).
+  inav_launcher:
+    path: packages/inav_launcher
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -109,6 +116,21 @@ dependency_overrides:
 
 # The following section is specific to Flutter packages.
 flutter:
+
+  # Declare this package itself as a Flutter plugin. This causes
+  # `GeneratedPluginRegistrant.registerWith(engine)` to ALSO instantiate
+  # `InavNativePlugin` on EVERY FlutterEngine created in this process —
+  # both:
+  #   (a) the main app engine (MainActivity), AND
+  #   (b) the overlay isolate engine spawned by flutter_accessibility_service.
+  #
+  # This is the only way to guarantee that `com.zedt.inav/native#openInavApp`
+  # has a native handler on BOTH engines without modifying 3rd-party packages.
+  plugin:
+    platforms:
+      android:
+        package: com.zedt.inav
+        pluginClass: InavNativePlugin
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
