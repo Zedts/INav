@@ -1,16 +1,16 @@
-# Graph Report - inav  (2026-08-19)
+# Graph Report - inav  (2026-08-20)
 
 ## Corpus Check
-- 129 files · ~87,965 words
+- 133 files · ~96,545 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1914 nodes · 2606 edges · 147 communities (113 shown, 34 thin omitted)
-- Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 23 edges (avg confidence: 0.82)
+- 1983 nodes · 2700 edges · 138 communities (105 shown, 33 thin omitted)
+- Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 24 edges (avg confidence: 0.82)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `7ef8e0b2`
+- Built from commit: `649d3cab`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -36,7 +36,7 @@
 - main_screen.dart
 - MosqueProvider
 - quran_banner.dart
-- verse_provider.dart
+- Locked Apps Selection UI - Complete Code Map
 - hadith_provider.dart
 - app_definition.dart
 - theme_provider.dart
@@ -102,73 +102,64 @@
 - bool?
 - pill_badge.dart
 - qibla_screen.dart
+- PLAN_1 — Locked-app launcher icons + installed-only defaults
 - quran_screen.dart
 - nearest_mosque_banner.dart
-- qibla_info_grid.dart
+- package:flutter/material.dart
 - verse_model.dart
-- StatelessWidget
+- mosque_quick_actions.dart
 - focus_lock_provider.dart
 - prayer_notification_settings_model.dart
 - hadith_service.dart
 - mosque_detail_sheet.dart
 - qibla_model.dart
 - unlock_config.dart
-- package:flutter/material.dart
+- nearby_mosque_list_tile.dart
 - hadith_model.dart
-- QuranProvider
+- FocusLockProvider
 - surah_reading_screen.dart
 - lock_overlay_screen.dart
 - lock_schedule.dart
-- _SurahReadingScreenState
+- Fix Flutter Platform and Plugin Errors
 - app_selection_dialog.dart
 - PrayerProvider
 - accessibility_service_helper.dart
-- main.dart
+- home_screen.dart
 - streak_card.dart
 - lock_engine.dart
 - FocusLockForegroundService
 - default_apps.dart
-- PLAN_2.md — Focus Lock Bug Fixes & Feature Enhancements
-- 5. Detailed Implementation Plan
+- async_app_icon.dart
+- StatelessWidget
 - app_exceptions.dart
 - VoidCallback
 - favorites_sidebar.dart
-- InavDeviceAdminReceiver
 - AppDelegate
 - FlutterMacOS
-- surah_list_tile.dart
+- QuranProvider
 - package:flutter/foundation.dart
 - InavLauncherPlugin
 - AccessibilityHelper
 - ios/RunnerTests/RunnerTests.swift
-- ../../core/theme/app_colors.dart
+- calibration_alert.dart
 - BootReceiver
 - AppDelegate
-- bookmarks_sidebar.dart
 - RegisterGeneratedPlugins
 - ✅ All Bugs Fixed — All 4 Validations Passed
-- 0.1 Deep Research Findings Applied (Q6 — Perplexity + Web)
-- app_header.dart
-- RunnerTests
-- 5.3 Bug #2: "Maximum Tree Depth Reached: 15" (REVISED WITH RESEARCH)
-- 5.7 Feature #3d: Unlock Method-Specific Behavior (REVISED per user Q1-Q3)
-- 8. Testing Strategy (UNCHANGED; all 8.2.x manual test cases remain valid with following additions)
+- ../../core/theme/app_colors.dart
 - InavApplication
-- 2. Bug Analysis — Root Causes & Impact
-- 5.4 Feature #3a: Lock Screen — Show Lock Reason & Remaining Time
-- 9. Sequence Diagrams (Critical Flows)
 
 ## God Nodes (most connected - your core abstractions)
 1. `QuranProvider` - 33 edges
 2. `MosqueProvider` - 32 edges
 3. `Win32Window` - 22 edges
 4. `PrayerProvider` - 21 edges
-5. `ThemeProvider` - 15 edges
+5. `MainActivity` - 17 edges
 6. `FocusLockProvider` - 14 edges
 7. `StreakProvider` - 14 edges
-8. `MainActivity` - 12 edges
+8. `ThemeProvider` - 12 edges
 9. `MessageHandler` - 12 edges
-10. `PLAN_2.md — Focus Lock Bug Fixes & Feature Enhancements` - 12 edges
+10. `HadithProvider` - 10 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `Android Launcher Icon (hdpi)` --references--> `inav`  [INFERRED]
@@ -177,9 +168,9 @@
   ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-1024x1024@1x.png → pubspec.yaml
 - `Launch Screen Assets README` --references--> `iOS Launch Image`  [INFERRED]
   ios/Runner/Assets.xcassets/LaunchImage.imageset/README.md → ios/Runner/Assets.xcassets/LaunchImage.imageset/LaunchImage.png
-- `build` --references--> `FocusLockProvider`  [EXTRACTED]
-  lib/screens/settings/focus_lock_config_screen.dart → lib/core/providers/focus_lock_provider.dart
 - `_buildLikeButton` --references--> `MosqueProvider`  [EXTRACTED]
+  lib/widgets/common/app_header.dart → lib/core/providers/mosque_provider.dart
+- `_buildMosqueLeading` --references--> `MosqueProvider`  [EXTRACTED]
   lib/widgets/common/app_header.dart → lib/core/providers/mosque_provider.dart
 
 ## Import Cycles
@@ -188,7 +179,7 @@
 ## Hyperedges (group relationships)
 - **Flutter Platform Build System** — linux_cmakelists, windows_cmakelists, linux_flutter_cmakelists, windows_flutter_cmakelists [EXTRACTED 1.00]
 
-## Communities (147 total, 34 thin omitted)
+## Communities (138 total, 33 thin omitted)
 
 ### Community 0 - "Windows Flutter Platform"
 Cohesion: 0.06
@@ -223,12 +214,12 @@ Cohesion: 0.10
 Nodes (20): DateTime?, _checkAndResetDate, _checkPrayerWindow, completedCount, _completedPrayers, _currentPrayerWindow, _effectivePrayerDate, initialize (+12 more)
 
 ### Community 8 - "banner.dart"
-Cohesion: 0.18
-Nodes (10): ../common/pill_badge.dart, build, _buildCard, _buildPrayerSlide, _buildQuranSlide, createState, dispose, _pageController (+2 more)
+Cohesion: 0.17
+Nodes (11): ../common/pill_badge.dart, ../../core/providers/prayer_provider.dart, build, _buildCard, _buildPrayerSlide, _buildQuranSlide, createState, dispose (+3 more)
 
 ### Community 9 - "surah_model.dart"
 Cohesion: 0.11
-Nodes (17): audioUrl, fromJson, isMeccan, nameEn, nameId, nameLong, nameShort, number (+9 more)
+Nodes (18): audioUrl, fromJson, isMeccan, nameEn, nameId, nameLong, nameShort, number (+10 more)
 
 ### Community 10 - "api_service.dart"
 Cohesion: 0.17
@@ -247,12 +238,12 @@ Cohesion: 0.12
 Nodes (15): asr, cityName, date, dhuhr, fajr, fromJson, getAllPrayerTimes, getPrayerTime (+7 more)
 
 ### Community 14 - "verse_service.dart"
-Cohesion: 0.12
-Nodes (15): _apiService, _cacheVerse, clearCache, dispose, _fetchFromApi, forceRefresh, _getCachedVerse, getDailyVerse (+7 more)
+Cohesion: 0.07
+Nodes (27): VerseModel, dispose, _errorMessage, _isLoading, loadDailyVerse, refresh, _verse, _verseService (+19 more)
 
 ### Community 15 - "focus_lock_config_screen.dart"
 Cohesion: 0.05
-Nodes (38): ../../core/models/lock_schedule.dart, ../../core/models/unlock_config.dart, GlobalKey, _addCustomSchedule, _allPrayerKeys, _AppDisplayItem, build, _buildAppsToLockSection (+30 more)
+Nodes (38): ../../core/models/lock_schedule.dart, ../../core/models/unlock_config.dart, GlobalKey, _addCustomSchedule, _allPrayerKeys, _AppDisplayItem, _buildAppsToLockSection, _buildCustomFocusTimesSection (+30 more)
 
 ### Community 16 - "prayer_settings_provider.dart"
 Cohesion: 0.09
@@ -264,31 +255,31 @@ Nodes (26): @visibleForTesting, dart:io, Duration, _distance, _distanceKm, _extr
 
 ### Community 18 - "main_screen.dart"
 Cohesion: 0.11
-Nodes (18): home/home_screen.dart, createState, _currentIndex, _getHeaderMode, MainScreen, _MainScreenState, _onTabTapped, _openMosqueDetail (+10 more)
+Nodes (19): home/home_screen.dart, createState, _currentIndex, _getHeaderMode, MainScreen, _MainScreenState, _onTabTapped, _openMosqueDetail (+11 more)
 
 ### Community 19 - "MosqueProvider"
-Cohesion: 0.14
-Nodes (20): MosqueProvider, build, build, _buildContent, _buildLoadingView, createState, initState, MosqueScreen (+12 more)
+Cohesion: 0.15
+Nodes (19): MosqueProvider, build, _buildContent, _buildLoadingView, createState, initState, MosqueScreen, _MosqueScreenState (+11 more)
 
 ### Community 20 - "quran_banner.dart"
-Cohesion: 0.14
-Nodes (14): _buildAudioButton, _buildContinuousBadge, _buildExitButton, _buildNowPlayingBadge, _buildNowPlayingContent, createState, _defaultAudioUrl, _defaultSurahKey (+6 more)
+Cohesion: 0.13
+Nodes (15): _buildAudioButton, _buildContinuousBadge, _buildDefaultContent, _buildExitButton, _buildNowPlayingBadge, _buildNowPlayingContent, createState, _defaultAudioUrl (+7 more)
 
-### Community 21 - "verse_provider.dart"
-Cohesion: 0.17
-Nodes (11): dispose, _errorMessage, _isLoading, loadDailyVerse, refresh, _verse, _verseService, VerseService (+3 more)
+### Community 21 - "Locked Apps Selection UI - Complete Code Map"
+Cohesion: 0.08
+Nodes (25): 1. Main Screen: FocusLockConfigScreen, 2. App Selection Dialog (App Picker List UI), 3. FocusLockProvider (State Management), 4. AppDefinition Model, 5. DefaultApps Constants, 6. InstalledAppsService (Platform Bridge), 7. AppConstants (Non-Lockable Packages), 8. Navigation Entry Points to FocusLockConfigScreen (+17 more)
 
 ### Community 22 - "hadith_provider.dart"
 Cohesion: 0.15
 Nodes (12): bool get, HadithModel? get, dispose, _errorMessage, _hadith, _hadithService, _isLoading, loadDailyHadith (+4 more)
 
 ### Community 23 - "app_definition.dart"
-Cohesion: 0.10
-Nodes (19): Color get, int get, AppDefinition, color, colorARGB, copyWith, fromJson, hashCode (+11 more)
+Cohesion: 0.11
+Nodes (18): Color get, int get, color, colorARGB, copyWith, fromJson, hashCode, iconCodePoint (+10 more)
 
 ### Community 24 - "theme_provider.dart"
-Cohesion: 0.15
-Nodes (12): isDarkMode, loadThemePreference, _prefs, _saveThemePreference, setThemeMode, _themeKey, _themeMode, toggleTheme (+4 more)
+Cohesion: 0.14
+Nodes (13): _getPrefsWithRetry, isDarkMode, loadThemePreference, _prefs, _saveThemePreference, setThemeMode, _themeKey, _themeMode (+5 more)
 
 ### Community 25 - "qibla_provider.dart"
 Cohesion: 0.05
@@ -299,8 +290,8 @@ Cohesion: 0.14
 Nodes (13): 🛠️ 3 Minimal Fixes (ponytail-compatible: one guard on shared function + two entrypoint hardening), ✅ Both Bugs Fixed — Validated (all 4 builds passed), 🐛 Bug Fixes (Session 1), Continue Development with Validation, ✅ Implementation Complete — All Bugs + Features Delivered, 📱 Lock Screen Overhaul (Sessions 2–3), 🏗️ Model/Provider API (§3a), 🔌 New Channel (+5 more)
 
 ### Community 27 - "../errors/error_messages.dart"
-Cohesion: 0.12
-Nodes (17): api_service.dart, ../errors/error_messages.dart, ApiService, _apiService, CalendarService, _convertToHijri, dispose, getCalendarByDate (+9 more)
+Cohesion: 0.22
+Nodes (8): ../errors/error_messages.dart, _apiService, CalendarService, _convertToHijri, dispose, getCalendarByDate, getTodayCalendar, ../models/calendar_model.dart
 
 ### Community 28 - "qibla_service.dart"
 Cohesion: 0.13
@@ -315,8 +306,8 @@ Cohesion: 0.24
 Nodes (9): _In_, _In_opt_, vector, wWinMain(), string, wchar_t, CreateAndAttachConsole(), GetCommandLineArguments() (+1 more)
 
 ### Community 31 - "installed_apps_service.dart"
-Cohesion: 0.25
-Nodes (7): _channel, getAppInfo, getInstalledApps, InstalledAppsService, searchApps, ../models/app_definition.dart, static const MethodChannel
+Cohesion: 0.12
+Nodes (16): AppDefinition, activityName, app, _channel, getAppIcon, getAppInfo, getInstalledApps, hasLauncherActivity (+8 more)
 
 ### Community 32 - "random_content_card.dart"
 Cohesion: 0.08
@@ -327,8 +318,8 @@ Cohesion: 0.18
 Nodes (10): background_color, description, display, icons, name, orientation, prefer_related_applications, short_name (+2 more)
 
 ### Community 34 - "quran_service.dart"
-Cohesion: 0.15
-Nodes (12): _apiService, _apiServiceV3, _cachedSurahs, dispose, getAllSurahs, getSurahDetail, loadCompleteSurah, QuranService (+4 more)
+Cohesion: 0.09
+Nodes (21): api_service.dart, ApiService, _apiService, _defaultTimezone, dispose, getPrayerTimesByDate, getTodayPrayerTimes, PrayerService (+13 more)
 
 ### Community 35 - "inav"
 Cohesion: 0.29
@@ -359,8 +350,8 @@ Cohesion: 0.33
 Nodes (5): package:flutter_test/flutter_test.dart, package:inav/core/providers/focus_lock_provider.dart, package:inav/core/theme/theme_provider.dart, package:inav/main.dart, main
 
 ### Community 42 - "MainActivity"
-Cohesion: 0.23
-Nodes (5): Intent, MethodChannel, MainActivity, FlutterActivity, FlutterEngine
+Cohesion: 0.10
+Nodes (15): getComponentName(), InavDeviceAdminReceiver, Context, Intent, Intent, MethodChannel, MainActivity, ApplicationInfo (+7 more)
 
 ### Community 43 - "Linux Project CMakeLists"
 Cohesion: 1.00
@@ -383,16 +374,16 @@ Cohesion: 0.10
 Nodes (19): LatLng? get, address, copyWith, distanceKm, fromJson, iconTag, id, latitude (+11 more)
 
 ### Community 81 - "horizontal_prayer_stepper.dart"
-Cohesion: 0.14
-Nodes (13): Color, _buildPrayerStep, _calculateProgress, color, _controller, createState, dispose, _getCircleContent (+5 more)
+Cohesion: 0.13
+Nodes (15): Animation, _buildPrayerStep, _calculateProgress, color, _controller, createState, dispose, _getCircleContent (+7 more)
 
 ### Community 82 - "prayer_notification_settings_screen.dart"
 Cohesion: 0.12
 Nodes (16): class, ../../core/models/prayer_notification_settings_model.dart, _buildAdhanPlaybackCard, _buildHeader, _buildMasterToggleCard, _buildOptionSwitchRow, _buildPlaybackToggleRow, _buildPrayerCard (+8 more)
 
 ### Community 83 - "surah_detail_sheet.dart"
-Cohesion: 0.14
-Nodes (14): build, _buildActionButton, _buildBadge, _buildBadgesRow, _buildDragHandle, _buildHeader, _buildTafsirSection, _buildTranslationRow (+6 more)
+Cohesion: 0.12
+Nodes (16): build, _buildActionButton, _buildBadge, _buildBadgesRow, _buildDragHandle, _buildHeader, _buildTafsirSection, _buildTranslationRow (+8 more)
 
 ### Community 84 - "section_skeleton.dart"
 Cohesion: 0.15
@@ -408,35 +399,39 @@ Nodes (29): arab, audioUrl, AyahMeta, AyahModel, ayahNumber, AyahSajda, AyahTafs
 
 ### Community 89 - "pill_badge.dart"
 Cohesion: 0.12
-Nodes (15): Animation, _animation, backgroundColor, build, color, _controller, createState, dispose (+7 more)
+Nodes (15): Color, _animation, backgroundColor, build, color, _controller, createState, dispose (+7 more)
 
 ### Community 90 - "qibla_screen.dart"
 Cohesion: 0.13
 Nodes (19): ../../core/providers/qibla_provider.dart, QiblaProvider, build, _buildContent, _buildLoadingView, createState, _handleAlignmentFeedback, initState (+11 more)
+
+### Community 91 - "PLAN_1 — Locked-app launcher icons + installed-only defaults"
+Cohesion: 0.14
+Nodes (12): Change, Change (one helper, all callers), Device checks (after implement), Files, Goal, Order, Part 1 — Same icon as Add Apps, Part 2 — Defaults only if installed (+4 more)
 
 ### Community 92 - "quran_screen.dart"
 Cohesion: 0.14
 Nodes (14): build, _buildAllSurahHeader, _buildLoadingState, _buildNoResultsState, createState, initState, _openSurahDetail, QuranScreen (+6 more)
 
 ### Community 93 - "nearest_mosque_banner.dart"
-Cohesion: 0.15
-Nodes (12): ../common/error_state_view.dart, build, _buildContent, _buildEmptyContent, isOverridden, mosque, _navigate, NearestMosqueBanner (+4 more)
+Cohesion: 0.17
+Nodes (11): build, _buildContent, _buildEmptyContent, isOverridden, mosque, _navigate, NearestMosqueBanner, onResetToNearest (+3 more)
 
-### Community 94 - "qibla_info_grid.dart"
-Cohesion: 0.11
-Nodes (17): ../../core/models/qibla_model.dart, QiblaModel, build, _buildBadge, cityName, isAligned, qiblaData, QiblaHeroBanner (+9 more)
+### Community 94 - "package:flutter/material.dart"
+Cohesion: 0.08
+Nodes (24): app_colors.dart, ../../core/models/qibla_model.dart, AppTheme, darkTheme, lightTheme, build, SettingsScreen, build (+16 more)
 
 ### Community 95 - "verse_model.dart"
 Cohesion: 0.18
 Nodes (10): arabic, ayahNumber, formattedReference, fromCachedJson, fromJson, surahName, surahNumber, toJson (+2 more)
 
-### Community 96 - "StatelessWidget"
-Cohesion: 0.10
-Nodes (22): _AyahItem, _ContentBody, _ContentPageScaffold, _EmptyState, _ErrorState, _LoadingState, _RandomHadithPage, _RandomVersePage (+14 more)
+### Community 96 - "mosque_quick_actions.dart"
+Cohesion: 0.17
+Nodes (11): build, compact, isFavorite, MosqueFavoriteButton, MosqueInfoButton, MosqueNavigateButton, MosqueQuickActionsRow, onInfo (+3 more)
 
 ### Community 97 - "focus_lock_provider.dart"
 Cohesion: 0.03
-Nodes (70): ../constants/app_constants.dart, ../constants/default_apps.dart, addCustomSchedule, addLockedApp, _allowEmergency, canSkip, capitalizeFirst, _checkAndResetDailyCount (+62 more)
+Nodes (73): ../constants/app_constants.dart, ../constants/default_apps.dart, addCustomSchedule, addLockedApp, _allowEmergency, canSkip, capitalizeFirst, _checkAndResetDailyCount (+65 more)
 
 ### Community 98 - "prayer_notification_settings_model.dart"
 Cohesion: 0.12
@@ -448,59 +443,63 @@ Nodes (14): _apiService, _cacheHadith, clearCache, dispose, _fetchFromApi, force
 
 ### Community 100 - "mosque_detail_sheet.dart"
 Cohesion: 0.15
-Nodes (12): build, _buildBadge, _buildBadgesRow, _buildBottomActions, _buildDetailsSection, _buildDragHandle, _buildHeader, mosque (+4 more)
+Nodes (12): ../common/error_state_view.dart, build, _buildBadge, _buildBadgesRow, _buildBottomActions, _buildDetailsSection, _buildDragHandle, _buildHeader (+4 more)
 
 ### Community 101 - "qibla_model.dart"
 Cohesion: 0.18
-Nodes (10): direction, distanceKm, formattedDistance, fromJson, latitude, longitude, toJson, toString (+2 more)
+Nodes (10): direction, distanceKm, formattedDistance, fromJson, latitude, longitude, QiblaModel, toJson (+2 more)
 
 ### Community 102 - "unlock_config.dart"
 Cohesion: 0.20
 Nodes (9): copyWith, fromJson, method, mindfulPauseSeconds, toJson, UnlockConfig, UnlockMethod, unlockPhrase (+1 more)
 
-### Community 103 - "package:flutter/material.dart"
-Cohesion: 0.11
-Nodes (17): app_colors.dart, MosqueModel, AppTheme, darkTheme, lightTheme, build, SettingsScreen, build (+9 more)
+### Community 103 - "nearby_mosque_list_tile.dart"
+Cohesion: 0.18
+Nodes (10): ../../core/models/mosque_model.dart, MosqueModel, build, _buildIcon, _buildTrailing, isSelected, mosque, NearbyMosqueListTile (+2 more)
 
 ### Community 104 - "hadith_model.dart"
 Cohesion: 0.22
 Nodes (8): arabic, fromCachedJson, fromJson, HadithModel, narrator, number, toJson, translation
 
-### Community 105 - "QuranProvider"
-Cohesion: 0.22
-Nodes (10): QuranProvider, _loadSurahDetail, _onVisibleItemsChanged, build, build, _buildDefaultContent, _exitActivePlayback, _buildBottomActions (+2 more)
+### Community 105 - "FocusLockProvider"
+Cohesion: 0.18
+Nodes (12): ../common/async_app_icon.dart, ../../core/providers/focus_lock_provider.dart, FocusLockProvider, build, build, FocusLockCard, _formatNextLockCountdown, build (+4 more)
 
 ### Community 106 - "surah_reading_screen.dart"
 Cohesion: 0.05
-Nodes (38): ItemPositionsListener, ItemScrollController, _arabicBaseFontSize, arabicStyle, ayah, ayahNumberStyle, build, _buildAppBar (+30 more)
+Nodes (40): ItemPositionsListener, ItemScrollController, _arabicBaseFontSize, arabicStyle, ayah, ayahNumberStyle, build, _buildAppBar (+32 more)
 
 ### Community 107 - "lock_overlay_screen.dart"
-Cohesion: 0.04
-Nodes (45): activeLockInfo, blockedAppName, blockedPackageName, _buildBlockedAppLabel, _buildBottomButtons, _buildContentCard, _buildHeader, _buildMarkPrayedUI (+37 more)
+Cohesion: 0.05
+Nodes (43): activeLockInfo, blockedAppName, blockedPackageName, build, _buildBlockedAppLabel, _buildBottomButtons, _buildContentCard, _buildHeader (+35 more)
 
 ### Community 108 - "lock_schedule.dart"
 Cohesion: 0.07
-Nodes (30): ActiveLockInfo, copyWith, CustomLockSchedule, customSchedule, durationMinutes, enabled, enabledPrayers, endTime (+22 more)
+Nodes (29): ActiveLockInfo, copyWith, CustomLockSchedule, customSchedule, durationMinutes, enabled, enabledPrayers, endTime (+21 more)
+
+### Community 109 - "Fix Flutter Platform and Plugin Errors"
+Cohesion: 0.08
+Nodes (23): 1. Fixed: [settings.gradle.kts](file:///c:/Users/USER/Desktop/Ian/School/Code/Android/inav/android/settings.gradle.kts#L20-L25) — added `com.android.library` plugin version, 1. [pubspec.yaml](file:///c:/Users/USER/Desktop/Ian/School/Code/Android/inav/pubspec.yaml#L118-L128) — Removed stale `plugin: InavNativePlugin` block, 2. Cleaned: [gradle.properties](file:///c:/Users/USER/Desktop/Ian/School/Code/Android/inav/android/gradle.properties#L1-L8) — removed obsolete duplicate, 2. [theme_provider.dart](file:///c:/Users/USER/Desktop/Ian/School/Code/Android/inav/lib/core/theme/theme_provider.dart#L25-L46) — Prefs retry + wider catch, 3. CREATED: [build.gradle.kts](file:///c:/Users/USER/Desktop/Ian/School/Code/Android/inav/packages/inav_launcher/android/build.gradle.kts) — the MISSING file that caused the NPE, 3. [focus_lock_provider.dart](file:///c:/Users/USER/Desktop/Ian/School/Code/Android/inav/lib/core/providers/focus_lock_provider.dart#L68-L152) — Retry + default fallbacks, 4. [accessibility_service_helper.dart](file:///c:/Users/USER/Desktop/Ian/School/Code/Android/inav/lib/core/services/accessibility_service_helper.dart#L36-L143) — Two-layer race fix, 4. CREATED: [AndroidManifest.xml](file:///c:/Users/USER/Desktop/Ian/School/Code/Android/inav/packages/inav_launcher/android/src/main/AndroidManifest.xml) — empty library manifest (+15 more)
 
 ### Community 110 - "app_selection_dialog.dart"
-Cohesion: 0.11
-Nodes (18): ../../core/constants/app_constants.dart, ../../core/models/app_definition.dart, ../../core/services/installed_apps_service.dart, _allApps, AppSelectionDialog, _AppSelectionDialogState, build, _buildAppItem (+10 more)
+Cohesion: 0.07
+Nodes (29): ../../core/constants/app_constants.dart, ../../core/constants/default_apps.dart, ../../core/models/app_definition.dart, _allInstalled, _AppFilter, _applyFilters, AppSelectionDialog, _AppSelectionDialogState (+21 more)
 
 ### Community 111 - "PrayerProvider"
-Cohesion: 0.12
-Nodes (34): ChangeNotifier, FocusLockProvider, HadithProvider, PrayerProvider, PrayerSettingsProvider, StreakProvider, VerseProvider, build (+26 more)
+Cohesion: 0.19
+Nodes (21): ChangeNotifier, HadithProvider, PrayerProvider, PrayerSettingsProvider, VerseProvider, build, HomeScreen, _HomeScreenState (+13 more)
 
 ### Community 112 - "accessibility_service_helper.dart"
-Cohesion: 0.05
-Nodes (41): AccessibilityServiceHelper, _accessStreamSubscription, _appOpenedController, _channel, _cooldownExpiryTimer, _debounceTimer, dispose, forceResubscribe (+33 more)
+Cohesion: 0.04
+Nodes (44): AccessibilityServiceHelper, _accessStreamSubscription, _appOpenedController, _channel, checkAndFireCooldownExpiry, _debounceTimer, dispose, _doSubscribe (+36 more)
 
-### Community 113 - "main.dart"
-Cohesion: 0.06
-Nodes (34): @pragma, ../../core/constants/default_apps.dart, ../../core/providers/focus_lock_provider.dart, ../../core/providers/hadith_provider.dart, ../../core/providers/prayer_provider.dart, ../../core/providers/prayer_settings_provider.dart, ../../core/providers/streak_provider.dart, ../../core/providers/verse_provider.dart (+26 more)
+### Community 113 - "home_screen.dart"
+Cohesion: 0.09
+Nodes (23): @pragma, ../../core/providers/hadith_provider.dart, ../../core/providers/prayer_settings_provider.dart, ../../core/providers/streak_provider.dart, ../../core/providers/verse_provider.dart, ../../core/services/accessibility_service_helper.dart, core/services/lock_engine.dart, core/theme/app_theme.dart (+15 more)
 
 ### Community 114 - "streak_card.dart"
-Cohesion: 0.12
-Nodes (16): _animationController, build, createState, _currentProgress, didChangeDependencies, didUpdateWidget, dispose, _FireButton (+8 more)
+Cohesion: 0.11
+Nodes (21): StreakProvider, initState, _startPrayerPoll, _animationController, build, createState, _currentProgress, didChangeDependencies (+13 more)
 
 ### Community 115 - "lock_engine.dart"
 Cohesion: 0.11
@@ -511,16 +510,16 @@ Cohesion: 0.22
 Nodes (8): FocusLockForegroundService, Context, Intent, start(), stop(), IBinder, Notification, Service
 
 ### Community 117 - "default_apps.dart"
-Cohesion: 0.17
-Nodes (11): apps, createGenericApp, DefaultApps, defaultPackages, essentialAppsWhitelist, getApp, isDefaultApp, isEssentialApp (+3 more)
+Cohesion: 0.15
+Nodes (12): apps, createGenericApp, DefaultApps, defaultPackages, essentialAppsWhitelist, getApp, isDefaultApp, isEssentialApp (+4 more)
 
-### Community 118 - "PLAN_2.md — Focus Lock Bug Fixes & Feature Enhancements"
-Cohesion: 0.20
-Nodes (9): 1. Executive Summary, 3. Feature Requirements Decomposition, 4. Proposed Architecture & Data Flow Changes, 6. File Change Inventory (UPDATED), 7. Risk Assessment & Mitigations (REVISED WITH RESEARCH), Bugs to Fix, New Features, PLAN_2.md — Focus Lock Bug Fixes & Feature Enhancements (+1 more)
+### Community 118 - "async_app_icon.dart"
+Cohesion: 0.09
+Nodes (23): ../../core/services/installed_apps_service.dart, dart:typed_data, activityName, AsyncAppIcon, _AsyncAppIconState, build, _bytes, cache (+15 more)
 
-### Community 119 - "5. Detailed Implementation Plan"
-Cohesion: 0.20
-Nodes (10): 5.1.1 `AccessibilityServiceHelper` Additions, 5.1.2 `LockEngine` Changes, 5.1 Bug #1: Accessibility Service Activation (Hot Restart Required), 5.2 Bug #1b: MissingPluginException, 5.5 Feature #3b: Lock Screen — Match App Theme, 5.6.1 New Constructor Params — expanded from draft #1, 5.6.2 Layout: Stack for X + "Close 3s" Caption, 5.6.3 Bottom Button Row (Skip + Open INav) — same as draft, no cooldown (+2 more)
+### Community 119 - "StatelessWidget"
+Cohesion: 0.14
+Nodes (14): _AyahItem, _Badge, _BadgeRow, _FilterChip, _ContentBody, _ContentPageScaffold, _EmptyState, _ErrorState (+6 more)
 
 ### Community 120 - "app_exceptions.dart"
 Cohesion: 0.24
@@ -531,12 +530,8 @@ Cohesion: 0.22
 Nodes (8): ../../core/errors/error_messages.dart, build, ErrorStateView, message, onOpenSettings, onRetry, showErrorSnackBar, VoidCallback
 
 ### Community 122 - "favorites_sidebar.dart"
-Cohesion: 0.22
-Nodes (8): ../../core/models/mosque_model.dart, ../../core/providers/mosque_provider.dart, build, _buildEmptyState, _buildFavoritesList, _buildFooter, _buildHeader, FavoritesSidebar
-
-### Community 123 - "InavDeviceAdminReceiver"
-Cohesion: 0.31
-Nodes (6): getComponentName(), InavDeviceAdminReceiver, Context, Intent, ComponentName, DeviceAdminReceiver
+Cohesion: 0.25
+Nodes (7): ../../core/providers/mosque_provider.dart, build, _buildEmptyState, _buildFavoritesList, _buildFooter, _buildHeader, FavoritesSidebar
 
 ### Community 124 - "AppDelegate"
 Cohesion: 0.25
@@ -544,27 +539,27 @@ Nodes (6): Any, FlutterImplicitEngineBridge, FlutterImplicitEngineDelegate, AppD
 
 ### Community 125 - "FlutterMacOS"
 Cohesion: 0.32
-Nodes (5): Cocoa, FlutterMacOS, MainFlutterWindow, NSWindow, XCTest
+Nodes (4): Cocoa, FlutterMacOS, RunnerTests, XCTest
 
-### Community 126 - "surah_list_tile.dart"
-Cohesion: 0.22
-Nodes (8): ../../core/models/surah_model.dart, SurahModel, build, _buildNumberBadge, _handleAudioTap, onTap, surah, SurahListTile
+### Community 126 - "QuranProvider"
+Cohesion: 0.14
+Nodes (18): ../../core/models/surah_model.dart, ../../core/providers/quran_provider.dart, QuranProvider, build, _loadSurahDetail, _onVisibleItemsChanged, BookmarksSidebar, build (+10 more)
 
 ### Community 127 - "package:flutter/foundation.dart"
 Cohesion: 0.14
-Nodes (13): _channel, DeviceAdminService, isDeviceAdminEnabled, removeDeviceAdmin, requestDeviceAdmin, _channel, getAppUsageTime, getCurrentApp (+5 more)
+Nodes (14): _channel, DeviceAdminService, isDeviceAdminEnabled, removeDeviceAdmin, requestDeviceAdmin, _channel, getAppUsageTime, getCurrentApp (+6 more)
 
 ### Community 128 - "InavLauncherPlugin"
 Cohesion: 0.33
 Nodes (5): FlutterPlugin, MethodCall, InavLauncherPlugin, Context, MethodChannel
 
 ### Community 130 - "ios/RunnerTests/RunnerTests.swift"
-Cohesion: 0.38
-Nodes (4): Flutter, FlutterSceneDelegate, SceneDelegate, UIKit
+Cohesion: 0.24
+Nodes (6): Flutter, FlutterSceneDelegate, SceneDelegate, RunnerTests, UIKit, XCTestCase
 
-### Community 131 - "../../core/theme/app_colors.dart"
-Cohesion: 0.25
-Nodes (7): AnimationController, ../../core/theme/app_colors.dart, build, _controller, createState, dispose, initState
+### Community 131 - "calibration_alert.dart"
+Cohesion: 0.18
+Nodes (11): AnimationController, _PulsingDot, _PulsingDotState, build, CalibrationAlert, _CalibrationAlertState, _controller, createState (+3 more)
 
 ### Community 132 - "BootReceiver"
 Cohesion: 0.33
@@ -574,70 +569,34 @@ Nodes (4): BootReceiver, Context, Intent, BroadcastReceiver
 Cohesion: 0.47
 Nodes (4): FlutterAppDelegate, AppDelegate, Bool, NSApplication
 
-### Community 134 - "bookmarks_sidebar.dart"
-Cohesion: 0.25
-Nodes (7): ../../core/providers/quran_provider.dart, BookmarksSidebar, build, _buildBookmarksList, _buildEmptyState, _buildFooter, _buildHeader
-
 ### Community 135 - "RegisterGeneratedPlugins"
-Cohesion: 0.50
-Nodes (3): FlutterPluginRegistry, FlutterViewController, RegisterGeneratedPlugins()
+Cohesion: 0.33
+Nodes (5): FlutterPluginRegistry, FlutterViewController, RegisterGeneratedPlugins(), MainFlutterWindow, NSWindow
 
 ### Community 136 - "✅ All Bugs Fixed — All 4 Validations Passed"
 Cohesion: 0.33
 Nodes (5): ✅ All Bugs Fixed — All 4 Validations Passed, Code Review Result, Continue Debugging Lock Screen Issues, How to test the APKs, ✅ Validation Results
 
-### Community 137 - "0.1 Deep Research Findings Applied (Q6 — Perplexity + Web)"
-Cohesion: 0.33
-Nodes (6): 0.1.1 TREE_DEPTH Root Cause CONFIRMED (Smoking Gun Found), 0.1.2 Manifest Override Strategy (Host vs Plugin), 0.1.3 Runtime Hardening (setServiceInfo), 0.1.4 Overlay Isolate Provider Dependencies (Graphify Verified), 0.1 Deep Research Findings Applied (Q6 — Perplexity + Web), 0. User Answers Recorded (§9 Resolved)
-
-### Community 138 - "app_header.dart"
-Cohesion: 0.10
-Nodes (23): ../../core/theme/theme_provider.dart, ThemeProvider, build, build, _buildActions, _buildLeading, _buildLikeButton, _buildMosqueLeading (+15 more)
-
-### Community 139 - "RunnerTests"
-Cohesion: 0.40
-Nodes (3): RunnerTests, RunnerTests, XCTestCase
-
-### Community 140 - "5.3 Bug #2: "Maximum Tree Depth Reached: 15" (REVISED WITH RESEARCH)"
-Cohesion: 0.40
-Nodes (5): 5.3.1 Layer 0 — XML Rewrite + Manifest Hardening (PRIMARY FIX, 98% impact), 5.3.2 Layer 1 — Dart 100ms Debounce (already in §5.1.1), 5.3.3 Layer 2 — Native Runtime Hardening (CONDITIONAL, post-XML-test), 5.3.4 Layer 3 — Release Build Log Suppression (ProGuard), 5.3 Bug #2: "Maximum Tree Depth Reached: 15" (REVISED WITH RESEARCH)
-
-### Community 141 - "5.7 Feature #3d: Unlock Method-Specific Behavior (REVISED per user Q1-Q3)"
-Cohesion: 0.40
-Nodes (5): 5.7.1 `waitItOut` → `_buildWaitItOutUI()` (Unchanged from draft), 5.7.2 `markPrayed` → `_buildMarkPrayedUI()` (Unchanged logic; already correct for custom wins), 5.7.3 `mindfulPause` → `_buildMindfulPauseUI()` (**REWRITTEN — no breathing, verse/hadith only**), 5.7.4 `typePhrase` → `_buildTypePhraseUI()` (**REWRITTEN — display-only card, NO typing field**), 5.7 Feature #3d: Unlock Method-Specific Behavior (REVISED per user Q1-Q3)
-
-### Community 142 - "8. Testing Strategy (UNCHANGED; all 8.2.x manual test cases remain valid with following additions)"
-Cohesion: 0.40
-Nodes (5): 8.2.2 Bug #1b — MissingPluginException (add test step), 8.2.3 Bug #2 — TREE_DEPTH Spam (add new explicit manual tests), 8.2.6 Feature 3c Buttons (add X cooldown test), 8.2.7 (NEW) Mindful Pause & Type Phrase UX Validation, 8. Testing Strategy (UNCHANGED; all 8.2.x manual test cases remain valid with following additions)
-
-### Community 144 - "2. Bug Analysis — Root Causes & Impact"
-Cohesion: 0.50
-Nodes (4): 2.1 Bug #1: Accessibility Service Hot Restart Required, 2.2 Bug #1b: MissingPluginException, 2.3 Bug #2: TREE_DEPTH=15 Spam (REVISED WITH RESEARCH), 2. Bug Analysis — Root Causes & Impact
-
-### Community 145 - "5.4 Feature #3a: Lock Screen — Show Lock Reason & Remaining Time"
-Cohesion: 0.50
-Nodes (4): 5.4.1 `ActiveLockInfo` class — SAME as first draft, 5.4.2 `CustomLockSchedule` absolute time getters — SAME, 5.4.3 `FocusLockProvider.getActiveLockInfo()` — **REVISED: custom wins**, 5.4 Feature #3a: Lock Screen — Show Lock Reason & Remaining Time
-
-### Community 146 - "9. Sequence Diagrams (Critical Flows)"
-Cohesion: 0.50
-Nodes (4): 9.1 Bug Fix #1 — Reconnect (Unchanged from §10.1 draft #1), 9.2 X Button — 3s Cooldown Flow (NEW, per user Q4), 9.3 LockOverlayScreen V2 Final Layout (Revised with "Close 3s"), 9. Sequence Diagrams (Critical Flows)
+### Community 138 - "../../core/theme/app_colors.dart"
+Cohesion: 0.11
+Nodes (23): ../../core/theme/app_colors.dart, ../../core/theme/theme_provider.dart, ThemeProvider, build, _buildActions, _buildLeading, _buildLikeButton, _buildMosqueLeading (+15 more)
 
 ## Knowledge Gaps
-- **1195 isolated node(s):** `AppConstants`, `version`, `kEmergencyNonLockablePackages`, `DefaultApps`, `apps` (+1190 more)
+- **1237 isolated node(s):** `AppConstants`, `version`, `kEmergencyNonLockablePackages`, `DefaultApps`, `apps` (+1232 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **34 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **33 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `_MapViewSectionState` connect `map_view_section.dart` to `PrayerProvider`?**
-  _High betweenness centrality (0.008) - this node is a cross-community bridge._
-- **Why does `refreshNearbyMosques` connect `refreshNearbyMosques` to `mosque_provider.dart`?**
-  _High betweenness centrality (0.008) - this node is a cross-community bridge._
-- **Why does `MosqueProvider` connect `MosqueProvider` to `mosque_detail_sheet.dart`, `favorites_sidebar.dart`, `app_header.dart`, `mosque_provider.dart`, `PrayerProvider`, `main_screen.dart`, `qibla_screen.dart`, `nearest_mosque_banner.dart`?**
-  _High betweenness centrality (0.008) - this node is a cross-community bridge._
+- **Why does `PrayerTimesModel` connect `prayer_times_model.dart` to `prayer_provider.dart`?**
+  _High betweenness centrality (0.013) - this node is a cross-community bridge._
+- **Why does `MosqueProvider` connect `MosqueProvider` to `mosque_detail_sheet.dart`, `favorites_sidebar.dart`, `../../core/theme/app_colors.dart`, `mosque_provider.dart`, `PrayerProvider`, `main_screen.dart`, `qibla_screen.dart`, `nearest_mosque_banner.dart`, `QuranProvider`?**
+  _High betweenness centrality (0.012) - this node is a cross-community bridge._
+- **Why does `FocusLockProvider` connect `FocusLockProvider` to `focus_lock_provider.dart`, `lock_overlay_screen.dart`, `PrayerProvider`, `focus_lock_config_screen.dart`, `home_screen.dart`, `lock_engine.dart`?**
+  _High betweenness centrality (0.011) - this node is a cross-community bridge._
 - **What connects `AppConstants`, `version`, `kEmergencyNonLockablePackages` to the rest of the system?**
-  _1195 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _1237 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Windows Flutter Platform` be split into smaller, more focused modules?**
   _Cohesion score 0.0597567424643046 - nodes in this community are weakly interconnected._
 - **Should `prayer_provider.dart` be split into smaller, more focused modules?**
