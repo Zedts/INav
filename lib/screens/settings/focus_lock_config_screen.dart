@@ -11,6 +11,7 @@ import '../../core/models/unlock_config.dart';
 import '../../core/constants/default_apps.dart';
 import '../../core/services/accessibility_service_helper.dart';
 import '../../widgets/dialogs/app_selection_dialog.dart';
+import '../../widgets/common/async_app_icon.dart';
 
 class FocusLockConfigScreen extends StatefulWidget {
   const FocusLockConfigScreen({super.key});
@@ -874,14 +875,12 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
                     padding: const EdgeInsets.all(16),
                     child: Row(
                       children: [
-                        Container(
-                          width: 36,
-                          height: 36,
-                          decoration: BoxDecoration(
-                            color: app.color.withValues(alpha: 0.1),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Icon(app.icon, color: app.color, size: 18),
+                        AsyncAppIcon(
+                          packageName: app.packageName,
+                          fallbackColor: app.color,
+                          fallbackIcon: app.icon,
+                          isDark: isDark,
+                          size: 36,
                         ),
                         const SizedBox(width: 12),
                         Expanded(

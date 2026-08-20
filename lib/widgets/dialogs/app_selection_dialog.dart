@@ -1,4 +1,3 @@
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../core/theme/app_colors.dart';
@@ -6,6 +5,7 @@ import '../../core/models/app_definition.dart';
 import '../../core/services/installed_apps_service.dart';
 import '../../core/constants/default_apps.dart';
 import '../../core/constants/app_constants.dart';
+import '../common/async_app_icon.dart';
 
 enum _AppFilter {
   all(label: 'All', icon: Icons.apps_rounded),
@@ -37,11 +37,6 @@ class _AppSelectionDialogState extends State<AppSelectionDialog> {
   String _searchQuery = '';
   _AppFilter _filter = _AppFilter.all;
   final TextEditingController _searchController = TextEditingController();
-
-  /// Per-package cached icon bytes so scrolling the list does not re-request
-  /// the same icon hundreds of times. In-memory only (dialog-scoped), so a
-  /// ~256-entry LRU-equivalent map keeps resident memory under ~2 MB.
-  final Map<String, Uint8List> _iconCache = <String, Uint8List>{};
 
   @override
   void initState() {
@@ -404,10 +399,9 @@ class _AppSelectionDialogState extends State<AppSelectionDialog> {
             SizedBox(
               width: 48,
               height: 48,
-              child: _AsyncAppIcon(
+              child: AsyncAppIcon(
                 packageName: pkg,
                 activityName: info.activityName,
-                cache: _iconCache,
                 fallbackColor: defaultColor,
                 fallbackIcon: fallbackIcon ?? Icons.apps,
                 isDark: isDark,
@@ -617,145 +611,5 @@ class _Badge extends StatelessWidget {
         ),
       ),
     );
-  }
-}
-
-/// Lazy one-icon-per-package loader. Requests PNG bytes from the
-/// [InstalledAppsService.getAppIcon] MethodChannel once per package; keeps
-/// them in a parent-owned [cache] map so they survive parent rebuilds.
-///
-/// States:
-///   * waiting → spinner (16 dp, same center point)
-///   * success → rounded 12-px-clip MemoryImage
-///   * failure → colored [fallbackIcon] glyph (DefaultApps-flavored for
-///     pinned apps, else generic Icons.apps)
-class _AsyncAppIcon extends StatefulWidget {
-  final String packageName;
-  final String? activityName;
-  final Map<String, Uint8List> cache;
-  final Color fallbackColor;
-  final IconData fallbackIcon;
-  final bool isDark;
-
-  const _AsyncAppIcon({
-    required this.packageName,
-    required this.activityName,
-    required this.cache,
-    required this.fallbackColor,
-    required this.fallbackIcon,
-    required this.isDark,
-  });
-
-  @override
-  State<_AsyncAppIcon> createState() => _AsyncAppIconState();
-}
-
-class _AsyncAppIconState extends State<_AsyncAppIcon> {
-  Uint8List? _bytes;
-  bool _failed = false;
-
-  @override
-  void initState() {
-    super.initState();
-    final cached = widget.cache[widget.packageName];
-    if (cached != null) {
-      _bytes = cached;
-      return;
-    }
-    // Fire-and-forget: ListView.builder items mount/unmount rapidly as
-    // the user flings, so we guard with mounted and never block the frame.
-    InstalledAppsService.getAppIcon(
-      packageName: widget.packageName,
-      activityName: widget.activityName,
-      sizeDp: 48,
-    ).then((bytes) {
-      if (!mounted) return;
-      if (bytes == null || bytes.isEmpty) {
-        setState(() => _failed = true);
-        return;
-      }
-      widget.cache[widget.packageName] = bytes;
-      setState(() => _bytes = bytes);
-    }).catchError((_) {
-      if (!mounted) return;
-      setState(() => _failed = true);
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final b = _bytes;
-    if (b != null) {
-      return ClipRRect(
-        borderRadius: BorderRadius.circular(12),
-        child: Image.memory(
-          b,
-          width: 48,
-          height: 48,
-          fit: BoxFit.cover,
-          gaplessPlayback: true,
-        ),
-      );
-    }
-    if (_failed) {
-      return _FallbackIcon(
-        color: widget.fallbackColor,
-        icon: widget.fallbackIcon,
-        isDark: widget.isDark,
-      );
-    }
-    return _FallbackIcon(
-      color: widget.fallbackColor,
-      icon: widget.fallbackIcon,
-      isDark: widget.isDark,
-      spinner: true,
-    );
-  }
-}
-
-class _FallbackIcon extends StatelessWidget {
-  final Color color;
-  final IconData icon;
-  final bool isDark;
-  final bool spinner;
-
-  const _FallbackIcon({
-    required this.color,
-    required this.icon,
-    required this.isDark,
-    this.spinner = false,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final base = Container(
-      width: 48,
-      height: 48,
-      decoration: BoxDecoration(
-        color: (isDark ? AppColors.primaryDark : AppColors.primaryLight)
-            .withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Center(
-        child: spinner
-            ? SizedBox(
-                width: 18,
-                height: 18,
-                child: CircularProgressIndicator(
-                  strokeWidth: 2,
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                    isDark ? AppColors.primaryDark : AppColors.primaryLight,
-                  ),
-                ),
-              )
-            : Icon(
-                icon,
-                color:
-                    color.computeLuminance() < 0.5 ? AppColors.primaryDark : color,
-                size: 24,
-              ),
-      ),
-    );
-    return base;
   }
 }

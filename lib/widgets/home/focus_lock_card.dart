@@ -6,8 +6,8 @@ import 'package:provider/provider.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/providers/prayer_provider.dart';
 import '../../core/providers/focus_lock_provider.dart';
-import '../../core/constants/default_apps.dart';
 import '../../screens/settings/focus_lock_config_screen.dart';
+import '../common/async_app_icon.dart';
 
 class FocusLockCard extends StatelessWidget {
   const FocusLockCard({super.key});
@@ -204,26 +204,27 @@ class FocusLockCard extends StatelessWidget {
                               lockedAppsCount > 3 ? 3 : lockedAppsCount,
                               (index) {
                                 final app = focusLockProvider.lockedApps[index];
-                                final defaultApp = DefaultApps.getApp(
-                                  app.packageName,
-                                );
-
-                                final iconData = defaultApp != null
-                                    ? IconData(
-                                        defaultApp.iconCodePoint,
-                                        fontFamily: defaultApp.iconFontFamily,
-                                        fontPackage: defaultApp.iconFontPackage,
-                                        matchTextDirection:
-                                            defaultApp.iconMatchTextDirection,
-                                      )
-                                    : Icons.apps;
-
                                 return Positioned(
                                   left: index * 24.0,
-                                  child: _buildAppIcon(
-                                    iconData,
-                                    defaultApp?.color ?? AppColors.primaryDark,
-                                    isDark,
+                                  child: Container(
+                                    width: 32,
+                                    height: 32,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(12),
+                                      border: Border.all(
+                                        color: isDark
+                                            ? AppColors.cardDark
+                                            : Colors.white,
+                                        width: 2,
+                                      ),
+                                    ),
+                                    child: AsyncAppIcon(
+                                      packageName: app.packageName,
+                                      fallbackColor: app.color,
+                                      fallbackIcon: Icons.apps,
+                                      isDark: isDark,
+                                      size: 28,
+                                    ),
                                   ),
                                 );
                               },
@@ -239,22 +240,6 @@ class FocusLockCard extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildAppIcon(IconData icon, Color color, bool isDark) {
-    return Container(
-      width: 32,
-      height: 32,
-      decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.15),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: isDark ? AppColors.cardDark : Colors.white,
-          width: 2,
-        ),
-      ),
-      child: Icon(icon, size: 16, color: color),
     );
   }
 }
