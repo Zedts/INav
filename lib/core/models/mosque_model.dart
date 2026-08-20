@@ -55,7 +55,8 @@ class MosqueModel {
     double? fallbackLng,
   }) {
     final normalized = _normalizeJson(json);
-    final lat = _parseDouble(normalized, ['lat', 'latitude']) ?? fallbackLat ?? 0.0;
+    final lat =
+        _parseDouble(normalized, ['lat', 'latitude']) ?? fallbackLat ?? 0.0;
     final lng =
         _parseDouble(normalized, ['lng', 'lon', 'longitude']) ??
         fallbackLng ??
@@ -70,27 +71,36 @@ class MosqueModel {
       id:
           _parseString(normalized, ['id', 'place_id', 'masjidId', 'uuid']) ??
           '${lat.toStringAsFixed(4)}_${lng.toStringAsFixed(4)}',
-      name: _parseString(normalized, [
-        'name',
-        'title',
-        'masjid_name',
-        'masjidName',
-        'place_name',
-      ]) ?? 'Unknown Mosque',
-      address: _parseString(normalized, [
-        'address',
-        'addr',
-        'location',
-        'vicinity',
-        'formatted_address',
-        'street',
-      ]) ?? 'Address not available',
+      name:
+          _parseString(normalized, [
+            'name',
+            'title',
+            'masjid_name',
+            'masjidName',
+            'place_name',
+          ]) ??
+          'Unknown Mosque',
+      address:
+          _parseString(normalized, [
+            'address',
+            'addr',
+            'location',
+            'vicinity',
+            'formatted_address',
+            'street',
+          ]) ??
+          'Address not available',
       latitude: lat,
       longitude: lng,
       distanceKm: distance,
       rating: rating,
       openNow: openNow,
-      iconTag: _parseString(normalized, ['icon_tag', 'icon', 'tag', 'category']),
+      iconTag: _parseString(normalized, [
+        'icon_tag',
+        'icon',
+        'tag',
+        'category',
+      ]),
     );
   }
 
@@ -131,11 +141,7 @@ class MosqueModel {
         json['url'] is String) {
       final coords = _coordsFromGoogleMapsUrl(json['url'] as String);
       if (coords != null) {
-        return {
-          ...json,
-          'lat': coords.$1,
-          'lng': coords.$2,
-        };
+        return {...json, 'lat': coords.$1, 'lng': coords.$2};
       }
     }
 

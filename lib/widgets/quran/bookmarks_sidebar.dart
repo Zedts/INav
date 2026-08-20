@@ -55,7 +55,7 @@ class BookmarksSidebar extends StatelessWidget {
                 border: Border(
                   right: BorderSide(
                     color: isDark
-                        ? AppColors.textMainDark.withValues(alpha: 0.5)
+                        ? AppColors.hairlineDark.withValues(alpha: 0.5)
                         : AppColors.hairlineLight.withValues(alpha: 0.5),
                     width: 1,
                   ),
@@ -108,7 +108,7 @@ class BookmarksSidebar extends StatelessWidget {
         border: Border(
           bottom: BorderSide(
             color: isDark
-                ? AppColors.textMainDark.withValues(alpha: 0.8)
+                ? AppColors.hairlineDark.withValues(alpha: 0.8)
                 : AppColors.hairlineLight.withValues(alpha: 0.8),
             width: 1,
           ),
@@ -146,7 +146,7 @@ class BookmarksSidebar extends StatelessWidget {
               width: 32,
               height: 32,
               decoration: BoxDecoration(
-                color: isDark ? AppColors.textMainDark : AppColors.cardLight,
+                color: isDark ? AppColors.cardDark : AppColors.cardLight,
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Icon(
@@ -214,9 +214,7 @@ class BookmarksSidebar extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: isDark
-                    ? AppColors.textMainDark.withValues(alpha: 0.5)
-                    : AppColors.textMainDark,
+                color: isDark ? AppColors.cardDark : AppColors.surfaceLight,
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Row(
@@ -291,7 +289,7 @@ class BookmarksSidebar extends StatelessWidget {
         border: Border(
           top: BorderSide(
             color: isDark
-                ? AppColors.textMainDark.withValues(alpha: 0.8)
+                ? AppColors.hairlineDark.withValues(alpha: 0.8)
                 : AppColors.hairlineLight.withValues(alpha: 0.8),
             width: 1,
           ),

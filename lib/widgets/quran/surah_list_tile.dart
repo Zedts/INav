@@ -66,12 +66,6 @@ class SurahListTile extends StatelessWidget {
             decoration: BoxDecoration(
               color: isDark ? AppColors.cardDark : Colors.white,
               borderRadius: BorderRadius.circular(24),
-              border: Border.all(
-                color: isDark
-                    ? AppColors.hairlineDark
-                    : AppColors.hairlineLight.withValues(alpha: 0.8),
-                width: 1,
-              ),
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withValues(alpha: 0.05),

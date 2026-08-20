@@ -45,8 +45,10 @@ class _SurahReadingScreenState extends State<SurahReadingScreen> {
   @override
   void initState() {
     super.initState();
-    _loadSurahDetail();
     _itemPositionsListener.itemPositions.addListener(_onVisibleItemsChanged);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) _loadSurahDetail();
+    });
   }
 
   @override

@@ -4,6 +4,8 @@ import '../errors/error_messages.dart';
 import '../models/mosque_model.dart';
 import '../services/location_service.dart';
 import '../services/mosque_service.dart';
+import '../databases/app_database.dart';
+import 'package:sqflite/sqflite.dart';
 
 class MosqueProvider extends ChangeNotifier {
   final LocationService _locationService;
@@ -19,13 +21,15 @@ class MosqueProvider extends ChangeNotifier {
   String? _selectedMosqueId;
   String? _featuredMosqueId;
   final List<String> _favoriteMosqueIds = [];
+  final List<MosqueModel> _favoriteSnapshots = [];
+  int? _userId;
   bool _isSidebarOpen = false;
 
   MosqueProvider({
     LocationService? locationService,
     MosqueService? mosqueService,
-  })  : _locationService = locationService ?? LocationService(),
-        _mosqueService = mosqueService ?? MosqueService();
+  }) : _locationService = locationService ?? LocationService(),
+       _mosqueService = mosqueService ?? MosqueService();
 
   LatLng? get userLatLng => _userLatLng;
   String get cityName => _cityName;
@@ -56,10 +60,7 @@ class MosqueProvider extends ChangeNotifier {
   }
 
   List<MosqueModel> get favoriteMosques {
-    return _favoriteMosqueIds
-        .map(_mosqueById)
-        .whereType<MosqueModel>()
-        .toList();
+    return List.unmodifiable(_favoriteSnapshots);
   }
 
   MosqueModel? _mosqueById(String? id) {
@@ -121,7 +122,8 @@ class MosqueProvider extends ChangeNotifier {
     double lat;
     double lng;
     final cached = _userLatLng;
-    final stale = !_positionFreshness.isRunning ||
+    final stale =
+        !_positionFreshness.isRunning ||
         _positionFreshness.elapsed > const Duration(seconds: 60);
     try {
       if (cached != null && !forceRefreshLocation && !stale) {
@@ -206,18 +208,65 @@ class MosqueProvider extends ChangeNotifier {
     resetFeaturedToNearest();
   }
 
-  void toggleFavorite(String mosqueId) {
-    final idx = _favoriteMosqueIds.indexOf(mosqueId);
-    if (idx >= 0) {
-      _favoriteMosqueIds.removeAt(idx);
-    } else {
-      _favoriteMosqueIds.add(mosqueId);
+  Future<void> setUser(int? userId) async {
+    if (_userId == userId) return;
+    _userId = userId;
+    _favoriteMosqueIds.clear();
+    _favoriteSnapshots.clear();
+    if (userId != null) {
+      final rows = await (await AppDatabase.database).query(
+        'mosque_favorites',
+        where: 'user_id=?',
+        whereArgs: [userId],
+      );
+      for (final row in rows) {
+        final m = MosqueModel(
+          id: row['mosque_id'] as String,
+          name: row['name'] as String,
+          address: (row['address'] as String?) ?? 'Address not available',
+          latitude: row['latitude'] as double,
+          longitude: row['longitude'] as double,
+          distanceKm: 0,
+        );
+        _favoriteSnapshots.add(m);
+        _favoriteMosqueIds.add(m.id);
+      }
     }
     notifyListeners();
   }
 
-  void toggleFavoriteMosque(MosqueModel mosque) {
-    toggleFavorite(mosque.id);
+  Future<void> toggleFavoriteMosque(MosqueModel mosque) async {
+    final mosqueId = mosque.id;
+    final idx = _favoriteMosqueIds.indexOf(mosqueId);
+    if (idx >= 0) {
+      _favoriteMosqueIds.removeAt(idx);
+      _favoriteSnapshots.removeWhere((m) => m.id == mosqueId);
+      if (_userId != null)
+        await (await AppDatabase.database).delete(
+          'mosque_favorites',
+          where: 'user_id=? AND mosque_id=?',
+          whereArgs: [_userId, mosqueId],
+        );
+    } else {
+      _favoriteMosqueIds.add(mosqueId);
+      _favoriteSnapshots.add(mosque);
+      if (_userId != null)
+        await (await AppDatabase.database).insert('mosque_favorites', {
+          'user_id': _userId,
+          'mosque_id': mosqueId,
+          'name': mosque.name,
+          'latitude': mosque.latitude,
+          'longitude': mosque.longitude,
+          'address': mosque.address,
+          'created_at': DateTime.now().millisecondsSinceEpoch,
+        }, conflictAlgorithm: ConflictAlgorithm.replace);
+    }
+    notifyListeners();
+  }
+
+  Future<void> toggleFavorite(String mosqueId) async {
+    final mosque = _mosqueById(mosqueId);
+    if (mosque != null) await toggleFavoriteMosque(mosque);
   }
 
   bool isFavorite(String mosqueId) => _favoriteMosqueIds.contains(mosqueId);

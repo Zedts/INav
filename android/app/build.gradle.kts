@@ -20,6 +20,8 @@ android {
         applicationId = "com.zedt.inav"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
+        // flutter_secure_storage v10 uses modern Android Keystore ciphers.
+        // API 23 is its supported minimum; target/compile SDK remain unchanged.
         minSdk = flutter.minSdkVersion
         targetSdk = 36  // Updated to match compileSdk
         versionCode = flutter.versionCode

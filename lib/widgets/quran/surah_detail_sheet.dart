@@ -140,7 +140,7 @@ class _SurahDetailSheetState extends State<SurahDetailSheet> {
           border: Border(
             bottom: BorderSide(
               color: isDark
-                  ? AppColors.textMainDark.withValues(alpha: 0.8)
+                  ? AppColors.hairlineDark.withValues(alpha: 0.8)
                   : AppColors.hairlineLight.withValues(alpha: 0.8),
               width: 1,
             ),
@@ -414,7 +414,7 @@ class _SurahDetailSheetState extends State<SurahDetailSheet> {
         border: Border(
           top: BorderSide(
             color: isDark
-                ? AppColors.textMainDark.withValues(alpha: 0.8)
+                ? AppColors.hairlineDark.withValues(alpha: 0.8)
                 : AppColors.hairlineLight.withValues(alpha: 0.8),
             width: 1,
           ),

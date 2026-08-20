@@ -4,6 +4,8 @@ import '../errors/error_messages.dart';
 import '../models/surah_model.dart';
 import '../models/surah_detail_model.dart';
 import '../services/quran_service.dart';
+import '../databases/app_database.dart';
+import 'package:sqflite/sqflite.dart';
 
 enum AudioSourceId { banner, tile, sheet }
 
@@ -30,6 +32,7 @@ class QuranProvider with ChangeNotifier {
   bool _isLoadingDetail = false;
   String? _errorMessageDetail;
   String? _lastReadSurahKey; // Format: "surahNumber:ayahNumber"
+  int? _userId;
 
   List<SurahModel> get allSurahs => _allSurahs;
   String get searchQuery => _searchQuery;
@@ -316,11 +319,52 @@ class QuranProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void toggleBookmark(String surahNumber) {
+  Future<void> setUser(int? userId) async {
+    if (_userId == userId) return;
+    _userId = userId;
+    _bookmarkedSurahNumbers.clear();
+    _lastReadSurahKey = null;
+    if (userId != null) {
+      final db = await AppDatabase.database;
+      final bookmarks = await db.query(
+        'quran_bookmarks',
+        columns: ['surah_number'],
+        where: 'user_id=?',
+        whereArgs: [userId],
+      );
+      _bookmarkedSurahNumbers.addAll(
+        bookmarks.map((row) => row['surah_number'].toString()),
+      );
+      final lastRead = await db.query(
+        'quran_last_read',
+        where: 'user_id=?',
+        whereArgs: [userId],
+      );
+      if (lastRead.isNotEmpty)
+        _lastReadSurahKey =
+            '${lastRead.first['surah_number']}:${lastRead.first['ayah_number']}';
+    }
+    notifyListeners();
+  }
+
+  Future<void> toggleBookmark(String surahNumber) async {
+    final userId = _userId;
     if (_bookmarkedSurahNumbers.contains(surahNumber)) {
       _bookmarkedSurahNumbers.remove(surahNumber);
+      if (userId != null)
+        await (await AppDatabase.database).delete(
+          'quran_bookmarks',
+          where: 'user_id=? AND surah_number=?',
+          whereArgs: [userId, int.parse(surahNumber)],
+        );
     } else {
       _bookmarkedSurahNumbers.add(surahNumber);
+      if (userId != null)
+        await (await AppDatabase.database).insert('quran_bookmarks', {
+          'user_id': userId,
+          'surah_number': int.parse(surahNumber),
+          'created_at': DateTime.now().millisecondsSinceEpoch,
+        });
     }
     notifyListeners();
   }
@@ -366,9 +410,16 @@ class QuranProvider with ChangeNotifier {
   }
 
   /// Set last read position (memory-only, resets on app restart)
-  void setLastRead(int surahNumber, int ayahNumber) {
+  Future<void> setLastRead(int surahNumber, int ayahNumber) async {
     _lastReadSurahKey = '$surahNumber:$ayahNumber';
     notifyListeners();
+    if (_userId != null)
+      await (await AppDatabase.database).insert('quran_last_read', {
+        'user_id': _userId,
+        'surah_number': surahNumber,
+        'ayah_number': ayahNumber,
+        'updated_at': DateTime.now().millisecondsSinceEpoch,
+      }, conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
   /// Get last read position (returns null if no history)

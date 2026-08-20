@@ -61,18 +61,14 @@ class _QuranSearchBarState extends State<QuranSearchBar> {
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(16),
             borderSide: BorderSide(
-              color: isDark
-                  ? AppColors.textMainDark.withValues(alpha: 0.8)
-                  : AppColors.hairlineLight.withValues(alpha: 0.8),
+              color: isDark ? AppColors.hairlineDark : AppColors.hairlineLight,
               width: 1,
             ),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(16),
             borderSide: BorderSide(
-              color: isDark
-                  ? AppColors.textMainDark.withValues(alpha: 0.8)
-                  : AppColors.hairlineLight.withValues(alpha: 0.8),
+              color: isDark ? AppColors.hairlineDark : AppColors.hairlineLight,
               width: 1,
             ),
           ),

@@ -29,6 +29,7 @@
     <application
         android:label="INav"
         android:name=".InavApplication"
+        android:allowBackup="false"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

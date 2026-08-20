@@ -6,6 +6,8 @@ import '../../core/theme/app_colors.dart';
 import '../../core/providers/prayer_provider.dart';
 import '../../core/providers/mosque_provider.dart';
 import '../../core/providers/qibla_provider.dart';
+import '../../core/providers/auth_provider.dart';
+import '../auth/profile_sheet.dart';
 
 enum HeaderMode { home, quran, mosque, qibla, settings }
 
@@ -43,7 +45,7 @@ class AppHeader extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              _buildLeading(context, isDark),
+              Expanded(child: _buildLeading(context, isDark)),
               _buildActions(context, themeProvider, isDark),
             ],
           ),
@@ -55,226 +57,126 @@ class AppHeader extends StatelessWidget {
   Widget _buildLeading(BuildContext context, bool isDark) {
     switch (mode) {
       case HeaderMode.quran:
-        return Row(
-          children: [
-            SizedBox(
-              width: 40,
-              height: 40,
-              child: Stack(
-                children: [
-                  Container(
-                    width: 40,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      color: AppColors.primary,
-                    ),
-                    child: const Center(
-                      child: Icon(
-                        Icons.person,
-                        color: Colors.white,
-                        size: 20,
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: Container(
-                      width: 14,
-                      height: 14,
-                      decoration: BoxDecoration(
-                        color: AppColors.success,
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: isDark
-                              ? AppColors.surfaceDark
-                              : AppColors.surfaceLight,
-                          width: 2,
-                        ),
-                      ),
-                      child: const Center(
-                        child: Icon(
-                          Icons.check,
-                          color: Colors.white,
-                          size: 8,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(width: 12),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  "Al-Qur'an",
-                  style: GoogleFonts.fraunces().copyWith(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    letterSpacing: -0.02,
-                  ),
-                ),
-                const SizedBox(height: 2),
-                Row(
-                  children: [
-                    Icon(
-                      Icons.menu_book,
-                      size: 12,
-                      color: isDark
-                          ? AppColors.primaryDark
-                          : AppColors.primary,
-                    ),
-                    const SizedBox(width: 4),
-                    Text(
-                      'Browse & Study',
-                      style: GoogleFonts.plusJakartaSans().copyWith(
-                        fontSize: 11,
-                        fontWeight: FontWeight.w500,
-                        color: isDark
-                            ? AppColors.textMutedDark
-                            : AppColors.textMutedLight,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ],
+        return _buildStaticLeading(
+          context,
+          isDark,
+          title: "Al-Qur'an",
+          subtitle: 'Browse & Study',
+          icon: Icons.menu_book,
         );
-
       case HeaderMode.mosque:
-        return _buildMosqueLeading(context, isDark);
-
+        final provider = context.watch<MosqueProvider>();
+        return _buildLocationLeading(
+          context,
+          isDark,
+          title: 'Find Mosque',
+          location: provider.cityName.isNotEmpty && provider.cityName != 'Locating…'
+              ? provider.cityName
+              : 'Jakarta, ID',
+          onRefresh: () => provider.refresh(forceRefreshLocation: true),
+        );
       case HeaderMode.qibla:
-        return _buildQiblaLeading(context, isDark);
-
+        final provider = context.watch<QiblaProvider>();
+        return _buildLocationLeading(
+          context,
+          isDark,
+          title: 'Qibla Compass',
+          location: provider.cityName.isNotEmpty && provider.cityName != 'Locating…'
+              ? provider.cityName
+              : 'Jakarta, ID',
+          onRefresh: () => provider.refresh(forceRefreshLocation: true),
+        );
       case HeaderMode.home:
       default:
-        final prayerProvider = context.watch<PrayerProvider>();
-        final location =
-            prayerProvider.locationName.isNotEmpty &&
-                    prayerProvider.locationName != 'Loading...'
-                ? prayerProvider.locationName
-                : 'Jakarta, ID';
+        final provider = context.watch<PrayerProvider>();
+        return _buildLocationLeading(
+          context,
+          isDark,
+          title: 'Assalamualaikum',
+          location: provider.locationName.isNotEmpty && provider.locationName != 'Loading...'
+              ? provider.locationName
+              : 'Jakarta, ID',
+          onRefresh: provider.refresh,
+        );
+    }
+  }
 
-        return Row(
-          children: [
-            SizedBox(
-              width: 40,
-              height: 40,
-              child: Stack(
+  Widget _buildStaticLeading(
+    BuildContext context,
+    bool isDark, {
+    required String title,
+    required String subtitle,
+    required IconData icon,
+  }) {
+    return Row(
+      children: [
+        _buildProfileMenu(context, isDark),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(title, maxLines: 1, overflow: TextOverflow.ellipsis, style: GoogleFonts.fraunces(fontSize: 16, fontWeight: FontWeight.w600)),
+              const SizedBox(height: 2),
+              Row(
                 children: [
-                  Container(
-                    width: 40,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      color: AppColors.primary,
-                    ),
-                    child: const Center(
-                      child: Icon(
-                        Icons.person,
-                        color: Colors.white,
-                        size: 20,
-                      ),
-                    ),
+                  Icon(icon, size: 12, color: isDark ? AppColors.primaryDark : AppColors.primary),
+                  const SizedBox(width: 4),
+                  Expanded(child: Text(subtitle, maxLines: 1, overflow: TextOverflow.ellipsis, style: GoogleFonts.plusJakartaSans(fontSize: 11, fontWeight: FontWeight.w500, color: isDark ? AppColors.textMutedDark : AppColors.textMutedLight))),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildLocationLeading(
+    BuildContext context,
+    bool isDark, {
+    required String title,
+    required String location,
+    required Future<void> Function() onRefresh,
+  }) {
+    return Row(
+      children: [
+        _buildProfileMenu(context, isDark),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(title, maxLines: 1, overflow: TextOverflow.ellipsis, style: GoogleFonts.fraunces(fontSize: 13, fontWeight: FontWeight.w600)),
+              const SizedBox(height: 2),
+              Row(
+                children: [
+                  Icon(Icons.location_on, size: 12, color: isDark ? AppColors.primaryDark : AppColors.primary),
+                  const SizedBox(width: 4),
+                  Expanded(
+                    child: Text(location, maxLines: 1, overflow: TextOverflow.ellipsis, style: GoogleFonts.plusJakartaSans(fontSize: 11, fontWeight: FontWeight.w500, color: isDark ? AppColors.textMutedDark : AppColors.textMutedLight)),
                   ),
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: Container(
-                      width: 14,
-                      height: 14,
-                      decoration: BoxDecoration(
-                        color: AppColors.success,
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: isDark
-                              ? AppColors.surfaceDark
-                              : AppColors.surfaceLight,
-                          width: 2,
-                        ),
-                      ),
-                      child: const Center(
-                        child: Icon(
-                          Icons.check,
-                          color: Colors.white,
-                          size: 8,
-                        ),
-                      ),
+                  const SizedBox(width: 4),
+                  InkWell(
+                    onTap: () async {
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Refreshing location…'), duration: Duration(seconds: 1)));
+                      await onRefresh();
+                    },
+                    borderRadius: BorderRadius.circular(4),
+                    child: Padding(
+                      padding: const EdgeInsets.all(2),
+                      child: Icon(Icons.refresh, size: 12, color: isDark ? AppColors.textMutedDark : AppColors.textMutedLight),
                     ),
                   ),
                 ],
               ),
-            ),
-            const SizedBox(width: 12),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  'Assalamualaikum',
-                  style: GoogleFonts.fraunces().copyWith(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w600,
-                    letterSpacing: -0.02,
-                  ),
-                ),
-                const SizedBox(height: 2),
-                Row(
-                  children: [
-                    Icon(
-                      Icons.location_on,
-                      size: 12,
-                      color: isDark
-                          ? AppColors.primaryDark
-                          : AppColors.primary,
-                    ),
-                    const SizedBox(width: 4),
-                    Text(
-                      location,
-                      style: GoogleFonts.plusJakartaSans().copyWith(
-                        fontSize: 11,
-                        fontWeight: FontWeight.w500,
-                        color: isDark
-                            ? AppColors.textMutedDark
-                            : AppColors.textMutedLight,
-                      ),
-                    ),
-                    const SizedBox(width: 4),
-                    InkWell(
-                      onTap: () async {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Updating GPS coordinates...'),
-                            duration: Duration(seconds: 1),
-                          ),
-                        );
-                        await prayerProvider.refresh();
-                      },
-                      borderRadius: BorderRadius.circular(4),
-                      child: Padding(
-                        padding: const EdgeInsets.all(2),
-                        child: Icon(
-                          Icons.refresh,
-                          size: 12,
-                          color: isDark
-                              ? AppColors.textMutedDark
-                              : AppColors.textMutedLight,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ],
-        );
-    }
+            ],
+          ),
+        ),
+      ],
+    );
   }
 
   Widget _buildActions(
@@ -293,6 +195,103 @@ class AppHeader extends StatelessWidget {
         const SizedBox(width: 8),
         _buildThemeButton(themeProvider, isDark),
       ],
+    );
+  }
+
+  Widget _buildProfileMenu(BuildContext context, bool isDark) {
+    return PopupMenuButton<String>(
+      tooltip: 'Profile menu',
+      padding: EdgeInsets.zero,
+      offset: const Offset(0, 48),
+      onSelected: (value) async {
+        if (value == 'profile') {
+          await ProfileSheet.show(context);
+          return;
+        }
+        if (value != 'logout') return;
+
+        final shouldLogout = await showDialog<bool>(
+          context: context,
+          builder: (dialogContext) => AlertDialog(
+            title: const Text('Log out?'),
+            content: const Text('You can log back in to access your saved data.'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(dialogContext, false),
+                child: const Text('Cancel'),
+              ),
+              FilledButton(
+                onPressed: () => Navigator.pop(dialogContext, true),
+                child: const Text('Log out'),
+              ),
+            ],
+          ),
+        );
+        if (shouldLogout == true && context.mounted) {
+          await context.read<AuthProvider>().logout();
+        }
+      },
+      itemBuilder: (_) => const [
+        PopupMenuItem(
+          value: 'profile',
+          child: Row(
+            children: [
+              Icon(Icons.person_outline, size: 18),
+              SizedBox(width: 10),
+              Text('Profile'),
+            ],
+          ),
+        ),
+        PopupMenuDivider(),
+        PopupMenuItem(
+          value: 'logout',
+          child: Row(
+            children: [
+              Icon(Icons.logout, size: 18, color: AppColors.roseAccent),
+              SizedBox(width: 10),
+              Text('Log Out', style: TextStyle(color: AppColors.roseAccent)),
+            ],
+          ),
+        ),
+      ],
+      child: SizedBox(
+        width: 40,
+        height: 40,
+        child: Stack(
+          children: [
+            Container(
+              width: 40,
+              height: 40,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                color: AppColors.primary,
+              ),
+              child: const Center(
+                child: Icon(Icons.person, color: Colors.white, size: 20),
+              ),
+            ),
+            Positioned(
+              bottom: 0,
+              right: 0,
+              child: Container(
+                width: 14,
+                height: 14,
+                decoration: BoxDecoration(
+                  color: AppColors.success,
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: isDark ? AppColors.surfaceDark : AppColors.surfaceLight,
+                    width: 2,
+                  ),
+                ),
+                child: const Center(
+                  child: Icon(Icons.check, color: Colors.white, size: 8),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -384,9 +383,7 @@ class AppHeader extends StatelessWidget {
           child: Icon(
             Icons.bookmark_border,
             size: 20,
-            color: isDark
-                ? AppColors.textMainDark
-                : AppColors.textMainLight,
+            color: isDark ? AppColors.textMainDark : AppColors.textMainLight,
           ),
         ),
       ),
@@ -417,16 +414,10 @@ class AppHeader extends StatelessWidget {
         ),
         child: Center(
           child: isDark
-              ? const Icon(
-                  Icons.wb_sunny_outlined,
-                  size: 20,
-                )
+              ? const Icon(Icons.wb_sunny_outlined, size: 20)
               : Transform.rotate(
                   angle: -0.4,
-                  child: const Icon(
-                    Icons.nightlight_round,
-                    size: 20,
-                  ),
+                  child: const Icon(Icons.nightlight_round, size: 20),
                 ),
         ),
       ),
@@ -479,60 +470,13 @@ class AppHeader extends StatelessWidget {
     final mosqueProvider = context.watch<MosqueProvider>();
     final location =
         mosqueProvider.cityName.isNotEmpty &&
-                mosqueProvider.cityName != 'Locating…'
-            ? mosqueProvider.cityName
-            : 'Jakarta, ID';
+            mosqueProvider.cityName != 'Locating…'
+        ? mosqueProvider.cityName
+        : 'Jakarta, ID';
 
     return Row(
       children: [
-        SizedBox(
-          width: 40,
-          height: 40,
-          child: Stack(
-            children: [
-              Container(
-                width: 40,
-                height: 40,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: AppColors.primary,
-                ),
-                child: const Center(
-                  child: Icon(
-                    Icons.person,
-                    color: Colors.white,
-                    size: 20,
-                  ),
-                ),
-              ),
-              Positioned(
-                bottom: 0,
-                right: 0,
-                child: Container(
-                  width: 14,
-                  height: 14,
-                  decoration: BoxDecoration(
-                    color: AppColors.primary,
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: isDark
-                          ? AppColors.surfaceDark
-                          : AppColors.surfaceLight,
-                      width: 2,
-                    ),
-                  ),
-                  child: const Center(
-                    child: Icon(
-                      Icons.check,
-                      color: Colors.white,
-                      size: 8,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
+        _buildProfileMenu(context, isDark),
         const SizedBox(width: 12),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -552,9 +496,7 @@ class AppHeader extends StatelessWidget {
                 Icon(
                   Icons.location_on,
                   size: 12,
-                  color: isDark
-                      ? AppColors.primaryDark
-                      : AppColors.primary,
+                  color: isDark ? AppColors.primaryDark : AppColors.primary,
                 ),
                 const SizedBox(width: 4),
                 Text(
@@ -602,60 +544,13 @@ class AppHeader extends StatelessWidget {
     final qiblaProvider = context.watch<QiblaProvider>();
     final location =
         qiblaProvider.cityName.isNotEmpty &&
-                qiblaProvider.cityName != 'Locating…'
-            ? qiblaProvider.cityName
-            : 'Jakarta, ID';
+            qiblaProvider.cityName != 'Locating…'
+        ? qiblaProvider.cityName
+        : 'Jakarta, ID';
 
     return Row(
       children: [
-        SizedBox(
-          width: 40,
-          height: 40,
-          child: Stack(
-            children: [
-              Container(
-                width: 40,
-                height: 40,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: AppColors.primary,
-                ),
-                child: const Center(
-                  child: Icon(
-                    Icons.person,
-                    color: Colors.white,
-                    size: 20,
-                  ),
-                ),
-              ),
-              Positioned(
-                bottom: 0,
-                right: 0,
-                child: Container(
-                  width: 14,
-                  height: 14,
-                  decoration: BoxDecoration(
-                    color: AppColors.success,
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: isDark
-                          ? AppColors.surfaceDark
-                          : AppColors.surfaceLight,
-                      width: 2,
-                    ),
-                  ),
-                  child: const Center(
-                    child: Icon(
-                      Icons.check,
-                      color: Colors.white,
-                      size: 8,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
+        _buildProfileMenu(context, isDark),
         const SizedBox(width: 12),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -675,9 +570,7 @@ class AppHeader extends StatelessWidget {
                 Icon(
                   Icons.location_on,
                   size: 12,
-                  color: isDark
-                      ? AppColors.primaryDark
-                      : AppColors.primary,
+                  color: isDark ? AppColors.primaryDark : AppColors.primary,
                 ),
                 const SizedBox(width: 4),
                 Text(

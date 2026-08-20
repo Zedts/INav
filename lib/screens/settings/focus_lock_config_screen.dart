@@ -612,7 +612,6 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
     final dividerColor = isDark
         ? AppColors.hairlineDark.withValues(alpha: 0.8)
         : AppColors.hairlineLight.withValues(alpha: 0.8);
-    final preventUninstall = provider.preventUninstall;
 
     return Container(
       decoration: BoxDecoration(
@@ -698,84 +697,6 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
               trailing: const Icon(Icons.open_in_new, size: 18),
             ),
           ),
-          Divider(thickness: 1, height: 1, color: dividerColor),
-          Material(
-            color: Colors.transparent,
-            child: ListTile(
-              onTap: () {
-                final ctx = _preventUninstallSwitchKey.currentContext;
-                if (ctx != null) {
-                  Scrollable.ensureVisible(
-                    ctx,
-                    duration: const Duration(milliseconds: 400),
-                    curve: Curves.easeInOutCubic,
-                  );
-                }
-              },
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 4,
-              ),
-              leading: const Icon(
-                Icons.security_outlined,
-                color: AppColors.roseAccent,
-              ),
-              title: Text(
-                'Prevent Uninstall (Admin)',
-                style: plus.copyWith(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w700,
-                  color: isDark
-                      ? AppColors.textMainDark
-                      : AppColors.textMainLight,
-                ),
-              ),
-              subtitle: Text(
-                preventUninstall
-                    ? 'Enabled \u2022 tap to jump to switch'
-                    : 'Disabled \u2022 tap to jump to switch',
-                style: plus.copyWith(
-                  fontSize: 11,
-                  color: isDark
-                      ? AppColors.textMutedDark
-                      : AppColors.textMutedLight,
-                ),
-              ),
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8,
-                      vertical: 3,
-                    ),
-                    decoration: BoxDecoration(
-                      color: preventUninstall
-                          ? AppColors.success.withValues(alpha: 0.12)
-                          : AppColors.textMutedDark.withValues(alpha: 0.08),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Text(
-                      preventUninstall ? 'ON' : 'OFF',
-                      style: plus.copyWith(
-                        fontSize: 10,
-                        fontWeight: FontWeight.w800,
-                        letterSpacing: 0.5,
-                        color: preventUninstall
-                            ? AppColors.success
-                            : (isDark
-                                  ? AppColors.textMutedDark
-                                  : AppColors.textMutedLight),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 6),
-                  const Icon(Icons.arrow_downward, size: 16),
-                ],
-              ),
-            ),
-          ),
-          const SizedBox(height: 8),
         ],
       ),
     );

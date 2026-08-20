@@ -165,7 +165,7 @@ class _QuranBannerState extends State<QuranBanner> {
                       20,
                       20,
                       20,
-                      hasActiveSurah ? 60 : 20,
+                      20,
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
