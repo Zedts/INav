@@ -1151,8 +1151,8 @@
       "source_file": "macos/RunnerTests/RunnerTests.swift",
       "source_location": "L3",
       "_origin": "ast",
-      "community": 130,
-      "community_name": "ios/RunnerTests/RunnerTests.swift",
+      "community": 125,
+      "community_name": "FlutterMacOS",
       "norm_label": "xctest",
       "id": "xctest"
     },
@@ -3329,8 +3329,8 @@
       "source_file": "lib/core/models/mosque_model.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 103,
-      "community_name": "nearby_mosque_list_tile.dart",
+      "community": 93,
+      "community_name": "mosque_detail_sheet.dart",
       "norm_label": "mosquemodel",
       "id": "lib_core_models_mosque_model_mosquemodel"
     },
@@ -4242,8 +4242,8 @@
       "source_file": "lib/core/models/surah_model.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 126,
-      "community_name": "surah_list_tile.dart",
+      "community": 83,
+      "community_name": "surah_detail_sheet.dart",
       "norm_label": "surahmodel",
       "id": "lib_core_models_surah_model_surahmodel"
     },
@@ -7410,7 +7410,7 @@
       "source_file": "lib/core/providers/quran_provider.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 105,
+      "community": 20,
       "community_name": "QuranProvider",
       "norm_label": "quranprovider",
       "id": "lib_core_providers_quran_provider_quranprovider"
@@ -11348,8 +11348,8 @@
       "source_file": null,
       "source_location": null,
       "_origin": "ast",
-      "community": 40,
-      "community_name": "bookmarks_sidebar.dart",
+      "community": 20,
+      "community_name": "QuranProvider",
       "norm_label": "../../core/providers/quran_provider.dart",
       "id": "core_providers_quran_provider_dart"
     },
@@ -11359,8 +11359,8 @@
       "source_file": null,
       "source_location": null,
       "_origin": "ast",
-      "community": 122,
-      "community_name": "favorites_sidebar.dart",
+      "community": 19,
+      "community_name": "MosqueProvider",
       "norm_label": "../../core/providers/mosque_provider.dart",
       "id": "core_providers_mosque_provider_dart"
     },
@@ -11370,8 +11370,8 @@
       "source_file": null,
       "source_location": null,
       "_origin": "ast",
-      "community": 138,
-      "community_name": "app_header.dart",
+      "community": 90,
+      "community_name": "qibla_screen.dart",
       "norm_label": "../../core/providers/qibla_provider.dart",
       "id": "core_providers_qibla_provider_dart"
     },
@@ -11535,8 +11535,8 @@
       "source_file": null,
       "source_location": null,
       "_origin": "ast",
-      "community": 19,
-      "community_name": "MosqueProvider",
+      "community": 90,
+      "community_name": "qibla_screen.dart",
       "norm_label": "../../widgets/common/error_state_view.dart",
       "id": "widgets_common_error_state_view_dart"
     },
@@ -11546,8 +11546,8 @@
       "source_file": null,
       "source_location": null,
       "_origin": "ast",
-      "community": 113,
-      "community_name": "home_screen.dart",
+      "community": 90,
+      "community_name": "qibla_screen.dart",
       "norm_label": "../../widgets/common/section_skeleton.dart",
       "id": "widgets_common_section_skeleton_dart"
     },
@@ -11656,8 +11656,8 @@
       "source_file": "lib/screens/lock_overlay_screen.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 21,
-      "community_name": "State",
+      "community": 111,
+      "community_name": "PrayerProvider",
       "norm_label": "_lockoverlayscreenstate",
       "id": "lib_screens_lock_overlay_screen_lockoverlayscreenstate"
     },
@@ -11811,7 +11811,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 93,
-      "community_name": "nearest_mosque_banner.dart",
+      "community_name": "mosque_detail_sheet.dart",
       "norm_label": "voidcallback",
       "id": "voidcallback"
     },
@@ -12360,8 +12360,8 @@
       "source_file": null,
       "source_location": null,
       "_origin": "ast",
-      "community": 18,
-      "community_name": "main_screen.dart",
+      "community": 92,
+      "community_name": "quran_screen.dart",
       "norm_label": "../../widgets/quran/surah_detail_sheet.dart",
       "id": "widgets_quran_surah_detail_sheet_dart"
     },
@@ -12393,8 +12393,8 @@
       "source_file": null,
       "source_location": null,
       "_origin": "ast",
-      "community": 126,
-      "community_name": "surah_list_tile.dart",
+      "community": 20,
+      "community_name": "QuranProvider",
       "norm_label": "../../core/models/surah_model.dart",
       "id": "core_models_surah_model_dart"
     },
@@ -12404,8 +12404,8 @@
       "source_file": null,
       "source_location": null,
       "_origin": "ast",
-      "community": 103,
-      "community_name": "nearby_mosque_list_tile.dart",
+      "community": 93,
+      "community_name": "mosque_detail_sheet.dart",
       "norm_label": "../../core/models/mosque_model.dart",
       "id": "core_models_mosque_model_dart"
     },
@@ -12625,7 +12625,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 93,
-      "community_name": "nearest_mosque_banner.dart",
+      "community_name": "mosque_detail_sheet.dart",
       "norm_label": "../../core/errors/error_messages.dart",
       "id": "core_errors_error_messages_dart"
     },
@@ -13350,7 +13350,7 @@
       "source_file": "lib/screens/quran/surah_reading_screen.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 105,
+      "community": 20,
       "community_name": "QuranProvider",
       "norm_label": "_onvisibleitemschanged",
       "id": "lib_screens_quran_surah_reading_screen_onvisibleitemschanged"
@@ -13361,7 +13361,7 @@
       "source_file": "lib/screens/quran/surah_reading_screen.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 105,
+      "community": 20,
       "community_name": "QuranProvider",
       "norm_label": "_loadsurahdetail",
       "id": "lib_screens_quran_surah_reading_screen_loadsurahdetail"
@@ -13592,8 +13592,8 @@
       "source_file": null,
       "source_location": null,
       "_origin": "ast",
-      "community": 38,
-      "community_name": "services_tools_grid.dart",
+      "community": 89,
+      "community_name": "pill_badge.dart",
       "norm_label": "icondata",
       "id": "icondata"
     },
@@ -14219,8 +14219,8 @@
       "source_file": "lib/widgets/common/app_header.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 138,
-      "community_name": "app_header.dart",
+      "community": 90,
+      "community_name": "qibla_screen.dart",
       "norm_label": "appheader",
       "id": "lib_widgets_common_app_header_appheader"
     },
@@ -14351,8 +14351,8 @@
       "source_file": "lib/widgets/common/app_header.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 138,
-      "community_name": "app_header.dart",
+      "community": 90,
+      "community_name": "qibla_screen.dart",
       "norm_label": "_buildqiblaleading",
       "id": "lib_widgets_common_app_header_buildqiblaleading"
     },
@@ -14373,8 +14373,8 @@
       "source_file": "lib/widgets/common/async_app_icon.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 118,
-      "community_name": "async_app_icon.dart",
+      "community": 21,
+      "community_name": "State",
       "norm_label": "asyncappicon",
       "id": "lib_widgets_common_async_app_icon_asyncappicon"
     },
@@ -14384,8 +14384,8 @@
       "source_file": "lib/widgets/common/async_app_icon.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 118,
-      "community_name": "async_app_icon.dart",
+      "community": 21,
+      "community_name": "State",
       "norm_label": "_asyncappiconstate",
       "id": "lib_widgets_common_async_app_icon_asyncappiconstate"
     },
@@ -14616,7 +14616,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 93,
-      "community_name": "nearest_mosque_banner.dart",
+      "community_name": "mosque_detail_sheet.dart",
       "norm_label": "error_state_view.dart",
       "id": "lib_widgets_common_error_state_view"
     },
@@ -14627,7 +14627,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 93,
-      "community_name": "nearest_mosque_banner.dart",
+      "community_name": "mosque_detail_sheet.dart",
       "norm_label": "errorstateview",
       "id": "lib_widgets_common_error_state_view_errorstateview"
     },
@@ -14638,7 +14638,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 93,
-      "community_name": "nearest_mosque_banner.dart",
+      "community_name": "mosque_detail_sheet.dart",
       "norm_label": "message",
       "id": "lib_widgets_common_error_state_view_message"
     },
@@ -14649,7 +14649,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 93,
-      "community_name": "nearest_mosque_banner.dart",
+      "community_name": "mosque_detail_sheet.dart",
       "norm_label": "onretry",
       "id": "lib_widgets_common_error_state_view_onretry"
     },
@@ -14660,7 +14660,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 93,
-      "community_name": "nearest_mosque_banner.dart",
+      "community_name": "mosque_detail_sheet.dart",
       "norm_label": "onopensettings",
       "id": "lib_widgets_common_error_state_view_onopensettings"
     },
@@ -14671,7 +14671,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 93,
-      "community_name": "nearest_mosque_banner.dart",
+      "community_name": "mosque_detail_sheet.dart",
       "norm_label": "build",
       "id": "lib_widgets_common_error_state_view_build"
     },
@@ -14682,7 +14682,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 93,
-      "community_name": "nearest_mosque_banner.dart",
+      "community_name": "mosque_detail_sheet.dart",
       "norm_label": "showerrorsnackbar",
       "id": "lib_widgets_common_error_state_view_showerrorsnackbar"
     },
@@ -15616,7 +15616,7 @@
       "source_file": null,
       "source_location": null,
       "_origin": "ast",
-      "community": 105,
+      "community": 20,
       "community_name": "QuranProvider",
       "norm_label": "materialpageroute",
       "id": "materialpageroute"
@@ -15660,8 +15660,8 @@
       "source_file": "lib/widgets/home/horizontal_prayer_stepper.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 81,
-      "community_name": "horizontal_prayer_stepper.dart",
+      "community": 21,
+      "community_name": "State",
       "norm_label": "_pulsingring",
       "id": "lib_widgets_home_horizontal_prayer_stepper_pulsingring"
     },
@@ -15671,8 +15671,8 @@
       "source_file": "lib/widgets/home/horizontal_prayer_stepper.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 81,
-      "community_name": "horizontal_prayer_stepper.dart",
+      "community": 21,
+      "community_name": "State",
       "norm_label": "_pulsingringstate",
       "id": "lib_widgets_home_horizontal_prayer_stepper_pulsingringstate"
     },
@@ -15726,7 +15726,7 @@
       "source_file": "lib/widgets/home/horizontal_prayer_stepper.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 105,
+      "community": 20,
       "community_name": "QuranProvider",
       "norm_label": "build",
       "id": "lib_widgets_home_horizontal_prayer_stepper_build"
@@ -16540,8 +16540,8 @@
       "source_file": "lib/widgets/mosque/favorites_sidebar.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 122,
-      "community_name": "favorites_sidebar.dart",
+      "community": 19,
+      "community_name": "MosqueProvider",
       "norm_label": "favorites_sidebar.dart",
       "id": "lib_widgets_mosque_favorites_sidebar"
     },
@@ -16551,8 +16551,8 @@
       "source_file": "lib/widgets/mosque/favorites_sidebar.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 122,
-      "community_name": "favorites_sidebar.dart",
+      "community": 19,
+      "community_name": "MosqueProvider",
       "norm_label": "favoritessidebar",
       "id": "lib_widgets_mosque_favorites_sidebar_favoritessidebar"
     },
@@ -16562,8 +16562,8 @@
       "source_file": "lib/widgets/mosque/favorites_sidebar.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 122,
-      "community_name": "favorites_sidebar.dart",
+      "community": 19,
+      "community_name": "MosqueProvider",
       "norm_label": "build",
       "id": "lib_widgets_mosque_favorites_sidebar_build"
     },
@@ -16573,8 +16573,8 @@
       "source_file": "lib/widgets/mosque/favorites_sidebar.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 122,
-      "community_name": "favorites_sidebar.dart",
+      "community": 19,
+      "community_name": "MosqueProvider",
       "norm_label": "_buildheader",
       "id": "lib_widgets_mosque_favorites_sidebar_buildheader"
     },
@@ -16584,8 +16584,8 @@
       "source_file": "lib/widgets/mosque/favorites_sidebar.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 122,
-      "community_name": "favorites_sidebar.dart",
+      "community": 19,
+      "community_name": "MosqueProvider",
       "norm_label": "_buildemptystate",
       "id": "lib_widgets_mosque_favorites_sidebar_buildemptystate"
     },
@@ -16595,8 +16595,8 @@
       "source_file": "lib/widgets/mosque/favorites_sidebar.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 122,
-      "community_name": "favorites_sidebar.dart",
+      "community": 19,
+      "community_name": "MosqueProvider",
       "norm_label": "_buildfavoriteslist",
       "id": "lib_widgets_mosque_favorites_sidebar_buildfavoriteslist"
     },
@@ -16606,8 +16606,8 @@
       "source_file": "lib/widgets/mosque/favorites_sidebar.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 122,
-      "community_name": "favorites_sidebar.dart",
+      "community": 19,
+      "community_name": "MosqueProvider",
       "norm_label": "_buildfooter",
       "id": "lib_widgets_mosque_favorites_sidebar_buildfooter"
     },
@@ -17024,7 +17024,7 @@
       "source_file": "lib/widgets/mosque/mosque_detail_sheet.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 100,
+      "community": 93,
       "community_name": "mosque_detail_sheet.dart",
       "norm_label": "mosque_detail_sheet.dart",
       "id": "lib_widgets_mosque_mosque_detail_sheet"
@@ -17035,7 +17035,7 @@
       "source_file": "lib/widgets/mosque/mosque_detail_sheet.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 100,
+      "community": 93,
       "community_name": "mosque_detail_sheet.dart",
       "norm_label": "mosquedetailsheet",
       "id": "lib_widgets_mosque_mosque_detail_sheet_mosquedetailsheet"
@@ -17046,7 +17046,7 @@
       "source_file": "lib/widgets/mosque/mosque_detail_sheet.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 100,
+      "community": 93,
       "community_name": "mosque_detail_sheet.dart",
       "norm_label": "mosque",
       "id": "lib_widgets_mosque_mosque_detail_sheet_mosque"
@@ -17057,7 +17057,7 @@
       "source_file": "lib/widgets/mosque/mosque_detail_sheet.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 100,
+      "community": 93,
       "community_name": "mosque_detail_sheet.dart",
       "norm_label": "show",
       "id": "lib_widgets_mosque_mosque_detail_sheet_show"
@@ -17068,7 +17068,7 @@
       "source_file": "lib/widgets/mosque/mosque_detail_sheet.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 100,
+      "community": 93,
       "community_name": "mosque_detail_sheet.dart",
       "norm_label": "_navigate",
       "id": "lib_widgets_mosque_mosque_detail_sheet_navigate"
@@ -17079,7 +17079,7 @@
       "source_file": "lib/widgets/mosque/mosque_detail_sheet.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 100,
+      "community": 93,
       "community_name": "mosque_detail_sheet.dart",
       "norm_label": "_togglefavorite",
       "id": "lib_widgets_mosque_mosque_detail_sheet_togglefavorite"
@@ -17090,7 +17090,7 @@
       "source_file": "lib/widgets/mosque/mosque_detail_sheet.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 100,
+      "community": 93,
       "community_name": "mosque_detail_sheet.dart",
       "norm_label": "build",
       "id": "lib_widgets_mosque_mosque_detail_sheet_build"
@@ -17101,7 +17101,7 @@
       "source_file": "lib/widgets/mosque/mosque_detail_sheet.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 100,
+      "community": 93,
       "community_name": "mosque_detail_sheet.dart",
       "norm_label": "_builddraghandle",
       "id": "lib_widgets_mosque_mosque_detail_sheet_builddraghandle"
@@ -17112,7 +17112,7 @@
       "source_file": "lib/widgets/mosque/mosque_detail_sheet.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 100,
+      "community": 93,
       "community_name": "mosque_detail_sheet.dart",
       "norm_label": "_buildheader",
       "id": "lib_widgets_mosque_mosque_detail_sheet_buildheader"
@@ -17123,7 +17123,7 @@
       "source_file": "lib/widgets/mosque/mosque_detail_sheet.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 100,
+      "community": 93,
       "community_name": "mosque_detail_sheet.dart",
       "norm_label": "_buildbadgesrow",
       "id": "lib_widgets_mosque_mosque_detail_sheet_buildbadgesrow"
@@ -17134,7 +17134,7 @@
       "source_file": "lib/widgets/mosque/mosque_detail_sheet.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 100,
+      "community": 93,
       "community_name": "mosque_detail_sheet.dart",
       "norm_label": "_buildbadge",
       "id": "lib_widgets_mosque_mosque_detail_sheet_buildbadge"
@@ -17145,7 +17145,7 @@
       "source_file": "lib/widgets/mosque/mosque_detail_sheet.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 100,
+      "community": 93,
       "community_name": "mosque_detail_sheet.dart",
       "norm_label": "_builddetailssection",
       "id": "lib_widgets_mosque_mosque_detail_sheet_builddetailssection"
@@ -17156,7 +17156,7 @@
       "source_file": "lib/widgets/mosque/mosque_detail_sheet.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 100,
+      "community": 93,
       "community_name": "mosque_detail_sheet.dart",
       "norm_label": "_buildbottomactions",
       "id": "lib_widgets_mosque_mosque_detail_sheet_buildbottomactions"
@@ -17168,7 +17168,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 93,
-      "community_name": "nearest_mosque_banner.dart",
+      "community_name": "mosque_detail_sheet.dart",
       "norm_label": "../common/error_state_view.dart",
       "id": "common_error_state_view_dart"
     },
@@ -17179,7 +17179,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 93,
-      "community_name": "nearest_mosque_banner.dart",
+      "community_name": "mosque_detail_sheet.dart",
       "norm_label": "mosque_quick_actions.dart",
       "id": "mosque_quick_actions_dart"
     },
@@ -17321,8 +17321,8 @@
       "source_file": "lib/widgets/mosque/nearby_mosque_list_tile.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 103,
-      "community_name": "nearby_mosque_list_tile.dart",
+      "community": 93,
+      "community_name": "mosque_detail_sheet.dart",
       "norm_label": "nearby_mosque_list_tile.dart",
       "id": "lib_widgets_mosque_nearby_mosque_list_tile"
     },
@@ -17332,8 +17332,8 @@
       "source_file": "lib/widgets/mosque/nearby_mosque_list_tile.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 103,
-      "community_name": "nearby_mosque_list_tile.dart",
+      "community": 93,
+      "community_name": "mosque_detail_sheet.dart",
       "norm_label": "nearbymosquelisttile",
       "id": "lib_widgets_mosque_nearby_mosque_list_tile_nearbymosquelisttile"
     },
@@ -17343,8 +17343,8 @@
       "source_file": "lib/widgets/mosque/nearby_mosque_list_tile.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 103,
-      "community_name": "nearby_mosque_list_tile.dart",
+      "community": 93,
+      "community_name": "mosque_detail_sheet.dart",
       "norm_label": "mosque",
       "id": "lib_widgets_mosque_nearby_mosque_list_tile_mosque"
     },
@@ -17354,8 +17354,8 @@
       "source_file": "lib/widgets/mosque/nearby_mosque_list_tile.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 103,
-      "community_name": "nearby_mosque_list_tile.dart",
+      "community": 93,
+      "community_name": "mosque_detail_sheet.dart",
       "norm_label": "isselected",
       "id": "lib_widgets_mosque_nearby_mosque_list_tile_isselected"
     },
@@ -17365,8 +17365,8 @@
       "source_file": "lib/widgets/mosque/nearby_mosque_list_tile.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 103,
-      "community_name": "nearby_mosque_list_tile.dart",
+      "community": 93,
+      "community_name": "mosque_detail_sheet.dart",
       "norm_label": "ontap",
       "id": "lib_widgets_mosque_nearby_mosque_list_tile_ontap"
     },
@@ -17376,8 +17376,8 @@
       "source_file": "lib/widgets/mosque/nearby_mosque_list_tile.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 103,
-      "community_name": "nearby_mosque_list_tile.dart",
+      "community": 93,
+      "community_name": "mosque_detail_sheet.dart",
       "norm_label": "onnavigate",
       "id": "lib_widgets_mosque_nearby_mosque_list_tile_onnavigate"
     },
@@ -17387,8 +17387,8 @@
       "source_file": "lib/widgets/mosque/nearby_mosque_list_tile.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 103,
-      "community_name": "nearby_mosque_list_tile.dart",
+      "community": 93,
+      "community_name": "mosque_detail_sheet.dart",
       "norm_label": "build",
       "id": "lib_widgets_mosque_nearby_mosque_list_tile_build"
     },
@@ -17398,8 +17398,8 @@
       "source_file": "lib/widgets/mosque/nearby_mosque_list_tile.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 103,
-      "community_name": "nearby_mosque_list_tile.dart",
+      "community": 93,
+      "community_name": "mosque_detail_sheet.dart",
       "norm_label": "_buildicon",
       "id": "lib_widgets_mosque_nearby_mosque_list_tile_buildicon"
     },
@@ -17409,8 +17409,8 @@
       "source_file": "lib/widgets/mosque/nearby_mosque_list_tile.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 103,
-      "community_name": "nearby_mosque_list_tile.dart",
+      "community": 93,
+      "community_name": "mosque_detail_sheet.dart",
       "norm_label": "_buildtrailing",
       "id": "lib_widgets_mosque_nearby_mosque_list_tile_buildtrailing"
     },
@@ -17421,7 +17421,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 93,
-      "community_name": "nearest_mosque_banner.dart",
+      "community_name": "mosque_detail_sheet.dart",
       "norm_label": "nearest_mosque_banner.dart",
       "id": "lib_widgets_mosque_nearest_mosque_banner"
     },
@@ -17432,7 +17432,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 93,
-      "community_name": "nearest_mosque_banner.dart",
+      "community_name": "mosque_detail_sheet.dart",
       "norm_label": "nearestmosquebanner",
       "id": "lib_widgets_mosque_nearest_mosque_banner_nearestmosquebanner"
     },
@@ -17443,7 +17443,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 93,
-      "community_name": "nearest_mosque_banner.dart",
+      "community_name": "mosque_detail_sheet.dart",
       "norm_label": "mosque",
       "id": "lib_widgets_mosque_nearest_mosque_banner_mosque"
     },
@@ -17454,7 +17454,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 93,
-      "community_name": "nearest_mosque_banner.dart",
+      "community_name": "mosque_detail_sheet.dart",
       "norm_label": "isoverridden",
       "id": "lib_widgets_mosque_nearest_mosque_banner_isoverridden"
     },
@@ -17465,7 +17465,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 93,
-      "community_name": "nearest_mosque_banner.dart",
+      "community_name": "mosque_detail_sheet.dart",
       "norm_label": "onresettonearest",
       "id": "lib_widgets_mosque_nearest_mosque_banner_onresettonearest"
     },
@@ -17476,7 +17476,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 93,
-      "community_name": "nearest_mosque_banner.dart",
+      "community_name": "mosque_detail_sheet.dart",
       "norm_label": "_navigate",
       "id": "lib_widgets_mosque_nearest_mosque_banner_navigate"
     },
@@ -17487,7 +17487,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 93,
-      "community_name": "nearest_mosque_banner.dart",
+      "community_name": "mosque_detail_sheet.dart",
       "norm_label": "_togglefavorite",
       "id": "lib_widgets_mosque_nearest_mosque_banner_togglefavorite"
     },
@@ -17498,7 +17498,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 93,
-      "community_name": "nearest_mosque_banner.dart",
+      "community_name": "mosque_detail_sheet.dart",
       "norm_label": "build",
       "id": "lib_widgets_mosque_nearest_mosque_banner_build"
     },
@@ -17509,7 +17509,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 93,
-      "community_name": "nearest_mosque_banner.dart",
+      "community_name": "mosque_detail_sheet.dart",
       "norm_label": "_buildemptycontent",
       "id": "lib_widgets_mosque_nearest_mosque_banner_buildemptycontent"
     },
@@ -17520,7 +17520,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 93,
-      "community_name": "nearest_mosque_banner.dart",
+      "community_name": "mosque_detail_sheet.dart",
       "norm_label": "_buildcontent",
       "id": "lib_widgets_mosque_nearest_mosque_banner_buildcontent"
     },
@@ -17531,7 +17531,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 93,
-      "community_name": "nearest_mosque_banner.dart",
+      "community_name": "mosque_detail_sheet.dart",
       "norm_label": "mosque_detail_sheet.dart",
       "id": "mosque_detail_sheet_dart"
     },
@@ -18124,8 +18124,8 @@
       "source_file": "lib/widgets/quran/bookmarks_sidebar.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 40,
-      "community_name": "bookmarks_sidebar.dart",
+      "community": 20,
+      "community_name": "QuranProvider",
       "norm_label": "bookmarks_sidebar.dart",
       "id": "lib_widgets_quran_bookmarks_sidebar"
     },
@@ -18135,8 +18135,8 @@
       "source_file": "lib/widgets/quran/bookmarks_sidebar.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 40,
-      "community_name": "bookmarks_sidebar.dart",
+      "community": 20,
+      "community_name": "QuranProvider",
       "norm_label": "bookmarkssidebar",
       "id": "lib_widgets_quran_bookmarks_sidebar_bookmarkssidebar"
     },
@@ -18146,8 +18146,8 @@
       "source_file": "lib/widgets/quran/bookmarks_sidebar.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 40,
-      "community_name": "bookmarks_sidebar.dart",
+      "community": 20,
+      "community_name": "QuranProvider",
       "norm_label": "build",
       "id": "lib_widgets_quran_bookmarks_sidebar_build"
     },
@@ -18157,8 +18157,8 @@
       "source_file": "lib/widgets/quran/bookmarks_sidebar.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 40,
-      "community_name": "bookmarks_sidebar.dart",
+      "community": 20,
+      "community_name": "QuranProvider",
       "norm_label": "_buildheader",
       "id": "lib_widgets_quran_bookmarks_sidebar_buildheader"
     },
@@ -18168,8 +18168,8 @@
       "source_file": "lib/widgets/quran/bookmarks_sidebar.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 40,
-      "community_name": "bookmarks_sidebar.dart",
+      "community": 20,
+      "community_name": "QuranProvider",
       "norm_label": "_buildemptystate",
       "id": "lib_widgets_quran_bookmarks_sidebar_buildemptystate"
     },
@@ -18179,8 +18179,8 @@
       "source_file": "lib/widgets/quran/bookmarks_sidebar.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 40,
-      "community_name": "bookmarks_sidebar.dart",
+      "community": 20,
+      "community_name": "QuranProvider",
       "norm_label": "_buildbookmarkslist",
       "id": "lib_widgets_quran_bookmarks_sidebar_buildbookmarkslist"
     },
@@ -18190,8 +18190,8 @@
       "source_file": "lib/widgets/quran/bookmarks_sidebar.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 40,
-      "community_name": "bookmarks_sidebar.dart",
+      "community": 20,
+      "community_name": "QuranProvider",
       "norm_label": "_buildfooter",
       "id": "lib_widgets_quran_bookmarks_sidebar_buildfooter"
     },
@@ -18202,7 +18202,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 20,
-      "community_name": "quran_banner.dart",
+      "community_name": "QuranProvider",
       "norm_label": "quran_banner.dart",
       "id": "lib_widgets_quran_quran_banner"
     },
@@ -18213,7 +18213,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 20,
-      "community_name": "quran_banner.dart",
+      "community_name": "QuranProvider",
       "norm_label": "quranbanner",
       "id": "lib_widgets_quran_quran_banner_quranbanner"
     },
@@ -18224,7 +18224,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 20,
-      "community_name": "quran_banner.dart",
+      "community_name": "QuranProvider",
       "norm_label": "_quranbannerstate",
       "id": "lib_widgets_quran_quran_banner_quranbannerstate"
     },
@@ -18235,7 +18235,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 20,
-      "community_name": "quran_banner.dart",
+      "community_name": "QuranProvider",
       "norm_label": "_sourceid",
       "id": "lib_widgets_quran_quran_banner_sourceid"
     },
@@ -18245,8 +18245,8 @@
       "source_file": null,
       "source_location": null,
       "_origin": "ast",
-      "community": 20,
-      "community_name": "quran_banner.dart",
+      "community": 83,
+      "community_name": "surah_detail_sheet.dart",
       "norm_label": "static const audiosourceid",
       "id": "static_const_audiosourceid"
     },
@@ -18257,7 +18257,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 20,
-      "community_name": "quran_banner.dart",
+      "community_name": "QuranProvider",
       "norm_label": "_defaultsurahkey",
       "id": "lib_widgets_quran_quran_banner_defaultsurahkey"
     },
@@ -18268,7 +18268,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 20,
-      "community_name": "quran_banner.dart",
+      "community_name": "QuranProvider",
       "norm_label": "_defaultaudiourl",
       "id": "lib_widgets_quran_quran_banner_defaultaudiourl"
     },
@@ -18279,7 +18279,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 20,
-      "community_name": "quran_banner.dart",
+      "community_name": "QuranProvider",
       "norm_label": "createstate",
       "id": "lib_widgets_quran_quran_banner_createstate"
     },
@@ -18289,7 +18289,7 @@
       "source_file": "lib/widgets/quran/quran_banner.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 105,
+      "community": 20,
       "community_name": "QuranProvider",
       "norm_label": "_toggleaudio",
       "id": "lib_widgets_quran_quran_banner_toggleaudio"
@@ -18300,7 +18300,7 @@
       "source_file": "lib/widgets/quran/quran_banner.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 105,
+      "community": 20,
       "community_name": "QuranProvider",
       "norm_label": "_exitactiveplayback",
       "id": "lib_widgets_quran_quran_banner_exitactiveplayback"
@@ -18311,7 +18311,7 @@
       "source_file": "lib/widgets/quran/quran_banner.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 105,
+      "community": 20,
       "community_name": "QuranProvider",
       "norm_label": "build",
       "id": "lib_widgets_quran_quran_banner_build"
@@ -18323,7 +18323,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 20,
-      "community_name": "quran_banner.dart",
+      "community_name": "QuranProvider",
       "norm_label": "_buildexitbutton",
       "id": "lib_widgets_quran_quran_banner_buildexitbutton"
     },
@@ -18334,7 +18334,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 20,
-      "community_name": "quran_banner.dart",
+      "community_name": "QuranProvider",
       "norm_label": "_buildcontinuousbadge",
       "id": "lib_widgets_quran_quran_banner_buildcontinuousbadge"
     },
@@ -18345,7 +18345,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 20,
-      "community_name": "quran_banner.dart",
+      "community_name": "QuranProvider",
       "norm_label": "_buildnowplayingbadge",
       "id": "lib_widgets_quran_quran_banner_buildnowplayingbadge"
     },
@@ -18356,7 +18356,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 20,
-      "community_name": "quran_banner.dart",
+      "community_name": "QuranProvider",
       "norm_label": "_builddefaultcontent",
       "id": "lib_widgets_quran_quran_banner_builddefaultcontent"
     },
@@ -18367,7 +18367,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 20,
-      "community_name": "quran_banner.dart",
+      "community_name": "QuranProvider",
       "norm_label": "_buildnowplayingcontent",
       "id": "lib_widgets_quran_quran_banner_buildnowplayingcontent"
     },
@@ -18378,7 +18378,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 20,
-      "community_name": "quran_banner.dart",
+      "community_name": "QuranProvider",
       "norm_label": "_buildaudiobutton",
       "id": "lib_widgets_quran_quran_banner_buildaudiobutton"
     },
@@ -18389,7 +18389,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 20,
-      "community_name": "quran_banner.dart",
+      "community_name": "QuranProvider",
       "norm_label": "../../screens/quran/surah_reading_screen.dart",
       "id": "screens_quran_surah_reading_screen_dart"
     },
@@ -18597,8 +18597,8 @@
       "source_file": "lib/widgets/quran/surah_detail_sheet.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 105,
-      "community_name": "QuranProvider",
+      "community": 83,
+      "community_name": "surah_detail_sheet.dart",
       "norm_label": "_toggleaudio",
       "id": "lib_widgets_quran_surah_detail_sheet_toggleaudio"
     },
@@ -18685,7 +18685,7 @@
       "source_file": "lib/widgets/quran/surah_detail_sheet.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 105,
+      "community": 20,
       "community_name": "QuranProvider",
       "norm_label": "_buildbottomactions",
       "id": "lib_widgets_quran_surah_detail_sheet_buildbottomactions"
@@ -18707,8 +18707,8 @@
       "source_file": "lib/widgets/quran/surah_list_tile.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 126,
-      "community_name": "surah_list_tile.dart",
+      "community": 20,
+      "community_name": "QuranProvider",
       "norm_label": "surah_list_tile.dart",
       "id": "lib_widgets_quran_surah_list_tile"
     },
@@ -18718,8 +18718,8 @@
       "source_file": "lib/widgets/quran/surah_list_tile.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 126,
-      "community_name": "surah_list_tile.dart",
+      "community": 20,
+      "community_name": "QuranProvider",
       "norm_label": "surahlisttile",
       "id": "lib_widgets_quran_surah_list_tile_surahlisttile"
     },
@@ -18729,8 +18729,8 @@
       "source_file": "lib/widgets/quran/surah_list_tile.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 126,
-      "community_name": "surah_list_tile.dart",
+      "community": 20,
+      "community_name": "QuranProvider",
       "norm_label": "surah",
       "id": "lib_widgets_quran_surah_list_tile_surah"
     },
@@ -18740,8 +18740,8 @@
       "source_file": "lib/widgets/quran/surah_list_tile.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 126,
-      "community_name": "surah_list_tile.dart",
+      "community": 20,
+      "community_name": "QuranProvider",
       "norm_label": "ontap",
       "id": "lib_widgets_quran_surah_list_tile_ontap"
     },
@@ -18751,8 +18751,8 @@
       "source_file": "lib/widgets/quran/surah_list_tile.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 126,
-      "community_name": "surah_list_tile.dart",
+      "community": 20,
+      "community_name": "QuranProvider",
       "norm_label": "_handleaudiotap",
       "id": "lib_widgets_quran_surah_list_tile_handleaudiotap"
     },
@@ -18762,8 +18762,8 @@
       "source_file": "lib/widgets/quran/surah_list_tile.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 126,
-      "community_name": "surah_list_tile.dart",
+      "community": 20,
+      "community_name": "QuranProvider",
       "norm_label": "build",
       "id": "lib_widgets_quran_surah_list_tile_build"
     },
@@ -18773,8 +18773,8 @@
       "source_file": "lib/widgets/quran/surah_list_tile.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 126,
-      "community_name": "surah_list_tile.dart",
+      "community": 20,
+      "community_name": "QuranProvider",
       "norm_label": "_buildnumberbadge",
       "id": "lib_widgets_quran_surah_list_tile_buildnumberbadge"
     },
@@ -20629,123 +20629,6 @@
       "id": "android_ic_launcher_hdpi"
     },
     {
-      "label": "iOS App Icon (1024x1024)",
-      "file_type": "image",
-      "source_file": "ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-1024x1024@1x.png",
-      "community": 35,
-      "norm_label": "ios app icon (1024x1024)",
-      "community_name": "inav",
-      "id": "ios_appicon_1024"
-    },
-    {
-      "label": "iOS App Icon (20x20@1x)",
-      "file_type": "image",
-      "source_file": "ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-20x20@1x.png",
-      "community": 50,
-      "norm_label": "ios app icon (20x20@1x)",
-      "community_name": "iOS App Icon (20x20@1x)",
-      "id": "ios_appicon_20_1x"
-    },
-    {
-      "label": "iOS App Icon (20x20@2x)",
-      "file_type": "image",
-      "source_file": "ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-20x20@2x.png",
-      "community": 51,
-      "norm_label": "ios app icon (20x20@2x)",
-      "community_name": "iOS App Icon (20x20@2x)",
-      "id": "ios_appicon_20_2x"
-    },
-    {
-      "label": "iOS App Icon (20x20@3x)",
-      "file_type": "image",
-      "source_file": "ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-20x20@3x.png",
-      "community": 52,
-      "norm_label": "ios app icon (20x20@3x)",
-      "community_name": "iOS App Icon (20x20@3x)",
-      "id": "ios_appicon_20_3x"
-    },
-    {
-      "label": "iOS App Icon (29x29@1x)",
-      "file_type": "image",
-      "source_file": "ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-29x29@1x.png",
-      "community": 53,
-      "norm_label": "ios app icon (29x29@1x)",
-      "community_name": "iOS App Icon (29x29@1x)",
-      "id": "ios_appicon_29_1x"
-    },
-    {
-      "label": "iOS App Icon (29x29@2x)",
-      "file_type": "image",
-      "source_file": "ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-29x29@2x.png",
-      "community": 54,
-      "norm_label": "ios app icon (29x29@2x)",
-      "community_name": "iOS App Icon (29x29@2x)",
-      "id": "ios_appicon_29_2x"
-    },
-    {
-      "label": "iOS App Icon (29x29@3x)",
-      "file_type": "image",
-      "source_file": "ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-29x29@3x.png",
-      "community": 55,
-      "norm_label": "ios app icon (29x29@3x)",
-      "community_name": "iOS App Icon (29x29@3x)",
-      "id": "ios_appicon_29_3x"
-    },
-    {
-      "label": "iOS App Icon (40x40@1x)",
-      "file_type": "image",
-      "source_file": "ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-40x40@1x.png",
-      "community": 56,
-      "norm_label": "ios app icon (40x40@1x)",
-      "community_name": "iOS App Icon (40x40@1x)",
-      "id": "ios_appicon_40_1x"
-    },
-    {
-      "label": "iOS App Icon (40x40@2x)",
-      "file_type": "image",
-      "source_file": "ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-40x40@2x.png",
-      "community": 57,
-      "norm_label": "ios app icon (40x40@2x)",
-      "community_name": "iOS App Icon (40x40@2x)",
-      "id": "ios_appicon_40_2x"
-    },
-    {
-      "label": "iOS App Icon (40x40@3x)",
-      "file_type": "image",
-      "source_file": "ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-40x40@3x.png",
-      "community": 58,
-      "norm_label": "ios app icon (40x40@3x)",
-      "community_name": "iOS App Icon (40x40@3x)",
-      "id": "ios_appicon_40_3x"
-    },
-    {
-      "label": "iOS App Icon (60x60@2x)",
-      "file_type": "image",
-      "source_file": "ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-60x60@2x.png",
-      "community": 59,
-      "norm_label": "ios app icon (60x60@2x)",
-      "community_name": "iOS App Icon (60x60@2x)",
-      "id": "ios_appicon_60_2x"
-    },
-    {
-      "label": "iOS App Icon (60x60@3x)",
-      "file_type": "image",
-      "source_file": "ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-60x60@3x.png",
-      "community": 60,
-      "norm_label": "ios app icon (60x60@3x)",
-      "community_name": "iOS App Icon (60x60@3x)",
-      "id": "ios_appicon_60_3x"
-    },
-    {
-      "label": "iOS App Icon (76x76@1x)",
-      "file_type": "image",
-      "source_file": "ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-76x76@1x.png",
-      "community": 61,
-      "norm_label": "ios app icon (76x76@1x)",
-      "community_name": "iOS App Icon (76x76@1x)",
-      "id": "ios_appicon_76_1x"
-    },
-    {
       "label": "Launch Screen Assets README",
       "file_type": "document",
       "source_file": "ios/Runner/Assets.xcassets/LaunchImage.imageset/README.md",
@@ -20816,24 +20699,6 @@
       "norm_label": "windows runner cmakelists",
       "community_name": "Windows Project CMakeLists",
       "id": "windows_runner_cmakelists"
-    },
-    {
-      "label": "iOS App Icon 76x76@2x",
-      "file_type": "image",
-      "source_file": "ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-76x76@2x.png",
-      "community": 62,
-      "norm_label": "ios app icon 76x76@2x",
-      "community_name": "iOS App Icon 76x76@2x",
-      "id": "ios_runner_assets_appicon_appiconset_icon_app_76x76_2x"
-    },
-    {
-      "label": "iOS App Icon 83.5x83.5@2x",
-      "file_type": "image",
-      "source_file": "ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-83.5x83.5@2x.png",
-      "community": 63,
-      "norm_label": "ios app icon 83.5x83.5@2x",
-      "community_name": "iOS App Icon 83.5x83.5@2x",
-      "id": "ios_runner_assets_appicon_appiconset_icon_app_83_5x83_5_2x"
     },
     {
       "label": "iOS Launch Image",
@@ -50427,14 +50292,6 @@
     {
       "relation": "references",
       "confidence": "INFERRED",
-      "confidence_score": 0.9,
-      "source_file": "ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-1024x1024@1x.png",
-      "source": "ios_appicon_1024",
-      "target": "inav_app"
-    },
-    {
-      "relation": "references",
-      "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "ios/Runner/Assets.xcassets/LaunchImage.imageset/README.md",
       "source": "ios_runner_assets_launchimage_imageset_readme",
@@ -50521,5 +50378,5 @@
       "source_file": "linux/CMakeLists.txt"
     }
   ],
-  "built_at_commit": "fbec4f85764c1d9da3a838b2387552e63da8f910"
+  "built_at_commit": "922fa3e17136e81d58c7a530438779dde2fe587e"
 }
