@@ -42,6 +42,8 @@ class _MainScreenState extends State<MainScreen> {
         return HeaderMode.mosque;
       case 3:
         return HeaderMode.qibla;
+      case 4:
+        return HeaderMode.settings;
       default:
         return HeaderMode.home;
     }

@@ -1,0 +1,352 @@
+import 'package:flutter/foundation.dart';
+import 'app_constants.dart';
+
+/// Represents a subsection in legal documents
+@immutable
+class LegalSubSection {
+  final String title;
+  final String content;
+  final List<String> bulletPoints;
+
+  const LegalSubSection({
+    required this.title,
+    required this.content,
+    this.bulletPoints = const [],
+  });
+}
+
+/// Represents a main section in legal documents
+@immutable
+class LegalSection {
+  final String title;
+  final String? subtitle;
+  final String? introductoryText;
+  final List<String> paragraphs;
+  final List<String> bulletPoints;
+  final List<LegalSubSection> subSections;
+  final bool isCallout;
+
+  const LegalSection({
+    required this.title,
+    this.subtitle,
+    this.introductoryText,
+    this.paragraphs = const [],
+    this.bulletPoints = const [],
+    this.subSections = const [],
+    this.isCallout = false,
+  });
+}
+
+enum LegalDocumentType {
+  termsOfService,
+  privacyPolicy;
+
+  String get displayName {
+    switch (this) {
+      case LegalDocumentType.termsOfService:
+        return 'Terms of Service';
+      case LegalDocumentType.privacyPolicy:
+        return 'Privacy Policy';
+    }
+  }
+
+  String get shortName {
+    switch (this) {
+      case LegalDocumentType.termsOfService:
+        return 'Terms';
+      case LegalDocumentType.privacyPolicy:
+        return 'Privacy';
+    }
+  }
+}
+
+class LegalTexts {
+  LegalTexts._();
+
+  static const String privacyPolicyUrl =
+      'https://www.termsfeed.com/live/7f0ee5bb-21e3-4d8c-9e15-c694b1f8731a';
+  static const String websiteUrl = 'https://royyan.vercel.app/';
+  static const String contactEmail = 'ryyn.work@gmail.com';
+  static const String contactPhone = '083826335650';
+  static const String appName = AppConstants.appName;
+  static const String country = 'Indonesia';
+  static const String privacyLastUpdated = AppConstants.legalLastUpdated;
+  static const String termsLastUpdated = AppConstants.legalLastUpdated;
+
+  // ---------------------------------------------------------------------------
+  // PRIVACY POLICY
+  // ---------------------------------------------------------------------------
+  static final List<LegalSection> privacyPolicySections = [
+    const LegalSection(
+      title: 'Introduction & Overview',
+      paragraphs: [
+        'This Privacy Policy describes Our policies and procedures on the collection, use and disclosure of Your information when You use the Service and tells You about Your privacy rights and how the law protects You.',
+        'We use Your Personal Data to provide and improve the Service. We collect, use, and disclose Your information as described in this Privacy Policy and, where required by applicable law, only where We have a valid legal basis to do so, including Your consent (where consent is required).',
+        'This Privacy Policy has been created with the help of the Privacy Policy Generator.',
+      ],
+    ),
+    const LegalSection(
+      title: 'Interpretation and Definitions',
+      introductoryText:
+          'The words whose initial letters are capitalized have meanings defined under the following conditions. The following definitions shall have the same meaning regardless of whether they appear in singular or in plural.',
+      subSections: [
+        LegalSubSection(
+          title: 'Definitions',
+          content: 'For the purposes of this Privacy Policy:',
+          bulletPoints: [
+            'Account means a unique account created for You to access Our Service or parts of Our Service.',
+            'Affiliate means an entity that controls, is controlled by, or is under common control with a party, where "control" means ownership of 50% or more of the shares, equity interest or other securities entitled to vote for election of directors or other managing authority.',
+            'Application refers to INav, the software program provided by the Company.',
+            'Company (referred to as either "the Company", "We", "Us" or "Our" in this Privacy Policy) refers to INav.',
+            'Country/State refers to: Indonesia.',
+            'Device means any device that can access the Service, such as a computer, a cell phone or a digital tablet.',
+            'Personal Data (or "Personal Information") is any information that relates to an identified or identifiable individual. We use "Personal Data" and "Personal Information" interchangeably unless a law uses a specific term.',
+            'Service refers to the Application.',
+            'Service Provider means any natural or legal person who processes the data on behalf of the Company. It refers to third-party companies or individuals employed by the Company to facilitate the Service, to provide the Service on behalf of the Company, to perform services related to the Service or to assist the Company in analyzing how the Service is used.',
+            'Usage Data refers to data collected automatically, either generated by the use of the Service or from the Service infrastructure itself (for example, the duration of a page visit).',
+            'User means any individual who accesses or uses the Service.',
+            'You means the individual accessing or using the Service, or the company, or other legal entity on behalf of which such individual is accessing or using the Service, as applicable.',
+          ],
+        ),
+      ],
+    ),
+    const LegalSection(
+      title: 'Collecting and Using Your Personal Information',
+      subSections: [
+        LegalSubSection(
+          title: 'Personal Data',
+          content:
+              'While using Our Service, We may ask You to provide Us with certain personally identifiable information that can be used to contact or identify You. Personally identifiable information may include, but is not limited to:',
+          bulletPoints: [
+            'Email address',
+            'First name and last name',
+            'Phone number',
+            'Address, State, Province, ZIP/Postal code, City',
+          ],
+        ),
+        LegalSubSection(
+          title: 'Usage Data',
+          content:
+              'Usage Data is collected automatically when using the Service. Usage Data may include information such as Your Device\'s Internet Protocol address (e.g. IP address), browser type, browser version, the pages of Our Service that You visit, the time and date of Your visit, the time spent on those pages, unique device identifiers and other diagnostic data.\n\nWhen You access the Service by or through a mobile device, We may collect certain information automatically, including, but not limited to, the type of mobile device You use, Your mobile device\'s unique ID, the IP address of Your mobile device, Your mobile operating system, the type of mobile Internet browser You use, unique device identifiers and other diagnostic data.',
+        ),
+        LegalSubSection(
+          title: 'Information Collected While Using the Application (Location Data)',
+          content:
+              'While using Our Application, in order to provide features of Our Application (such as accurate Islamic prayer times, Qibla compass bearing, and nearby mosque discovery), We may collect, with Your prior permission:\n\n• Information regarding Your location\n\nWe use this information to provide features of Our Service and to improve and customize Our Service. The information may be uploaded to the Company\'s servers and/or a Service Provider\'s server or it may be simply stored on Your device.\n\nYou can enable or disable access to this information at any time, through Your Device settings.',
+        ),
+        LegalSubSection(
+          title: 'Tracking Technologies and Cookies',
+          content:
+              'We use tracking technologies to track the activity and to improve Our Service.',
+        ),
+      ],
+    ),
+    const LegalSection(
+      title: 'Use of Your Personal Data',
+      introductoryText:
+          'The Company may use Personal Data for the following purposes:',
+      bulletPoints: [
+        'To provide and maintain Our Service, including to monitor the usage of Our Service.',
+        'To manage Your Account: to manage Your registration as a user of the Service. The Personal Data You provide can give You access to different functionalities of the Service that are available to You as a registered user.',
+        'For the performance of a contract: the development, compliance and undertaking of the purchase contract for the products, items or services You have purchased or of any other contract with Us through the Service.',
+        'To contact You: To contact You by email, telephone calls, SMS, or other equivalent forms of electronic communication, such as a mobile application\'s push notifications regarding updates or informative communications related to the functionalities, products or contracted services, including the security updates, when necessary or reasonable for their implementation.',
+        'To provide You with news, special offers, and general information about other goods, services and events which We offer that are similar to those that You have already purchased or inquired about. We send such marketing communications only where permitted by applicable law.',
+        'To manage Your requests: To attend and manage Your requests to Us.',
+        'For business transfers: We may use Your Personal Data to evaluate or conduct a merger, divestiture, restructuring, reorganization, dissolution, or other sale or transfer of some or all of Our assets.',
+        'For other purposes: We may use Your information for other purposes, such as data analysis, identifying usage trends, determining the effectiveness of Our promotional campaigns, and evaluating and improving Our Service, products, services, marketing and Your experience.',
+      ],
+      paragraphs: [
+        'We may share Your Personal Data in the following situations: with Service Providers to monitor and analyze the use of Our Service and contact You; for business transfers; with Affiliates requiring them to honor this Privacy Policy; with other users in public areas; or with Your explicit consent.',
+      ],
+    ),
+    const LegalSection(
+      title: 'Retention of Your Personal Data',
+      paragraphs: [
+        'The Company will retain Your Personal Data only for as long as is necessary for the purposes set out in this Privacy Policy. We will retain and use Your Personal Data to the extent necessary to comply with Our legal obligations, resolve disputes, and enforce Our legal agreements and policies.',
+        'Where possible, We apply shorter retention periods and/or reduce identifiability by deleting, aggregating, or anonymizing data. Unless otherwise stated, the retention periods below are maximum periods ("up to") and We may delete or anonymize data sooner when it is no longer needed for the relevant purpose:',
+      ],
+      bulletPoints: [
+        'Account Information (User Accounts): retained for the duration of Your Account relationship plus up to 24 months after account closure to handle any post-termination issues or resolve disputes.',
+        'Customer Support Data (Support tickets, correspondence, chat transcripts): up to 24 months from the date of closure for quality assurance, staff training, and resolving follow-up inquiries.',
+        'Usage Data (Application statistics, server logs): up to 24 months for feature adoption, security monitoring, and troubleshooting purposes.',
+      ],
+      subSections: [
+        LegalSubSection(
+          title: 'Deletion and Anonymization Procedures',
+          content:
+              'When retention periods expire, We securely delete or anonymize Personal Data according to verified procedures:\n• Deletion: Personal Data is removed from Our systems and no longer actively processed.\n• Backup retention: Residual copies in encrypted backups are routinely purged.\n• Anonymization: Data converted into anonymous statistical metrics that cannot be linked back to You.',
+        ),
+      ],
+    ),
+    const LegalSection(
+      title: 'Transfer of Your Personal Data',
+      paragraphs: [
+        'Your information, including Personal Data, is processed at the Company\'s operating offices and in any other places where the parties involved in the processing are located. This means that this information may be transferred to — and maintained on — computers located outside of Your state, province, country or other governmental jurisdiction where the data protection laws may differ from those of Your jurisdiction.',
+        'Where required by applicable law, We will ensure that international transfers of Your Personal Data are subject to appropriate safeguards and supplementary measures.',
+      ],
+    ),
+    const LegalSection(
+      title: 'Delete Your Personal Data',
+      isCallout: true,
+      paragraphs: [
+        'You have the right to delete or request that We assist in deleting the Personal Data that We have collected about You.',
+        'Our Service may give You the ability to delete certain information about You from within the Service.',
+        'You may update, amend, or delete Your information at any time by signing in to Your Account, if You have one, and visiting the account settings section that allows You to manage Your personal information. You may also contact Us directly at ryyn.work@gmail.com to request access to, correct, or delete any Personal Data that You have provided to Us.',
+        'Please note, however, that We may need to retain certain information when We have a legal obligation or lawful basis to do so.',
+      ],
+    ),
+    const LegalSection(
+      title: 'Disclosure & Security of Your Personal Data',
+      paragraphs: [
+        'Under certain circumstances, the Company may disclose Your Personal Data if required to do so by law or in response to valid requests by public authorities (e.g. a court or a government agency in Indonesia or applicable jurisdictions).',
+        'The security of Your Personal Data is important to Us, but remember that no method of transmission over the Internet, or method of electronic storage, is 100% secure. While We strive to use commercially reasonable means to protect Your Personal Data, We cannot guarantee its absolute security.',
+      ],
+    ),
+    const LegalSection(
+      title: 'Children\'s and Minors\' Privacy',
+      paragraphs: [
+        'The Service is not directed to, and We do not knowingly collect Personal Information from, anyone under the age of 16.',
+        'If You are a parent or guardian and You believe Your child has provided Us with Personal Information, please contact Us at ryyn.work@gmail.com. If We become aware that We have collected Personal Information from anyone under the age of 16, We will take steps to remove that information from Our servers as soon as reasonably possible.',
+      ],
+    ),
+    const LegalSection(
+      title: 'Links to Other Websites',
+      paragraphs: [
+        'Our Service may contain links to other websites that are not operated by Us. If You click on a third-party link, You will be directed to that third party\'s site. We strongly advise You to review the Privacy Policy of every site You visit.',
+        'We have no control over and assume no responsibility for the content, privacy policies or practices of any third-party sites or services.',
+      ],
+    ),
+    const LegalSection(
+      title: 'Changes to this Privacy Policy',
+      paragraphs: [
+        'We may update Our Privacy Policy from time to time. We will notify You of any changes by posting the new Privacy Policy in the Application.',
+        'We will update the "Last updated" date at the top of this Privacy Policy. You are advised to review this Privacy Policy periodically for any changes.',
+      ],
+    ),
+    const LegalSection(
+      title: 'Contact Us',
+      isCallout: true,
+      paragraphs: [
+        'If You have any questions about this Privacy Policy, You can contact Us:',
+      ],
+      bulletPoints: [
+        'By email: ryyn.work@gmail.com',
+        'By visiting this page on Our Website: https://royyan.vercel.app/',
+        'By phone: 083826335650',
+      ],
+    ),
+  ];
+
+  // ---------------------------------------------------------------------------
+  // TERMS OF SERVICE (DRAFTED FOR INAV - 12 SECTIONS)
+  // ---------------------------------------------------------------------------
+  static final List<LegalSection> termsOfServiceSections = [
+    const LegalSection(
+      title: '1. User Agreement',
+      paragraphs: [
+        'Welcome to INav. By downloading, installing, registering for, accessing, or using the INav application ("Application", "Service"), You agree to be legally bound by these Terms of Service ("Terms") and Our Privacy Policy.',
+        'If You do not agree to these Terms, You must immediately refrain from installing, accessing, or using the Application.',
+        'These Terms constitute a legally binding agreement between You ("User", "You") and INav ("Company", "We", "Us", or "Our").',
+      ],
+    ),
+    const LegalSection(
+      title: '2. User Age Eligibility',
+      isCallout: true,
+      paragraphs: [
+        'The Service is intended solely for individuals who are at least sixteen (16) years of age or the legal age of majority in Your jurisdiction.',
+        'By creating an account or using the Application, You represent and warrant that You are at least 16 years old. If You are under 16, You may only access or use the Service under the direct supervision and with the express consent of a parent or legal guardian who agrees to be bound by these Terms.',
+      ],
+    ),
+    const LegalSection(
+      title: '3. Accounts and Account Security',
+      paragraphs: [
+        'To access certain personalized features of the Application, You may be required to register and create a user Account.',
+        'When creating Your Account, You agree to provide accurate, current, and complete information and to promptly update such information to maintain its accuracy.',
+        'You are solely responsible for maintaining the confidentiality of Your login credentials, including Your password. You accept full responsibility for all activities that occur under Your Account.',
+        'You agree to notify Us immediately at ryyn.work@gmail.com upon discovering or suspecting any unauthorized access or breach of security related to Your Account.',
+      ],
+    ),
+    const LegalSection(
+      title: '4. Rules of Use and Prohibitions Against Misuse',
+      introductoryText:
+          'You agree to use INav strictly for lawful purposes and in accordance with these Terms. You shall not:',
+      bulletPoints: [
+        'Reverse engineer, decompile, disassemble, or attempt to derive the source code of the Application or any part thereof.',
+        'Modify, adapt, translate, create derivative works from, or sublicense the Application without express written permission.',
+        'Use the Application in any manner that could disable, overburden, impair, or compromise the security of the Service or Our servers.',
+        'Attempt to circumvent or disable any application security features, focus lock controls, accessibility protections, or authentication mechanisms.',
+        'Use any automated system, bot, scraper, or spider to access, harvest, or extract data from the Service.',
+        'Use the Service to transmit malicious code, malware, viruses, or any harmful software.',
+        'Impersonate any person or entity or misrepresent Your affiliation with any person or organization.',
+      ],
+    ),
+    const LegalSection(
+      title: '5. Location Permissions and Reliance on Privacy Policy',
+      isCallout: true,
+      paragraphs: [
+        'INav utilizes device location data (GPS, network coordinates) with Your prior permission to deliver core functionality, including accurate prayer time calculations, real-time Qibla compass orientation, and nearby mosque location queries.',
+        'Location data processing, storage, and transfer practices are governed by Our Privacy Policy. We do not sell or monetize Your location information.',
+        'You may grant or revoke location access at any time through Your device settings. Please note that disabling location permissions will limit or disable location-dependent features (e.g., automatic prayer time sync and nearby mosque distances).',
+      ],
+    ),
+    const LegalSection(
+      title: '6. User Content and Local Data',
+      paragraphs: [
+        'The Application may store personalized data, including prayer tracking logs, Quran reading bookmarks, customized notifications, and focus lock rules, either locally on Your device or linked with Your registered Account.',
+        'You retain ownership of any personal settings or preferences You configure. We do not claim ownership of Your personal logs or user configurations.',
+        'You are responsible for ensuring that any information or feedback You submit to Us does not infringe upon any third-party rights or violate applicable laws.',
+      ],
+    ),
+    const LegalSection(
+      title: '7. Intellectual Property Rights',
+      paragraphs: [
+        'The Application, including its user interface design, visual assets, branding, logos, software code, algorithms, and compiled content, is the exclusive intellectual property of INav and its creator (Royyan) and is protected by copyright, trademark, and other applicable intellectual property laws.',
+        'Subject to Your compliance with these Terms, We grant You a limited, non-exclusive, non-transferable, revocable license to download, install, and use the Application on compatible personal devices solely for personal, non-commercial use.',
+      ],
+    ),
+    const LegalSection(
+      title: '8. Account Suspension and Termination',
+      paragraphs: [
+        'We reserve the right, at Our sole discretion, to suspend or terminate Your Account and access to the Service without prior notice if You violate any provision of these Terms or engage in conduct that We deem harmful to the Service, other users, or third parties.',
+        'You may terminate Your Account at any time by utilizing the account deletion feature in the Application settings or by contacting Us directly at ryyn.work@gmail.com.',
+        'Upon termination or deletion, Your right to access the Service will immediately cease, and Your account information will be handled and purged in accordance with Our Privacy Policy.',
+      ],
+    ),
+    const LegalSection(
+      title: '9. Disclaimers and Limitation of Liability',
+      paragraphs: [
+        'THE SERVICE IS PROVIDED ON AN "AS IS" AND "AS AVAILABLE" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT.',
+        'Prayer Time Calculations & Qibla Compass: Prayer schedules and Qibla bearings are calculated using established astronomical algorithms and device sensor data. While We strive for high precision, variations may arise due to device hardware limitations, local topographical factors, or regional Islamic calculation method variances. Users are advised to verify timings with local Islamic authorities when necessary.',
+        'TO THE MAXIMUM EXTENT PERMITTED UNDER APPLICABLE LAW, INAV AND ITS CREATOR SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, LOSS OF DATA, OR SERVICE INTERRUPTIONS ARISING OUT OF OR IN CONNECTION WITH YOUR USE OF THE APPLICATION.',
+      ],
+    ),
+    const LegalSection(
+      title: '10. Changes to the Service and Terms',
+      paragraphs: [
+        'We reserve the right to modify, update, enhance, or discontinue any aspect or feature of the Application at any time without prior liability.',
+        'We may update these Terms periodically. We will notify You of material changes by updating the "Last updated" date of these Terms or through an in-app announcement.',
+        'Your continued use of the Application following the posting of revised Terms constitutes Your acceptance of and agreement to the modifications.',
+      ],
+    ),
+    const LegalSection(
+      title: '11. Governing Law & Jurisdiction',
+      paragraphs: [
+        'These Terms and any disputes arising out of or related to Your use of the Application shall be governed by and construed in accordance with the laws of the Republic of Indonesia (Indonesia), without regard to its conflict of law principles.',
+        'Any legal action, suit, or proceeding arising under these Terms shall be instituted exclusively in the competent courts located in Indonesia.',
+      ],
+    ),
+    const LegalSection(
+      title: '12. Contact Information',
+      isCallout: true,
+      paragraphs: [
+        'If You have any questions, feedback, inquiries, or support requests regarding these Terms of Service or the INav application, please reach out to Us:',
+      ],
+      bulletPoints: [
+        'Email: ryyn.work@gmail.com',
+        'Website: https://royyan.vercel.app/',
+        'Service / Developer: INav (Royyan)',
+        'Jurisdiction: Indonesia',
+      ],
+    ),
+  ];
+}

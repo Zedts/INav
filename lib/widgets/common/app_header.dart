@@ -65,29 +65,18 @@ class AppHeader extends StatelessWidget {
           icon: Icons.menu_book,
         );
       case HeaderMode.mosque:
-        final provider = context.watch<MosqueProvider>();
-        return _buildLocationLeading(
-          context,
-          isDark,
-          title: 'Find Mosque',
-          location: provider.cityName.isNotEmpty && provider.cityName != 'Locating…'
-              ? provider.cityName
-              : 'Jakarta, ID',
-          onRefresh: () => provider.refresh(forceRefreshLocation: true),
-        );
+        return _buildMosqueLeading(context, isDark);
       case HeaderMode.qibla:
-        final provider = context.watch<QiblaProvider>();
-        return _buildLocationLeading(
+        return _buildQiblaLeading(context, isDark);
+      case HeaderMode.settings:
+        return _buildStaticLeading(
           context,
           isDark,
-          title: 'Qibla Compass',
-          location: provider.cityName.isNotEmpty && provider.cityName != 'Locating…'
-              ? provider.cityName
-              : 'Jakarta, ID',
-          onRefresh: () => provider.refresh(forceRefreshLocation: true),
+          title: 'Settings',
+          subtitle: 'Set Your Preferences',
+          icon: Icons.settings_outlined,
         );
       case HeaderMode.home:
-      default:
         final provider = context.watch<PrayerProvider>();
         return _buildLocationLeading(
           context,

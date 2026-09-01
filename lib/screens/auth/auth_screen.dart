@@ -461,7 +461,11 @@ class _TermsAgreement extends StatelessWidget {
               ),
               _LegalLink(
                 title: 'Terms of Service',
-                onTap: () => TermsPrivacyModal.show(context, 'Terms of Service'),
+                onTap: () => TermsPrivacyModal.show(
+                  context,
+                  title: 'Terms of Service',
+                  onAccept: () => onChanged(true),
+                ),
               ),
               Text(
                 ' & ',
@@ -474,7 +478,11 @@ class _TermsAgreement extends StatelessWidget {
               ),
               _LegalLink(
                 title: 'Privacy Policy',
-                onTap: () => TermsPrivacyModal.show(context, 'Privacy Policy'),
+                onTap: () => TermsPrivacyModal.show(
+                  context,
+                  title: 'Privacy Policy',
+                  onAccept: () => onChanged(true),
+                ),
               ),
             ],
           ),
