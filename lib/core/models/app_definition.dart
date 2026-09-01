@@ -14,6 +14,21 @@ class AppDefinition {
 
   Color get color => Color(colorARGB);
 
+  IconData get icon => iconFromCodePoint(iconCodePoint);
+
+  static IconData iconFromCodePoint(int codePoint) {
+    if (codePoint == Icons.photo_camera.codePoint) return Icons.photo_camera;
+    if (codePoint == Icons.music_note.codePoint) return Icons.music_note;
+    if (codePoint == Icons.play_circle_filled.codePoint) return Icons.play_circle_filled;
+    if (codePoint == Icons.chat.codePoint) return Icons.chat;
+    if (codePoint == Icons.videocam.codePoint) return Icons.videocam;
+    if (codePoint == Icons.gamepad.codePoint) return Icons.gamepad;
+    if (codePoint == Icons.shopping_bag.codePoint) return Icons.shopping_bag;
+    if (codePoint == Icons.public.codePoint) return Icons.public;
+    if (codePoint == Icons.mail.codePoint) return Icons.mail;
+    return Icons.apps;
+  }
+
   const AppDefinition({
     required this.packageName,
     this.packageAliases,

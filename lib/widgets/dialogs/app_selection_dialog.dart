@@ -459,20 +459,7 @@ class _AppSelectionDialogState extends State<AppSelectionDialog> {
   }
 
   IconData _iconFromAppDefinition(AppDefinition app) {
-    try {
-      // ignore: non_const_argument_for_const_parameter
-      return IconData(
-        // ignore: non_const_argument_for_const_parameter
-        app.iconCodePoint,
-        // ignore: non_const_argument_for_const_parameter
-        fontFamily: app.iconFontFamily,
-        // ignore: non_const_argument_for_const_parameter
-        fontPackage: app.iconFontPackage,
-        matchTextDirection: app.iconMatchTextDirection,
-      );
-    } catch (_) {
-      return Icons.apps;
-    }
+    return app.icon;
   }
 }
 

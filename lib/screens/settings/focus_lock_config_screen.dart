@@ -334,12 +334,7 @@ class _FocusLockConfigScreenState extends State<FocusLockConfigScreen> {
           (app) => _AppDisplayItem(
             key: app.packageName,
             name: app.name,
-            icon: IconData(
-              app.iconCodePoint,
-              fontFamily: app.iconFontFamily,
-              fontPackage: app.iconFontPackage,
-              matchTextDirection: app.iconMatchTextDirection,
-            ),
+            icon: app.icon,
             color: app.color,
             packageName: app.packageName,
             fromProvider: true,

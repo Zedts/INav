@@ -1250,7 +1250,7 @@
       "source_file": null,
       "source_location": null,
       "_origin": "ast",
-      "community": 8,
+      "community": 137,
       "community_name": "package:flutter/material.dart",
       "norm_label": "package:flutter/material.dart",
       "id": "package_flutter_material_dart"
@@ -6685,7 +6685,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 8,
-      "community_name": "package:flutter/material.dart",
+      "community_name": "PrayerProvider",
       "norm_label": "prayerprovider",
       "id": "lib_core_providers_prayer_provider_prayerprovider"
     },
@@ -11865,8 +11865,8 @@
       "source_file": "lib/core/theme/theme_provider.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 21,
-      "community_name": "../../core/theme/app_colors.dart",
+      "community": 137,
+      "community_name": "package:flutter/material.dart",
       "norm_label": "themeprovider",
       "id": "lib_core_theme_theme_provider_themeprovider"
     },
@@ -12107,8 +12107,8 @@
       "source_file": null,
       "source_location": null,
       "_origin": "ast",
-      "community": 21,
-      "community_name": "../../core/theme/app_colors.dart",
+      "community": 137,
+      "community_name": "package:flutter/material.dart",
       "norm_label": "package:provider/provider.dart",
       "id": "package_provider_provider_dart"
     },
@@ -12129,8 +12129,8 @@
       "source_file": null,
       "source_location": null,
       "_origin": "ast",
-      "community": 21,
-      "community_name": "../../core/theme/app_colors.dart",
+      "community": 137,
+      "community_name": "package:flutter/material.dart",
       "norm_label": "../../core/theme/theme_provider.dart",
       "id": "core_theme_theme_provider_dart"
     },
@@ -12141,7 +12141,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 8,
-      "community_name": "package:flutter/material.dart",
+      "community_name": "PrayerProvider",
       "norm_label": "../../core/providers/prayer_provider.dart",
       "id": "core_providers_prayer_provider_dart"
     },
@@ -12195,8 +12195,8 @@
       "source_file": null,
       "source_location": null,
       "_origin": "ast",
-      "community": 137,
-      "community_name": "bookmarks_sidebar.dart",
+      "community": 20,
+      "community_name": "QuranProvider",
       "norm_label": "../../core/providers/quran_provider.dart",
       "id": "core_providers_quran_provider_dart"
     },
@@ -12228,7 +12228,7 @@
       "source_file": null,
       "source_location": null,
       "_origin": "ast",
-      "community": 8,
+      "community": 137,
       "community_name": "package:flutter/material.dart",
       "norm_label": "../../core/providers/focus_lock_provider.dart",
       "id": "core_providers_focus_lock_provider_dart"
@@ -12910,8 +12910,8 @@
       "source_file": null,
       "source_location": null,
       "_origin": "ast",
-      "community": 21,
-      "community_name": "../../core/theme/app_colors.dart",
+      "community": 137,
+      "community_name": "package:flutter/material.dart",
       "norm_label": "../../core/theme/app_colors.dart",
       "id": "core_theme_app_colors_dart"
     },
@@ -13867,8 +13867,8 @@
       "source_file": "lib/screens/main_screen.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 18,
-      "community_name": "main_screen.dart",
+      "community": 20,
+      "community_name": "QuranProvider",
       "norm_label": "build",
       "id": "lib_screens_main_screen_build"
     },
@@ -13944,8 +13944,8 @@
       "source_file": null,
       "source_location": null,
       "_origin": "ast",
-      "community": 137,
-      "community_name": "bookmarks_sidebar.dart",
+      "community": 20,
+      "community_name": "QuranProvider",
       "norm_label": "../../core/models/surah_model.dart",
       "id": "core_models_surah_model_dart"
     },
@@ -15551,7 +15551,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 8,
-      "community_name": "package:flutter/material.dart",
+      "community_name": "PrayerProvider",
       "norm_label": "build",
       "id": "lib_screens_settings_prayer_notification_settings_screen_build"
     },
@@ -16695,7 +16695,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 21,
-      "community_name": "../../core/theme/app_colors.dart",
+      "community_name": "app_header.dart",
       "norm_label": "app_header.dart",
       "id": "lib_widgets_common_app_header"
     },
@@ -16706,7 +16706,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 21,
-      "community_name": "../../core/theme/app_colors.dart",
+      "community_name": "app_header.dart",
       "norm_label": "headermode",
       "id": "lib_widgets_common_app_header_headermode"
     },
@@ -16717,7 +16717,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 8,
-      "community_name": "package:flutter/material.dart",
+      "community_name": "PrayerProvider",
       "norm_label": "appheader",
       "id": "lib_widgets_common_app_header_appheader"
     },
@@ -16728,7 +16728,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 21,
-      "community_name": "../../core/theme/app_colors.dart",
+      "community_name": "app_header.dart",
       "norm_label": "mode",
       "id": "lib_widgets_common_app_header_mode"
     },
@@ -16739,7 +16739,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 21,
-      "community_name": "../../core/theme/app_colors.dart",
+      "community_name": "app_header.dart",
       "norm_label": "ontogglebookmarks",
       "id": "lib_widgets_common_app_header_ontogglebookmarks"
     },
@@ -16750,7 +16750,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 21,
-      "community_name": "../../core/theme/app_colors.dart",
+      "community_name": "app_header.dart",
       "norm_label": "ontogglefavorites",
       "id": "lib_widgets_common_app_header_ontogglefavorites"
     },
@@ -16760,8 +16760,8 @@
       "source_file": "lib/widgets/common/app_header.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 21,
-      "community_name": "../../core/theme/app_colors.dart",
+      "community": 137,
+      "community_name": "package:flutter/material.dart",
       "norm_label": "build",
       "id": "lib_widgets_common_app_header_build"
     },
@@ -16772,7 +16772,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 8,
-      "community_name": "package:flutter/material.dart",
+      "community_name": "PrayerProvider",
       "norm_label": "_buildleading",
       "id": "lib_widgets_common_app_header_buildleading"
     },
@@ -16783,7 +16783,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 21,
-      "community_name": "../../core/theme/app_colors.dart",
+      "community_name": "app_header.dart",
       "norm_label": "_buildstaticleading",
       "id": "lib_widgets_common_app_header_buildstaticleading"
     },
@@ -16794,7 +16794,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 21,
-      "community_name": "../../core/theme/app_colors.dart",
+      "community_name": "app_header.dart",
       "norm_label": "_buildlocationleading",
       "id": "lib_widgets_common_app_header_buildlocationleading"
     },
@@ -16805,7 +16805,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 21,
-      "community_name": "../../core/theme/app_colors.dart",
+      "community_name": "app_header.dart",
       "norm_label": "_buildactions",
       "id": "lib_widgets_common_app_header_buildactions"
     },
@@ -16816,7 +16816,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 21,
-      "community_name": "../../core/theme/app_colors.dart",
+      "community_name": "app_header.dart",
       "norm_label": "_buildprofilemenu",
       "id": "lib_widgets_common_app_header_buildprofilemenu"
     },
@@ -16827,7 +16827,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 21,
-      "community_name": "../../core/theme/app_colors.dart",
+      "community_name": "app_header.dart",
       "norm_label": "_buildnotificationbutton",
       "id": "lib_widgets_common_app_header_buildnotificationbutton"
     },
@@ -16838,7 +16838,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 21,
-      "community_name": "../../core/theme/app_colors.dart",
+      "community_name": "app_header.dart",
       "norm_label": "_buildquranbookmarkbutton",
       "id": "lib_widgets_common_app_header_buildquranbookmarkbutton"
     },
@@ -16849,7 +16849,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 21,
-      "community_name": "../../core/theme/app_colors.dart",
+      "community_name": "app_header.dart",
       "norm_label": "_buildthemebutton",
       "id": "lib_widgets_common_app_header_buildthemebutton"
     },
@@ -16860,7 +16860,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 21,
-      "community_name": "../../core/theme/app_colors.dart",
+      "community_name": "app_header.dart",
       "norm_label": "_buildlikebutton",
       "id": "lib_widgets_common_app_header_buildlikebutton"
     },
@@ -16871,7 +16871,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 21,
-      "community_name": "../../core/theme/app_colors.dart",
+      "community_name": "app_header.dart",
       "norm_label": "_buildmosqueleading",
       "id": "lib_widgets_common_app_header_buildmosqueleading"
     },
@@ -16882,7 +16882,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 21,
-      "community_name": "../../core/theme/app_colors.dart",
+      "community_name": "app_header.dart",
       "norm_label": "_buildqiblaleading",
       "id": "lib_widgets_common_app_header_buildqiblaleading"
     },
@@ -16893,7 +16893,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 21,
-      "community_name": "../../core/theme/app_colors.dart",
+      "community_name": "app_header.dart",
       "norm_label": "../auth/profile_sheet.dart",
       "id": "auth_profile_sheet_dart"
     },
@@ -17563,8 +17563,8 @@
       "source_file": "lib/widgets/common/theme_toggle_button.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 21,
-      "community_name": "../../core/theme/app_colors.dart",
+      "community": 137,
+      "community_name": "package:flutter/material.dart",
       "norm_label": "theme_toggle_button.dart",
       "id": "lib_widgets_common_theme_toggle_button"
     },
@@ -17574,8 +17574,8 @@
       "source_file": "lib/widgets/common/theme_toggle_button.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 21,
-      "community_name": "../../core/theme/app_colors.dart",
+      "community": 137,
+      "community_name": "package:flutter/material.dart",
       "norm_label": "themetogglebutton",
       "id": "lib_widgets_common_theme_toggle_button_themetogglebutton"
     },
@@ -17585,8 +17585,8 @@
       "source_file": "lib/widgets/common/theme_toggle_button.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 21,
-      "community_name": "../../core/theme/app_colors.dart",
+      "community": 137,
+      "community_name": "package:flutter/material.dart",
       "norm_label": "build",
       "id": "lib_widgets_common_theme_toggle_button_build"
     },
@@ -17926,7 +17926,7 @@
       "source_file": null,
       "source_location": null,
       "_origin": "ast",
-      "community": 8,
+      "community": 137,
       "community_name": "package:flutter/material.dart",
       "norm_label": "../common/async_app_icon.dart",
       "id": "common_async_app_icon_dart"
@@ -17938,7 +17938,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 8,
-      "community_name": "package:flutter/material.dart",
+      "community_name": "PrayerProvider",
       "norm_label": "banner.dart",
       "id": "lib_widgets_home_banner"
     },
@@ -17949,7 +17949,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 8,
-      "community_name": "package:flutter/material.dart",
+      "community_name": "PrayerProvider",
       "norm_label": "glassbanner",
       "id": "lib_widgets_home_banner_glassbanner"
     },
@@ -17960,7 +17960,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 8,
-      "community_name": "package:flutter/material.dart",
+      "community_name": "PrayerProvider",
       "norm_label": "_glassbannerstate",
       "id": "lib_widgets_home_banner_glassbannerstate"
     },
@@ -17971,7 +17971,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 8,
-      "community_name": "package:flutter/material.dart",
+      "community_name": "PrayerProvider",
       "norm_label": "_pagecontroller",
       "id": "lib_widgets_home_banner_pagecontroller"
     },
@@ -17982,7 +17982,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 8,
-      "community_name": "package:flutter/material.dart",
+      "community_name": "PrayerProvider",
       "norm_label": "pagecontroller",
       "id": "pagecontroller"
     },
@@ -17993,7 +17993,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 8,
-      "community_name": "package:flutter/material.dart",
+      "community_name": "PrayerProvider",
       "norm_label": "createstate",
       "id": "lib_widgets_home_banner_createstate"
     },
@@ -18004,7 +18004,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 8,
-      "community_name": "package:flutter/material.dart",
+      "community_name": "PrayerProvider",
       "norm_label": "dispose",
       "id": "lib_widgets_home_banner_dispose"
     },
@@ -18015,7 +18015,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 8,
-      "community_name": "package:flutter/material.dart",
+      "community_name": "PrayerProvider",
       "norm_label": "build",
       "id": "lib_widgets_home_banner_build"
     },
@@ -18026,7 +18026,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 8,
-      "community_name": "package:flutter/material.dart",
+      "community_name": "PrayerProvider",
       "norm_label": "_buildcard",
       "id": "lib_widgets_home_banner_buildcard"
     },
@@ -18037,7 +18037,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 8,
-      "community_name": "package:flutter/material.dart",
+      "community_name": "PrayerProvider",
       "norm_label": "_buildprayerslide",
       "id": "lib_widgets_home_banner_buildprayerslide"
     },
@@ -18048,7 +18048,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 8,
-      "community_name": "package:flutter/material.dart",
+      "community_name": "PrayerProvider",
       "norm_label": "_buildquranslide",
       "id": "lib_widgets_home_banner_buildquranslide"
     },
@@ -18059,7 +18059,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 8,
-      "community_name": "package:flutter/material.dart",
+      "community_name": "PrayerProvider",
       "norm_label": "package:smooth_page_indicator/smooth_page_indicator.dart",
       "id": "package_smooth_page_indicator_smooth_page_indicator_dart"
     },
@@ -18070,7 +18070,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 8,
-      "community_name": "package:flutter/material.dart",
+      "community_name": "PrayerProvider",
       "norm_label": "../common/pill_badge.dart",
       "id": "common_pill_badge_dart"
     },
@@ -18080,7 +18080,7 @@
       "source_file": "lib/widgets/home/focus_lock_card.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 8,
+      "community": 137,
       "community_name": "package:flutter/material.dart",
       "norm_label": "focus_lock_card.dart",
       "id": "lib_widgets_home_focus_lock_card"
@@ -18091,7 +18091,7 @@
       "source_file": "lib/widgets/home/focus_lock_card.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 8,
+      "community": 137,
       "community_name": "package:flutter/material.dart",
       "norm_label": "focuslockcard",
       "id": "lib_widgets_home_focus_lock_card_focuslockcard"
@@ -18102,7 +18102,7 @@
       "source_file": "lib/widgets/home/focus_lock_card.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 8,
+      "community": 137,
       "community_name": "package:flutter/material.dart",
       "norm_label": "_formatnextlockcountdown",
       "id": "lib_widgets_home_focus_lock_card_formatnextlockcountdown"
@@ -18124,7 +18124,7 @@
       "source_file": null,
       "source_location": null,
       "_origin": "ast",
-      "community": 8,
+      "community": 137,
       "community_name": "package:flutter/material.dart",
       "norm_label": "../../screens/settings/focus_lock_config_screen.dart",
       "id": "screens_settings_focus_lock_config_screen_dart"
@@ -18147,7 +18147,7 @@
       "source_location": null,
       "_origin": "ast",
       "community": 8,
-      "community_name": "package:flutter/material.dart",
+      "community_name": "PrayerProvider",
       "norm_label": "horizontalprayerstepper",
       "id": "lib_widgets_home_horizontal_prayer_stepper_horizontalprayerstepper"
     },
@@ -20016,8 +20016,8 @@
       "source_file": "lib/widgets/navigation/bottom_nav_bar.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 21,
-      "community_name": "../../core/theme/app_colors.dart",
+      "community": 137,
+      "community_name": "package:flutter/material.dart",
       "norm_label": "bottom_nav_bar.dart",
       "id": "lib_widgets_navigation_bottom_nav_bar"
     },
@@ -20027,8 +20027,8 @@
       "source_file": "lib/widgets/navigation/bottom_nav_bar.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 21,
-      "community_name": "../../core/theme/app_colors.dart",
+      "community": 137,
+      "community_name": "package:flutter/material.dart",
       "norm_label": "bottomnavbar",
       "id": "lib_widgets_navigation_bottom_nav_bar_bottomnavbar"
     },
@@ -20038,8 +20038,8 @@
       "source_file": "lib/widgets/navigation/bottom_nav_bar.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 21,
-      "community_name": "../../core/theme/app_colors.dart",
+      "community": 137,
+      "community_name": "package:flutter/material.dart",
       "norm_label": "currentindex",
       "id": "lib_widgets_navigation_bottom_nav_bar_currentindex"
     },
@@ -20049,8 +20049,8 @@
       "source_file": "lib/widgets/navigation/bottom_nav_bar.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 21,
-      "community_name": "../../core/theme/app_colors.dart",
+      "community": 137,
+      "community_name": "package:flutter/material.dart",
       "norm_label": "ontap",
       "id": "lib_widgets_navigation_bottom_nav_bar_ontap"
     },
@@ -20060,8 +20060,8 @@
       "source_file": "lib/widgets/navigation/bottom_nav_bar.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 21,
-      "community_name": "../../core/theme/app_colors.dart",
+      "community": 137,
+      "community_name": "package:flutter/material.dart",
       "norm_label": "build",
       "id": "lib_widgets_navigation_bottom_nav_bar_build"
     },
@@ -20599,8 +20599,8 @@
       "source_file": "lib/widgets/quran/bookmarks_sidebar.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 137,
-      "community_name": "bookmarks_sidebar.dart",
+      "community": 20,
+      "community_name": "QuranProvider",
       "norm_label": "bookmarks_sidebar.dart",
       "id": "lib_widgets_quran_bookmarks_sidebar"
     },
@@ -20610,8 +20610,8 @@
       "source_file": "lib/widgets/quran/bookmarks_sidebar.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 137,
-      "community_name": "bookmarks_sidebar.dart",
+      "community": 20,
+      "community_name": "QuranProvider",
       "norm_label": "bookmarkssidebar",
       "id": "lib_widgets_quran_bookmarks_sidebar_bookmarkssidebar"
     },
@@ -20621,8 +20621,8 @@
       "source_file": "lib/widgets/quran/bookmarks_sidebar.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 137,
-      "community_name": "bookmarks_sidebar.dart",
+      "community": 20,
+      "community_name": "QuranProvider",
       "norm_label": "build",
       "id": "lib_widgets_quran_bookmarks_sidebar_build"
     },
@@ -20632,8 +20632,8 @@
       "source_file": "lib/widgets/quran/bookmarks_sidebar.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 137,
-      "community_name": "bookmarks_sidebar.dart",
+      "community": 20,
+      "community_name": "QuranProvider",
       "norm_label": "_buildheader",
       "id": "lib_widgets_quran_bookmarks_sidebar_buildheader"
     },
@@ -20643,8 +20643,8 @@
       "source_file": "lib/widgets/quran/bookmarks_sidebar.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 137,
-      "community_name": "bookmarks_sidebar.dart",
+      "community": 20,
+      "community_name": "QuranProvider",
       "norm_label": "_buildemptystate",
       "id": "lib_widgets_quran_bookmarks_sidebar_buildemptystate"
     },
@@ -20654,8 +20654,8 @@
       "source_file": "lib/widgets/quran/bookmarks_sidebar.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 137,
-      "community_name": "bookmarks_sidebar.dart",
+      "community": 20,
+      "community_name": "QuranProvider",
       "norm_label": "_buildbookmarkslist",
       "id": "lib_widgets_quran_bookmarks_sidebar_buildbookmarkslist"
     },
@@ -20665,8 +20665,8 @@
       "source_file": "lib/widgets/quran/bookmarks_sidebar.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 137,
-      "community_name": "bookmarks_sidebar.dart",
+      "community": 20,
+      "community_name": "QuranProvider",
       "norm_label": "_buildfooter",
       "id": "lib_widgets_quran_bookmarks_sidebar_buildfooter"
     },
@@ -20764,8 +20764,8 @@
       "source_file": "lib/widgets/quran/quran_banner.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 100,
-      "community_name": "quran_banner.dart",
+      "community": 20,
+      "community_name": "QuranProvider",
       "norm_label": "_toggleaudio",
       "id": "lib_widgets_quran_quran_banner_toggleaudio"
     },
@@ -21072,8 +21072,8 @@
       "source_file": "lib/widgets/quran/surah_detail_sheet.dart",
       "source_location": null,
       "_origin": "ast",
-      "community": 83,
-      "community_name": "surah_detail_sheet.dart",
+      "community": 20,
+      "community_name": "QuranProvider",
       "norm_label": "_toggleaudio",
       "id": "lib_widgets_quran_surah_detail_sheet_toggleaudio"
     },
@@ -56913,5 +56913,5 @@
       "source_file": "linux/CMakeLists.txt"
     }
   ],
-  "built_at_commit": "93e5f9b9dd2712fa224c782df4a133c6c82088bb"
+  "built_at_commit": "58515c196542ee7b1d36206b5817258bbcd90866"
 }
