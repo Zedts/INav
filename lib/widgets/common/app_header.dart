@@ -133,36 +133,65 @@ class AppHeader extends StatelessWidget {
       children: [
         _buildProfileMenu(context, isDark),
         const SizedBox(width: 12),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(title, maxLines: 1, overflow: TextOverflow.ellipsis, style: GoogleFonts.fraunces(fontSize: 13, fontWeight: FontWeight.w600)),
-              const SizedBox(height: 2),
-              Row(
-                children: [
-                  Icon(Icons.location_on, size: 12, color: isDark ? AppColors.primaryDark : AppColors.primary),
-                  const SizedBox(width: 4),
-                  Expanded(
-                    child: Text(location, maxLines: 1, overflow: TextOverflow.ellipsis, style: GoogleFonts.plusJakartaSans(fontSize: 11, fontWeight: FontWeight.w500, color: isDark ? AppColors.textMutedDark : AppColors.textMutedLight)),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              title,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: GoogleFonts.fraunces().copyWith(
+                fontSize: 13,
+                fontWeight: FontWeight.w600,
+                letterSpacing: -0.02,
+              ),
+            ),
+            const SizedBox(height: 2),
+            Row(
+              children: [
+                Icon(
+                  Icons.location_on,
+                  size: 12,
+                  color: isDark ? AppColors.primaryDark : AppColors.primary,
+                ),
+                const SizedBox(width: 4),
+                Text(
+                  location,
+                  style: GoogleFonts.plusJakartaSans().copyWith(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w500,
+                    color: isDark
+                        ? AppColors.textMutedDark
+                        : AppColors.textMutedLight,
                   ),
-                  const SizedBox(width: 4),
-                  InkWell(
-                    onTap: () async {
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Refreshing location…'), duration: Duration(seconds: 1)));
-                      await onRefresh();
-                    },
-                    borderRadius: BorderRadius.circular(4),
-                    child: Padding(
-                      padding: const EdgeInsets.all(2),
-                      child: Icon(Icons.refresh, size: 12, color: isDark ? AppColors.textMutedDark : AppColors.textMutedLight),
+                ),
+                const SizedBox(width: 4),
+                InkWell(
+                  onTap: () async {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Refreshing location…'),
+                        duration: Duration(seconds: 1),
+                      ),
+                    );
+                    await onRefresh();
+                  },
+                  borderRadius: BorderRadius.circular(4),
+                  child: Padding(
+                    padding: const EdgeInsets.all(2),
+                    child: Icon(
+                      Icons.refresh,
+                      size: 12,
+                      color: isDark
+                          ? AppColors.textMutedDark
+                          : AppColors.textMutedLight,
                     ),
                   ),
-                ],
-              ),
-            ],
-          ),
+                ),
+              ],
+            ),
+          ],
         ),
       ],
     );
