@@ -1,11 +1,11 @@
+import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import '../errors/error_messages.dart';
 import '../models/surah_model.dart';
 import '../models/surah_detail_model.dart';
 import '../services/quran_service.dart';
-import '../databases/app_database.dart';
-import 'package:sqflite/sqflite.dart';
 
 enum AudioSourceId { banner, tile, sheet }
 
@@ -27,12 +27,13 @@ class QuranProvider with ChangeNotifier {
   bool _audioPlaying = false;
   bool _continuousPlaybackMode = false;
 
-  // v3 API state for reading screen
   SurahDetailModel? _currentSurahDetail;
   bool _isLoadingDetail = false;
   String? _errorMessageDetail;
-  String? _lastReadSurahKey; // Format: "surahNumber:ayahNumber"
-  int? _userId;
+  String? _lastReadSurahKey;
+  String? _userId;
+  StreamSubscription<QuerySnapshot<Object?>>? _bookmarksSub;
+  StreamSubscription<DocumentSnapshot<Object?>>? _lastReadSub;
 
   List<SurahModel> get allSurahs => _allSurahs;
   String get searchQuery => _searchQuery;
@@ -49,7 +50,6 @@ class QuranProvider with ChangeNotifier {
   bool get audioPlaying => _audioPlaying;
   bool get continuousPlaybackMode => _continuousPlaybackMode;
 
-  // v3 API getters for reading screen
   SurahDetailModel? get currentSurahDetail => _currentSurahDetail;
   bool get isLoadingDetail => _isLoadingDetail;
   String? get errorMessageDetail => _errorMessageDetail;
@@ -319,54 +319,69 @@ class QuranProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> setUser(int? userId) async {
+  Future<void> setUser(String? userId) async {
     if (_userId == userId) return;
+    await _bookmarksSub?.cancel();
+    await _lastReadSub?.cancel();
+    _bookmarksSub = null;
+    _lastReadSub = null;
     _userId = userId;
     _bookmarkedSurahNumbers.clear();
     _lastReadSurahKey = null;
     if (userId != null) {
-      final db = await AppDatabase.database;
-      final bookmarks = await db.query(
-        'quran_bookmarks',
-        columns: ['surah_number'],
-        where: 'user_id=?',
-        whereArgs: [userId],
-      );
-      _bookmarkedSurahNumbers.addAll(
-        bookmarks.map((row) => row['surah_number'].toString()),
-      );
-      final lastRead = await db.query(
-        'quran_last_read',
-        where: 'user_id=?',
-        whereArgs: [userId],
-      );
-      if (lastRead.isNotEmpty)
-        _lastReadSurahKey =
-            '${lastRead.first['surah_number']}:${lastRead.first['ayah_number']}';
+      _bookmarksSub = FirebaseFirestore.instance
+          .collection('users/$userId/quranBookmarks')
+          .snapshots()
+          .listen((snap) {
+        _bookmarkedSurahNumbers
+          ..clear()
+          ..addAll(snap.docs.map((d) => d.id));
+        notifyListeners();
+      });
+      _lastReadSub = FirebaseFirestore.instance
+          .doc('users/$userId/quranLastRead/current')
+          .snapshots()
+          .listen((snap) {
+        if (snap.exists) {
+          final data = snap.data()!;
+          _lastReadSurahKey = '${data['surahNumber']}:${data['ayahNumber']}';
+        } else {
+          _lastReadSurahKey = null;
+        }
+        notifyListeners();
+      });
     }
     notifyListeners();
   }
 
   Future<void> toggleBookmark(String surahNumber) async {
-    final userId = _userId;
-    if (_bookmarkedSurahNumbers.contains(surahNumber)) {
+    final uid = _userId;
+    final wasBookmarked = _bookmarkedSurahNumbers.contains(surahNumber);
+    if (wasBookmarked) {
       _bookmarkedSurahNumbers.remove(surahNumber);
-      if (userId != null)
-        await (await AppDatabase.database).delete(
-          'quran_bookmarks',
-          where: 'user_id=? AND surah_number=?',
-          whereArgs: [userId, int.parse(surahNumber)],
-        );
+      notifyListeners();
+      if (uid != null) {
+        try {
+          await FirebaseFirestore.instance
+              .doc('users/$uid/quranBookmarks/$surahNumber')
+              .delete();
+        } catch (_) {}
+      }
     } else {
       _bookmarkedSurahNumbers.add(surahNumber);
-      if (userId != null)
-        await (await AppDatabase.database).insert('quran_bookmarks', {
-          'user_id': userId,
-          'surah_number': int.parse(surahNumber),
-          'created_at': DateTime.now().millisecondsSinceEpoch,
-        });
+      notifyListeners();
+      if (uid != null) {
+        try {
+          final num = int.tryParse(surahNumber);
+          await FirebaseFirestore.instance
+              .doc('users/$uid/quranBookmarks/$surahNumber')
+              .set({
+            'surahNumber': num ?? 0,
+            'createdAt': FieldValue.serverTimestamp(),
+          });
+        } catch (_) {}
+      }
     }
-    notifyListeners();
   }
 
   bool isBookmarked(String surahNumber) {
@@ -388,7 +403,6 @@ class QuranProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  /// Load surah detail from v3 API (with pagination support)
   Future<void> loadSurahDetail(int surahNumber) async {
     _isLoadingDetail = true;
     _errorMessageDetail = null;
@@ -409,21 +423,23 @@ class QuranProvider with ChangeNotifier {
     }
   }
 
-  /// Set last read position (memory-only, resets on app restart)
   Future<void> setLastRead(int surahNumber, int ayahNumber) async {
     _lastReadSurahKey = '$surahNumber:$ayahNumber';
     notifyListeners();
-    if (_userId != null)
-      await (await AppDatabase.database).insert('quran_last_read', {
-        'user_id': _userId,
-        'surah_number': surahNumber,
-        'ayah_number': ayahNumber,
-        'updated_at': DateTime.now().millisecondsSinceEpoch,
-      }, conflictAlgorithm: ConflictAlgorithm.replace);
+    final uid = _userId;
+    if (uid != null) {
+      try {
+        await FirebaseFirestore.instance
+            .doc('users/$uid/quranLastRead/current')
+            .set({
+          'surahNumber': surahNumber,
+          'ayahNumber': ayahNumber,
+          'updatedAt': FieldValue.serverTimestamp(),
+        }, SetOptions(merge: true));
+      } catch (_) {}
+    }
   }
 
-  /// Get last read position (returns null if no history)
-  /// Returns tuple: (surahNumber, ayahNumber)
   (int, int)? getLastRead() {
     if (_lastReadSurahKey == null) return null;
     final parts = _lastReadSurahKey!.split(':');
@@ -434,7 +450,6 @@ class QuranProvider with ChangeNotifier {
     return (surahNum, ayahNum);
   }
 
-  /// Clear current surah detail (useful when navigating away)
   void clearSurahDetail() {
     _currentSurahDetail = null;
     _errorMessageDetail = null;
@@ -443,6 +458,8 @@ class QuranProvider with ChangeNotifier {
 
   @override
   void dispose() {
+    _bookmarksSub?.cancel();
+    _lastReadSub?.cancel();
     _audioPlayer.dispose();
     _quranService.dispose();
     super.dispose();

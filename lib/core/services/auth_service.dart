@@ -1,10 +1,6 @@
-import 'dart:convert';
-import 'dart:math';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:hashlib/hashlib.dart';
-import '../databases/app_database.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../models/auth_user.dart';
-import 'password_hasher.dart';
 
 class AuthException implements Exception {
   const AuthException(this.message);
@@ -14,22 +10,18 @@ class AuthException implements Exception {
 }
 
 class AuthService {
-  AuthService({PasswordHasher? hasher}) : _hasher = hasher ?? PasswordHasher();
-  final PasswordHasher _hasher;
-  static const _key = 'inav.session.token';
-  static const _storage = FlutterSecureStorage();
+  AuthService();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
   Future<AuthUser?> restoreSession() async {
-    final token = await _storage.read(key: _key);
-    if (token == null) return null;
-    final rows = await (await AppDatabase.database).rawQuery(
-      'SELECT u.id,u.full_name,u.email FROM sessions s JOIN users u ON u.id=s.user_id WHERE s.token_hash=? AND s.revoked_at IS NULL AND s.expires_at>?',
-      [_tokenHash(token), DateTime.now().millisecondsSinceEpoch],
+    final u = _auth.currentUser;
+    if (u == null) return null;
+    return AuthUser(
+      id: u.uid,
+      fullName: u.displayName ?? '',
+      email: u.email ?? '',
     );
-    if (rows.isEmpty) {
-      await _storage.delete(key: _key);
-      return null;
-    }
-    return AuthUser.fromMap(Map<String, Object?>.from(rows.first));
   }
 
   Future<AuthUser> register({
@@ -37,55 +29,68 @@ class AuthService {
     required String email,
     required String password,
   }) async {
-    final db = await AppDatabase.database;
-    final normalized = email.trim().toLowerCase();
-    if ((await db.query(
-      'users',
-      where: 'email=?',
-      whereArgs: [normalized],
-    )).isNotEmpty)
-      throw const AuthException('An account with this email already exists.');
-    final now = DateTime.now().millisecondsSinceEpoch;
-    final id = await db.insert('users', {
-      'full_name': fullName.trim(),
-      'email': normalized,
-      'password_hash': await _hasher.hash(password),
-      'created_at': now,
-      'updated_at': now,
-    });
-    final user = AuthUser(id: id, fullName: fullName.trim(), email: normalized);
-    await _startSession(user.id);
-    return user;
+    if (password.length < 8 || password.length > 64) {
+      throw const AuthException('Your new password must be 8–64 characters.');
+    }
+    try {
+      final cred = await _auth.createUserWithEmailAndPassword(
+        email: email.trim().toLowerCase(),
+        password: password,
+      );
+      final u = cred.user!;
+      final name = fullName.trim();
+      if (name.isNotEmpty) await u.updateDisplayName(name);
+      await _firestore.collection('users').doc(u.uid).set({
+        'displayName': name,
+        'email': u.email,
+        'createdAt': FieldValue.serverTimestamp(),
+        'updatedAt': FieldValue.serverTimestamp(),
+      }, SetOptions(merge: true));
+      return AuthUser(
+        id: u.uid,
+        fullName: name,
+        email: u.email ?? '',
+      );
+    } on FirebaseAuthException catch (e) {
+      throw _translateAuthError(e);
+    }
   }
 
   Future<AuthUser> login({
     required String email,
     required String password,
   }) async {
-    final db = await AppDatabase.database;
-    final rows = await db.query(
-      'users',
-      where: 'email=?',
-      whereArgs: [email.trim().toLowerCase()],
-    );
-    if (rows.isEmpty ||
-        !await _hasher.verify(rows.first['password_hash'] as String, password))
-      throw const AuthException('Email or password is incorrect.');
-    final user = AuthUser.fromMap(rows.first);
-    await _startSession(user.id);
-    return user;
+    try {
+      final cred = await _auth.signInWithEmailAndPassword(
+        email: email.trim().toLowerCase(),
+        password: password,
+      );
+      final u = cred.user!;
+      final snapshot = await _firestore.collection('users').doc(u.uid).get();
+      if (!snapshot.exists) {
+        await _firestore.collection('users').doc(u.uid).set({
+          'displayName': u.displayName ?? '',
+          'email': u.email,
+          'createdAt': FieldValue.serverTimestamp(),
+          'updatedAt': FieldValue.serverTimestamp(),
+        }, SetOptions(merge: true));
+      }
+      return AuthUser(
+        id: u.uid,
+        fullName: u.displayName ?? '',
+        email: u.email ?? '',
+      );
+    } on FirebaseAuthException catch (e) {
+      throw _translateAuthError(e);
+    }
   }
 
   Future<void> logout() async {
-    final token = await _storage.read(key: _key);
-    if (token != null)
-      await (await AppDatabase.database).update(
-        'sessions',
-        {'revoked_at': DateTime.now().millisecondsSinceEpoch},
-        where: 'token_hash=?',
-        whereArgs: [_tokenHash(token)],
-      );
-    await _storage.delete(key: _key);
+    try {
+      await _auth.signOut();
+    } on FirebaseAuthException catch (e) {
+      throw _translateAuthError(e);
+    }
   }
 
   Future<AuthUser> updateProfile({
@@ -108,32 +113,34 @@ class AuthService {
       throw const AuthException('Your new password must be 8–64 characters.');
     }
 
-    final db = await AppDatabase.database;
-    return db.transaction((txn) async {
-      final users = await txn.query('users', where: 'id=?', whereArgs: [user.id]);
-      if (users.isEmpty) throw const AuthException('Your account is no longer available.');
-      if (!await _hasher.verify(users.first['password_hash'] as String, currentPassword)) {
-        throw const AuthException('Your current password is incorrect.');
+    final u = _auth.currentUser;
+    if (u == null || u.uid != user.id) {
+      throw const AuthException('Your account is no longer available.');
+    }
+
+    try {
+      await _reauthenticate(u, currentPassword);
+
+      if (normalizedEmail != u.email) {
+        await u.verifyBeforeUpdateEmail(normalizedEmail);
       }
-      final emailMatches = await txn.query(
-        'users',
-        columns: ['id'],
-        where: 'email=? AND id<>?',
-        whereArgs: [normalizedEmail, user.id],
-      );
-      if (emailMatches.isNotEmpty) {
-        throw const AuthException('An account with this email already exists.');
+      if (name.isNotEmpty && name != u.displayName) {
+        await u.updateDisplayName(name);
+      }
+      if (passwordChange) {
+        await u.updatePassword(newPassword!);
       }
 
-      final values = <String, Object>{
-        'full_name': name,
+      await _firestore.collection('users').doc(u.uid).set({
+        'displayName': name,
         'email': normalizedEmail,
-        'updated_at': DateTime.now().millisecondsSinceEpoch,
-      };
-      if (passwordChange) values['password_hash'] = await _hasher.hash(newPassword!);
-      await txn.update('users', values, where: 'id=?', whereArgs: [user.id]);
-      return AuthUser(id: user.id, fullName: name, email: normalizedEmail);
-    });
+        'updatedAt': FieldValue.serverTimestamp(),
+      }, SetOptions(merge: true));
+
+      return AuthUser(id: u.uid, fullName: name, email: normalizedEmail);
+    } on FirebaseAuthException catch (e) {
+      throw _translateAuthError(e);
+    }
   }
 
   Future<bool> verifyCurrentPassword({
@@ -141,14 +148,14 @@ class AuthService {
     required String password,
   }) async {
     if (password.isEmpty) return false;
-    final rows = await (await AppDatabase.database).query(
-      'users',
-      columns: ['password_hash'],
-      where: 'id=?',
-      whereArgs: [user.id],
-    );
-    return rows.isNotEmpty &&
-        await _hasher.verify(rows.first['password_hash'] as String, password);
+    final u = _auth.currentUser;
+    if (u == null || u.uid != user.id) return false;
+    try {
+      await _reauthenticate(u, password);
+      return true;
+    } on FirebaseAuthException {
+      return false;
+    }
   }
 
   Future<void> deleteAccount({
@@ -158,36 +165,81 @@ class AuthService {
     if (!await verifyCurrentPassword(user: user, password: password)) {
       throw const AuthException('Your current password is incorrect.');
     }
-    await (await AppDatabase.database).delete(
-      'users',
-      where: 'id=?',
-      whereArgs: [user.id],
-    );
-    await _storage.delete(key: _key);
+    final u = _auth.currentUser;
+    if (u == null) return;
+    final uid = u.uid;
+    final batch = _firestore.batch();
+    batch.delete(_firestore.collection('users').doc(uid));
+    final bookmarksSnapshot = await _firestore
+        .collection('users/$uid/quranBookmarks')
+        .limit(500)
+        .get();
+    for (final doc in bookmarksSnapshot.docs) {
+      batch.delete(doc.reference);
+    }
+    final favoritesSnapshot = await _firestore
+        .collection('users/$uid/mosqueFavorites')
+        .limit(500)
+        .get();
+    for (final doc in favoritesSnapshot.docs) {
+      batch.delete(doc.reference);
+    }
+    batch.delete(_firestore.doc('users/$uid/quranLastRead/current'));
+    await batch.commit();
+    await u.delete();
+    try {
+      await _auth.signOut();
+    } catch (_) {}
   }
 
-  Future<void> _startSession(int userId) async {
-    final db = await AppDatabase.database;
-    final token = base64UrlEncode(
-      List<int>.generate(32, (_) => Random.secure().nextInt(256)),
+  Future<void> _reauthenticate(User u, String password) async {
+    final credential = EmailAuthProvider.credential(
+      email: u.email ?? '',
+      password: password,
     );
-    final now = DateTime.now().millisecondsSinceEpoch;
-    await db.transaction((txn) async {
-      await txn.update(
-        'sessions',
-        {'revoked_at': now},
-        where: 'user_id=? AND revoked_at IS NULL',
-        whereArgs: [userId],
-      );
-      await txn.insert('sessions', {
-        'user_id': userId,
-        'token_hash': _tokenHash(token),
-        'created_at': now,
-        'expires_at': now + const Duration(days: 30).inMilliseconds,
-      });
-    });
-    await _storage.write(key: _key, value: token);
+    await u.reauthenticateWithCredential(credential);
   }
 
-  String _tokenHash(String token) => sha256.string(token).toString();
+  AuthException _translateAuthError(FirebaseAuthException e) {
+    switch (e.code) {
+      case 'email-already-in-use':
+        return const AuthException('An account with this email already exists.');
+      case 'weak-password':
+        return const AuthException('Your new password must be 8–64 characters.');
+      case 'invalid-email':
+        return const AuthException('Enter a valid name and email address.');
+      case 'user-not-found':
+      case 'wrong-password':
+      case 'invalid-credential':
+        return const AuthException('Email or password is incorrect.');
+      case 'requires-recent-login':
+        return const AuthException('Please log out and back in before making this change.');
+      case 'network-request-failed':
+        return const AuthException('No internet connection. Try again when online.');
+      case 'too-many-requests':
+        return const AuthException('Too many attempts. Try again later.');
+      case 'operation-not-allowed':
+        return const AuthException('Sign-in method is disabled. Please contact support.');
+      case 'user-disabled':
+        return const AuthException('This account has been disabled.');
+      case 'email-already-exists':
+        return const AuthException('An account with this email already exists.');
+      case 'credential-already-in-use':
+        return const AuthException('This credential is already associated with another account.');
+      case 'invalid-verification-code':
+        return const AuthException('Invalid verification code.');
+      case 'session-expired':
+        return const AuthException('Session expired. Please log in again.');
+      case 'account-exists-with-different-credential':
+        return const AuthException('An account with this email already exists. Please sign in with the original method.');
+      case 'missing-email':
+        return const AuthException('Enter a valid name and email address.');
+      default:
+        return AuthException(
+          e.message?.isNotEmpty == true
+              ? e.message!
+              : 'An unexpected error occurred. Please try again.',
+        );
+    }
+  }
 }

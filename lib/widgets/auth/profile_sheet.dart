@@ -386,7 +386,7 @@ class _DeleteAccountDialogState extends State<_DeleteAccountDialog> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
-            'This permanently removes your local account, bookmarks, last-read position, and favorite mosques.',
+            'This permanently removes your account and all synced data: bookmarks, last-read position, and favorite mosques.',
           ),
           const SizedBox(height: 16),
           TextField(

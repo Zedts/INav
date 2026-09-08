@@ -1,5 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:inav/firebase/firebase_options.dart';
 import 'package:provider/provider.dart';
 import 'dart:async';
 import 'core/theme/app_theme.dart';
@@ -17,12 +21,28 @@ import 'core/providers/auth_provider.dart';
 import 'core/services/lock_engine.dart';
 import 'core/services/accessibility_service_helper.dart';
 import 'screens/auth/auth_gate.dart';
-import 'screens/lock_overlay_screen.dart';
+import 'screens/lock_overlay/lock_overlay_screen.dart';
 
 void main() {
   runZonedGuarded(
     () async {
       WidgetsFlutterBinding.ensureInitialized();
+
+      await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform
+      );
+      try {
+        final firestore = FirebaseFirestore.instance;
+        if (!kIsWeb) {
+          firestore.settings = Settings(
+            persistenceEnabled: true,
+            cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED,
+          );
+        }
+      } catch (e) {
+        debugPrint('Firestore settings apply failed (non-fatal): $e');
+      }
+
       ThemeProvider? themeProvider;
       FocusLockProvider? focusLockProvider;
       AuthProvider? authProvider;

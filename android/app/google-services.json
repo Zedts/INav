@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "435426723896",
+    "project_id": "inav-50f3e",
+    "storage_bucket": "inav-50f3e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:435426723896:android:530f25e0b05f6c62ea3ecd",
+        "android_client_info": {
+          "package_name": "com.zedt.inav"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAdoAcHL7PB6jl0icSwyimnOcw-Bvx6u1Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

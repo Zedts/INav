@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'dart:async';
-import '../core/theme/app_colors.dart';
-import '../core/models/unlock_config.dart';
-import '../core/models/lock_schedule.dart';
-import '../core/providers/focus_lock_provider.dart';
-import '../core/providers/streak_provider.dart';
-import '../core/providers/verse_provider.dart';
-import '../core/providers/hadith_provider.dart';
+import '../../core/theme/app_colors.dart';
+import '../../core/models/unlock_config.dart';
+import '../../core/models/lock_schedule.dart';
+import '../../core/providers/focus_lock_provider.dart';
+import '../../core/providers/streak_provider.dart';
+import '../../core/providers/verse_provider.dart';
+import '../../core/providers/hadith_provider.dart';
 
 class _ThemedColors {
   final Color surface = AppColors.surfaceDark;

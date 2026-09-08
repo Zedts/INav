@@ -1,11 +1,11 @@
+import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:latlong2/latlong.dart';
 import '../errors/error_messages.dart';
 import '../models/mosque_model.dart';
 import '../services/location_service.dart';
 import '../services/mosque_service.dart';
-import '../databases/app_database.dart';
-import 'package:sqflite/sqflite.dart';
 
 class MosqueProvider extends ChangeNotifier {
   final LocationService _locationService;
@@ -22,7 +22,8 @@ class MosqueProvider extends ChangeNotifier {
   String? _featuredMosqueId;
   final List<String> _favoriteMosqueIds = [];
   final List<MosqueModel> _favoriteSnapshots = [];
-  int? _userId;
+  String? _userId;
+  StreamSubscription<QuerySnapshot<Object?>>? _favoritesSub;
   bool _isSidebarOpen = false;
 
   MosqueProvider({
@@ -94,7 +95,6 @@ class MosqueProvider extends ChangeNotifier {
 
       await _loadNearby(pos.latitude, pos.longitude);
     } on LocationException catch (e) {
-      // Service messages are already user-friendly and consistent
       _errorMessage = e.message;
       debugPrint('Location exception: $e');
     } on MosqueServiceException catch (e) {
@@ -146,7 +146,6 @@ class MosqueProvider extends ChangeNotifier {
       await _loadNearby(lat, lng);
       resetFeaturedToNearest(silent: true);
     } on LocationException catch (e) {
-      // Service messages are already user-friendly and consistent
       _errorMessage = e.message;
       debugPrint('Refresh location exception: $e');
     } on MosqueServiceException catch (e) {
@@ -208,60 +207,73 @@ class MosqueProvider extends ChangeNotifier {
     resetFeaturedToNearest();
   }
 
-  Future<void> setUser(int? userId) async {
+  Future<void> setUser(String? userId) async {
     if (_userId == userId) return;
+    await _favoritesSub?.cancel();
+    _favoritesSub = null;
     _userId = userId;
     _favoriteMosqueIds.clear();
     _favoriteSnapshots.clear();
     if (userId != null) {
-      final rows = await (await AppDatabase.database).query(
-        'mosque_favorites',
-        where: 'user_id=?',
-        whereArgs: [userId],
-      );
-      for (final row in rows) {
-        final m = MosqueModel(
-          id: row['mosque_id'] as String,
-          name: row['name'] as String,
-          address: (row['address'] as String?) ?? 'Address not available',
-          latitude: row['latitude'] as double,
-          longitude: row['longitude'] as double,
-          distanceKm: 0,
-        );
-        _favoriteSnapshots.add(m);
-        _favoriteMosqueIds.add(m.id);
-      }
+      _favoritesSub = FirebaseFirestore.instance
+          .collection('users/$userId/mosqueFavorites')
+          .snapshots()
+          .listen((snap) {
+        _favoriteMosqueIds.clear();
+        _favoriteSnapshots.clear();
+        for (final doc in snap.docs) {
+          final data = doc.data();
+          final mosque = MosqueModel(
+            id: data['mosqueId'] as String,
+            name: data['name'] as String,
+            address: (data['address'] as String?) ?? 'Address not available',
+            latitude: (data['latitude'] as num).toDouble(),
+            longitude: (data['longitude'] as num).toDouble(),
+            distanceKm: 0,
+          );
+          _favoriteMosqueIds.add(mosque.id);
+          _favoriteSnapshots.add(mosque);
+        }
+        notifyListeners();
+      });
     }
     notifyListeners();
   }
 
   Future<void> toggleFavoriteMosque(MosqueModel mosque) async {
     final mosqueId = mosque.id;
+    final uid = _userId;
     final idx = _favoriteMosqueIds.indexOf(mosqueId);
     if (idx >= 0) {
       _favoriteMosqueIds.removeAt(idx);
       _favoriteSnapshots.removeWhere((m) => m.id == mosqueId);
-      if (_userId != null)
-        await (await AppDatabase.database).delete(
-          'mosque_favorites',
-          where: 'user_id=? AND mosque_id=?',
-          whereArgs: [_userId, mosqueId],
-        );
+      notifyListeners();
+      if (uid != null) {
+        try {
+          await FirebaseFirestore.instance
+              .doc('users/$uid/mosqueFavorites/$mosqueId')
+              .delete();
+        } catch (_) {}
+      }
     } else {
       _favoriteMosqueIds.add(mosqueId);
       _favoriteSnapshots.add(mosque);
-      if (_userId != null)
-        await (await AppDatabase.database).insert('mosque_favorites', {
-          'user_id': _userId,
-          'mosque_id': mosqueId,
-          'name': mosque.name,
-          'latitude': mosque.latitude,
-          'longitude': mosque.longitude,
-          'address': mosque.address,
-          'created_at': DateTime.now().millisecondsSinceEpoch,
-        }, conflictAlgorithm: ConflictAlgorithm.replace);
+      notifyListeners();
+      if (uid != null) {
+        try {
+          await FirebaseFirestore.instance
+              .doc('users/$uid/mosqueFavorites/$mosqueId')
+              .set({
+            'mosqueId': mosqueId,
+            'name': mosque.name,
+            'address': mosque.address,
+            'latitude': mosque.latitude,
+            'longitude': mosque.longitude,
+            'createdAt': FieldValue.serverTimestamp(),
+          }, SetOptions(merge: true));
+        } catch (_) {}
+      }
     }
-    notifyListeners();
   }
 
   Future<void> toggleFavorite(String mosqueId) async {
@@ -325,6 +337,7 @@ class MosqueProvider extends ChangeNotifier {
 
   @override
   void dispose() {
+    _favoritesSub?.cancel();
     _positionFreshness.stop();
     super.dispose();
   }
