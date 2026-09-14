@@ -1251,7 +1251,7 @@
       "source_location": null,
       "_origin": "ast",
       "id": "package_flutter_material_dart",
-      "community": 63,
+      "community": 93,
       "community_name": "package:flutter/material.dart",
       "norm_label": "package:flutter/material.dart"
     },
@@ -1284,8 +1284,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_core_constants_legal_texts_legalsubsection",
-      "community": 62,
-      "community_name": "LegalSection",
+      "community": 50,
+      "community_name": "legal_texts.dart",
       "norm_label": "legalsubsection"
     },
     {
@@ -1295,8 +1295,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_core_constants_legal_texts_legalsection",
-      "community": 62,
-      "community_name": "LegalSection",
+      "community": 50,
+      "community_name": "legal_texts.dart",
       "norm_label": "legalsection"
     },
     {
@@ -1328,8 +1328,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "annotation_immutable",
-      "community": 62,
-      "community_name": "LegalSection",
+      "community": 50,
+      "community_name": "legal_texts.dart",
       "norm_label": "@immutable"
     },
     {
@@ -1339,8 +1339,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "annotation_gmail",
-      "community": 62,
-      "community_name": "LegalSection",
+      "community": 50,
+      "community_name": "legal_texts.dart",
       "norm_label": "@gmail"
     },
     {
@@ -2428,8 +2428,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_core_models_auth_user",
-      "community": 34,
-      "community_name": "auth_provider.dart",
+      "community": 105,
+      "community_name": "auth_user.dart",
       "norm_label": "auth_user.dart"
     },
     {
@@ -2439,8 +2439,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_core_models_auth_user_authuser",
-      "community": 34,
-      "community_name": "auth_provider.dart",
+      "community": 105,
+      "community_name": "auth_user.dart",
       "norm_label": "authuser"
     },
     {
@@ -2450,8 +2450,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_core_models_auth_user_id",
-      "community": 34,
-      "community_name": "auth_provider.dart",
+      "community": 105,
+      "community_name": "auth_user.dart",
       "norm_label": "id"
     },
     {
@@ -2461,8 +2461,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_core_models_auth_user_fullname",
-      "community": 34,
-      "community_name": "auth_provider.dart",
+      "community": 105,
+      "community_name": "auth_user.dart",
       "norm_label": "fullname"
     },
     {
@@ -2472,8 +2472,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_core_models_auth_user_email",
-      "community": 34,
-      "community_name": "auth_provider.dart",
+      "community": 105,
+      "community_name": "auth_user.dart",
       "norm_label": "email"
     },
     {
@@ -2483,8 +2483,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_core_models_auth_user_frommap",
-      "community": 34,
-      "community_name": "auth_provider.dart",
+      "community": 105,
+      "community_name": "auth_user.dart",
       "norm_label": "frommap"
     },
     {
@@ -4079,7 +4079,7 @@
       "_origin": "ast",
       "id": "lib_core_models_qibla_model_qiblamodel",
       "community": 94,
-      "community_name": "VoidCallback",
+      "community_name": "package:google_fonts/google_fonts.dart",
       "norm_label": "qiblamodel"
     },
     {
@@ -4386,8 +4386,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_core_models_surah_model_surahmodel",
-      "community": 83,
-      "community_name": "surah_detail_sheet.dart",
+      "community": 20,
+      "community_name": "QuranProvider",
       "norm_label": "surahmodel"
     },
     {
@@ -4815,7 +4815,7 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_core_providers_auth_provider",
-      "community": 34,
+      "community": 62,
       "community_name": "auth_provider.dart",
       "norm_label": "auth_provider.dart"
     },
@@ -4826,8 +4826,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_core_providers_auth_provider_authprovider",
-      "community": 131,
-      "community_name": "profile_sheet.dart",
+      "community": 91,
+      "community_name": "AuthProvider",
       "norm_label": "authprovider"
     },
     {
@@ -4838,7 +4838,7 @@
       "_origin": "ast",
       "id": "changenotifier",
       "community": 111,
-      "community_name": "State",
+      "community_name": "home_screen.dart",
       "norm_label": "changenotifier"
     },
     {
@@ -4848,7 +4848,7 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_core_providers_auth_provider_service",
-      "community": 34,
+      "community": 62,
       "community_name": "auth_provider.dart",
       "norm_label": "_service"
     },
@@ -4859,7 +4859,7 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_core_providers_auth_provider_authsub",
-      "community": 34,
+      "community": 62,
       "community_name": "auth_provider.dart",
       "norm_label": "_authsub"
     },
@@ -4870,8 +4870,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "streamsubscription",
-      "community": 34,
-      "community_name": "auth_provider.dart",
+      "community": 115,
+      "community_name": "lock_engine.dart",
       "norm_label": "streamsubscription?"
     },
     {
@@ -4881,7 +4881,7 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_core_providers_auth_provider_user",
-      "community": 34,
+      "community": 62,
       "community_name": "auth_provider.dart",
       "norm_label": "_user"
     },
@@ -4892,7 +4892,7 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_core_providers_auth_provider_loading",
-      "community": 34,
+      "community": 62,
       "community_name": "auth_provider.dart",
       "norm_label": "_loading"
     },
@@ -4903,7 +4903,7 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_core_providers_auth_provider_startuperror",
-      "community": 34,
+      "community": 62,
       "community_name": "auth_provider.dart",
       "norm_label": "_startuperror"
     },
@@ -4914,7 +4914,7 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_core_providers_auth_provider_submitting",
-      "community": 34,
+      "community": 62,
       "community_name": "auth_provider.dart",
       "norm_label": "_submitting"
     },
@@ -4925,7 +4925,7 @@
       "source_location": null,
       "_origin": "ast",
       "id": "authuser_get",
-      "community": 34,
+      "community": 62,
       "community_name": "auth_provider.dart",
       "norm_label": "authuser? get"
     },
@@ -4936,7 +4936,7 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_core_providers_auth_provider_userid",
-      "community": 34,
+      "community": 62,
       "community_name": "auth_provider.dart",
       "norm_label": "userid"
     },
@@ -4947,7 +4947,7 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_core_providers_auth_provider_restoresession",
-      "community": 34,
+      "community": 62,
       "community_name": "auth_provider.dart",
       "norm_label": "restoresession"
     },
@@ -4958,7 +4958,7 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_core_providers_auth_provider_login",
-      "community": 34,
+      "community": 62,
       "community_name": "auth_provider.dart",
       "norm_label": "login"
     },
@@ -4969,7 +4969,7 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_core_providers_auth_provider_register",
-      "community": 34,
+      "community": 62,
       "community_name": "auth_provider.dart",
       "norm_label": "register"
     },
@@ -4980,7 +4980,7 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_core_providers_auth_provider_updateprofile",
-      "community": 34,
+      "community": 62,
       "community_name": "auth_provider.dart",
       "norm_label": "updateprofile"
     },
@@ -4991,7 +4991,7 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_core_providers_auth_provider_verifycurrentpassword",
-      "community": 34,
+      "community": 62,
       "community_name": "auth_provider.dart",
       "norm_label": "verifycurrentpassword"
     },
@@ -5002,7 +5002,7 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_core_providers_auth_provider_deleteaccount",
-      "community": 34,
+      "community": 62,
       "community_name": "auth_provider.dart",
       "norm_label": "deleteaccount"
     },
@@ -5013,7 +5013,7 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_core_providers_auth_provider_submit",
-      "community": 34,
+      "community": 62,
       "community_name": "auth_provider.dart",
       "norm_label": "_submit"
     },
@@ -5024,7 +5024,7 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_core_providers_auth_provider_logout",
-      "community": 34,
+      "community": 62,
       "community_name": "auth_provider.dart",
       "norm_label": "logout"
     },
@@ -5035,7 +5035,7 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_core_providers_auth_provider_dispose",
-      "community": 34,
+      "community": 62,
       "community_name": "auth_provider.dart",
       "norm_label": "dispose"
     },
@@ -5058,7 +5058,7 @@
       "_origin": "ast",
       "id": "package_firebase_auth_firebase_auth_dart",
       "community": 34,
-      "community_name": "auth_provider.dart",
+      "community_name": "auth_service.dart",
       "norm_label": "package:firebase_auth/firebase_auth.dart"
     },
     {
@@ -5069,7 +5069,7 @@
       "_origin": "ast",
       "id": "models_auth_user_dart",
       "community": 34,
-      "community_name": "auth_provider.dart",
+      "community_name": "auth_service.dart",
       "norm_label": "../models/auth_user.dart"
     },
     {
@@ -5079,7 +5079,7 @@
       "source_location": null,
       "_origin": "ast",
       "id": "services_auth_service_dart",
-      "community": 34,
+      "community": 62,
       "community_name": "auth_provider.dart",
       "norm_label": "../services/auth_service.dart"
     },
@@ -5102,7 +5102,7 @@
       "_origin": "ast",
       "id": "lib_core_providers_focus_lock_provider_focuslockprovider",
       "community": 111,
-      "community_name": "State",
+      "community_name": "home_screen.dart",
       "norm_label": "focuslockprovider"
     },
     {
@@ -5882,8 +5882,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "dart_convert",
-      "community": 17,
-      "community_name": "mosque_service.dart",
+      "community": 100,
+      "community_name": "api_service.dart",
       "norm_label": "dart:convert"
     },
     {
@@ -5982,7 +5982,7 @@
       "_origin": "ast",
       "id": "lib_core_providers_hadith_provider_hadithprovider",
       "community": 111,
-      "community_name": "State",
+      "community_name": "home_screen.dart",
       "norm_label": "hadithprovider"
     },
     {
@@ -6081,7 +6081,7 @@
       "_origin": "ast",
       "id": "errors_error_messages_dart",
       "community": 27,
-      "community_name": "quran_service.dart",
+      "community_name": "../errors/error_messages.dart",
       "norm_label": "../errors/error_messages.dart"
     },
     {
@@ -6631,7 +6631,7 @@
       "_origin": "ast",
       "id": "package_cloud_firestore_cloud_firestore_dart",
       "community": 34,
-      "community_name": "auth_provider.dart",
+      "community_name": "auth_service.dart",
       "norm_label": "package:cloud_firestore/cloud_firestore.dart"
     },
     {
@@ -6652,8 +6652,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "services_location_service_dart",
-      "community": 2,
-      "community_name": "prayer_provider.dart",
+      "community": 25,
+      "community_name": "qibla_provider.dart",
       "norm_label": "../services/location_service.dart"
     },
     {
@@ -6686,7 +6686,7 @@
       "_origin": "ast",
       "id": "lib_core_providers_prayer_provider_prayerprovider",
       "community": 111,
-      "community_name": "State",
+      "community_name": "home_screen.dart",
       "norm_label": "prayerprovider"
     },
     {
@@ -6916,8 +6916,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "position_get",
-      "community": 25,
-      "community_name": "qibla_provider.dart",
+      "community": 2,
+      "community_name": "prayer_provider.dart",
       "norm_label": "position? get"
     },
     {
@@ -7081,7 +7081,7 @@
       "source_location": null,
       "_origin": "ast",
       "id": "package_flutter_dotenv_flutter_dotenv_dart",
-      "community": 27,
+      "community": 95,
       "community_name": "quran_service.dart",
       "norm_label": "package:flutter_dotenv/flutter_dotenv.dart"
     },
@@ -7093,7 +7093,7 @@
       "_origin": "ast",
       "id": "models_prayer_times_model_dart",
       "community": 27,
-      "community_name": "quran_service.dart",
+      "community_name": "../errors/error_messages.dart",
       "norm_label": "../models/prayer_times_model.dart"
     },
     {
@@ -7115,7 +7115,7 @@
       "_origin": "ast",
       "id": "models_calendar_model_dart",
       "community": 27,
-      "community_name": "quran_service.dart",
+      "community_name": "../errors/error_messages.dart",
       "norm_label": "../models/calendar_model.dart"
     },
     {
@@ -7180,8 +7180,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_core_providers_prayer_settings_provider_prayersettingsprovider",
-      "community": 111,
-      "community_name": "State",
+      "community": 82,
+      "community_name": "prayer_notification_settings_screen.dart",
       "norm_label": "prayersettingsprovider"
     },
     {
@@ -8390,7 +8390,7 @@
       "source_location": null,
       "_origin": "ast",
       "id": "models_surah_model_dart",
-      "community": 27,
+      "community": 95,
       "community_name": "quran_service.dart",
       "norm_label": "../models/surah_model.dart"
     },
@@ -8401,7 +8401,7 @@
       "source_location": null,
       "_origin": "ast",
       "id": "models_surah_detail_model_dart",
-      "community": 27,
+      "community": 95,
       "community_name": "quran_service.dart",
       "norm_label": "../models/surah_detail_model.dart"
     },
@@ -8666,7 +8666,7 @@
       "_origin": "ast",
       "id": "lib_core_providers_verse_provider_verseprovider",
       "community": 111,
-      "community_name": "State",
+      "community_name": "home_screen.dart",
       "norm_label": "verseprovider"
     },
     {
@@ -9303,8 +9303,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_core_services_api_service",
-      "community": 17,
-      "community_name": "mosque_service.dart",
+      "community": 100,
+      "community_name": "api_service.dart",
       "norm_label": "api_service.dart"
     },
     {
@@ -9315,7 +9315,7 @@
       "_origin": "ast",
       "id": "lib_core_services_api_service_apiservice",
       "community": 27,
-      "community_name": "quran_service.dart",
+      "community_name": "../errors/error_messages.dart",
       "norm_label": "apiservice"
     },
     {
@@ -9325,8 +9325,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_core_services_api_service_fallbackbaseurl",
-      "community": 17,
-      "community_name": "mosque_service.dart",
+      "community": 100,
+      "community_name": "api_service.dart",
       "norm_label": "_fallbackbaseurl"
     },
     {
@@ -9336,8 +9336,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_core_services_api_service_defaultbaseurl",
-      "community": 17,
-      "community_name": "mosque_service.dart",
+      "community": 100,
+      "community_name": "api_service.dart",
       "norm_label": "_defaultbaseurl"
     },
     {
@@ -9347,8 +9347,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "static_final_string",
-      "community": 17,
-      "community_name": "mosque_service.dart",
+      "community": 100,
+      "community_name": "api_service.dart",
       "norm_label": "static final string"
     },
     {
@@ -9358,8 +9358,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_core_services_api_service_baseurl",
-      "community": 17,
-      "community_name": "mosque_service.dart",
+      "community": 100,
+      "community_name": "api_service.dart",
       "norm_label": "_baseurl"
     },
     {
@@ -9369,8 +9369,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_core_services_api_service_client",
-      "community": 17,
-      "community_name": "mosque_service.dart",
+      "community": 100,
+      "community_name": "api_service.dart",
       "norm_label": "_client"
     },
     {
@@ -9380,8 +9380,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "client",
-      "community": 17,
-      "community_name": "mosque_service.dart",
+      "community": 100,
+      "community_name": "api_service.dart",
       "norm_label": "client"
     },
     {
@@ -9391,8 +9391,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_core_services_api_service_handleresponse",
-      "community": 17,
-      "community_name": "mosque_service.dart",
+      "community": 100,
+      "community_name": "api_service.dart",
       "norm_label": "_handleresponse"
     },
     {
@@ -9402,8 +9402,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_core_services_api_service_dispose",
-      "community": 17,
-      "community_name": "mosque_service.dart",
+      "community": 100,
+      "community_name": "api_service.dart",
       "norm_label": "dispose"
     },
     {
@@ -9413,8 +9413,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "package_http_http_dart",
-      "community": 17,
-      "community_name": "mosque_service.dart",
+      "community": 100,
+      "community_name": "api_service.dart",
       "norm_label": "package:http/http.dart"
     },
     {
@@ -9424,8 +9424,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "errors_app_exceptions_dart",
-      "community": 17,
-      "community_name": "mosque_service.dart",
+      "community": 100,
+      "community_name": "api_service.dart",
       "norm_label": "../errors/app_exceptions.dart"
     },
     {
@@ -9436,7 +9436,7 @@
       "_origin": "ast",
       "id": "lib_core_services_auth_service",
       "community": 34,
-      "community_name": "auth_provider.dart",
+      "community_name": "auth_service.dart",
       "norm_label": "auth_service.dart"
     },
     {
@@ -9458,7 +9458,7 @@
       "_origin": "ast",
       "id": "lib_core_services_auth_service_authservice",
       "community": 34,
-      "community_name": "auth_provider.dart",
+      "community_name": "auth_service.dart",
       "norm_label": "authservice"
     },
     {
@@ -9469,7 +9469,7 @@
       "_origin": "ast",
       "id": "lib_core_services_auth_service_message",
       "community": 34,
-      "community_name": "auth_provider.dart",
+      "community_name": "auth_service.dart",
       "norm_label": "message"
     },
     {
@@ -9480,7 +9480,7 @@
       "_origin": "ast",
       "id": "lib_core_services_auth_service_auth",
       "community": 34,
-      "community_name": "auth_provider.dart",
+      "community_name": "auth_service.dart",
       "norm_label": "_auth"
     },
     {
@@ -9491,7 +9491,7 @@
       "_origin": "ast",
       "id": "firebaseauth",
       "community": 34,
-      "community_name": "auth_provider.dart",
+      "community_name": "auth_service.dart",
       "norm_label": "firebaseauth"
     },
     {
@@ -9502,7 +9502,7 @@
       "_origin": "ast",
       "id": "lib_core_services_auth_service_firestore",
       "community": 34,
-      "community_name": "auth_provider.dart",
+      "community_name": "auth_service.dart",
       "norm_label": "_firestore"
     },
     {
@@ -9513,7 +9513,7 @@
       "_origin": "ast",
       "id": "firebasefirestore",
       "community": 34,
-      "community_name": "auth_provider.dart",
+      "community_name": "auth_service.dart",
       "norm_label": "firebasefirestore"
     },
     {
@@ -9524,7 +9524,7 @@
       "_origin": "ast",
       "id": "lib_core_services_auth_service_tostring",
       "community": 34,
-      "community_name": "auth_provider.dart",
+      "community_name": "auth_service.dart",
       "norm_label": "tostring"
     },
     {
@@ -9535,7 +9535,7 @@
       "_origin": "ast",
       "id": "lib_core_services_auth_service_restoresession",
       "community": 34,
-      "community_name": "auth_provider.dart",
+      "community_name": "auth_service.dart",
       "norm_label": "restoresession"
     },
     {
@@ -9546,7 +9546,7 @@
       "_origin": "ast",
       "id": "lib_core_services_auth_service_register",
       "community": 34,
-      "community_name": "auth_provider.dart",
+      "community_name": "auth_service.dart",
       "norm_label": "register"
     },
     {
@@ -9557,7 +9557,7 @@
       "_origin": "ast",
       "id": "lib_core_services_auth_service_login",
       "community": 34,
-      "community_name": "auth_provider.dart",
+      "community_name": "auth_service.dart",
       "norm_label": "login"
     },
     {
@@ -9568,7 +9568,7 @@
       "_origin": "ast",
       "id": "lib_core_services_auth_service_logout",
       "community": 34,
-      "community_name": "auth_provider.dart",
+      "community_name": "auth_service.dart",
       "norm_label": "logout"
     },
     {
@@ -9579,7 +9579,7 @@
       "_origin": "ast",
       "id": "lib_core_services_auth_service_updateprofile",
       "community": 34,
-      "community_name": "auth_provider.dart",
+      "community_name": "auth_service.dart",
       "norm_label": "updateprofile"
     },
     {
@@ -9590,7 +9590,7 @@
       "_origin": "ast",
       "id": "lib_core_services_auth_service_verifycurrentpassword",
       "community": 34,
-      "community_name": "auth_provider.dart",
+      "community_name": "auth_service.dart",
       "norm_label": "verifycurrentpassword"
     },
     {
@@ -9601,7 +9601,7 @@
       "_origin": "ast",
       "id": "lib_core_services_auth_service_deleteaccount",
       "community": 34,
-      "community_name": "auth_provider.dart",
+      "community_name": "auth_service.dart",
       "norm_label": "deleteaccount"
     },
     {
@@ -9612,7 +9612,7 @@
       "_origin": "ast",
       "id": "lib_core_services_auth_service_reauthenticate",
       "community": 34,
-      "community_name": "auth_provider.dart",
+      "community_name": "auth_service.dart",
       "norm_label": "_reauthenticate"
     },
     {
@@ -9623,7 +9623,7 @@
       "_origin": "ast",
       "id": "lib_core_services_auth_service_translateautherror",
       "community": 34,
-      "community_name": "auth_provider.dart",
+      "community_name": "auth_service.dart",
       "norm_label": "_translateautherror"
     },
     {
@@ -9634,7 +9634,7 @@
       "_origin": "ast",
       "id": "lib_core_services_calendar_service",
       "community": 27,
-      "community_name": "quran_service.dart",
+      "community_name": "../errors/error_messages.dart",
       "norm_label": "calendar_service.dart"
     },
     {
@@ -9645,7 +9645,7 @@
       "_origin": "ast",
       "id": "lib_core_services_calendar_service_calendarservice",
       "community": 27,
-      "community_name": "quran_service.dart",
+      "community_name": "../errors/error_messages.dart",
       "norm_label": "calendarservice"
     },
     {
@@ -9656,7 +9656,7 @@
       "_origin": "ast",
       "id": "lib_core_services_calendar_service_apiservice",
       "community": 27,
-      "community_name": "quran_service.dart",
+      "community_name": "../errors/error_messages.dart",
       "norm_label": "_apiservice"
     },
     {
@@ -9667,7 +9667,7 @@
       "_origin": "ast",
       "id": "lib_core_services_calendar_service_gettodaycalendar",
       "community": 27,
-      "community_name": "quran_service.dart",
+      "community_name": "../errors/error_messages.dart",
       "norm_label": "gettodaycalendar"
     },
     {
@@ -9678,7 +9678,7 @@
       "_origin": "ast",
       "id": "lib_core_services_calendar_service_getcalendarbydate",
       "community": 27,
-      "community_name": "quran_service.dart",
+      "community_name": "../errors/error_messages.dart",
       "norm_label": "getcalendarbydate"
     },
     {
@@ -9689,7 +9689,7 @@
       "_origin": "ast",
       "id": "lib_core_services_calendar_service_converttohijri",
       "community": 27,
-      "community_name": "quran_service.dart",
+      "community_name": "../errors/error_messages.dart",
       "norm_label": "_converttohijri"
     },
     {
@@ -9700,7 +9700,7 @@
       "_origin": "ast",
       "id": "lib_core_services_calendar_service_dispose",
       "community": 27,
-      "community_name": "quran_service.dart",
+      "community_name": "../errors/error_messages.dart",
       "norm_label": "dispose"
     },
     {
@@ -9711,7 +9711,7 @@
       "_origin": "ast",
       "id": "api_service_dart",
       "community": 27,
-      "community_name": "quran_service.dart",
+      "community_name": "../errors/error_messages.dart",
       "norm_label": "api_service.dart"
     },
     {
@@ -10833,7 +10833,7 @@
       "_origin": "ast",
       "id": "lib_core_services_prayer_service",
       "community": 27,
-      "community_name": "quran_service.dart",
+      "community_name": "../errors/error_messages.dart",
       "norm_label": "prayer_service.dart"
     },
     {
@@ -10844,7 +10844,7 @@
       "_origin": "ast",
       "id": "lib_core_services_prayer_service_prayerservice",
       "community": 27,
-      "community_name": "quran_service.dart",
+      "community_name": "../errors/error_messages.dart",
       "norm_label": "prayerservice"
     },
     {
@@ -10855,7 +10855,7 @@
       "_origin": "ast",
       "id": "lib_core_services_prayer_service_apiservice",
       "community": 27,
-      "community_name": "quran_service.dart",
+      "community_name": "../errors/error_messages.dart",
       "norm_label": "_apiservice"
     },
     {
@@ -10866,7 +10866,7 @@
       "_origin": "ast",
       "id": "lib_core_services_prayer_service_defaulttimezone",
       "community": 27,
-      "community_name": "quran_service.dart",
+      "community_name": "../errors/error_messages.dart",
       "norm_label": "_defaulttimezone"
     },
     {
@@ -10877,7 +10877,7 @@
       "_origin": "ast",
       "id": "lib_core_services_prayer_service_gettodayprayertimes",
       "community": 27,
-      "community_name": "quran_service.dart",
+      "community_name": "../errors/error_messages.dart",
       "norm_label": "gettodayprayertimes"
     },
     {
@@ -10888,7 +10888,7 @@
       "_origin": "ast",
       "id": "lib_core_services_prayer_service_getprayertimesbydate",
       "community": 27,
-      "community_name": "quran_service.dart",
+      "community_name": "../errors/error_messages.dart",
       "norm_label": "getprayertimesbydate"
     },
     {
@@ -10899,7 +10899,7 @@
       "_origin": "ast",
       "id": "lib_core_services_prayer_service_dispose",
       "community": 27,
-      "community_name": "quran_service.dart",
+      "community_name": "../errors/error_messages.dart",
       "norm_label": "dispose"
     },
     {
@@ -11030,7 +11030,7 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_core_services_quran_service",
-      "community": 27,
+      "community": 95,
       "community_name": "quran_service.dart",
       "norm_label": "quran_service.dart"
     },
@@ -11041,7 +11041,7 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_core_services_quran_service_quranservice",
-      "community": 27,
+      "community": 95,
       "community_name": "quran_service.dart",
       "norm_label": "quranservice"
     },
@@ -11052,7 +11052,7 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_core_services_quran_service_apiservice",
-      "community": 27,
+      "community": 95,
       "community_name": "quran_service.dart",
       "norm_label": "_apiservice"
     },
@@ -11063,7 +11063,7 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_core_services_quran_service_apiservicev3",
-      "community": 27,
+      "community": 95,
       "community_name": "quran_service.dart",
       "norm_label": "_apiservicev3"
     },
@@ -11074,7 +11074,7 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_core_services_quran_service_cachedsurahs",
-      "community": 27,
+      "community": 95,
       "community_name": "quran_service.dart",
       "norm_label": "_cachedsurahs"
     },
@@ -11085,7 +11085,7 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_core_services_quran_service_getallsurahs",
-      "community": 27,
+      "community": 95,
       "community_name": "quran_service.dart",
       "norm_label": "getallsurahs"
     },
@@ -11096,7 +11096,7 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_core_services_quran_service_getsurahdetail",
-      "community": 27,
+      "community": 95,
       "community_name": "quran_service.dart",
       "norm_label": "getsurahdetail"
     },
@@ -11107,7 +11107,7 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_core_services_quran_service_loadcompletesurah",
-      "community": 27,
+      "community": 95,
       "community_name": "quran_service.dart",
       "norm_label": "loadcompletesurah"
     },
@@ -11118,7 +11118,7 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_core_services_quran_service_dispose",
-      "community": 27,
+      "community": 95,
       "community_name": "quran_service.dart",
       "norm_label": "dispose"
     },
@@ -11129,7 +11129,7 @@
       "source_location": null,
       "_origin": "ast",
       "id": "models_ayah_model_dart",
-      "community": 27,
+      "community": 95,
       "community_name": "quran_service.dart",
       "norm_label": "../models/ayah_model.dart"
     },
@@ -11723,8 +11723,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_core_theme_app_theme",
-      "community": 63,
-      "community_name": "package:flutter/material.dart",
+      "community": 94,
+      "community_name": "package:google_fonts/google_fonts.dart",
       "norm_label": "app_theme.dart"
     },
     {
@@ -11734,8 +11734,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_core_theme_app_theme_apptheme",
-      "community": 63,
-      "community_name": "package:flutter/material.dart",
+      "community": 94,
+      "community_name": "package:google_fonts/google_fonts.dart",
       "norm_label": "apptheme"
     },
     {
@@ -11745,8 +11745,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_core_theme_app_theme_lighttheme",
-      "community": 63,
-      "community_name": "package:flutter/material.dart",
+      "community": 94,
+      "community_name": "package:google_fonts/google_fonts.dart",
       "norm_label": "lighttheme"
     },
     {
@@ -11756,8 +11756,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_core_theme_app_theme_darktheme",
-      "community": 63,
-      "community_name": "package:flutter/material.dart",
+      "community": 94,
+      "community_name": "package:google_fonts/google_fonts.dart",
       "norm_label": "darktheme"
     },
     {
@@ -11767,8 +11767,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "package_google_fonts_google_fonts_dart",
-      "community": 63,
-      "community_name": "package:flutter/material.dart",
+      "community": 94,
+      "community_name": "package:google_fonts/google_fonts.dart",
       "norm_label": "package:google_fonts/google_fonts.dart"
     },
     {
@@ -11778,8 +11778,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "app_colors_dart",
-      "community": 63,
-      "community_name": "package:flutter/material.dart",
+      "community": 94,
+      "community_name": "package:google_fonts/google_fonts.dart",
       "norm_label": "app_colors.dart"
     },
     {
@@ -11800,8 +11800,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_core_theme_theme_provider_themeprovider",
-      "community": 21,
-      "community_name": "../../core/theme/app_colors.dart",
+      "community": 93,
+      "community_name": "package:flutter/material.dart",
       "norm_label": "themeprovider"
     },
     {
@@ -12119,8 +12119,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "package_provider_provider_dart",
-      "community": 21,
-      "community_name": "../../core/theme/app_colors.dart",
+      "community": 93,
+      "community_name": "package:flutter/material.dart",
       "norm_label": "package:provider/provider.dart"
     },
     {
@@ -12141,8 +12141,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "core_theme_theme_provider_dart",
-      "community": 21,
-      "community_name": "../../core/theme/app_colors.dart",
+      "community": 93,
+      "community_name": "package:flutter/material.dart",
       "norm_label": "../../core/theme/theme_provider.dart"
     },
     {
@@ -12152,8 +12152,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "core_providers_prayer_provider_dart",
-      "community": 103,
-      "community_name": "horizontal_prayer_stepper.dart",
+      "community": 8,
+      "community_name": "banner.dart",
       "norm_label": "../../core/providers/prayer_provider.dart"
     },
     {
@@ -12163,8 +12163,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "core_providers_verse_provider_dart",
-      "community": 113,
-      "community_name": "main.dart",
+      "community": 111,
+      "community_name": "home_screen.dart",
       "norm_label": "../../core/providers/verse_provider.dart"
     },
     {
@@ -12174,8 +12174,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "core_providers_hadith_provider_dart",
-      "community": 113,
-      "community_name": "main.dart",
+      "community": 111,
+      "community_name": "home_screen.dart",
       "norm_label": "../../core/providers/hadith_provider.dart"
     },
     {
@@ -12185,8 +12185,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "core_providers_streak_provider_dart",
-      "community": 113,
-      "community_name": "main.dart",
+      "community": 114,
+      "community_name": "streak_card.dart",
       "norm_label": "../../core/providers/streak_provider.dart"
     },
     {
@@ -12196,8 +12196,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "core_providers_prayer_settings_provider_dart",
-      "community": 113,
-      "community_name": "main.dart",
+      "community": 82,
+      "community_name": "prayer_notification_settings_screen.dart",
       "norm_label": "../../core/providers/prayer_settings_provider.dart"
     },
     {
@@ -12207,8 +12207,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "core_providers_quran_provider_dart",
-      "community": 29,
-      "community_name": "search_bar.dart",
+      "community": 20,
+      "community_name": "QuranProvider",
       "norm_label": "../../core/providers/quran_provider.dart"
     },
     {
@@ -12229,8 +12229,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "core_providers_qibla_provider_dart",
-      "community": 90,
-      "community_name": "qibla_screen.dart",
+      "community": 113,
+      "community_name": "main.dart",
       "norm_label": "../../core/providers/qibla_provider.dart"
     },
     {
@@ -12241,7 +12241,7 @@
       "_origin": "ast",
       "id": "core_providers_focus_lock_provider_dart",
       "community": 111,
-      "community_name": "State",
+      "community_name": "home_screen.dart",
       "norm_label": "../../core/providers/focus_lock_provider.dart"
     },
     {
@@ -12251,8 +12251,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "core_providers_auth_provider_dart",
-      "community": 131,
-      "community_name": "profile_sheet.dart",
+      "community": 91,
+      "community_name": "AuthProvider",
       "norm_label": "../../core/providers/auth_provider.dart"
     },
     {
@@ -12306,8 +12306,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_screens_auth_auth_gate",
-      "community": 131,
-      "community_name": "profile_sheet.dart",
+      "community": 91,
+      "community_name": "AuthProvider",
       "norm_label": "auth_gate.dart"
     },
     {
@@ -12317,8 +12317,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_screens_auth_auth_gate_authgate",
-      "community": 131,
-      "community_name": "profile_sheet.dart",
+      "community": 91,
+      "community_name": "AuthProvider",
       "norm_label": "authgate"
     },
     {
@@ -12328,8 +12328,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_screens_auth_auth_gate_build",
-      "community": 131,
-      "community_name": "profile_sheet.dart",
+      "community": 91,
+      "community_name": "AuthProvider",
       "norm_label": "build"
     },
     {
@@ -12339,8 +12339,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "main_screen_dart",
-      "community": 131,
-      "community_name": "profile_sheet.dart",
+      "community": 91,
+      "community_name": "AuthProvider",
       "norm_label": "../main_screen.dart"
     },
     {
@@ -12350,8 +12350,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "get_started_screen_dart",
-      "community": 131,
-      "community_name": "profile_sheet.dart",
+      "community": 91,
+      "community_name": "AuthProvider",
       "norm_label": "get_started_screen.dart"
     },
     {
@@ -12383,7 +12383,7 @@
       "source_location": null,
       "_origin": "ast",
       "id": "statefulwidget",
-      "community": 8,
+      "community": 26,
       "community_name": "StatefulWidget",
       "norm_label": "statefulwidget"
     },
@@ -12406,7 +12406,7 @@
       "_origin": "ast",
       "id": "state",
       "community": 111,
-      "community_name": "State",
+      "community_name": "home_screen.dart",
       "norm_label": "state"
     },
     {
@@ -12625,7 +12625,7 @@
       "source_location": null,
       "_origin": "ast",
       "id": "voidcallback",
-      "community": 94,
+      "community": 63,
       "community_name": "VoidCallback",
       "norm_label": "voidcallback"
     },
@@ -12867,8 +12867,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_screens_auth_auth_screen_submit",
-      "community": 131,
-      "community_name": "profile_sheet.dart",
+      "community": 91,
+      "community_name": "AuthProvider",
       "norm_label": "submit"
     },
     {
@@ -12878,8 +12878,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_screens_auth_auth_screen_build",
-      "community": 131,
-      "community_name": "profile_sheet.dart",
+      "community": 91,
+      "community_name": "AuthProvider",
       "norm_label": "build"
     },
     {
@@ -12911,8 +12911,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "core_services_auth_service_dart",
-      "community": 40,
-      "community_name": "auth_screen.dart",
+      "community": 131,
+      "community_name": "profile_sheet.dart",
       "norm_label": "../../core/services/auth_service.dart"
     },
     {
@@ -12922,8 +12922,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "core_theme_app_colors_dart",
-      "community": 21,
-      "community_name": "../../core/theme/app_colors.dart",
+      "community": 93,
+      "community_name": "package:flutter/material.dart",
       "norm_label": "../../core/theme/app_colors.dart"
     },
     {
@@ -13054,8 +13054,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_screens_home_home_screen",
-      "community": 113,
-      "community_name": "main.dart",
+      "community": 111,
+      "community_name": "home_screen.dart",
       "norm_label": "home_screen.dart"
     },
     {
@@ -13065,7 +13065,7 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_screens_home_home_screen_homescreen",
-      "community": 8,
+      "community": 26,
       "community_name": "StatefulWidget",
       "norm_label": "homescreen"
     },
@@ -13077,7 +13077,7 @@
       "_origin": "ast",
       "id": "lib_screens_home_home_screen_homescreenstate",
       "community": 111,
-      "community_name": "State",
+      "community_name": "home_screen.dart",
       "norm_label": "_homescreenstate"
     },
     {
@@ -13087,8 +13087,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_screens_home_home_screen_createstate",
-      "community": 113,
-      "community_name": "main.dart",
+      "community": 111,
+      "community_name": "home_screen.dart",
       "norm_label": "createstate"
     },
     {
@@ -13099,7 +13099,7 @@
       "_origin": "ast",
       "id": "lib_screens_home_home_screen_initstate",
       "community": 111,
-      "community_name": "State",
+      "community_name": "home_screen.dart",
       "norm_label": "initstate"
     },
     {
@@ -13110,7 +13110,7 @@
       "_origin": "ast",
       "id": "lib_screens_home_home_screen_build",
       "community": 111,
-      "community_name": "State",
+      "community_name": "home_screen.dart",
       "norm_label": "build"
     },
     {
@@ -13120,8 +13120,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "widgets_common_error_state_view_dart",
-      "community": 90,
-      "community_name": "qibla_screen.dart",
+      "community": 56,
+      "community_name": "quran_screen.dart",
       "norm_label": "../../widgets/common/error_state_view.dart"
     },
     {
@@ -13131,8 +13131,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "widgets_common_section_skeleton_dart",
-      "community": 90,
-      "community_name": "qibla_screen.dart",
+      "community": 111,
+      "community_name": "home_screen.dart",
       "norm_label": "../../widgets/common/section_skeleton.dart"
     },
     {
@@ -13142,8 +13142,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "widgets_home_banner_dart",
-      "community": 113,
-      "community_name": "main.dart",
+      "community": 111,
+      "community_name": "home_screen.dart",
       "norm_label": "../../widgets/home/banner.dart"
     },
     {
@@ -13153,8 +13153,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "widgets_home_focus_lock_card_dart",
-      "community": 113,
-      "community_name": "main.dart",
+      "community": 111,
+      "community_name": "home_screen.dart",
       "norm_label": "../../widgets/home/focus_lock_card.dart"
     },
     {
@@ -13164,8 +13164,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "widgets_home_horizontal_prayer_stepper_dart",
-      "community": 113,
-      "community_name": "main.dart",
+      "community": 111,
+      "community_name": "home_screen.dart",
       "norm_label": "../../widgets/home/horizontal_prayer_stepper.dart"
     },
     {
@@ -13175,8 +13175,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "widgets_home_services_tools_grid_dart",
-      "community": 113,
-      "community_name": "main.dart",
+      "community": 111,
+      "community_name": "home_screen.dart",
       "norm_label": "../../widgets/home/services_tools_grid.dart"
     },
     {
@@ -13186,8 +13186,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "widgets_home_random_content_card_dart",
-      "community": 113,
-      "community_name": "main.dart",
+      "community": 111,
+      "community_name": "home_screen.dart",
       "norm_label": "../../widgets/home/random_content_card.dart"
     },
     {
@@ -13197,8 +13197,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "widgets_home_streak_card_dart",
-      "community": 113,
-      "community_name": "main.dart",
+      "community": 111,
+      "community_name": "home_screen.dart",
       "norm_label": "../../widgets/home/streak_card.dart"
     },
     {
@@ -13230,7 +13230,7 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_screens_lock_overlay_lock_overlay_screen_lockoverlayscreen",
-      "community": 8,
+      "community": 26,
       "community_name": "StatefulWidget",
       "norm_label": "lockoverlayscreen"
     },
@@ -13242,7 +13242,7 @@
       "_origin": "ast",
       "id": "lib_screens_lock_overlay_lock_overlay_screen_lockoverlayscreenstate",
       "community": 111,
-      "community_name": "State",
+      "community_name": "home_screen.dart",
       "norm_label": "_lockoverlayscreenstate"
     },
     {
@@ -13704,7 +13704,7 @@
       "_origin": "ast",
       "id": "lib_screens_lock_overlay_lock_overlay_screen_buildmindfulpauseui",
       "community": 111,
-      "community_name": "State",
+      "community_name": "home_screen.dart",
       "norm_label": "_buildmindfulpauseui"
     },
     {
@@ -14187,8 +14187,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "core_errors_error_messages_dart",
-      "community": 63,
-      "community_name": "package:flutter/material.dart",
+      "community": 20,
+      "community_name": "QuranProvider",
       "norm_label": "../../core/errors/error_messages.dart"
     },
     {
@@ -15045,8 +15045,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_screens_settings_focus_lock_config_screen_focuslockconfigscreen",
-      "community": 111,
-      "community_name": "State",
+      "community": 26,
+      "community_name": "StatefulWidget",
       "norm_label": "focuslockconfigscreen"
     },
     {
@@ -15056,8 +15056,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_screens_settings_focus_lock_config_screen_focuslockconfigscreenstate",
-      "community": 111,
-      "community_name": "State",
+      "community": 26,
+      "community_name": "StatefulWidget",
       "norm_label": "_focuslockconfigscreenstate"
     },
     {
@@ -15265,8 +15265,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_screens_settings_focus_lock_config_screen_build",
-      "community": 111,
-      "community_name": "State",
+      "community": 15,
+      "community_name": "focus_lock_config_screen.dart",
       "norm_label": "build"
     },
     {
@@ -15507,8 +15507,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_screens_settings_prayer_notification_settings_screen_prayernotificationsettingsscreen",
-      "community": 8,
-      "community_name": "StatefulWidget",
+      "community": 82,
+      "community_name": "prayer_notification_settings_screen.dart",
       "norm_label": "prayernotificationsettingsscreen"
     },
     {
@@ -15518,8 +15518,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_screens_settings_prayer_notification_settings_screen_prayernotificationsettingsscreenstate",
-      "community": 111,
-      "community_name": "State",
+      "community": 82,
+      "community_name": "prayer_notification_settings_screen.dart",
       "norm_label": "_prayernotificationsettingsscreenstate"
     },
     {
@@ -15562,8 +15562,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_screens_settings_prayer_notification_settings_screen_build",
-      "community": 111,
-      "community_name": "State",
+      "community": 82,
+      "community_name": "prayer_notification_settings_screen.dart",
       "norm_label": "build"
     },
     {
@@ -15727,8 +15727,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_screens_settings_settings_screen_settingsscreen",
-      "community": 131,
-      "community_name": "profile_sheet.dart",
+      "community": 91,
+      "community_name": "AuthProvider",
       "norm_label": "settingsscreen"
     },
     {
@@ -15870,8 +15870,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_screens_settings_settings_screen_confirmlogout",
-      "community": 131,
-      "community_name": "profile_sheet.dart",
+      "community": 91,
+      "community_name": "AuthProvider",
       "norm_label": "_confirmlogout"
     },
     {
@@ -16002,8 +16002,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_widgets_auth_profile_sheet_profilefield",
-      "community": 96,
-      "community_name": "StatelessWidget",
+      "community": 131,
+      "community_name": "profile_sheet.dart",
       "norm_label": "_profilefield"
     },
     {
@@ -16013,8 +16013,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_widgets_auth_profile_sheet_passwordvisibilitybutton",
-      "community": 96,
-      "community_name": "StatelessWidget",
+      "community": 131,
+      "community_name": "profile_sheet.dart",
       "norm_label": "_passwordvisibilitybutton"
     },
     {
@@ -16024,8 +16024,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_widgets_auth_profile_sheet_profileerror",
-      "community": 96,
-      "community_name": "StatelessWidget",
+      "community": 131,
+      "community_name": "profile_sheet.dart",
       "norm_label": "_profileerror"
     },
     {
@@ -16332,8 +16332,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_widgets_auth_profile_sheet_initstate",
-      "community": 131,
-      "community_name": "profile_sheet.dart",
+      "community": 91,
+      "community_name": "AuthProvider",
       "norm_label": "initstate"
     },
     {
@@ -16354,8 +16354,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_widgets_auth_profile_sheet_save",
-      "community": 131,
-      "community_name": "profile_sheet.dart",
+      "community": 91,
+      "community_name": "AuthProvider",
       "norm_label": "_save"
     },
     {
@@ -16365,8 +16365,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_widgets_auth_profile_sheet_build",
-      "community": 131,
-      "community_name": "profile_sheet.dart",
+      "community": 91,
+      "community_name": "AuthProvider",
       "norm_label": "build"
     },
     {
@@ -16387,8 +16387,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_widgets_auth_profile_sheet_onpasswordchanged",
-      "community": 131,
-      "community_name": "profile_sheet.dart",
+      "community": 91,
+      "community_name": "AuthProvider",
       "norm_label": "_onpasswordchanged"
     },
     {
@@ -16398,8 +16398,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_widgets_auth_profile_sheet_delete",
-      "community": 131,
-      "community_name": "profile_sheet.dart",
+      "community": 91,
+      "community_name": "AuthProvider",
       "norm_label": "_delete"
     },
     {
@@ -16420,8 +16420,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_widgets_auth_terms_privacy_modal_termsprivacymodal",
-      "community": 51,
-      "community_name": "terms_privacy_modal.dart",
+      "community": 26,
+      "community_name": "StatefulWidget",
       "norm_label": "termsprivacymodal"
     },
     {
@@ -16431,8 +16431,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_widgets_auth_terms_privacy_modal_termsprivacymodalstate",
-      "community": 51,
-      "community_name": "terms_privacy_modal.dart",
+      "community": 26,
+      "community_name": "StatefulWidget",
       "norm_label": "_termsprivacymodalstate"
     },
     {
@@ -16442,8 +16442,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "singletickerproviderstatemixin",
-      "community": 89,
-      "community_name": "pill_badge.dart",
+      "community": 26,
+      "community_name": "StatefulWidget",
       "norm_label": "singletickerproviderstatemixin"
     },
     {
@@ -16707,7 +16707,7 @@
       "_origin": "ast",
       "id": "lib_widgets_common_app_header",
       "community": 21,
-      "community_name": "../../core/theme/app_colors.dart",
+      "community_name": "app_header.dart",
       "norm_label": "app_header.dart"
     },
     {
@@ -16718,7 +16718,7 @@
       "_origin": "ast",
       "id": "lib_widgets_common_app_header_headermode",
       "community": 21,
-      "community_name": "../../core/theme/app_colors.dart",
+      "community_name": "app_header.dart",
       "norm_label": "headermode"
     },
     {
@@ -16728,8 +16728,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_widgets_common_app_header_appheader",
-      "community": 90,
-      "community_name": "qibla_screen.dart",
+      "community": 91,
+      "community_name": "AuthProvider",
       "norm_label": "appheader"
     },
     {
@@ -16740,7 +16740,7 @@
       "_origin": "ast",
       "id": "lib_widgets_common_app_header_mode",
       "community": 21,
-      "community_name": "../../core/theme/app_colors.dart",
+      "community_name": "app_header.dart",
       "norm_label": "mode"
     },
     {
@@ -16751,7 +16751,7 @@
       "_origin": "ast",
       "id": "lib_widgets_common_app_header_ontogglebookmarks",
       "community": 21,
-      "community_name": "../../core/theme/app_colors.dart",
+      "community_name": "app_header.dart",
       "norm_label": "ontogglebookmarks"
     },
     {
@@ -16762,7 +16762,7 @@
       "_origin": "ast",
       "id": "lib_widgets_common_app_header_ontogglefavorites",
       "community": 21,
-      "community_name": "../../core/theme/app_colors.dart",
+      "community_name": "app_header.dart",
       "norm_label": "ontogglefavorites"
     },
     {
@@ -16773,7 +16773,7 @@
       "_origin": "ast",
       "id": "lib_widgets_common_app_header_build",
       "community": 21,
-      "community_name": "../../core/theme/app_colors.dart",
+      "community_name": "app_header.dart",
       "norm_label": "build"
     },
     {
@@ -16784,7 +16784,7 @@
       "_origin": "ast",
       "id": "lib_widgets_common_app_header_buildleading",
       "community": 21,
-      "community_name": "../../core/theme/app_colors.dart",
+      "community_name": "app_header.dart",
       "norm_label": "_buildleading"
     },
     {
@@ -16795,7 +16795,7 @@
       "_origin": "ast",
       "id": "lib_widgets_common_app_header_buildstaticleading",
       "community": 21,
-      "community_name": "../../core/theme/app_colors.dart",
+      "community_name": "app_header.dart",
       "norm_label": "_buildstaticleading"
     },
     {
@@ -16806,7 +16806,7 @@
       "_origin": "ast",
       "id": "lib_widgets_common_app_header_buildlocationleading",
       "community": 21,
-      "community_name": "../../core/theme/app_colors.dart",
+      "community_name": "app_header.dart",
       "norm_label": "_buildlocationleading"
     },
     {
@@ -16817,7 +16817,7 @@
       "_origin": "ast",
       "id": "lib_widgets_common_app_header_buildactions",
       "community": 21,
-      "community_name": "../../core/theme/app_colors.dart",
+      "community_name": "app_header.dart",
       "norm_label": "_buildactions"
     },
     {
@@ -16827,8 +16827,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_widgets_common_app_header_buildprofilemenu",
-      "community": 131,
-      "community_name": "profile_sheet.dart",
+      "community": 91,
+      "community_name": "AuthProvider",
       "norm_label": "_buildprofilemenu"
     },
     {
@@ -16839,7 +16839,7 @@
       "_origin": "ast",
       "id": "lib_widgets_common_app_header_buildnotificationbutton",
       "community": 21,
-      "community_name": "../../core/theme/app_colors.dart",
+      "community_name": "app_header.dart",
       "norm_label": "_buildnotificationbutton"
     },
     {
@@ -16850,7 +16850,7 @@
       "_origin": "ast",
       "id": "lib_widgets_common_app_header_buildquranbookmarkbutton",
       "community": 21,
-      "community_name": "../../core/theme/app_colors.dart",
+      "community_name": "app_header.dart",
       "norm_label": "_buildquranbookmarkbutton"
     },
     {
@@ -16861,7 +16861,7 @@
       "_origin": "ast",
       "id": "lib_widgets_common_app_header_buildthemebutton",
       "community": 21,
-      "community_name": "../../core/theme/app_colors.dart",
+      "community_name": "app_header.dart",
       "norm_label": "_buildthemebutton"
     },
     {
@@ -16872,7 +16872,7 @@
       "_origin": "ast",
       "id": "lib_widgets_common_app_header_buildlikebutton",
       "community": 21,
-      "community_name": "../../core/theme/app_colors.dart",
+      "community_name": "app_header.dart",
       "norm_label": "_buildlikebutton"
     },
     {
@@ -16883,7 +16883,7 @@
       "_origin": "ast",
       "id": "lib_widgets_common_app_header_buildmosqueleading",
       "community": 21,
-      "community_name": "../../core/theme/app_colors.dart",
+      "community_name": "app_header.dart",
       "norm_label": "_buildmosqueleading"
     },
     {
@@ -16893,8 +16893,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_widgets_common_app_header_buildqiblaleading",
-      "community": 90,
-      "community_name": "qibla_screen.dart",
+      "community": 21,
+      "community_name": "app_header.dart",
       "norm_label": "_buildqiblaleading"
     },
     {
@@ -16905,7 +16905,7 @@
       "_origin": "ast",
       "id": "auth_profile_sheet_dart",
       "community": 21,
-      "community_name": "../../core/theme/app_colors.dart",
+      "community_name": "app_header.dart",
       "norm_label": "../auth/profile_sheet.dart"
     },
     {
@@ -17169,7 +17169,7 @@
       "_origin": "ast",
       "id": "lib_widgets_common_error_state_view",
       "community": 63,
-      "community_name": "package:flutter/material.dart",
+      "community_name": "VoidCallback",
       "norm_label": "error_state_view.dart"
     },
     {
@@ -17180,7 +17180,7 @@
       "_origin": "ast",
       "id": "lib_widgets_common_error_state_view_errorstateview",
       "community": 63,
-      "community_name": "package:flutter/material.dart",
+      "community_name": "VoidCallback",
       "norm_label": "errorstateview"
     },
     {
@@ -17191,7 +17191,7 @@
       "_origin": "ast",
       "id": "lib_widgets_common_error_state_view_message",
       "community": 63,
-      "community_name": "package:flutter/material.dart",
+      "community_name": "VoidCallback",
       "norm_label": "message"
     },
     {
@@ -17202,7 +17202,7 @@
       "_origin": "ast",
       "id": "lib_widgets_common_error_state_view_onretry",
       "community": 63,
-      "community_name": "package:flutter/material.dart",
+      "community_name": "VoidCallback",
       "norm_label": "onretry"
     },
     {
@@ -17213,7 +17213,7 @@
       "_origin": "ast",
       "id": "lib_widgets_common_error_state_view_onopensettings",
       "community": 63,
-      "community_name": "package:flutter/material.dart",
+      "community_name": "VoidCallback",
       "norm_label": "onopensettings"
     },
     {
@@ -17224,7 +17224,7 @@
       "_origin": "ast",
       "id": "lib_widgets_common_error_state_view_build",
       "community": 63,
-      "community_name": "package:flutter/material.dart",
+      "community_name": "VoidCallback",
       "norm_label": "build"
     },
     {
@@ -17235,7 +17235,7 @@
       "_origin": "ast",
       "id": "lib_widgets_common_error_state_view_showerrorsnackbar",
       "community": 63,
-      "community_name": "package:flutter/material.dart",
+      "community_name": "VoidCallback",
       "norm_label": "showerrorsnackbar"
     },
     {
@@ -17267,8 +17267,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_widgets_common_pill_badge_pulsingdot",
-      "community": 89,
-      "community_name": "pill_badge.dart",
+      "community": 26,
+      "community_name": "StatefulWidget",
       "norm_label": "_pulsingdot"
     },
     {
@@ -17278,8 +17278,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_widgets_common_pill_badge_pulsingdotstate",
-      "community": 89,
-      "community_name": "pill_badge.dart",
+      "community": 26,
+      "community_name": "StatefulWidget",
       "norm_label": "_pulsingdotstate"
     },
     {
@@ -17377,8 +17377,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "animationcontroller",
-      "community": 89,
-      "community_name": "pill_badge.dart",
+      "community": 26,
+      "community_name": "StatefulWidget",
       "norm_label": "animationcontroller"
     },
     {
@@ -17399,8 +17399,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "animation",
-      "community": 89,
-      "community_name": "pill_badge.dart",
+      "community": 103,
+      "community_name": "horizontal_prayer_stepper.dart",
       "norm_label": "animation"
     },
     {
@@ -17575,8 +17575,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_widgets_common_theme_toggle_button",
-      "community": 21,
-      "community_name": "../../core/theme/app_colors.dart",
+      "community": 93,
+      "community_name": "package:flutter/material.dart",
       "norm_label": "theme_toggle_button.dart"
     },
     {
@@ -17586,8 +17586,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_widgets_common_theme_toggle_button_themetogglebutton",
-      "community": 21,
-      "community_name": "../../core/theme/app_colors.dart",
+      "community": 93,
+      "community_name": "package:flutter/material.dart",
       "norm_label": "themetogglebutton"
     },
     {
@@ -17597,8 +17597,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_widgets_common_theme_toggle_button_build",
-      "community": 21,
-      "community_name": "../../core/theme/app_colors.dart",
+      "community": 93,
+      "community_name": "package:flutter/material.dart",
       "norm_label": "build"
     },
     {
@@ -17939,7 +17939,7 @@
       "_origin": "ast",
       "id": "common_async_app_icon_dart",
       "community": 111,
-      "community_name": "State",
+      "community_name": "home_screen.dart",
       "norm_label": "../common/async_app_icon.dart"
     },
     {
@@ -17950,7 +17950,7 @@
       "_origin": "ast",
       "id": "lib_widgets_home_banner",
       "community": 8,
-      "community_name": "StatefulWidget",
+      "community_name": "banner.dart",
       "norm_label": "banner.dart"
     },
     {
@@ -17961,7 +17961,7 @@
       "_origin": "ast",
       "id": "lib_widgets_home_banner_glassbanner",
       "community": 8,
-      "community_name": "StatefulWidget",
+      "community_name": "banner.dart",
       "norm_label": "glassbanner"
     },
     {
@@ -17972,7 +17972,7 @@
       "_origin": "ast",
       "id": "lib_widgets_home_banner_glassbannerstate",
       "community": 8,
-      "community_name": "StatefulWidget",
+      "community_name": "banner.dart",
       "norm_label": "_glassbannerstate"
     },
     {
@@ -17983,7 +17983,7 @@
       "_origin": "ast",
       "id": "lib_widgets_home_banner_pagecontroller",
       "community": 8,
-      "community_name": "StatefulWidget",
+      "community_name": "banner.dart",
       "norm_label": "_pagecontroller"
     },
     {
@@ -17994,7 +17994,7 @@
       "_origin": "ast",
       "id": "pagecontroller",
       "community": 8,
-      "community_name": "StatefulWidget",
+      "community_name": "banner.dart",
       "norm_label": "pagecontroller"
     },
     {
@@ -18005,7 +18005,7 @@
       "_origin": "ast",
       "id": "lib_widgets_home_banner_createstate",
       "community": 8,
-      "community_name": "StatefulWidget",
+      "community_name": "banner.dart",
       "norm_label": "createstate"
     },
     {
@@ -18016,7 +18016,7 @@
       "_origin": "ast",
       "id": "lib_widgets_home_banner_dispose",
       "community": 8,
-      "community_name": "StatefulWidget",
+      "community_name": "banner.dart",
       "norm_label": "dispose"
     },
     {
@@ -18027,7 +18027,7 @@
       "_origin": "ast",
       "id": "lib_widgets_home_banner_build",
       "community": 8,
-      "community_name": "StatefulWidget",
+      "community_name": "banner.dart",
       "norm_label": "build"
     },
     {
@@ -18038,7 +18038,7 @@
       "_origin": "ast",
       "id": "lib_widgets_home_banner_buildcard",
       "community": 8,
-      "community_name": "StatefulWidget",
+      "community_name": "banner.dart",
       "norm_label": "_buildcard"
     },
     {
@@ -18049,7 +18049,7 @@
       "_origin": "ast",
       "id": "lib_widgets_home_banner_buildprayerslide",
       "community": 8,
-      "community_name": "StatefulWidget",
+      "community_name": "banner.dart",
       "norm_label": "_buildprayerslide"
     },
     {
@@ -18060,7 +18060,7 @@
       "_origin": "ast",
       "id": "lib_widgets_home_banner_buildquranslide",
       "community": 8,
-      "community_name": "StatefulWidget",
+      "community_name": "banner.dart",
       "norm_label": "_buildquranslide"
     },
     {
@@ -18071,7 +18071,7 @@
       "_origin": "ast",
       "id": "package_smooth_page_indicator_smooth_page_indicator_dart",
       "community": 8,
-      "community_name": "StatefulWidget",
+      "community_name": "banner.dart",
       "norm_label": "package:smooth_page_indicator/smooth_page_indicator.dart"
     },
     {
@@ -18082,7 +18082,7 @@
       "_origin": "ast",
       "id": "common_pill_badge_dart",
       "community": 8,
-      "community_name": "StatefulWidget",
+      "community_name": "banner.dart",
       "norm_label": "../common/pill_badge.dart"
     },
     {
@@ -18093,7 +18093,7 @@
       "_origin": "ast",
       "id": "lib_widgets_home_focus_lock_card",
       "community": 111,
-      "community_name": "State",
+      "community_name": "home_screen.dart",
       "norm_label": "focus_lock_card.dart"
     },
     {
@@ -18104,7 +18104,7 @@
       "_origin": "ast",
       "id": "lib_widgets_home_focus_lock_card_focuslockcard",
       "community": 111,
-      "community_name": "State",
+      "community_name": "home_screen.dart",
       "norm_label": "focuslockcard"
     },
     {
@@ -18115,7 +18115,7 @@
       "_origin": "ast",
       "id": "lib_widgets_home_focus_lock_card_formatnextlockcountdown",
       "community": 111,
-      "community_name": "State",
+      "community_name": "home_screen.dart",
       "norm_label": "_formatnextlockcountdown"
     },
     {
@@ -18126,7 +18126,7 @@
       "_origin": "ast",
       "id": "lib_widgets_home_focus_lock_card_build",
       "community": 111,
-      "community_name": "State",
+      "community_name": "home_screen.dart",
       "norm_label": "build"
     },
     {
@@ -18137,7 +18137,7 @@
       "_origin": "ast",
       "id": "screens_settings_focus_lock_config_screen_dart",
       "community": 111,
-      "community_name": "State",
+      "community_name": "home_screen.dart",
       "norm_label": "../../screens/settings/focus_lock_config_screen.dart"
     },
     {
@@ -18400,8 +18400,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_widgets_home_random_content_card_loadingstate",
-      "community": 32,
-      "community_name": "random_content_card.dart",
+      "community": 96,
+      "community_name": "StatelessWidget",
       "norm_label": "_loadingstate"
     },
     {
@@ -18411,8 +18411,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_widgets_home_random_content_card_errorstate",
-      "community": 32,
-      "community_name": "random_content_card.dart",
+      "community": 96,
+      "community_name": "StatelessWidget",
       "norm_label": "_errorstate"
     },
     {
@@ -19654,8 +19654,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "common_error_state_view_dart",
-      "community": 55,
-      "community_name": "mosque_detail_sheet.dart",
+      "community": 92,
+      "community_name": "nearest_mosque_banner.dart",
       "norm_label": "../common/error_state_view.dart"
     },
     {
@@ -19665,8 +19665,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "mosque_quick_actions_dart",
-      "community": 55,
-      "community_name": "mosque_detail_sheet.dart",
+      "community": 92,
+      "community_name": "nearest_mosque_banner.dart",
       "norm_label": "mosque_quick_actions.dart"
     },
     {
@@ -19907,8 +19907,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_widgets_mosque_nearest_mosque_banner",
-      "community": 55,
-      "community_name": "mosque_detail_sheet.dart",
+      "community": 92,
+      "community_name": "nearest_mosque_banner.dart",
       "norm_label": "nearest_mosque_banner.dart"
     },
     {
@@ -19918,8 +19918,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_widgets_mosque_nearest_mosque_banner_nearestmosquebanner",
-      "community": 55,
-      "community_name": "mosque_detail_sheet.dart",
+      "community": 92,
+      "community_name": "nearest_mosque_banner.dart",
       "norm_label": "nearestmosquebanner"
     },
     {
@@ -19929,8 +19929,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_widgets_mosque_nearest_mosque_banner_mosque",
-      "community": 55,
-      "community_name": "mosque_detail_sheet.dart",
+      "community": 92,
+      "community_name": "nearest_mosque_banner.dart",
       "norm_label": "mosque"
     },
     {
@@ -19940,8 +19940,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_widgets_mosque_nearest_mosque_banner_isoverridden",
-      "community": 55,
-      "community_name": "mosque_detail_sheet.dart",
+      "community": 92,
+      "community_name": "nearest_mosque_banner.dart",
       "norm_label": "isoverridden"
     },
     {
@@ -19951,8 +19951,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_widgets_mosque_nearest_mosque_banner_onresettonearest",
-      "community": 55,
-      "community_name": "mosque_detail_sheet.dart",
+      "community": 92,
+      "community_name": "nearest_mosque_banner.dart",
       "norm_label": "onresettonearest"
     },
     {
@@ -19962,8 +19962,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_widgets_mosque_nearest_mosque_banner_navigate",
-      "community": 55,
-      "community_name": "mosque_detail_sheet.dart",
+      "community": 92,
+      "community_name": "nearest_mosque_banner.dart",
       "norm_label": "_navigate"
     },
     {
@@ -19973,8 +19973,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_widgets_mosque_nearest_mosque_banner_togglefavorite",
-      "community": 55,
-      "community_name": "mosque_detail_sheet.dart",
+      "community": 92,
+      "community_name": "nearest_mosque_banner.dart",
       "norm_label": "_togglefavorite"
     },
     {
@@ -19984,8 +19984,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_widgets_mosque_nearest_mosque_banner_build",
-      "community": 55,
-      "community_name": "mosque_detail_sheet.dart",
+      "community": 92,
+      "community_name": "nearest_mosque_banner.dart",
       "norm_label": "build"
     },
     {
@@ -19995,8 +19995,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_widgets_mosque_nearest_mosque_banner_buildemptycontent",
-      "community": 55,
-      "community_name": "mosque_detail_sheet.dart",
+      "community": 92,
+      "community_name": "nearest_mosque_banner.dart",
       "norm_label": "_buildemptycontent"
     },
     {
@@ -20006,8 +20006,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_widgets_mosque_nearest_mosque_banner_buildcontent",
-      "community": 55,
-      "community_name": "mosque_detail_sheet.dart",
+      "community": 92,
+      "community_name": "nearest_mosque_banner.dart",
       "norm_label": "_buildcontent"
     },
     {
@@ -20017,8 +20017,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "mosque_detail_sheet_dart",
-      "community": 55,
-      "community_name": "mosque_detail_sheet.dart",
+      "community": 92,
+      "community_name": "nearest_mosque_banner.dart",
       "norm_label": "mosque_detail_sheet.dart"
     },
     {
@@ -20028,8 +20028,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_widgets_navigation_bottom_nav_bar",
-      "community": 21,
-      "community_name": "../../core/theme/app_colors.dart",
+      "community": 93,
+      "community_name": "package:flutter/material.dart",
       "norm_label": "bottom_nav_bar.dart"
     },
     {
@@ -20039,8 +20039,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_widgets_navigation_bottom_nav_bar_bottomnavbar",
-      "community": 21,
-      "community_name": "../../core/theme/app_colors.dart",
+      "community": 93,
+      "community_name": "package:flutter/material.dart",
       "norm_label": "bottomnavbar"
     },
     {
@@ -20050,8 +20050,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_widgets_navigation_bottom_nav_bar_currentindex",
-      "community": 21,
-      "community_name": "../../core/theme/app_colors.dart",
+      "community": 93,
+      "community_name": "package:flutter/material.dart",
       "norm_label": "currentindex"
     },
     {
@@ -20061,8 +20061,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_widgets_navigation_bottom_nav_bar_ontap",
-      "community": 21,
-      "community_name": "../../core/theme/app_colors.dart",
+      "community": 93,
+      "community_name": "package:flutter/material.dart",
       "norm_label": "ontap"
     },
     {
@@ -20072,8 +20072,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_widgets_navigation_bottom_nav_bar_build",
-      "community": 21,
-      "community_name": "../../core/theme/app_colors.dart",
+      "community": 93,
+      "community_name": "package:flutter/material.dart",
       "norm_label": "build"
     },
     {
@@ -20083,8 +20083,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_widgets_qibla_calibration_alert",
-      "community": 89,
-      "community_name": "pill_badge.dart",
+      "community": 26,
+      "community_name": "StatefulWidget",
       "norm_label": "calibration_alert.dart"
     },
     {
@@ -20094,8 +20094,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_widgets_qibla_calibration_alert_calibrationalert",
-      "community": 89,
-      "community_name": "pill_badge.dart",
+      "community": 26,
+      "community_name": "StatefulWidget",
       "norm_label": "calibrationalert"
     },
     {
@@ -20105,8 +20105,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_widgets_qibla_calibration_alert_calibrationalertstate",
-      "community": 89,
-      "community_name": "pill_badge.dart",
+      "community": 26,
+      "community_name": "StatefulWidget",
       "norm_label": "_calibrationalertstate"
     },
     {
@@ -20116,8 +20116,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_widgets_qibla_calibration_alert_controller",
-      "community": 89,
-      "community_name": "pill_badge.dart",
+      "community": 26,
+      "community_name": "StatefulWidget",
       "norm_label": "_controller"
     },
     {
@@ -20127,8 +20127,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_widgets_qibla_calibration_alert_createstate",
-      "community": 89,
-      "community_name": "pill_badge.dart",
+      "community": 26,
+      "community_name": "StatefulWidget",
       "norm_label": "createstate"
     },
     {
@@ -20138,8 +20138,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_widgets_qibla_calibration_alert_initstate",
-      "community": 89,
-      "community_name": "pill_badge.dart",
+      "community": 26,
+      "community_name": "StatefulWidget",
       "norm_label": "initstate"
     },
     {
@@ -20149,8 +20149,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_widgets_qibla_calibration_alert_dispose",
-      "community": 89,
-      "community_name": "pill_badge.dart",
+      "community": 26,
+      "community_name": "StatefulWidget",
       "norm_label": "dispose"
     },
     {
@@ -20160,8 +20160,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_widgets_qibla_calibration_alert_build",
-      "community": 89,
-      "community_name": "pill_badge.dart",
+      "community": 26,
+      "community_name": "StatefulWidget",
       "norm_label": "build"
     },
     {
@@ -20414,7 +20414,7 @@
       "_origin": "ast",
       "id": "lib_widgets_qibla_qibla_hero_banner",
       "community": 94,
-      "community_name": "VoidCallback",
+      "community_name": "package:google_fonts/google_fonts.dart",
       "norm_label": "qibla_hero_banner.dart"
     },
     {
@@ -20425,7 +20425,7 @@
       "_origin": "ast",
       "id": "lib_widgets_qibla_qibla_hero_banner_qiblaherobanner",
       "community": 94,
-      "community_name": "VoidCallback",
+      "community_name": "package:google_fonts/google_fonts.dart",
       "norm_label": "qiblaherobanner"
     },
     {
@@ -20436,7 +20436,7 @@
       "_origin": "ast",
       "id": "lib_widgets_qibla_qibla_hero_banner_qibladata",
       "community": 94,
-      "community_name": "VoidCallback",
+      "community_name": "package:google_fonts/google_fonts.dart",
       "norm_label": "qibladata"
     },
     {
@@ -20447,7 +20447,7 @@
       "_origin": "ast",
       "id": "lib_widgets_qibla_qibla_hero_banner_cityname",
       "community": 94,
-      "community_name": "VoidCallback",
+      "community_name": "package:google_fonts/google_fonts.dart",
       "norm_label": "cityname"
     },
     {
@@ -20458,7 +20458,7 @@
       "_origin": "ast",
       "id": "lib_widgets_qibla_qibla_hero_banner_isaligned",
       "community": 94,
-      "community_name": "VoidCallback",
+      "community_name": "package:google_fonts/google_fonts.dart",
       "norm_label": "isaligned"
     },
     {
@@ -20469,7 +20469,7 @@
       "_origin": "ast",
       "id": "lib_widgets_qibla_qibla_hero_banner_build",
       "community": 94,
-      "community_name": "VoidCallback",
+      "community_name": "package:google_fonts/google_fonts.dart",
       "norm_label": "build"
     },
     {
@@ -20480,7 +20480,7 @@
       "_origin": "ast",
       "id": "lib_widgets_qibla_qibla_hero_banner_buildbadge",
       "community": 94,
-      "community_name": "VoidCallback",
+      "community_name": "package:google_fonts/google_fonts.dart",
       "norm_label": "_buildbadge"
     },
     {
@@ -20491,7 +20491,7 @@
       "_origin": "ast",
       "id": "core_models_qibla_model_dart",
       "community": 94,
-      "community_name": "VoidCallback",
+      "community_name": "package:google_fonts/google_fonts.dart",
       "norm_label": "../../core/models/qibla_model.dart"
     },
     {
@@ -20502,7 +20502,7 @@
       "_origin": "ast",
       "id": "lib_widgets_qibla_qibla_info_grid",
       "community": 94,
-      "community_name": "VoidCallback",
+      "community_name": "package:google_fonts/google_fonts.dart",
       "norm_label": "qibla_info_grid.dart"
     },
     {
@@ -20513,7 +20513,7 @@
       "_origin": "ast",
       "id": "lib_widgets_qibla_qibla_info_grid_qiblainfogrid",
       "community": 94,
-      "community_name": "VoidCallback",
+      "community_name": "package:google_fonts/google_fonts.dart",
       "norm_label": "qiblainfogrid"
     },
     {
@@ -20524,7 +20524,7 @@
       "_origin": "ast",
       "id": "lib_widgets_qibla_qibla_info_grid_qibladata",
       "community": 94,
-      "community_name": "VoidCallback",
+      "community_name": "package:google_fonts/google_fonts.dart",
       "norm_label": "qibladata"
     },
     {
@@ -20535,7 +20535,7 @@
       "_origin": "ast",
       "id": "lib_widgets_qibla_qibla_info_grid_cityname",
       "community": 94,
-      "community_name": "VoidCallback",
+      "community_name": "package:google_fonts/google_fonts.dart",
       "norm_label": "cityname"
     },
     {
@@ -20546,7 +20546,7 @@
       "_origin": "ast",
       "id": "lib_widgets_qibla_qibla_info_grid_isrefreshing",
       "community": 94,
-      "community_name": "VoidCallback",
+      "community_name": "package:google_fonts/google_fonts.dart",
       "norm_label": "isrefreshing"
     },
     {
@@ -20557,7 +20557,7 @@
       "_origin": "ast",
       "id": "lib_widgets_qibla_qibla_info_grid_onrefreshlocation",
       "community": 94,
-      "community_name": "VoidCallback",
+      "community_name": "package:google_fonts/google_fonts.dart",
       "norm_label": "onrefreshlocation"
     },
     {
@@ -20568,7 +20568,7 @@
       "_origin": "ast",
       "id": "lib_widgets_qibla_qibla_info_grid_build",
       "community": 94,
-      "community_name": "VoidCallback",
+      "community_name": "package:google_fonts/google_fonts.dart",
       "norm_label": "build"
     },
     {
@@ -20579,7 +20579,7 @@
       "_origin": "ast",
       "id": "lib_widgets_qibla_qibla_info_grid_carddecoration",
       "community": 94,
-      "community_name": "VoidCallback",
+      "community_name": "package:google_fonts/google_fonts.dart",
       "norm_label": "_carddecoration"
     },
     {
@@ -20590,7 +20590,7 @@
       "_origin": "ast",
       "id": "lib_widgets_qibla_qibla_info_grid_buildicontile",
       "community": 94,
-      "community_name": "VoidCallback",
+      "community_name": "package:google_fonts/google_fonts.dart",
       "norm_label": "_buildicontile"
     },
     {
@@ -20601,7 +20601,7 @@
       "_origin": "ast",
       "id": "lib_widgets_qibla_qibla_info_grid_buildcard",
       "community": 94,
-      "community_name": "VoidCallback",
+      "community_name": "package:google_fonts/google_fonts.dart",
       "norm_label": "_buildcard"
     },
     {
@@ -21084,8 +21084,8 @@
       "source_location": null,
       "_origin": "ast",
       "id": "lib_widgets_quran_surah_detail_sheet_toggleaudio",
-      "community": 83,
-      "community_name": "surah_detail_sheet.dart",
+      "community": 20,
+      "community_name": "QuranProvider",
       "norm_label": "_toggleaudio"
     },
     {
@@ -23095,380 +23095,6 @@
       "community": 78,
       "community_name": "AGENTS.md",
       "norm_label": "graphify"
-    },
-    {
-      "label": "PLAN.md",
-      "file_type": "document",
-      "source_file": "PLAN.md",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "plan",
-      "community": 26,
-      "community_name": "SQFlite \u2192 Firebase Migration Plan",
-      "norm_label": "plan.md"
-    },
-    {
-      "label": "SQFlite \u2192 Firebase Migration Plan",
-      "file_type": "document",
-      "source_file": "PLAN.md",
-      "source_location": "L8",
-      "_origin": "ast",
-      "id": "plan_sqflite_firebase_migration_plan",
-      "community": 26,
-      "community_name": "SQFlite \u2192 Firebase Migration Plan",
-      "norm_label": "sqflite \u2192 firebase migration plan"
-    },
-    {
-      "label": "1. Executive Summary",
-      "file_type": "document",
-      "source_file": "PLAN.md",
-      "source_location": "L14",
-      "_origin": "ast",
-      "id": "plan_1_executive_summary",
-      "community": 26,
-      "community_name": "SQFlite \u2192 Firebase Migration Plan",
-      "norm_label": "1. executive summary"
-    },
-    {
-      "label": "Scope Decisions (Confirmed)",
-      "file_type": "document",
-      "source_file": "PLAN.md",
-      "source_location": "L27",
-      "_origin": "ast",
-      "id": "plan_scope_decisions_confirmed",
-      "community": 26,
-      "community_name": "SQFlite \u2192 Firebase Migration Plan",
-      "norm_label": "scope decisions (confirmed)"
-    },
-    {
-      "label": "2. Current SQFlite Inventory (Complete)",
-      "file_type": "document",
-      "source_file": "PLAN.md",
-      "source_location": "L37",
-      "_origin": "ast",
-      "id": "plan_2_current_sqflite_inventory_complete",
-      "community": 26,
-      "community_name": "SQFlite \u2192 Firebase Migration Plan",
-      "norm_label": "2. current sqflite inventory (complete)"
-    },
-    {
-      "label": "2.1 Files to Modify or Delete",
-      "file_type": "document",
-      "source_file": "PLAN.md",
-      "source_location": "L39",
-      "_origin": "ast",
-      "id": "plan_2_1_files_to_modify_or_delete",
-      "community": 26,
-      "community_name": "SQFlite \u2192 Firebase Migration Plan",
-      "norm_label": "2.1 files to modify or delete"
-    },
-    {
-      "label": "2.2 Complete SQFlite Schema \u2192 CRUD Matrix",
-      "file_type": "document",
-      "source_file": "PLAN.md",
-      "source_location": "L52",
-      "_origin": "ast",
-      "id": "plan_2_2_complete_sqflite_schema_crud_matrix",
-      "community": 26,
-      "community_name": "SQFlite \u2192 Firebase Migration Plan",
-      "norm_label": "2.2 complete sqflite schema \u2192 crud matrix"
-    },
-    {
-      "label": "Table: `users` (DELETED \u2014 replaced by Firebase Auth)",
-      "file_type": "document",
-      "source_file": "PLAN.md",
-      "source_location": "L54",
-      "_origin": "ast",
-      "id": "plan_table_users_deleted_replaced_by_firebase_auth",
-      "community": 26,
-      "community_name": "SQFlite \u2192 Firebase Migration Plan",
-      "norm_label": "table: `users` (deleted \u2014 replaced by firebase auth)"
-    },
-    {
-      "label": "Table: `sessions` (DELETED \u2014 replaced by Firebase Auth token management)",
-      "file_type": "document",
-      "source_file": "PLAN.md",
-      "source_location": "L73",
-      "_origin": "ast",
-      "id": "plan_table_sessions_deleted_replaced_by_firebase_auth_token_management",
-      "community": 26,
-      "community_name": "SQFlite \u2192 Firebase Migration Plan",
-      "norm_label": "table: `sessions` (deleted \u2014 replaced by firebase auth token management)"
-    },
-    {
-      "label": "Table: `quran_bookmarks` \u2192 Subcollection",
-      "file_type": "document",
-      "source_file": "PLAN.md",
-      "source_location": "L91",
-      "_origin": "ast",
-      "id": "plan_table_quran_bookmarks_subcollection",
-      "community": 26,
-      "community_name": "SQFlite \u2192 Firebase Migration Plan",
-      "norm_label": "table: `quran_bookmarks` \u2192 subcollection"
-    },
-    {
-      "label": "Table: `quran_last_read` \u2192 Single doc in subcollection",
-      "file_type": "document",
-      "source_file": "PLAN.md",
-      "source_location": "L107",
-      "_origin": "ast",
-      "id": "plan_table_quran_last_read_single_doc_in_subcollection",
-      "community": 26,
-      "community_name": "SQFlite \u2192 Firebase Migration Plan",
-      "norm_label": "table: `quran_last_read` \u2192 single doc in subcollection"
-    },
-    {
-      "label": "Table: `mosque_favorites` \u2192 Subcollection (snapshot preserved)",
-      "file_type": "document",
-      "source_file": "PLAN.md",
-      "source_location": "L122",
-      "_origin": "ast",
-      "id": "plan_table_mosque_favorites_subcollection_snapshot_preserved",
-      "community": 26,
-      "community_name": "SQFlite \u2192 Firebase Migration Plan",
-      "norm_label": "table: `mosque_favorites` \u2192 subcollection (snapshot preserved)"
-    },
-    {
-      "label": "3. Target Firebase Architecture",
-      "file_type": "document",
-      "source_file": "PLAN.md",
-      "source_location": "L144",
-      "_origin": "ast",
-      "id": "plan_3_target_firebase_architecture",
-      "community": 26,
-      "community_name": "SQFlite \u2192 Firebase Migration Plan",
-      "norm_label": "3. target firebase architecture"
-    },
-    {
-      "label": "3.1 Firestore Data Model",
-      "file_type": "document",
-      "source_file": "PLAN.md",
-      "source_location": "L146",
-      "_origin": "ast",
-      "id": "plan_3_1_firestore_data_model",
-      "community": 26,
-      "community_name": "SQFlite \u2192 Firebase Migration Plan",
-      "norm_label": "3.1 firestore data model"
-    },
-    {
-      "label": "3.2 Firebase Auth Integration Design",
-      "file_type": "document",
-      "source_file": "PLAN.md",
-      "source_location": "L179",
-      "_origin": "ast",
-      "id": "plan_3_2_firebase_auth_integration_design",
-      "community": 26,
-      "community_name": "SQFlite \u2192 Firebase Migration Plan",
-      "norm_label": "3.2 firebase auth integration design"
-    },
-    {
-      "label": "3.3 Firestore Offline Configuration",
-      "file_type": "document",
-      "source_file": "PLAN.md",
-      "source_location": "L186",
-      "_origin": "ast",
-      "id": "plan_3_3_firestore_offline_configuration",
-      "community": 26,
-      "community_name": "SQFlite \u2192 Firebase Migration Plan",
-      "norm_label": "3.3 firestore offline configuration"
-    },
-    {
-      "label": "3.4 Firestore Security Rules (Production)",
-      "file_type": "document",
-      "source_file": "PLAN.md",
-      "source_location": "L199",
-      "_origin": "ast",
-      "id": "plan_3_4_firestore_security_rules_production",
-      "community": 26,
-      "community_name": "SQFlite \u2192 Firebase Migration Plan",
-      "norm_label": "3.4 firestore security rules (production)"
-    },
-    {
-      "label": "4. Step-by-Step Migration Plan",
-      "file_type": "document",
-      "source_file": "PLAN.md",
-      "source_location": "L294",
-      "_origin": "ast",
-      "id": "plan_4_step_by_step_migration_plan",
-      "community": 26,
-      "community_name": "SQFlite \u2192 Firebase Migration Plan",
-      "norm_label": "4. step-by-step migration plan"
-    },
-    {
-      "label": "Phase 0 \u2014 Prerequisites (Before any code change)",
-      "file_type": "document",
-      "source_file": "PLAN.md",
-      "source_location": "L298",
-      "_origin": "ast",
-      "id": "plan_phase_0_prerequisites_before_any_code_change",
-      "community": 26,
-      "community_name": "SQFlite \u2192 Firebase Migration Plan",
-      "norm_label": "phase 0 \u2014 prerequisites (before any code change)"
-    },
-    {
-      "label": "Phase 1 \u2014 AuthUser model + AuthProvider plumbing (id int\u2192String)",
-      "file_type": "document",
-      "source_file": "PLAN.md",
-      "source_location": "L312",
-      "_origin": "ast",
-      "id": "plan_phase_1_authuser_model_authprovider_plumbing_id_int_string",
-      "community": 26,
-      "community_name": "SQFlite \u2192 Firebase Migration Plan",
-      "norm_label": "phase 1 \u2014 authuser model + authprovider plumbing (id int\u2192string)"
-    },
-    {
-      "label": "Phase 2 \u2014 Rewrite AuthService to use Firebase Auth",
-      "file_type": "document",
-      "source_file": "PLAN.md",
-      "source_location": "L331",
-      "_origin": "ast",
-      "id": "plan_phase_2_rewrite_authservice_to_use_firebase_auth",
-      "community": 26,
-      "community_name": "SQFlite \u2192 Firebase Migration Plan",
-      "norm_label": "phase 2 \u2014 rewrite authservice to use firebase auth"
-    },
-    {
-      "label": "Phase 3 \u2014 Refactor QuranProvider to Firestore",
-      "file_type": "document",
-      "source_file": "PLAN.md",
-      "source_location": "L352",
-      "_origin": "ast",
-      "id": "plan_phase_3_refactor_quranprovider_to_firestore",
-      "community": 26,
-      "community_name": "SQFlite \u2192 Firebase Migration Plan",
-      "norm_label": "phase 3 \u2014 refactor quranprovider to firestore"
-    },
-    {
-      "label": "Phase 4 \u2014 Refactor MosqueProvider to Firestore",
-      "file_type": "document",
-      "source_file": "PLAN.md",
-      "source_location": "L440",
-      "_origin": "ast",
-      "id": "plan_phase_4_refactor_mosqueprovider_to_firestore",
-      "community": 26,
-      "community_name": "SQFlite \u2192 Firebase Migration Plan",
-      "norm_label": "phase 4 \u2014 refactor mosqueprovider to firestore"
-    },
-    {
-      "label": "Phase 5 \u2014 Cleanup (Delete old code, remove dependencies)",
-      "file_type": "document",
-      "source_file": "PLAN.md",
-      "source_location": "L515",
-      "_origin": "ast",
-      "id": "plan_phase_5_cleanup_delete_old_code_remove_dependencies",
-      "community": 26,
-      "community_name": "SQFlite \u2192 Firebase Migration Plan",
-      "norm_label": "phase 5 \u2014 cleanup (delete old code, remove dependencies)"
-    },
-    {
-      "label": "Phase 6 \u2014 Firestore settings + AuthGate verification",
-      "file_type": "document",
-      "source_file": "PLAN.md",
-      "source_location": "L535",
-      "_origin": "ast",
-      "id": "plan_phase_6_firestore_settings_authgate_verification",
-      "community": 26,
-      "community_name": "SQFlite \u2192 Firebase Migration Plan",
-      "norm_label": "phase 6 \u2014 firestore settings + authgate verification"
-    },
-    {
-      "label": "Phase 7 \u2014 Verification & QA",
-      "file_type": "document",
-      "source_file": "PLAN.md",
-      "source_location": "L549",
-      "_origin": "ast",
-      "id": "plan_phase_7_verification_qa",
-      "community": 26,
-      "community_name": "SQFlite \u2192 Firebase Migration Plan",
-      "norm_label": "phase 7 \u2014 verification & qa"
-    },
-    {
-      "label": "5. Method-by-Method Replacement Reference",
-      "file_type": "document",
-      "source_file": "PLAN.md",
-      "source_location": "L580",
-      "_origin": "ast",
-      "id": "plan_5_method_by_method_replacement_reference",
-      "community": 26,
-      "community_name": "SQFlite \u2192 Firebase Migration Plan",
-      "norm_label": "5. method-by-method replacement reference"
-    },
-    {
-      "label": "5.1 AuthService.register() \u2014 New Implementation Sketch",
-      "file_type": "document",
-      "source_file": "PLAN.md",
-      "source_location": "L582",
-      "_origin": "ast",
-      "id": "plan_5_1_authservice_register_new_implementation_sketch",
-      "community": 26,
-      "community_name": "SQFlite \u2192 Firebase Migration Plan",
-      "norm_label": "5.1 authservice.register() \u2014 new implementation sketch"
-    },
-    {
-      "label": "5.2 Error Code Translation Map (FirebaseAuthException \u2192 AuthException)",
-      "file_type": "document",
-      "source_file": "PLAN.md",
-      "source_location": "L644",
-      "_origin": "ast",
-      "id": "plan_5_2_error_code_translation_map_firebaseauthexception_authexception",
-      "community": 26,
-      "community_name": "SQFlite \u2192 Firebase Migration Plan",
-      "norm_label": "5.2 error code translation map (firebaseauthexception \u2192 authexception)"
-    },
-    {
-      "label": "6. Dependencies Change Summary",
-      "file_type": "document",
-      "source_file": "PLAN.md",
-      "source_location": "L659",
-      "_origin": "ast",
-      "id": "plan_6_dependencies_change_summary",
-      "community": 26,
-      "community_name": "SQFlite \u2192 Firebase Migration Plan",
-      "norm_label": "6. dependencies change summary"
-    },
-    {
-      "label": "7. Known Edge Cases & Handling",
-      "file_type": "document",
-      "source_file": "PLAN.md",
-      "source_location": "L681",
-      "_origin": "ast",
-      "id": "plan_7_known_edge_cases_handling",
-      "community": 26,
-      "community_name": "SQFlite \u2192 Firebase Migration Plan",
-      "norm_label": "7. known edge cases & handling"
-    },
-    {
-      "label": "8. File Change Count (Minimal Ponytail Diff)",
-      "file_type": "document",
-      "source_file": "PLAN.md",
-      "source_location": "L694",
-      "_origin": "ast",
-      "id": "plan_8_file_change_count_minimal_ponytail_diff",
-      "community": 26,
-      "community_name": "SQFlite \u2192 Firebase Migration Plan",
-      "norm_label": "8. file change count (minimal ponytail diff)"
-    },
-    {
-      "label": "9. Rollback Plan",
-      "file_type": "document",
-      "source_file": "PLAN.md",
-      "source_location": "L708",
-      "_origin": "ast",
-      "id": "plan_9_rollback_plan",
-      "community": 26,
-      "community_name": "SQFlite \u2192 Firebase Migration Plan",
-      "norm_label": "9. rollback plan"
-    },
-    {
-      "label": "10. Post-Migration Future Enhancements (Out of Scope \u2014 Ponytail Backlog)",
-      "file_type": "document",
-      "source_file": "PLAN.md",
-      "source_location": "L719",
-      "_origin": "ast",
-      "id": "plan_10_post_migration_future_enhancements_out_of_scope_ponytail_backlog",
-      "community": 26,
-      "community_name": "SQFlite \u2192 Firebase Migration Plan",
-      "norm_label": "10. post-migration future enhancements (out of scope \u2014 ponytail backlog)"
     },
     {
       "label": "ponytail.md",
@@ -57206,369 +56832,6 @@
       "confidence_score": 1.0
     },
     {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "PLAN.md",
-      "source_location": "L8",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "plan",
-      "target": "plan_sqflite_firebase_migration_plan",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "PLAN.md",
-      "source_location": "L719",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "plan_sqflite_firebase_migration_plan",
-      "target": "plan_10_post_migration_future_enhancements_out_of_scope_ponytail_backlog",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "PLAN.md",
-      "source_location": "L14",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "plan_sqflite_firebase_migration_plan",
-      "target": "plan_1_executive_summary",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "PLAN.md",
-      "source_location": "L37",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "plan_sqflite_firebase_migration_plan",
-      "target": "plan_2_current_sqflite_inventory_complete",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "PLAN.md",
-      "source_location": "L144",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "plan_sqflite_firebase_migration_plan",
-      "target": "plan_3_target_firebase_architecture",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "PLAN.md",
-      "source_location": "L294",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "plan_sqflite_firebase_migration_plan",
-      "target": "plan_4_step_by_step_migration_plan",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "PLAN.md",
-      "source_location": "L580",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "plan_sqflite_firebase_migration_plan",
-      "target": "plan_5_method_by_method_replacement_reference",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "PLAN.md",
-      "source_location": "L659",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "plan_sqflite_firebase_migration_plan",
-      "target": "plan_6_dependencies_change_summary",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "PLAN.md",
-      "source_location": "L681",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "plan_sqflite_firebase_migration_plan",
-      "target": "plan_7_known_edge_cases_handling",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "PLAN.md",
-      "source_location": "L694",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "plan_sqflite_firebase_migration_plan",
-      "target": "plan_8_file_change_count_minimal_ponytail_diff",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "PLAN.md",
-      "source_location": "L708",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "plan_sqflite_firebase_migration_plan",
-      "target": "plan_9_rollback_plan",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "PLAN.md",
-      "source_location": "L27",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "plan_1_executive_summary",
-      "target": "plan_scope_decisions_confirmed",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "PLAN.md",
-      "source_location": "L39",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "plan_2_current_sqflite_inventory_complete",
-      "target": "plan_2_1_files_to_modify_or_delete",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "PLAN.md",
-      "source_location": "L52",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "plan_2_current_sqflite_inventory_complete",
-      "target": "plan_2_2_complete_sqflite_schema_crud_matrix",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "PLAN.md",
-      "source_location": "L122",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "plan_2_2_complete_sqflite_schema_crud_matrix",
-      "target": "plan_table_mosque_favorites_subcollection_snapshot_preserved",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "PLAN.md",
-      "source_location": "L91",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "plan_2_2_complete_sqflite_schema_crud_matrix",
-      "target": "plan_table_quran_bookmarks_subcollection",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "PLAN.md",
-      "source_location": "L107",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "plan_2_2_complete_sqflite_schema_crud_matrix",
-      "target": "plan_table_quran_last_read_single_doc_in_subcollection",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "PLAN.md",
-      "source_location": "L73",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "plan_2_2_complete_sqflite_schema_crud_matrix",
-      "target": "plan_table_sessions_deleted_replaced_by_firebase_auth_token_management",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "PLAN.md",
-      "source_location": "L54",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "plan_2_2_complete_sqflite_schema_crud_matrix",
-      "target": "plan_table_users_deleted_replaced_by_firebase_auth",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "PLAN.md",
-      "source_location": "L146",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "plan_3_target_firebase_architecture",
-      "target": "plan_3_1_firestore_data_model",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "PLAN.md",
-      "source_location": "L179",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "plan_3_target_firebase_architecture",
-      "target": "plan_3_2_firebase_auth_integration_design",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "PLAN.md",
-      "source_location": "L186",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "plan_3_target_firebase_architecture",
-      "target": "plan_3_3_firestore_offline_configuration",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "PLAN.md",
-      "source_location": "L199",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "plan_3_target_firebase_architecture",
-      "target": "plan_3_4_firestore_security_rules_production",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "PLAN.md",
-      "source_location": "L298",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "plan_4_step_by_step_migration_plan",
-      "target": "plan_phase_0_prerequisites_before_any_code_change",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "PLAN.md",
-      "source_location": "L312",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "plan_4_step_by_step_migration_plan",
-      "target": "plan_phase_1_authuser_model_authprovider_plumbing_id_int_string",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "PLAN.md",
-      "source_location": "L331",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "plan_4_step_by_step_migration_plan",
-      "target": "plan_phase_2_rewrite_authservice_to_use_firebase_auth",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "PLAN.md",
-      "source_location": "L352",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "plan_4_step_by_step_migration_plan",
-      "target": "plan_phase_3_refactor_quranprovider_to_firestore",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "PLAN.md",
-      "source_location": "L440",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "plan_4_step_by_step_migration_plan",
-      "target": "plan_phase_4_refactor_mosqueprovider_to_firestore",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "PLAN.md",
-      "source_location": "L515",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "plan_4_step_by_step_migration_plan",
-      "target": "plan_phase_5_cleanup_delete_old_code_remove_dependencies",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "PLAN.md",
-      "source_location": "L535",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "plan_4_step_by_step_migration_plan",
-      "target": "plan_phase_6_firestore_settings_authgate_verification",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "PLAN.md",
-      "source_location": "L549",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "plan_4_step_by_step_migration_plan",
-      "target": "plan_phase_7_verification_qa",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "PLAN.md",
-      "source_location": "L582",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "plan_5_method_by_method_replacement_reference",
-      "target": "plan_5_1_authservice_register_new_implementation_sketch",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "PLAN.md",
-      "source_location": "L644",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "plan_5_method_by_method_replacement_reference",
-      "target": "plan_5_2_error_code_translation_map_firebaseauthexception_authexception",
-      "confidence_score": 1.0
-    },
-    {
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
@@ -57697,5 +56960,5 @@
       "source_file": "linux/CMakeLists.txt"
     }
   ],
-  "built_at_commit": "736d6c0285beb366a5c76fdabeae7641ad4627ee"
+  "built_at_commit": "21d3be24ff38a9da0ce74606ad1a1bbac5cf7b3e"
 }
